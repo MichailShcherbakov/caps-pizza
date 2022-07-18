@@ -1,4 +1,8 @@
 .info-bar {
+  @include ui-w-full;
+
+  justify-content: space-between;
+
   &__destination {
     gap: 40px;
   }

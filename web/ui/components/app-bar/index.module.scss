@@ -1,7 +1,9 @@
 .app-bar {
   @include ui-flex-fixed;
-
+  @include ui-w-full;
   @include ui-py-6;
 
   justify-content: space-between;
+
+  background-color: $white;
 }

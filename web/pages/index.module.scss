@@ -2,7 +2,13 @@
   @include ui-w-full;
   @include ui-h-screen;
 
+  background-color: #f0f0f0;
+
   &__container {
-    @include ui-w(1280px);
+    @include ui-w-full;
+
+    background-color: $white;
+
+    border-bottom: 1px solid #f0f0f0;
   }
 }
