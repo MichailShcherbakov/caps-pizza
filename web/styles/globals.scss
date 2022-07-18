@@ -59,9 +59,25 @@
   text-transform: none;
 }
 
+.MuiTypography-subtitle1 {
+  font-size: 13px;
+  font-weight: 400;
+  color: $gray-400;
+}
+
 .MuiButton-root {
   width: fit-content;
   height: fit-content;
+
+  @include ui-box-shadow-none;
+
+  &:hover {
+    @include ui-box-shadow-none;
+  }
+}
+
+.MuiGrid-grid-xs-12 {
+  width: 100%;
 }
 
 @media screen and (max-width: $breakpoint-sm) {
@@ -98,6 +114,10 @@
   }
 
   .MuiTypography-button {
+    font-size: 12px;
+  }
+
+  .MuiTypography-subtitle1 {
     font-size: 12px;
   }
 }

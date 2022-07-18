@@ -1,0 +1,121 @@
+.product-card {
+  @include ui-w-full;
+  @include ui-h(480px);
+
+  @include ui-bg-color($white);
+
+  @include ui-border(1px, solid, $gray-100);
+
+  @include ui-rounded-4;
+
+  &__image {
+    position: relative;
+
+    align-self: center;
+
+    @include ui-size(240px);
+    @include ui-flex-fixed;
+    @include ui-flex-center;
+  }
+
+  &__info {
+    @include ui-h-full;
+    @include ui-p-9;
+
+    gap: 20px;
+  }
+
+  &__add-info,
+  &__add-info-2 {
+    @include ui-flex;
+    @include ui-flex-fixed;
+  }
+
+  &__header {
+    @include ui-w-full;
+
+    gap: 10px;
+  }
+
+  &__desc {
+    @include ui-w-full;
+    @include ui-h-full;
+
+    overflow-wrap: anywhere;
+  }
+
+  &__price {
+    color: $orange-400;
+  }
+
+  &--small {
+    &__footer {
+      display: none;
+    }
+
+    &__price {
+      @include ui-font-color($orange-400);
+      @include ui-bg-color($orange-100);
+
+      &:active {
+        @include ui-bg-color($orange-100);
+      }
+
+      &:hover {
+        @include ui-bg-color($orange-100);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  .product-card {
+    @include ui-h-auto;
+    @include ui-flex-row;
+    @include ui-p-6;
+
+    gap: 12px;
+
+    align-items: center;
+
+    &__image {
+      @include ui-size(180px);
+    }
+
+    &__info {
+      @include ui-w-full;
+    }
+
+    &__add-info {
+      display: none;
+    }
+
+    &--medium__footer {
+      display: none;
+    }
+
+    &--small__footer {
+      @include ui-flex;
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .product-card {
+    &__image {
+      @include ui-size(150px);
+    }
+
+    &__info {
+      @include ui-p-0;
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-xs) {
+  .product-card {
+    &__image {
+      @include ui-size(120px);
+    }
+  }
+}
