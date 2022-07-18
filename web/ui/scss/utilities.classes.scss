@@ -5,3 +5,11 @@
 @import "utilities/sizing/sizing.classes";
 @import "utilities/spacing/spacing.classes";
 @import "utilities/cursor/cursor.classes";
+
+.ui-space-x-between {
+  justify-content: space-between;
+}
+
+.ui-space-y-between {
+  align-content: space-between;
+}
