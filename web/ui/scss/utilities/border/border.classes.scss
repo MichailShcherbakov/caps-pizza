@@ -1,0 +1,25 @@
+@import "border.scss";
+
+.ui-border-none {
+  @include ui-border-none;
+}
+
+.ui-rounded-none {
+  @include ui-rounded-none;
+}
+
+.ui-rounded-1 {
+  @include ui-rounded-1;
+}
+
+.ui-rounded-2 {
+  @include ui-rounded-2;
+}
+
+.ui-rounded-3 {
+  @include ui-rounded-3;
+}
+
+.ui-rounded {
+  @include ui-rounded;
+}

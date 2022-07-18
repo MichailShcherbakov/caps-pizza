@@ -1,0 +1,12 @@
+@import "scale.scss";
+@import "width.scss";
+
+@each $width, $value in $spacing {
+  .ui-w-#{$width} {
+    @include ui-w($value);
+  }
+}
+
+.ui-w-screen {
+  @include ui-w($spacing-scale-w-screen);
+}

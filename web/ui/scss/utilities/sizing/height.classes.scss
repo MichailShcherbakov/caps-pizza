@@ -1,0 +1,12 @@
+@import "scale.scss";
+@import "height.scss";
+
+@each $height, $value in $spacing {
+  .ui-h-#{$height} {
+    @include ui-h($value);
+  }
+}
+
+.ui-h-screen {
+  @include ui-h($spacing-scale-h-screen);
+}

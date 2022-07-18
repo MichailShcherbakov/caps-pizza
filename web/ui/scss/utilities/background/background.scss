@@ -1,0 +1,31 @@
+@mixin ui-bg-transparent() {
+  background-color: transparent;
+}
+
+@mixin ui-bg-inherit {
+  background-color: inherit;
+}
+
+@mixin ui-bg-white {
+  background-color: $white;
+}
+
+@mixin ui-bg-black {
+  background-color: $black;
+}
+
+@mixin ui-bg-gray-50 {
+  background-color: $gray-50;
+}
+
+@mixin ui-bg-gray-75 {
+  background-color: $gray-75;
+}
+
+@mixin ui-bg-gray-100 {
+  background-color: $gray-100;
+}
+
+@mixin ui-bg-color($color) {
+  background-color: $color;
+}

@@ -1,0 +1,28 @@
+@import "background.scss";
+
+.ui-bg-transparent {
+  @include ui-bg-transparent;
+}
+
+.ui-bg-inherit {
+  @include ui-bg-inherit;
+}
+.ui-bg-white {
+  @include ui-bg-white;
+}
+
+.ui-bg-black {
+  @include ui-bg-black;
+}
+
+.ui-bg-gray-50 {
+  @include ui-bg-gray-50;
+}
+
+.ui-bg-gray-75 {
+  @include ui-bg-gray-75;
+}
+
+.ui-bg-gray-100 {
+  @include ui-bg-gray-100;
+}

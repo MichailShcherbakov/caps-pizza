@@ -1,0 +1,11 @@
+@mixin ui-cursor-default {
+  cursor: default;
+}
+
+@mixin ui-cursor-pointer {
+  cursor: pointer;
+}
+
+@mixin ui-cursor-text {
+  cursor: text;
+}

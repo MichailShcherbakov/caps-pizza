@@ -1,0 +1,141 @@
+@import "scale.scss";
+
+@mixin ui-h($rem: 0) {
+  height: $rem;
+}
+
+@mixin ui-h-auto {
+  @include ui-h(auto);
+}
+
+@mixin ui-h-0 {
+  @include ui-h($spacing-scale-0);
+}
+
+@mixin ui-h-1 {
+  @include ui-h($spacing-scale-1);
+}
+
+@mixin ui-h-2 {
+  @include ui-h($spacing-scale-2);
+}
+
+@mixin ui-h-3 {
+  @include ui-h($spacing-scale-3);
+}
+
+@mixin ui-h-4 {
+  @include ui-h($spacing-scale-4);
+}
+
+@mixin ui-h-5 {
+  @include ui-h($spacing-scale-5);
+}
+
+@mixin ui-h-6 {
+  @include ui-h($spacing-scale-6);
+}
+
+@mixin ui-h-7 {
+  @include ui-h($spacing-scale-7);
+}
+
+@mixin ui-h-8 {
+  @include ui-h($spacing-scale-8);
+}
+
+@mixin ui-h-9 {
+  @include ui-h($spacing-scale-9);
+}
+
+@mixin ui-h-10 {
+  @include ui-h($spacing-scale-10);
+}
+
+@mixin ui-h-11 {
+  @include ui-h($spacing-scale-11);
+}
+
+@mixin ui-h-12 {
+  @include ui-h($spacing-scale-12);
+}
+
+@mixin ui-h-13 {
+  @include ui-h($spacing-scale-13);
+}
+
+@mixin ui-h-14 {
+  @include ui-h($spacing-scale-14);
+}
+
+@mixin ui-h-15 {
+  @include ui-h($spacing-scale-15);
+}
+
+@mixin ui-h-16 {
+  @include ui-h($spacing-scale-16);
+}
+
+@mixin ui-h-17 {
+  @include ui-h($spacing-scale-17);
+}
+
+@mixin ui-h-18 {
+  @include ui-h($spacing-scale-18);
+}
+
+@mixin ui-h-19 {
+  @include ui-h($spacing-scale-19);
+}
+
+@mixin ui-h-20 {
+  @include ui-h($spacing-scale-20);
+}
+
+@mixin ui-h-21 {
+  @include ui-h($spacing-scale-21);
+}
+
+@mixin ui-h-22 {
+  @include ui-h($spacing-scale-22);
+}
+
+@mixin ui-h-23 {
+  @include ui-h($spacing-scale-23);
+}
+
+@mixin ui-h-24 {
+  @include ui-h($spacing-scale-24);
+}
+
+@mixin ui-h-half {
+  @include ui-h($spacing-scale-half);
+}
+
+@mixin ui-h-full {
+  @include ui-h($spacing-scale-full);
+}
+
+@mixin ui-h-auto {
+  @include ui-h($spacing-scale-auto);
+}
+
+@mixin ui-h-full {
+  @include ui-h($spacing-scale-full);
+}
+
+@mixin ui-h-min {
+  @include ui-h($spacing-scale-min);
+}
+
+@mixin ui-h-max {
+  @include ui-h($spacing-scale-max);
+}
+
+@mixin ui-h-screen {
+  @include ui-h($spacing-scale-h-screen);
+}
+
+@mixin ui-max-h($scale) {
+  max-height: $scale;
+}

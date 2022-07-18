@@ -1,0 +1,78 @@
+@import "flex.scss";
+
+.ui-flex {
+  @include ui-flex;
+}
+
+.ui-flex-center {
+  @include ui-flex-center;
+}
+
+.ui-flex-initial {
+  @include ui-flex-initial;
+}
+
+.ui-flex-1 {
+  @include ui-flex-1;
+}
+
+.ui-flex-auto {
+  @include ui-flex-auto;
+}
+
+.ui-flex-none {
+  @include ui-flex-none;
+}
+
+.ui-flex-wrap {
+  @include ui-flex-wrap;
+}
+
+.ui-flex-wrap-reverse {
+  @include ui-flex-wrap-reverse;
+}
+
+.ui-flex-nowrap {
+  @include ui-flex-nowrap;
+}
+
+.ui-flex-row {
+  @include ui-flex-row;
+}
+
+.ui-flex-row-reverse {
+  @include ui-flex-row-reverse;
+}
+
+.ui-flex-col {
+  @include ui-flex-col;
+}
+
+.ui-flex-col-reverse {
+  @include ui-flex-col-reverse;
+}
+
+.ui-flex-grow {
+  @include ui-flex-grow;
+}
+
+.ui-flex-grow-0 {
+  @include ui-flex-grow-0;
+}
+
+.ui-flex-shrink-0 {
+  @include ui-flex-shrink-0;
+}
+
+.ui-flex-grow-1 {
+  @include ui-flex-grow-1;
+}
+
+.ui-flex-shrink-1 {
+  @include ui-flex-shrink-1;
+}
+
+.ui-flex-fixed {
+  @include ui-flex-grow-0;
+  @include ui-flex-shrink-0;
+}

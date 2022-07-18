@@ -1,0 +1,141 @@
+@import "scale.scss";
+
+@mixin ui-w($rem: 0) {
+  width: $rem;
+}
+
+@mixin ui-w-auto {
+  @include ui-w(auto);
+}
+
+@mixin ui-w-0 {
+  @include ui-w($spacing-scale-0);
+}
+
+@mixin ui-w-1 {
+  @include ui-w($spacing-scale-1);
+}
+
+@mixin ui-w-2 {
+  @include ui-w($spacing-scale-2);
+}
+
+@mixin ui-w-3 {
+  @include ui-w($spacing-scale-3);
+}
+
+@mixin ui-w-4 {
+  @include ui-w($spacing-scale-4);
+}
+
+@mixin ui-w-5 {
+  @include ui-w($spacing-scale-5);
+}
+
+@mixin ui-w-6 {
+  @include ui-w($spacing-scale-6);
+}
+
+@mixin ui-w-7 {
+  @include ui-w($spacing-scale-7);
+}
+
+@mixin ui-w-8 {
+  @include ui-w($spacing-scale-8);
+}
+
+@mixin ui-w-9 {
+  @include ui-w($spacing-scale-9);
+}
+
+@mixin ui-w-10 {
+  @include ui-w($spacing-scale-10);
+}
+
+@mixin ui-w-11 {
+  @include ui-w($spacing-scale-11);
+}
+
+@mixin ui-w-12 {
+  @include ui-w($spacing-scale-12);
+}
+
+@mixin ui-w-13 {
+  @include ui-w($spacing-scale-13);
+}
+
+@mixin ui-w-14 {
+  @include ui-w($spacing-scale-14);
+}
+
+@mixin ui-w-15 {
+  @include ui-w($spacing-scale-15);
+}
+
+@mixin ui-w-16 {
+  @include ui-w($spacing-scale-16);
+}
+
+@mixin ui-w-17 {
+  @include ui-w($spacing-scale-17);
+}
+
+@mixin ui-w-18 {
+  @include ui-w($spacing-scale-18);
+}
+
+@mixin ui-w-19 {
+  @include ui-w($spacing-scale-19);
+}
+
+@mixin ui-w-20 {
+  @include ui-w($spacing-scale-20);
+}
+
+@mixin ui-w-21 {
+  @include ui-w($spacing-scale-21);
+}
+
+@mixin ui-w-22 {
+  @include ui-w($spacing-scale-22);
+}
+
+@mixin ui-w-23 {
+  @include ui-w($spacing-scale-23);
+}
+
+@mixin ui-w-24 {
+  @include ui-w($spacing-scale-24);
+}
+
+@mixin ui-w-half {
+  @include ui-w($spacing-scale-half);
+}
+
+@mixin ui-w-full {
+  @include ui-w($spacing-scale-full);
+}
+
+@mixin ui-w-auto {
+  @include ui-w($spacing-scale-auto);
+}
+
+@mixin ui-w-full {
+  @include ui-w($spacing-scale-full);
+}
+
+@mixin ui-w-min {
+  @include ui-w($spacing-scale-min);
+}
+
+@mixin ui-w-max {
+  @include ui-w($spacing-scale-max);
+}
+
+@mixin ui-w-screen {
+  @include ui-w($spacing-scale-w-screen);
+}
+
+@mixin ui-max-w($scale) {
+  max-width: $scale;
+}

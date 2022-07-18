@@ -1,0 +1,8 @@
+.logo {
+  gap: 10px;
+
+  &__icon {
+    @include ui-flex-fixed;
+    @include ui-size(48px);
+  }
+}

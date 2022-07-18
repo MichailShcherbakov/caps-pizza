@@ -1,0 +1,8 @@
+.main-layout {
+  @include ui-w-full;
+  @include ui-h-screen;
+
+  &__container {
+    @include ui-w(1280px);
+  }
+}

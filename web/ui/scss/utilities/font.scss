@@ -1,0 +1,14 @@
+@mixin ui-font($size: 1rem, $weight: 400, $color, $line-height: 1rem) {
+  font-size: $size;
+  font-weight: $weight;
+
+  color: $color;
+
+  line-height: $line-height;
+
+  @include ui-truncate;
+}
+
+@mixin ui-font-color($color) {
+  color: $color;
+}

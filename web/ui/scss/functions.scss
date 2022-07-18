@@ -1,0 +1,29 @@
+@function single-unit-rem($value, $font-size-base) {
+  @if (extract-unit($value) != 1px) {
+    @return $value;
+  }
+
+  $converted: $value / $font-size-base;
+
+  @return strip-unit($converted) * 1rem;
+}
+
+@function multiple-units-rem($values, $font-size-base) {
+  $rem-values: ();
+
+  @each $value in $values {
+    $rem-values: append($rem-values, single-unit-rem($value, $font-size-base));
+  }
+
+  @return $rem-values;
+}
+
+@function px-to-rem($px, $font-size-base: 16px) {
+  @if type-of($px) == "number" {
+    @return single-unit-rem($px, $font-size-base);
+  } @else if type-of($px) == "list" {
+    @return multiple-units-rem($px, $font-size-base);
+  } @else {
+    @return $px;
+  }
+}
