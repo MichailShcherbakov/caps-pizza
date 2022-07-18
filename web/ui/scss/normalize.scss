@@ -19,6 +19,8 @@
 
 html {
   @include ui-select-none;
+
+  min-width: 320px;
 }
 
 body {

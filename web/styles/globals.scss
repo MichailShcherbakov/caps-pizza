@@ -1,7 +1,103 @@
 @import "../ui/scss/normalize.scss";
 @import "../ui/scss/main.scss";
 
+.MuiTypography-root {
+  font-family: "Inter", sans-serif;
+}
+
+.MuiTypography-h1 {
+  font-size: 40px;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.MuiTypography-h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.MuiTypography-h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.MuiTypography-h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.MuiTypography-h5 {
+  font-size: 16px;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.MuiTypography-h6 {
+  font-size: 14px;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.MuiTypography-body1 {
+  font-size: 14px;
+  font-weight: 400;
+  color: $gray-900;
+}
+
+.MuiTypography-body2 {
+  font-size: 16px;
+  font-weight: 400;
+  color: $gray-900;
+}
+
+.MuiTypography-button {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: none;
+}
+
 .MuiButton-root {
   width: fit-content;
   height: fit-content;
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  .MuiTypography-h1 {
+    font-size: 28px;
+  }
+
+  .MuiTypography-h2 {
+    font-size: 24px;
+  }
+
+  .MuiTypography-h3 {
+    font-size: 20px;
+  }
+
+  .MuiTypography-h4 {
+    font-size: 18px;
+  }
+
+  .MuiTypography-h5 {
+    font-size: 14px;
+  }
+
+  .MuiTypography-h6 {
+    font-size: 12px;
+  }
+
+  .MuiTypography-body1 {
+    font-size: 12px;
+  }
+
+  .MuiTypography-body2 {
+    font-size: 14px;
+  }
+
+  .MuiTypography-button {
+    font-size: 12px;
+  }
 }

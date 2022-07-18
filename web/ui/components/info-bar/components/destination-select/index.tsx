@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import LocationIcon from "~/assets/location.svg";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
@@ -25,7 +25,7 @@ export const DestinationSelect: React.FC<DestinationSelectProps> = () => {
         startIcon={<LocationIcon />}
         endIcon={<KeyboardArrowDownIcon />}
       >
-        Пушкин
+        <Typography variant="button">Пушкин</Typography>
       </Button>
       <Menu open={open} anchorEl={anchorEl} onClose={onMenuCloseHandle}>
         <MenuItem onClick={onMenuItemClickHandle}>Пушкин</MenuItem>

@@ -6,6 +6,7 @@ import CookiesNotification from "~/ui/components/cookies-notification";
 import { InfoBar } from "~/ui/components/info-bar";
 import theme from "~/ui/theme";
 import styles from "./index.module.scss";
+import Categories from "~/ui/components/categories";
 
 export const Home: NextPage = () => {
   const [showCookiesNotification, setShowCookiesNotification] =
@@ -29,7 +30,9 @@ export const Home: NextPage = () => {
         <Stack className={styles["main-layout__container"]}>
           <AppBar />
         </Stack>
-        <Stack className={styles["main-layout"]}></Stack>
+        <Stack className={styles["main-layout"]}>
+          <Categories />
+        </Stack>
       </Stack>
     </ThemeProvider>
   );

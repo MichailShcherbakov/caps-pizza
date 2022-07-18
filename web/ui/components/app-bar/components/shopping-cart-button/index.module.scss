@@ -1,4 +1,10 @@
 .shopping-cart-btn {
-  @include ui-px-4;
+  @include ui-px-8;
   @include ui-py-2;
+
+  &__icon {
+    @include ui-size(20px);
+
+    @include ui-fill(#ff7010);
+  }
 }

@@ -5,3 +5,21 @@
 @import "utilities.classes";
 
 @import "mixins";
+
+.ui-space-x-between {
+  justify-content: space-between;
+}
+
+.ui-space-y-between {
+  align-content: space-between;
+}
+
+$breakpoint-xs: 0px;
+$breakpoint-sm: 600px;
+$breakpoint-md: 900px;
+$breakpoint-lg: 1280px;
+$breakpoint-xl: 1536px;
+
+$gray-900: #191919;
+$orange-400: #ff7010;
+$red-400: #e23535;

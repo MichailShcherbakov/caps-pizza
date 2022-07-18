@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import ShoppingCart from "~/assets/shopping-cart.svg";
 import styles from "./index.module.scss";
 
@@ -17,10 +17,10 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
     <Button
       variant="outlined"
       color="primary"
-      startIcon={<ShoppingCart className />}
+      startIcon={<ShoppingCart className={styles["shopping-cart-btn__icon"]} />}
       className={styles["shopping-cart-btn"]}
     >
-      {`${price} ${currencySymbol}`}
+      <Typography variant="button">{`${price} ${currencySymbol}`}</Typography>
     </Button>
   );
 };

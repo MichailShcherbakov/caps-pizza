@@ -1,0 +1,44 @@
+.category-card {
+  @include ui-px-12;
+  @include ui-py-10;
+
+  @include ui-flex-center;
+  @include ui-flex-fixed;
+
+  background-color: $white;
+
+  @include ui-rounded-4;
+  @include ui-border(1px, solid, #f0f0f0);
+
+  &__icon {
+    position: relative;
+
+    @include ui-size(32px);
+  }
+}
+
+@media screen and (max-width: $breakpoint-md) {
+  .category-card {
+    @include ui-px-10;
+    @include ui-py-8;
+  }
+
+  .category-card__icon {
+    @include ui-size(24px);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .category-card {
+    @include ui-flex-row;
+
+    gap: 0.875rem;
+
+    @include ui-px-6;
+    @include ui-py-5;
+  }
+
+  .category-card__icon {
+    @include ui-size(24px);
+  }
+}

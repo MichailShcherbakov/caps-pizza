@@ -1,0 +1,13 @@
+.categories {
+  @include ui-w-auto;
+
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 800px) {
+  .categories {
+    overflow-x: scroll;
+    gap: 12px;
+    justify-content: flex-start;
+  }
+}
