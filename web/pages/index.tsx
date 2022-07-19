@@ -15,6 +15,7 @@ import styles from "./index.module.scss";
 import Categories from "~/ui/components/categories";
 import ProductCard from "~/ui/components/product-card";
 import Products from "~/public/pizza.json";
+import ShoppingCartButton from "~/ui/components/shopping-cart-button";
 
 export const Home: NextPage = () => {
   const [showCookiesNotification, setShowCookiesNotification] =
@@ -64,6 +65,7 @@ export const Home: NextPage = () => {
           </Container>
         </Stack>
       </Stack>
+      <ShoppingCartButton count={0} variant="filled & rounded" />
     </ThemeProvider>
   );
 };

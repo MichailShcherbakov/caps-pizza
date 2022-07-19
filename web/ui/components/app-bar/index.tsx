@@ -3,7 +3,7 @@ import { Fade, Container, Stack, Typography } from "@mui/material";
 import React from "react";
 import Categories from "./components/categories";
 import Logo from "./components/logo";
-import ShoppingCartButton from "./components/shopping-cart-button";
+import ShoppingCartButton from "../shopping-cart-button";
 import styles from "./index.module.scss";
 
 export interface AppBarProps extends StackProps {}
