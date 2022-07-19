@@ -1,11 +1,15 @@
+import { StackProps } from "@mui/material";
 import { Container, Stack } from "@mui/material";
 import React from "react";
 import CategoryCard, { CategoryCardProps } from "./components/card";
 import styles from "./index.module.scss";
 
-export interface CategoriesProps {}
+export interface CategoriesProps extends StackProps {}
 
-export const Categories: React.FC<CategoriesProps> = () => {
+export const Categories: React.FC<CategoriesProps> = ({
+  className,
+  ...props
+}) => {
   const [categories] = React.useState<CategoryCardProps[]>([
     {
       id: "promotions",
@@ -40,17 +44,16 @@ export const Categories: React.FC<CategoriesProps> = () => {
   ]);
 
   return (
-    <Container className="ui-py-12">
-      <Stack
-        direction="row"
-        alignItems="center"
-        className={styles["categories"]}
-      >
-        {categories.map((c) => (
-          <CategoryCard key={c.id} {...c} />
-        ))}
-      </Stack>
-    </Container>
+    <Stack
+      direction="row"
+      alignItems="center"
+      className={[styles["categories"], className].join(" ")}
+      {...props}
+    >
+      {categories.map((c) => (
+        <CategoryCard key={c.id} {...c} />
+      ))}
+    </Stack>
   );
 };
 

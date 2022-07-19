@@ -1,0 +1,21 @@
+.category-card {
+  @include ui-px-6;
+  @include ui-py-5;
+
+  @include ui-flex-center;
+  @include ui-flex-fixed;
+  @include ui-flex-row;
+
+  gap: 0.875rem;
+
+  background-color: $white;
+
+  @include ui-rounded-2;
+  @include ui-border(1px, solid, #f0f0f0);
+
+  &__icon {
+    position: relative;
+
+    @include ui-size(24px);
+  }
+}

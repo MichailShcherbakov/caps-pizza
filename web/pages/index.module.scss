@@ -1,6 +1,8 @@
 .main-layout {
   @include ui-w-full;
 
+  position: relative;
+
   background-color: #f0f0f0;
 
   &__container {
@@ -9,5 +11,12 @@
     background-color: $white;
 
     border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__app-bar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 30;
   }
 }
