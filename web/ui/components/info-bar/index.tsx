@@ -26,7 +26,7 @@ export const InfoBar: React.FC<InfoBarProps> = (props) => {
               Среднее время доставки*: {deliveryTime}
             </Typography>
           </Stack>
-          <Typography>Время работы: с 11:00 до 23:00</Typography>
+          <Typography>Время работы: с 11:00 до 22:30</Typography>
         </Stack>
       </Container>
     </Stack>

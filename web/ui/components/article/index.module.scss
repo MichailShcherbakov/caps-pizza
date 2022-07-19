@@ -1,0 +1,27 @@
+.article {
+  position: relative;
+
+  &--collapsed {
+    @include ui-w-full;
+    @include ui-h(100px);
+
+    overflow: hidden;
+  }
+
+  &__curtain {
+    position: absolute;
+
+    background: linear-gradient(180deg, transparent, $gray-100);
+    z-index: 1;
+
+    @include ui-w-full;
+    @include ui-h-full;
+  }
+
+  &__text {
+    @include ui-w-full;
+    @include ui-h-full;
+
+    white-space: pre-line;
+  }
+}

@@ -63,7 +63,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           justifyContent="space-between"
           className={styles["product-card--medium__footer"]}
         >
-          <Button variant="outlined">Выбрать</Button>
+          <Button variant="outlined">
+            <Typography variant="button">Выбрать</Typography>
+          </Button>
           <Typography
             variant="h4"
             component="p"
@@ -88,7 +90,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             variant="contained"
             className={styles["product-card--small__price"]}
           >
-            {price}
+            <Typography variant="button">{price}</Typography>
           </Button>
         </Stack>
       </Stack>

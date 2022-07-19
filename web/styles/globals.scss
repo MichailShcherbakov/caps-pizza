@@ -43,19 +43,19 @@
 
 .MuiTypography-body1 {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: $gray-900;
 }
 
 .MuiTypography-body2 {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   color: $gray-900;
 }
 
 .MuiTypography-button {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   text-transform: none;
 }
 
@@ -132,6 +132,7 @@
 
   .MuiTypography-button {
     font-size: 12px;
+    font-weight: 400;
   }
 
   .MuiTypography-subtitle1 {
