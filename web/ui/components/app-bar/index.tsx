@@ -15,8 +15,9 @@ export const AppBar: React.FC<AppBarProps> = (props) => {
   const ref = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    const scroll = () =>
+    const scroll = () => {
       setShowCatefories(window?.scrollY > APP_BAR_TOP_OFFSET);
+    };
 
     window.addEventListener("scroll", scroll);
 
@@ -26,7 +27,7 @@ export const AppBar: React.FC<AppBarProps> = (props) => {
   }, []);
 
   return (
-    <Stack ref={ref} {...props}>
+    <Stack ref={ref} component="header" {...props}>
       <Container>
         <Stack
           direction="row"

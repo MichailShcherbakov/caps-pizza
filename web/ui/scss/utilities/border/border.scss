@@ -2,6 +2,22 @@
   border: $size $type $color;
 }
 
+@mixin ui-border-left($size, $type, $color) {
+  border-left: $size $type $color;
+}
+
+@mixin ui-border-right($size, $type, $color) {
+  border-right: $size $type $color;
+}
+
+@mixin ui-border-top($size, $type, $color) {
+  border-top: $size $type $color;
+}
+
+@mixin ui-border-bottom($size, $type, $color) {
+  border-bottom: $size $type $color;
+}
+
 @mixin ui-border-color($color) {
   border-color: $color;
 }

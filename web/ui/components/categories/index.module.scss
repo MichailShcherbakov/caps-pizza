@@ -1,12 +1,17 @@
 .categories {
   @include ui-w-auto;
 
+  overflow-x: scroll;
+
   justify-content: space-between;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 800px) {
   .categories {
-    overflow-x: scroll;
     gap: 12px;
     justify-content: flex-start;
   }

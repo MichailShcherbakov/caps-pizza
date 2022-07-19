@@ -17,6 +17,7 @@ import ProductCard from "~/ui/components/product-card";
 import Products from "~/public/pizza.json";
 import ShoppingCartButton from "~/ui/components/shopping-cart-button";
 import Article from "~/ui/components/article";
+import Footer from "~/ui/components/footer";
 
 export const Home: NextPage = () => {
   const [showCookiesNotification, setShowCookiesNotification] =
@@ -45,9 +46,73 @@ export const Home: NextPage = () => {
         <Stack component="main" className="ui-w-full ui-py-8">
           <Container>
             <Categories className="ui-py-8" />
-            <Stack id="pizza" component="section" className="ui-py-8">
+            <Stack
+              id="pizza"
+              data-article
+              component="section"
+              className="ui-py-8"
+            >
               <Typography variant="h1" className="ui-pb-12">
                 Пиццы
+              </Typography>
+              <Grid container spacing={2}>
+                {Products.map((p) => (
+                  <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key={p.id}>
+                    <ProductCard
+                      iconUrl={p.iconUrl}
+                      name={p.name}
+                      desc={p.desc}
+                      addInfo={`${p.size} / ${p.weight}`}
+                      price={p.price}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Stack>
+            <Stack
+              id="rolls"
+              data-article
+              component="section"
+              className="ui-py-8"
+            >
+              <Typography variant="h1" className="ui-pb-12">
+                Роллы классические
+              </Typography>
+              <Grid container spacing={2}>
+                {Products.map((p) => (
+                  <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key={p.id}>
+                    <ProductCard
+                      iconUrl={p.iconUrl}
+                      name={p.name}
+                      desc={p.desc}
+                      addInfo={`${p.size} / ${p.weight}`}
+                      price={p.price}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Stack>
+            <Stack component="section" className="ui-py-8">
+              <Typography variant="h1" className="ui-pb-12">
+                Роллы запеченные
+              </Typography>
+              <Grid container spacing={2}>
+                {Products.map((p) => (
+                  <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key={p.id}>
+                    <ProductCard
+                      iconUrl={p.iconUrl}
+                      name={p.name}
+                      desc={p.desc}
+                      addInfo={`${p.size} / ${p.weight}`}
+                      price={p.price}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Stack>
+            <Stack component="section" className="ui-py-8">
+              <Typography variant="h1" className="ui-pb-12">
+                Роллы в темпуре
               </Typography>
               <Grid container spacing={2}>
                 {Products.map((p) => (
@@ -98,6 +163,7 @@ export const Home: NextPage = () => {
             </Stack>
           </Container>
         </Stack>
+        <Footer className={styles["main-layout__container"]} />
       </Stack>
       <ShoppingCartButton count={0} variant="filled & rounded" />
     </ThemeProvider>

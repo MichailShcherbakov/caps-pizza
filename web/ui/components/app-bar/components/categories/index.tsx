@@ -5,9 +5,17 @@ import styles from "./index.module.scss";
 
 export interface CategoriesProps extends StackProps {}
 
+function isInViewport(element) {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top - window.innerHeight / 2 <= 0 &&
+    -rect.top <= rect.height - window.innerHeight / 2
+  );
+}
+
 export const Categories: React.FC<CategoriesProps> = React.forwardRef(
   (props, ref) => {
-    const [categories] = React.useState<CategoryCardProps[]>([
+    const [categories, setCategories] = React.useState<CategoryCardProps[]>([
       {
         id: "promotions",
         iconHref: "/icons/fire.svg",
@@ -39,6 +47,39 @@ export const Categories: React.FC<CategoriesProps> = React.forwardRef(
         text: "Напитки",
       },
     ]);
+
+    React.useEffect(() => {
+      const articles = Array.from(
+        document.querySelectorAll("section[data-article]")
+      );
+
+      const scroll = () => {
+        setCategories(
+          categories.map((c) => {
+            if (
+              articles.find(
+                (a) => c.id === a.getAttribute("id") && isInViewport(a)
+              )
+            )
+              return {
+                ...c,
+                active: true,
+              };
+
+            return {
+              ...c,
+              active: false,
+            };
+          })
+        );
+      };
+
+      window.addEventListener("scroll", scroll);
+
+      return () => {
+        window.removeEventListener("scroll", scroll);
+      };
+    }, [categories]);
 
     return (
       <Stack

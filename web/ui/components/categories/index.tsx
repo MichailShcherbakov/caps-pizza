@@ -1,5 +1,5 @@
 import { StackProps } from "@mui/material";
-import { Container, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import React from "react";
 import CategoryCard, { CategoryCardProps } from "./components/card";
 import styles from "./index.module.scss";
