@@ -20,7 +20,7 @@
     bottom: $offset;
 
     @include ui-display-none;
-    @include ui-size(56px);
+    @include ui-size(64px);
     @include ui-rounded;
 
     @include ui-bg-color($orange-400);

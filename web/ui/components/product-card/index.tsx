@@ -1,5 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import React from "react";
+import ToggleButton from "../toggle-button";
 import styles from "./index.module.scss";
 
 export interface ProductCardProps {
@@ -17,6 +19,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   addInfo,
   iconUrl,
 }) => {
+  const [value, setValue] = React.useState<string>("Тонкое");
+
+  const onChangeToggleValueHandler = (
+    _: React.MouseEvent<HTMLElement>,
+    newValue: string | null
+  ) => {
+    if (!newValue) return;
+
+    setValue(newValue);
+  };
+
   return (
     <Stack className={styles["product-card"]}>
       <Stack className={styles["product-card__image"]}>
@@ -35,6 +48,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </Typography>
         </Stack>
         <Typography className={styles["product-card__desc"]}>{desc}</Typography>
+        <ToggleButton
+          elements={[
+            { name: "Тонкое", value: "Тонкое" },
+            { name: "Пышное", value: "Пышное" },
+          ]}
+          value={value}
+          exclusive
+          onChange={onChangeToggleValueHandler}
+        />
         <Stack
           direction="row"
           alignItems="center"

@@ -22,7 +22,9 @@ export const InfoBar: React.FC<InfoBarProps> = (props) => {
             className={styles["info-bar__destination"]}
           >
             <DestinationSelect />
-            <Typography>Среднее время доставки*: {deliveryTime}</Typography>
+            <Typography className={styles["info-bar__delivery-time"]}>
+              Среднее время доставки*: {deliveryTime}
+            </Typography>
           </Stack>
           <Typography>Время работы: с 11:00 до 23:00</Typography>
         </Stack>

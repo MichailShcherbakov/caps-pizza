@@ -1,6 +1,6 @@
 .product-card {
   @include ui-w-full;
-  @include ui-h(480px);
+  @include ui-h(520px);
 
   @include ui-bg-color($white);
 
@@ -102,10 +102,6 @@
 
 @media screen and (max-width: 550px) {
   .product-card {
-    &__image {
-      @include ui-size(150px);
-    }
-
     &__info {
       @include ui-p-0;
     }
@@ -113,6 +109,14 @@
 }
 
 @media screen and (max-width: $breakpoint-xs) {
+  .product-card {
+    &__image {
+      @include ui-size(150px);
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-xxs) {
   .product-card {
     &__image {
       @include ui-size(120px);

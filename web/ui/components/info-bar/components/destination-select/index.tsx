@@ -21,7 +21,7 @@ export const DestinationSelect: React.FC<DestinationSelectProps> = () => {
     <>
       <Button
         variant="text"
-        color="secondary"
+        color="neutral"
         startIcon={<LocationIcon />}
         endIcon={<KeyboardArrowDownIcon />}
       >

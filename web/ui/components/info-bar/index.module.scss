@@ -7,3 +7,11 @@
     gap: 40px;
   }
 }
+
+@media screen and (max-width: $breakpoint-md) {
+  .info-bar {
+    &__delivery-time {
+      @include ui-display-none;
+    }
+  }
+}

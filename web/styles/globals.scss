@@ -80,6 +80,23 @@
   width: 100%;
 }
 
+.MuiToggleButton-root {
+  @include ui-py-2;
+  @include ui-px-4;
+
+  @include ui-w-full;
+
+  @include ui-border-color($gray-100);
+
+  & > .MuiTypography-button:not(&.Mui-selected > .MuiTypography-button) {
+    @include ui-font-color($gray-900);
+  }
+
+  &.Mui-selected {
+    @include ui-border-color($transparent);
+  }
+}
+
 @media screen and (max-width: $breakpoint-sm) {
   .MuiTypography-h1 {
     font-size: 28px;
