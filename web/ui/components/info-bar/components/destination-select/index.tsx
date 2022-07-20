@@ -9,11 +9,15 @@ export const DestinationSelect: React.FC<DestinationSelectProps> = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
 
-  const onMenuItemClickHandle = () => {
+  const onButtonClickHandler = (e: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const onMenuItemClickHandler = () => {
     setAnchorEl(null);
   };
 
-  const onMenuCloseHandle = () => {
+  const onMenuCloseHandler = () => {
     setAnchorEl(null);
   };
 
@@ -24,11 +28,12 @@ export const DestinationSelect: React.FC<DestinationSelectProps> = () => {
         color="neutral"
         startIcon={<LocationIcon />}
         endIcon={<KeyboardArrowDownIcon />}
+        onClick={onButtonClickHandler}
       >
         <Typography variant="button">Пушкин</Typography>
       </Button>
-      <Menu open={open} anchorEl={anchorEl} onClose={onMenuCloseHandle}>
-        <MenuItem onClick={onMenuItemClickHandle}>Пушкин</MenuItem>
+      <Menu open={open} anchorEl={anchorEl} onClose={onMenuCloseHandler}>
+        <MenuItem onClick={onMenuItemClickHandler}>Пушкин</MenuItem>
       </Menu>
     </>
   );
