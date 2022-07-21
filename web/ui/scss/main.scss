@@ -22,6 +22,38 @@
   @include ui-display-none;
 }
 
+@mixin ui-gap($v) {
+  gap: $v;
+}
+
+@mixin ui-pos-rel {
+  position: relative;
+}
+
+.ui-pos-rel {
+  @include ui-pos-rel;
+}
+
+@mixin ui-pos-abs {
+  position: absolute;
+}
+
+.ui-pos-abs {
+  @include ui-pos-abs;
+}
+
+@mixin ui-pos-fixed {
+  position: fixed;
+}
+
+.ui-pos-fixed {
+  @include ui-pos-fixed;
+}
+
+@mixin ui-opacity($v) {
+  opacity: $v;
+}
+
 $breakpoint-xxs: 390px;
 $breakpoint-xs: 450px;
 $breakpoint-sm: 599px;

@@ -74,6 +74,14 @@
   &:hover {
     @include ui-box-shadow-none;
   }
+
+  &:active {
+    @include ui-box-shadow-none;
+  }
+}
+
+.MuiButtonGroup-root {
+  @include ui-box-shadow-none;
 }
 
 .MuiGrid-grid-xs-12 {
@@ -95,6 +103,11 @@
   &.Mui-selected {
     @include ui-border-color($transparent);
   }
+}
+
+.MuiDrawer-paper {
+  @include ui-box-shadow-none;
+  @include ui-bg-color($transparent);
 }
 
 @media screen and (max-width: $breakpoint-sm) {
@@ -131,8 +144,7 @@
   }
 
   .MuiTypography-button {
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 13px;
   }
 
   .MuiTypography-subtitle1 {

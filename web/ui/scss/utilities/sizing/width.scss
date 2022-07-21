@@ -139,3 +139,7 @@
 @mixin ui-max-w($scale) {
   max-width: $scale;
 }
+
+@mixin ui-min-w($scale) {
+  min-width: $scale;
+}
