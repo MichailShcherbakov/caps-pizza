@@ -3,10 +3,11 @@
 
 .MuiTypography-root {
   font-family: "Inter", sans-serif;
+  height: fit-content;
 }
 
 .MuiTypography-h1 {
-  font-size: 40px;
+  font-size: 38px;
   font-weight: 700;
   color: $gray-900;
 }
@@ -108,6 +109,42 @@
 .MuiDrawer-paper {
   @include ui-box-shadow-none;
   @include ui-bg-color($transparent);
+}
+
+.MuiInputLabel-root {
+  @include ui-font-color($gray-400);
+}
+
+.MuiInputBase-root {
+  @include ui-font-color($gray-900);
+}
+
+.MuiOutlinedInput-root  {
+  &:hover:not(.Mui-focused):not(.Mui-disabled) {
+    .MuiOutlinedInput-notchedOutline {
+      @include ui-border-color($gray-400);
+    }
+  }
+
+  &:disabled {
+    .MuiOutlinedInput-notchedOutline {
+      @include ui-border-color($gray-100);
+    }
+  }
+
+  &.Mui-disabled {
+    .MuiOutlinedInput-notchedOutline {
+      @include ui-border-color($gray-100);
+    }
+  }
+
+  & .MuiInputAdornment-root > .MuiTypography-root {
+    @include ui-font(1rem, 500, $gray-400);
+  }
+}
+
+.MuiOutlinedInput-notchedOutline {
+  @include ui-border-color($gray-100);
 }
 
 @media screen and (max-width: $breakpoint-sm) {

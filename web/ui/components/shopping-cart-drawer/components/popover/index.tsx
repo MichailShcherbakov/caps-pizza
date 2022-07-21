@@ -61,13 +61,12 @@ export const Popover: React.FC<PopoverProps> = ({
   const onCountChangedHandler = (id: number, newCount: number) => {
     setProducts(
       products.map((p) => {
-        if (p.id === id)
-          return {
-            ...p,
-            count: newCount,
-          };
+        if (p.id !== id) return p;
 
-        return p;
+        return {
+          ...p,
+          count: newCount,
+        };
       })
     );
   };

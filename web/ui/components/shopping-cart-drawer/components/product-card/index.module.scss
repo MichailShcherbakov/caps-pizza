@@ -4,6 +4,7 @@
   @include ui-rounded-5;
   @include ui-p-8;
   @include ui-gap(1rem);
+  @include ui-bg-color($white);
 
   &__image {
     @include ui-pos-rel;

@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
+import Title from "../title";
 import styles from "./index.module.scss";
 
 export interface ArticleProps {
@@ -23,9 +24,7 @@ export const Article: React.FC<ArticleProps> = ({
 
   return (
     <Stack className="ui-w-full">
-      <Typography variant="h1" className="ui-pb-12">
-        {title}
-      </Typography>
+      <Title text={title} />
       <Stack
         className={[
           styles["article"],

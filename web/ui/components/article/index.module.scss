@@ -1,5 +1,6 @@
 .article {
   position: relative;
+  @include ui-py-8;
 
   &--collapsed {
     @include ui-w-full;
@@ -11,7 +12,7 @@
   &__curtain {
     position: absolute;
 
-    background: linear-gradient(180deg, transparent, $gray-100);
+    background: linear-gradient(180deg, transparent, $gray-50);
     z-index: 1;
 
     @include ui-w-full;
