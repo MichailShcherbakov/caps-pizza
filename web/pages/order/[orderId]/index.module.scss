@@ -1,0 +1,30 @@
+
+
+.completed-order {
+    @include ui-h(720px);
+
+    &__box {
+        margin-top: -8rem;
+    }
+
+    &__image {
+        @include ui-w(400px);
+        @include ui-h(400px);
+    }
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+    .completed-order {
+        @include ui-h(560px);
+
+        &__box {
+            margin-top: -4rem;
+        }
+    
+        &__image {
+            @include ui-w(280px);
+            @include ui-h(280px);
+        }
+    }
+    
+}
