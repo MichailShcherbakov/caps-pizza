@@ -44,9 +44,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
           objectFit="cover"
         />
       </Stack>
-      <Typography variant="button" className={styles["category-card__text"]}>
-        {text}
-      </Typography>
+      <Typography variant="button">{text}</Typography>
     </Button>
   );
 };

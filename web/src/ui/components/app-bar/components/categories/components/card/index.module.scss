@@ -1,41 +1,25 @@
 .category-card {
   @include ui-px-6;
   @include ui-py-5;
-
   @include ui-flex-center;
   @include ui-flex-fixed;
-  @include ui-flex-row;
-
-  gap: 0.875rem;
-
+  @include ui-gap(0.875rem);
   @include ui-rounded-2;
   @include ui-border(1px, solid, $gray-100);
   @include ui-bg-color($white);
 
   &__icon {
-    position: relative;
-
+    @include ui-pos-rel;
     @include ui-size(24px);
-  }
-
-  &__text {
-    @include ui-font-color($gray-900);
-  }
-
-  &:hover {
-    @include ui-border-color($gray-100);
-
-    .category-card__text {
-      @include ui-font-color($orange-400);
-    }
   }
 
   &--active {
     @include ui-border-color($orange-100);
     @include ui-bg-color($orange-100);
 
-    .category-card__text {
-      @include ui-font-color($orange-400);
+    &:hover {
+      @include ui-border-color($orange-100);
+      @include ui-bg-color($orange-100);
     }
   }
 }

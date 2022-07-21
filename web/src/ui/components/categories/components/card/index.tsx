@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import styles from "./index.module.scss";
 import React from "react";
 
@@ -23,22 +23,25 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   };
 
   return (
-    <Stack
+    <Button
       component={"a"}
+      variant="outlined"
       href={`#${id}`}
       className={styles["category-card"]}
       onClick={onClickHandle}
     >
-      <Stack className={styles["category-card__icon"]}>
-        <Image
-          src={iconHref}
-          alt="A picture of the category"
-          layout="fill"
-          objectFit="cover"
-        />
+      <Stack alignItems="center">
+        <Stack className={styles["category-card__icon"]}>
+          <Image
+            src={iconHref}
+            alt="A picture of the category"
+            layout="fill"
+            objectFit="cover"
+          />
+        </Stack>
+        <Typography variant="button">{text}</Typography>
       </Stack>
-      <Typography>{text}</Typography>
-    </Stack>
+    </Button>
   );
 };
 

@@ -50,7 +50,7 @@ export const Categories: React.FC<CategoriesProps> = React.forwardRef(
 
     React.useEffect(() => {
       const articles = Array.from(
-        document.querySelectorAll("section[data-article]")
+        document.querySelectorAll("section[data-section]")
       );
 
       const scroll = () => {

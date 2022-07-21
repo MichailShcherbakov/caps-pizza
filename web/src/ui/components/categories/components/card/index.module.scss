@@ -1,19 +1,16 @@
 .category-card {
   @include ui-px-12;
   @include ui-py-10;
-
   @include ui-flex-center;
   @include ui-flex-fixed;
-
-  background-color: $white;
-
   @include ui-rounded-4;
-  @include ui-border(1px, solid, #f0f0f0);
+  @include ui-bg-color($white);
+  @include ui-border(1px, solid, $gray-100);
 
   &__icon {
-    position: relative;
-
+    @include ui-pos-rel;
     @include ui-size(32px);
+    @include ui-mb-1;
   }
 }
 
@@ -31,11 +28,9 @@
 @media screen and (max-width: 800px) {
   .category-card {
     @include ui-flex-row;
-
-    gap: 0.875rem;
-
     @include ui-px-6;
     @include ui-py-5;
+    @include ui-gap(0.875rem);
   }
 
   .category-card__icon {
