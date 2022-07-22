@@ -8,7 +8,13 @@ export interface LogoProps {
 
 export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
   return (
-    <Stack direction="row" alignItems="center" className={styles["logo"]}>
+    <Stack
+      component="a"
+      href="/"
+      direction="row"
+      alignItems="center"
+      className={styles["logo"]}
+    >
       <LogoIcon className={styles["logo__icon"]} />
       {!onlyIcon && (
         <Fade in={!onlyIcon}>

@@ -1,5 +1,6 @@
 .logo {
   @include ui-flex-fixed;
+  @include ui-cursor-pointer;
 
   gap: 10px;
 
