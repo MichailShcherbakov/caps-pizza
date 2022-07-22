@@ -1,10 +1,10 @@
 import { Button, IconButton, Stack, Typography } from "@mui/material";
 import React from "react";
-import ShoppingCart from "~/assets/shopping-cart.svg";
+import ShoppingCartIcon from "~/assets/shopping-cart.svg";
 import ShoppingCartDrawer from "../shopping-cart-drawer";
 import styles from "./index.module.scss";
 
-export type CurrencySymbol = "$" | "₽";
+export type CurrencySymbol = "₽";
 
 export type ShoppingCartButtonVariants = "outlined" | "filled & rounded";
 
@@ -39,7 +39,7 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
           variant="outlined"
           color="primary"
           startIcon={
-            <ShoppingCart className={styles["shopping-cart-btn__icon"]} />
+            <ShoppingCartIcon className={styles["shopping-cart-btn__icon"]} />
           }
           className={styles["shopping-cart-btn"]}
           onClick={onClickHandler}
@@ -66,7 +66,7 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
           onClick={onClickHandler}
           {...props}
         >
-          <ShoppingCart className={styles["shopping-cart-btn__icon"]} />
+          <ShoppingCartIcon className={styles["shopping-cart-btn__icon"]} />
           <Stack
             alignItems="center"
             justifyContent="center"

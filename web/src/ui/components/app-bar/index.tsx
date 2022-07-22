@@ -5,12 +5,16 @@ import Categories from "./components/categories";
 import Logo from "./components/logo";
 import ShoppingCartButton from "../shopping-cart-button";
 import styles from "./index.module.scss";
+import { useAppSelector } from "~/store/hook";
+import { selectTotalOrderPrice } from "~/store/order.reducer";
 
 export interface AppBarProps extends StackProps {}
 
 export const APP_BAR_TOP_OFFSET = 210;
 
 export const AppBar: React.FC<AppBarProps> = (props) => {
+  const totalOrderPrice = useAppSelector(selectTotalOrderPrice);
+
   const [showCategories, setShowCatefories] = React.useState<boolean>(false);
   const ref = React.useRef<HTMLElement | null>(null);
 
@@ -40,7 +44,7 @@ export const AppBar: React.FC<AppBarProps> = (props) => {
               <Categories />
             </Fade>
           )}
-          <ShoppingCartButton />
+          <ShoppingCartButton price={totalOrderPrice} />
         </Stack>
       </Container>
     </Stack>

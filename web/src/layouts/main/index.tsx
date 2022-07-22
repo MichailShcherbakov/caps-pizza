@@ -8,6 +8,8 @@ import theme from "~/ui/theme";
 import ShoppingCartButton from "~/ui/components/shopping-cart-button";
 import Footer from "~/ui/components/footer";
 import styles from "./index.module.scss";
+import { useAppSelector } from "~/store/hook";
+import { selectCountOrderedProducts } from "~/store/order.reducer";
 
 export const NotificationManager = dynamic(
   () => import("./components/notifiction-manager"),
@@ -27,6 +29,8 @@ export interface MainLayoutProps {
 }
 
 export const MainLayout: NextPage<MainLayoutProps> = ({ children }) => {
+  const countOrderedProducts = useAppSelector(selectCountOrderedProducts);
+
   return (
     <ThemeProvider theme={theme}>
       <Stack alignItems="center" className={styles["main-layout"]}>
@@ -43,7 +47,10 @@ export const MainLayout: NextPage<MainLayoutProps> = ({ children }) => {
         </Stack>
         <Footer className={styles["main-layout__container"]} />
       </Stack>
-      <ShoppingCartButton count={0} variant="filled & rounded" />
+      <ShoppingCartButton
+        count={countOrderedProducts}
+        variant="filled & rounded"
+      />
     </ThemeProvider>
   );
 };

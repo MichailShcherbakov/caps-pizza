@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import categories from "~/public/categories.json";
 
 export interface ProductCategory {
-  uuid: string;
+  categoryUUID: string;
   name: string;
   imageURL: string;
 }

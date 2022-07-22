@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import productCategoriesReducer from "./categories.reducer";
+import configReducer from "./config.reducer";
 import orderReducer from "./order.reducer";
 import productsReducer from "./products.reducer";
 
@@ -9,6 +10,7 @@ export const store = configureStore({
     products: productsReducer,
     categories: productCategoriesReducer,
     order: orderReducer,
+    config: configReducer,
   },
 });
 

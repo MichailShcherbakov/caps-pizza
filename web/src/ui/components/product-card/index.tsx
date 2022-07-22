@@ -1,16 +1,15 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import { Product } from "~/store/products.reducer";
 import ToggleButton from "../toggle-button";
 import styles from "./index.module.scss";
 
-export interface ProductCardProps {
-  name: string;
-  desc?: string;
-  imageURL: string;
+export interface ProductCardProps extends Product {
   specifics: string;
   price: number;
   cover?: boolean;
+  onSelect?: () => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -20,6 +19,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   specifics,
   price,
   cover,
+  onSelect = () => {},
 }) => {
   const [value, setValue] = React.useState<string>("Тонкое");
 
@@ -71,7 +71,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className={styles["product-card--medium__footer"]}
         >
           <Button variant="outlined">
-            <Typography variant="button">Выбрать</Typography>
+            <Typography variant="button" onClick={onSelect}>
+              Выбрать
+            </Typography>
           </Button>
           <Typography
             variant="h4"
@@ -96,6 +98,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <Button
             variant="contained"
             className={styles["product-card--small__price"]}
+            onClick={onSelect}
           >
             <Typography variant="button">{price} ₽</Typography>
           </Button>

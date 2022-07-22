@@ -2,16 +2,13 @@ import React from "react";
 import Image from "next/image";
 import { Button, Stack, Typography } from "@mui/material";
 import styles from "./index.module.scss";
+import { ProductCategory } from "~/store/categories.reducer";
 
-export interface CategoryCardProps {
-  uuid: string;
-  name: string;
-  imageURL: string;
+export interface CategoryCardProps extends ProductCategory {
   active?: boolean;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
-  uuid,
   name,
   imageURL,
   active,

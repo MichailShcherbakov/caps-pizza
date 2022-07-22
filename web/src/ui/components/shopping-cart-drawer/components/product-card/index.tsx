@@ -3,20 +3,18 @@ import { IconButton, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import styles from "./index.module.scss";
 import CounterButton from "~/ui/components/counter-button";
+import { useAppSelector } from "~/store/hook";
+import { OrderedProduct } from "~/store/order.reducer";
+import { Product } from "~/store/products.reducer";
 
-export interface ProductCardProps {
-  uuid: string;
-  name: string;
-  desc?: string;
+export interface ProductCardProps extends OrderedProduct, Product {
   specifics: string;
-  imageURL: string;
-  price: number;
-  count?: number;
-  onCountChanged?: (id: number, newCount: number) => void;
+  onCountChanged?: (uuid: string, newCount: number) => void;
+  onRemove?: (uuid: string) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
-  uuid,
+  orderedProductUUID,
   name,
   desc,
   specifics,
@@ -24,7 +22,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   imageURL,
   count: initialCount = 1,
   onCountChanged = () => {},
+  onRemove = () => {},
 }) => {
+  const maxOrdersPerProductAllowedNumber = useAppSelector(
+    (state) => state.config.maxOrdersPerProductAllowedNumber
+  );
+
   return (
     <Stack
       direction="row"
@@ -48,7 +51,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className="ui-w-full ui-h-full"
           >
             <Typography variant="h4">{name}</Typography>
-            <IconButton size="small">
+            <IconButton
+              size="small"
+              onClick={() => onRemove(orderedProductUUID)}
+            >
               <CloseIcon />
             </IconButton>
           </Stack>
@@ -61,9 +67,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           justifyContent="space-between"
         >
           <CounterButton
-            minValue={1}
+            minValue={0}
+            maxValue={maxOrdersPerProductAllowedNumber}
             initialCount={initialCount}
-            onValueChanged={(newCount) => onCountChanged(uuid, newCount)}
+            onValueChanged={(newCount) =>
+              onCountChanged(orderedProductUUID, newCount)
+            }
           />
           <Typography variant="h5" className={styles["product-card__price"]}>
             {`${price * initialCount} ₽`}

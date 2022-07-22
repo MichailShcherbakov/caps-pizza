@@ -8,31 +8,38 @@ import MainLayout from "~/layouts/main";
 import Title from "~/ui/components/title";
 import CategorySection from "~/ui/components/category-section";
 import { useAppSelector } from "~/store/hook";
+import { useProductOrderList } from "~/api/order";
 
 export const HomePage: NextPage = () => {
+  const { addProduct } = useProductOrderList();
+
   const products = useAppSelector((state) => state.products.value);
   const categories = useAppSelector((state) => state.categories.value);
 
   let sections: JSX.Element[] = [];
 
   for (const category of categories) {
-    const p = products.filter((p) => p.categoryUUID === category.uuid);
+    const p = products.filter((p) => p.categoryUUID === category.categoryUUID);
 
     if (!p.length) continue;
 
     sections.push(
-      <CategorySection key={category.uuid} id={category.name}>
+      <CategorySection key={category.categoryUUID} id={category.name}>
         <Title text={category.name} />
         <Grid container spacing={2} className="ui-py-8">
           {p.map((p) => (
-            <Grid key={p.uuid} item xl={3} lg={3} md={4} sm={6} xs={12}>
+            <Grid key={p.productUUID} item xl={3} lg={3} md={4} sm={6} xs={12}>
               <ProductCard
-                name={p.name}
-                desc={p.desc}
-                imageURL={p.imageURL}
+                {...p}
                 specifics={`${"30см"} / ${"760г"}`}
                 price={440}
                 cover={category.name === "Роллы"}
+                onSelect={() =>
+                  addProduct({
+                    productUUID: p.productUUID,
+                    price: 440,
+                  })
+                }
               />
             </Grid>
           ))}

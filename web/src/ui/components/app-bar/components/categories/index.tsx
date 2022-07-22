@@ -56,7 +56,7 @@ export const Categories: React.FC<CategoriesProps> = React.forwardRef(
       >
         {categories.map((c) => (
           <CategoryCard
-            key={c.uuid}
+            key={c.categoryUUID}
             active={c.name === currentActiveCategoryName}
             {...c}
           />

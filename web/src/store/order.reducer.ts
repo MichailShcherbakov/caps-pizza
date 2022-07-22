@@ -1,8 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from ".";
 import { Product } from "./products.reducer";
 
-export interface OrderedProduct extends Product {
+export interface OrderedProduct {
+  orderedProductUUID: string;
+  productUUID: string;
   count: number;
+  price: number;
 }
 
 export interface OrderState {
@@ -17,54 +21,60 @@ export const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    addProduct(state, action: PayloadAction<Product>) {
-      const existProduct = state.products.find(
-        (p) => p.uuid === action.payload.uuid
-      );
-      if (existProduct) {
-        state.products = state.products.map((p) => {
-          if (p.uuid !== existProduct.uuid) return p;
-
-          return {
-            ...p,
-            count: p.count + 1,
-          };
-        });
-
-        return;
-      }
-
-      state.products.push({
-        ...action.payload,
-        count: 1,
-      });
+    addProduct(state, action: PayloadAction<OrderedProduct>) {
+      state.products.push(action.payload);
     },
     removeProduct(state, action: PayloadAction<string>) {
-      const existProduct = state.products.find(
-        (p) => p.uuid === action.payload
+      state.products = state.products.filter(
+        (p) => p.orderedProductUUID !== action.payload
       );
-
-      if (!existProduct) return;
-
-      if (existProduct.count === 1) {
-        state.products = state.products.filter(
-          (p) => p.uuid !== action.payload
-        );
-        return;
-      }
-
+    },
+    updateProduct(
+      state,
+      action: PayloadAction<
+        Partial<OrderedProduct> & Pick<OrderedProduct, "orderedProductUUID">
+      >
+    ) {
       state.products = state.products.map((p) => {
-        if (p.uuid !== existProduct.uuid) return p;
+        if (p.orderedProductUUID !== action.payload.orderedProductUUID)
+          return p;
 
         return {
           ...p,
-          count: p.count - 1,
+          ...action.payload,
         };
       });
     },
   },
 });
 
-export const { addProduct, removeProduct } = orderSlice.actions;
+export const selectOrderedProducts = (state: RootState) => {
+  const orderedProducts: (OrderedProduct & Product)[] = [];
+
+  for (const product of state.products.value) {
+    const orderedProduct = state.order.products.find(
+      (p) => product.productUUID === p.productUUID
+    );
+
+    if (!orderedProduct) continue;
+
+    orderedProducts.push({
+      ...product,
+      ...orderedProduct,
+    });
+  }
+
+  return orderedProducts;
+};
+
+export const selectCountOrderedProducts = (state: RootState) => {
+  return state.order.products.reduce((sum, p) => (sum += p.count), 0);
+};
+
+export const selectTotalOrderPrice = (state: RootState) => {
+  return state.order.products.reduce((sum, p) => (sum += p.price * p.count), 0);
+};
+
+export const { addProduct, removeProduct, updateProduct } = orderSlice.actions;
 
 export default orderSlice.reducer;

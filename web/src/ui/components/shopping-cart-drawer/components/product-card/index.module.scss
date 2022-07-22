@@ -10,6 +10,12 @@
     @include ui-pos-rel;
     @include ui-flex-fixed;
     @include ui-size(120px);
+
+    & > span img {
+      @include ui-rounded-4;
+
+      object-fit: cover;
+    }
   }
 
   &__price {

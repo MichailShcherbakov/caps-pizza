@@ -21,7 +21,7 @@ export const Categories: React.FC<CategoriesProps> = ({
       {...props}
     >
       {categories.map((c) => (
-        <CategoryCard key={c.uuid} {...c} />
+        <CategoryCard key={c.categoryUUID} {...c} />
       ))}
     </Stack>
   );
