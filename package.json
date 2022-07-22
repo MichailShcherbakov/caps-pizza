@@ -1,0 +1,12 @@
+{
+  "name": "caps-pizza",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:MichailShcherbakov/caps-pizza.git",
+  "author": "MichailShcherbakov <50011226+MichailShcherbakov@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@nestjs/cli": "^9.0.0"
+  }
+}
