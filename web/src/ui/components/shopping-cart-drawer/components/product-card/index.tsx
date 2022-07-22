@@ -5,23 +5,23 @@ import styles from "./index.module.scss";
 import CounterButton from "~/ui/components/counter-button";
 
 export interface ProductCardProps {
-  id: number;
+  uuid: string;
   name: string;
-  desc: string;
+  desc?: string;
   specifics: string;
-  iconURL: string;
+  imageURL: string;
   price: number;
   count?: number;
   onCountChanged?: (id: number, newCount: number) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
-  id,
+  uuid,
   name,
   desc,
   specifics,
   price,
-  iconURL,
+  imageURL,
   count: initialCount = 1,
   onCountChanged = () => {},
 }) => {
@@ -33,7 +33,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     >
       <Stack className={styles["product-card__image"]}>
         <Image
-          src={iconURL}
+          src={imageURL}
           alt="The product card"
           layout="fill"
           className={styles["product-card__image-src"]}
@@ -63,7 +63,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <CounterButton
             minValue={1}
             initialCount={initialCount}
-            onValueChanged={(newCount) => onCountChanged(id, newCount)}
+            onValueChanged={(newCount) => onCountChanged(uuid, newCount)}
           />
           <Typography variant="h5" className={styles["product-card__price"]}>
             {`${price * initialCount} ₽`}

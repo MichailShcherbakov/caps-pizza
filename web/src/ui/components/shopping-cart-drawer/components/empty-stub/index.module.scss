@@ -1,0 +1,20 @@
+.empty-stub {
+  &__image {
+    @include ui-size(300px);
+  }
+
+  &__title,
+  &__subtitle {
+    @include ui-w-full;
+
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: $breakpoint-md) {
+  .empty-stub {
+    &__image {
+      @include ui-size(220px);
+    }
+  }
+}

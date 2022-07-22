@@ -3,44 +3,13 @@ import { Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ProductCard from "../product-card";
 import styles from "./index.module.scss";
+import { useAppSelector } from "~/store/hook";
+import EmptyStub from "../empty-stub";
 
 export interface PopoverProps {
   anchor?: "left" | "top" | "right" | "bottom";
   onClose?: (event: {}, reason: "backdropClick" | "escapeKeyDown") => void;
 }
-
-export const TEST_PRODUCTS = [
-  {
-    id: 0,
-    name: "Пицца Маргарита",
-    desc: "Томатный соус, сыр моцарелла, базилик",
-    price: 440,
-    size: "30 см",
-    weight: "760 гр",
-    iconURL: "/pizza/margarita.png",
-    count: 5,
-  },
-  {
-    id: 1,
-    name: "Пицца Маргарита",
-    desc: "Томатный соус, сыр моцарелла, базилик",
-    price: 440,
-    size: "30 см",
-    weight: "760 гр",
-    iconURL: "/pizza/margarita.png",
-    count: 1,
-  },
-  {
-    id: 2,
-    name: "Пицца Маргарита",
-    desc: "Томатный соус, сыр моцарелла, базилик",
-    price: 440,
-    size: "30 см",
-    weight: "760 гр",
-    iconURL: "/pizza/margarita.png",
-    count: 2,
-  },
-];
 
 export const computeFinalPrice = (products) => {
   let finalPrice = 0;
@@ -56,10 +25,12 @@ export const Popover: React.FC<PopoverProps> = ({
   anchor = "right",
   onClose = () => {},
 }) => {
-  const [products, setProducts] = React.useState(TEST_PRODUCTS);
+  const orderedProducts = useAppSelector((state) => state.order.products);
+  const isEmpty = !orderedProducts.length;
+  const finalPrict = computeFinalPrice(orderedProducts);
 
   const onCountChangedHandler = (id: number, newCount: number) => {
-    setProducts(
+    /* setProducts(
       products.map((p) => {
         if (p.id !== id) return p;
 
@@ -68,7 +39,7 @@ export const Popover: React.FC<PopoverProps> = ({
           count: newCount,
         };
       })
-    );
+    ); */
   };
 
   return (
@@ -76,6 +47,7 @@ export const Popover: React.FC<PopoverProps> = ({
       justifyContent="space-between"
       className={[
         styles["shopping-cart-drawer"],
+        isEmpty ? styles["shopping-cart-drawer--empty"] : "",
         anchor === "bottom" ? styles["shopping-cart-drawer--bottom"] : "",
       ].join(" ")}
     >
@@ -85,7 +57,7 @@ export const Popover: React.FC<PopoverProps> = ({
         alignItems="center"
         className={styles["shopping-cart-drawer__header"]}
       >
-        <Typography variant="h1">Ваш заказ</Typography>
+        {!isEmpty && <Typography variant="h1">Ваш заказ</Typography>}
         <IconButton onClick={(e) => onClose(e, "backdropClick")} size="medium">
           <ArrowForwardIosIcon
             className={styles[`shopping-cart-drawer__back-btn--${anchor}`]}
@@ -93,37 +65,40 @@ export const Popover: React.FC<PopoverProps> = ({
         </IconButton>
       </Stack>
       <Stack className={styles["shopping-cart-drawer__product-list"]}>
-        {products.map((p) => (
+        {orderedProducts.map((p) => (
           <ProductCard
-            key={p.id}
-            id={p.id}
+            key={p.uuid}
+            uuid={p.uuid}
             name={p.name}
             desc={p.desc}
-            price={p.price}
-            specifics={`${p.size} / ${p.weight}`}
-            iconURL={p.iconURL}
+            price={440}
+            specifics={`${"30см"} / ${"720г"}`}
+            imageURL={p.imageURL}
             count={p.count}
             onCountChanged={onCountChangedHandler}
           />
         ))}
+        {isEmpty && <EmptyStub />}
       </Stack>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        className={styles["shopping-cart-drawer__footer"]}
-      >
-        <Typography
-          variant="h4"
-          component="span"
-          className={styles["shopping-cart-drawer__final-price"]}
+      {!isEmpty && (
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          className={styles["shopping-cart-drawer__footer"]}
         >
-          Итого: {computeFinalPrice(products)}
-        </Typography>
-        <Button variant="contained">
-          <Typography variant="button">Оформить заказ</Typography>
-        </Button>
-      </Stack>
+          <Typography
+            variant="h4"
+            component="span"
+            className={styles["shopping-cart-drawer__final-price"]}
+          >
+            Итого: {finalPrict}
+          </Typography>
+          <Button variant="contained">
+            <Typography variant="button">Оформить заказ</Typography>
+          </Button>
+        </Stack>
+      )}
     </Stack>
   );
 };
