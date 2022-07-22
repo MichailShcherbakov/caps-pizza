@@ -1,0 +1,27 @@
+[
+  {
+    "uuid": "0",
+    "name": "Пиццы",
+    "imageURL": "/icons/pizza.svg"
+  },
+  {
+    "uuid": "1",
+    "name": "Роллы",
+    "imageURL": "/icons/rolls.svg"
+  },
+  {
+    "uuid": "2",
+    "name": "Наборы",
+    "imageURL": "/icons/combo.svg"
+  },
+  {
+    "uuid": "3",
+    "name": "Закуски",
+    "imageURL": "/icons/snacks.svg"
+  },
+  {
+    "uuid": "4",
+    "name": "Напитки",
+    "imageURL": "/icons/drink.svg"
+  }
+]

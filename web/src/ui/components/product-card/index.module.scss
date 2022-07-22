@@ -14,15 +14,29 @@
     align-self: center;
 
     @include ui-size(240px);
+    @include ui-rounded-4;
+
     @include ui-flex-fixed;
     @include ui-flex-center;
+
+    & > span img {
+      @include ui-rounded-4;
+    }
+
+    &--cover {
+      @include ui-w-full;
+
+      & > span img {
+        object-fit: cover;
+      }
+    }
   }
 
   &__info {
     @include ui-h-full;
     @include ui-p-9;
-
-    gap: 20px;
+    @include ui-gap(20px);
+    @include ui-overflow-hidden;
   }
 
   &__add-info,
@@ -40,8 +54,7 @@
   &__desc {
     @include ui-w-full;
     @include ui-h-full;
-
-    overflow-wrap: anywhere;
+    @include ui-overflow-hidden;
   }
 
   &__price {
@@ -80,6 +93,10 @@
 
     &__image {
       @include ui-size(180px);
+
+      & > span img {
+        @include ui-rounded-4;
+      }
     }
 
     &__info {

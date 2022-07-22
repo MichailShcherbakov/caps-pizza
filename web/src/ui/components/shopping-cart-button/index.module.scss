@@ -6,6 +6,8 @@
 
   @include ui-flex-fixed;
 
+  z-index: 10;
+
   &__icon {
     @include ui-size(20px);
 

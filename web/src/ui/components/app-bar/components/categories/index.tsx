@@ -1,6 +1,8 @@
 import { Stack, StackProps } from "@mui/material";
 import React from "react";
-import CategoryCard, { CategoryCardProps } from "./components/card";
+import { setActiveCategoryName } from "~/store/categories.reducer";
+import { useAppDispatch, useAppSelector } from "~/store/hook";
+import CategoryCard from "./components/card";
 import styles from "./index.module.scss";
 
 export interface CategoriesProps extends StackProps {}
@@ -15,38 +17,11 @@ function isInViewport(element) {
 
 export const Categories: React.FC<CategoriesProps> = React.forwardRef(
   (props, ref) => {
-    const [categories, setCategories] = React.useState<CategoryCardProps[]>([
-      {
-        id: "promotions",
-        iconHref: "/icons/fire.svg",
-        text: "Акции",
-      },
-      {
-        id: "pizza",
-        iconHref: "/icons/pizza.svg",
-        text: "Пиццы",
-      },
-      {
-        id: "rolls",
-        iconHref: "/icons/rolls.svg",
-        text: "Роллы",
-      },
-      {
-        id: "combo",
-        iconHref: "/icons/combo.svg",
-        text: "Наборы",
-      },
-      {
-        id: "snacks",
-        iconHref: "/icons/snacks.svg",
-        text: "Закуски",
-      },
-      {
-        id: "drink",
-        iconHref: "/icons/drink.svg",
-        text: "Напитки",
-      },
-    ]);
+    const categories = useAppSelector((state) => state.categories.value);
+    const currentActiveCategoryName = useAppSelector(
+      (state) => state.categories.activeCategoryName
+    );
+    const dispatch = useAppDispatch();
 
     React.useEffect(() => {
       const articles = Array.from(
@@ -54,24 +29,14 @@ export const Categories: React.FC<CategoriesProps> = React.forwardRef(
       );
 
       const scroll = () => {
-        setCategories(
-          categories.map((c) => {
-            if (
-              articles.find(
-                (a) => c.id === a.getAttribute("id") && isInViewport(a)
-              )
-            )
-              return {
-                ...c,
-                active: true,
-              };
+        const activeArticle = articles.find((a) => isInViewport(a));
 
-            return {
-              ...c,
-              active: false,
-            };
-          })
-        );
+        if (!activeArticle) {
+          dispatch(setActiveCategoryName(null));
+          return;
+        }
+
+        dispatch(setActiveCategoryName(activeArticle.getAttribute("id")));
       };
 
       window.addEventListener("scroll", scroll);
@@ -79,7 +44,7 @@ export const Categories: React.FC<CategoriesProps> = React.forwardRef(
       return () => {
         window.removeEventListener("scroll", scroll);
       };
-    }, [categories]);
+    }, [categories, dispatch]);
 
     return (
       <Stack
@@ -90,7 +55,11 @@ export const Categories: React.FC<CategoriesProps> = React.forwardRef(
         {...props}
       >
         {categories.map((c) => (
-          <CategoryCard key={c.id} {...c} />
+          <CategoryCard
+            key={c.uuid}
+            active={c.name === currentActiveCategoryName}
+            {...c}
+          />
         ))}
       </Stack>
     );

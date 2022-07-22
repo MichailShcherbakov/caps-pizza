@@ -1,0 +1,82 @@
+[
+  {
+    "uuid": "0",
+    "article": "0001",
+    "name": "Пицца Маргарита",
+    "desc": "Томатный соус, сыр моцарелла, базилик",
+    "imageURL": "/pizza/margarita.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "2",
+    "article": "0002",
+    "name": "Пицца Пепперони",
+    "desc": "Томатный соус, сыр моцарелла, салями пепперони",
+    "imageURL": "/pizza/Ресурс 2 1.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "3",
+    "article": "0003",
+    "name": "Пицца Карбонара",
+    "desc": "Соус карбонара, сыр моцарелла, бекон",
+    "imageURL": "/pizza/karbonara.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "4",
+    "article": "0004",
+    "name": "Пицца Жульен",
+    "desc": "Сливочный соус, куриное филе, свежие шампиньоны, сыр моцарелла, сыр чеддер, зеленый лук",
+    "imageURL": "/pizza/zhulen.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "5",
+    "article": "0005",
+    "name": "Пицца 4 сезона",
+    "desc": "Томатный соус, сыр моцарелла, салями пепперони, ветчина, куриное филе, сыр чеддер, сыр горгонзола",
+    "imageURL": "/pizza/4-sezona.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "6",
+    "article": "0006",
+    "name": "Пицца Прошутто-фунги",
+    "desc": "Томатный соус, сыр моцарелла, ветчина, свежие шампиньоны, свежие томаты",
+    "imageURL": "/pizza/proshutto-fungi.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "7",
+    "article": "0007",
+    "name": "Пицца Вегетарианская",
+    "desc": "Cыр моцарелла, томатный соус, свежие шампиньоны, корнишоны, болгарский перец, свежие томаты, красный лук",
+    "imageURL": "/pizza/vegetarianskaya.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "8",
+    "article": "0008",
+    "name": "Пицца 4 сыра",
+    "desc": "Cливочный соус, сыр моцарелла, сыр чеддер, сыр горгонзола, сыр пармезан",
+    "imageURL": "/pizza/Ресурс 3 1.png",
+    "categoryUUID": "0"
+  },
+  {
+    "uuid": "9",
+    "article": "0009",
+    "name": "Ролл сливочный лосось",
+    "desc": "Лосось, сливочный сыр, огурец, икра тобико",
+    "imageURL": "/pizza/creamy.jpg",
+    "categoryUUID": "1"
+  },
+  {
+    "uuid": "10",
+    "article": "0010",
+    "name": "Ролл мини угорь",
+    "desc": "Без описания",
+    "imageURL": "/pizza/M-acne.jpg",
+    "categoryUUID": "1"
+  }
+]

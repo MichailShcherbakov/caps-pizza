@@ -3,76 +3,48 @@ import { NextPage } from "next";
 import React from "react";
 import Categories from "~/ui/components/categories";
 import ProductCard from "~/ui/components/product-card";
-import Products from "~/public/pizza.json";
 import Article from "~/ui/components/article";
 import MainLayout from "~/layouts/main";
 import Title from "~/ui/components/title";
 import CategorySection from "~/ui/components/category-section";
+import { useAppSelector } from "~/store/hook";
 
 export const HomePage: NextPage = () => {
+  const products = useAppSelector((state) => state.products.value);
+  const categories = useAppSelector((state) => state.categories.value);
+
+  let sections: JSX.Element[] = [];
+
+  for (const category of categories) {
+    const p = products.filter((p) => p.categoryUUID === category.uuid);
+
+    if (!p.length) continue;
+
+    sections.push(
+      <CategorySection key={category.uuid} id={category.name}>
+        <Title text={category.name} />
+        <Grid container spacing={2} className="ui-py-8">
+          {p.map((p) => (
+            <Grid key={p.uuid} item xl={3} lg={3} md={4} sm={6} xs={12}>
+              <ProductCard
+                name={p.name}
+                desc={p.desc}
+                imageURL={p.imageURL}
+                specifics={`${"30см"} / ${"760г"}`}
+                price={440}
+                cover={category.name === "Роллы"}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </CategorySection>
+    );
+  }
+
   return (
     <MainLayout>
       <Categories className="ui-py-8" />
-      <CategorySection id="pizza">
-        <Title text="Пиццы" />
-        <Grid container spacing={2} className="ui-py-8">
-          {Products.map((p) => (
-            <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key={p.id}>
-              <ProductCard
-                iconUrl={p.iconUrl}
-                name={p.name}
-                desc={p.desc}
-                addInfo={`${p.size} / ${p.weight}`}
-                price={p.price}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </CategorySection>
-      <CategorySection id="rolls">
-        <Title text="Роллы классические" />
-        <Grid container spacing={2} className="ui-py-8">
-          {Products.map((p) => (
-            <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key={p.id}>
-              <ProductCard
-                iconUrl={p.iconUrl}
-                name={p.name}
-                desc={p.desc}
-                addInfo={`${p.size} / ${p.weight}`}
-                price={p.price}
-              />
-            </Grid>
-          ))}
-        </Grid>
-        <Title text="Роллы запеченные" />
-        <Grid container spacing={2} className="ui-py-8">
-          {Products.map((p) => (
-            <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key={p.id}>
-              <ProductCard
-                iconUrl={p.iconUrl}
-                name={p.name}
-                desc={p.desc}
-                addInfo={`${p.size} / ${p.weight}`}
-                price={p.price}
-              />
-            </Grid>
-          ))}
-        </Grid>
-        <Title text="Роллы в темпуре" />
-        <Grid container spacing={2} className="ui-py-8">
-          {Products.map((p) => (
-            <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key={p.id}>
-              <ProductCard
-                iconUrl={p.iconUrl}
-                name={p.name}
-                desc={p.desc}
-                addInfo={`${p.size} / ${p.weight}`}
-                price={p.price}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </CategorySection>
+      {sections}
       <CategorySection id="about-us">
         <Article
           title="Что мы предлагаем?"

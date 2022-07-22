@@ -17,7 +17,13 @@ export const NotificationManager = dynamic(
 );
 
 export interface MainLayoutProps {
-  children?: React.ReactElement | React.ReactElement[];
+  children?:
+    | React.ReactElement
+    | React.ReactElement[]
+    | JSX.Element
+    | JSX.Element[]
+    | React.ReactNode
+    | React.ReactNode[];
 }
 
 export const MainLayout: NextPage<MainLayoutProps> = ({ children }) => {

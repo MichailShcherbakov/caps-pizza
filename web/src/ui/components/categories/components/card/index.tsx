@@ -4,20 +4,20 @@ import styles from "./index.module.scss";
 import React from "react";
 
 export interface CategoryCardProps {
-  id: string;
-  iconHref: string;
-  text: string;
+  uuid: string;
+  name: string;
+  imageURL: string;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
-  id,
-  iconHref,
-  text,
+  uuid,
+  name,
+  imageURL,
 }) => {
   const onClickHandle = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
-    document.querySelector(`#${id}`)?.scrollIntoView({
+    document.querySelector(`#${name}`)?.scrollIntoView({
       behavior: "smooth",
     });
   };
@@ -26,20 +26,20 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
     <Button
       component={"a"}
       variant="outlined"
-      href={`#${id}`}
+      href={`#${name}`}
       className={styles["category-card"]}
       onClick={onClickHandle}
     >
       <Stack alignItems="center">
         <Stack className={styles["category-card__icon"]}>
           <Image
-            src={iconHref}
+            src={imageURL}
             alt="A picture of the category"
             layout="fill"
             objectFit="cover"
           />
         </Stack>
-        <Typography variant="button">{text}</Typography>
+        <Typography variant="button">{name}</Typography>
       </Stack>
     </Button>
   );

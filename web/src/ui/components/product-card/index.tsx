@@ -6,18 +6,20 @@ import styles from "./index.module.scss";
 
 export interface ProductCardProps {
   name: string;
-  desc: string;
-  addInfo: string;
-  price: string;
-  iconUrl: string;
+  desc?: string;
+  imageURL: string;
+  specifics: string;
+  price: number;
+  cover?: boolean;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   name,
   desc,
+  imageURL,
+  specifics,
   price,
-  addInfo,
-  iconUrl,
+  cover,
 }) => {
   const [value, setValue] = React.useState<string>("Тонкое");
 
@@ -32,8 +34,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <Stack className={styles["product-card"]}>
-      <Stack className={styles["product-card__image"]}>
-        <Image src={iconUrl} alt="A product image" layout="fill" />
+      <Stack
+        className={[
+          styles["product-card__image"],
+          cover ? styles["product-card__image--cover"] : "",
+        ].join(" ")}
+      >
+        <Image src={imageURL} alt="A product image" layout="fill" />
       </Stack>
       <Stack className={styles["product-card__info"]}>
         <Stack direction="row" className={styles["product-card__header"]}>
@@ -44,7 +51,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             variant="subtitle1"
             className={styles["product-card__add-info"]}
           >
-            {addInfo}
+            {specifics}
           </Typography>
         </Stack>
         <Typography className={styles["product-card__desc"]}>{desc}</Typography>
@@ -71,7 +78,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             component="p"
             className={styles["product-card__price"]}
           >
-            {price}
+            {price} ₽
           </Typography>
         </Stack>
         <Stack
@@ -84,13 +91,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             variant="subtitle1"
             className={styles["product-card--small__add-info"]}
           >
-            {addInfo}
+            {specifics}
           </Typography>
           <Button
             variant="contained"
             className={styles["product-card--small__price"]}
           >
-            <Typography variant="button">{price}</Typography>
+            <Typography variant="button">{price} ₽</Typography>
           </Button>
         </Stack>
       </Stack>

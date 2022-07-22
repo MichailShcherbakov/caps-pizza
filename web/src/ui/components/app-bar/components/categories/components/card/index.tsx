@@ -4,22 +4,22 @@ import { Button, Stack, Typography } from "@mui/material";
 import styles from "./index.module.scss";
 
 export interface CategoryCardProps {
-  id: string;
-  iconHref: string;
-  text: string;
+  uuid: string;
+  name: string;
+  imageURL: string;
   active?: boolean;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
-  id,
-  iconHref,
-  text,
+  uuid,
+  name,
+  imageURL,
   active,
 }) => {
   const onClickHandle = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
-    document.querySelector(`#${id}`)?.scrollIntoView({
+    document.querySelector(`#${name}`)?.scrollIntoView({
       behavior: "smooth",
     });
   };
@@ -29,7 +29,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       component={"a"}
       variant="outlined"
       color="primary"
-      href={`#${id}`}
+      href={`#${name}`}
       className={[
         styles["category-card"],
         active ? styles["category-card--active"] : "",
@@ -38,13 +38,13 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
     >
       <Stack className={styles["category-card__icon"]}>
         <Image
-          src={iconHref}
+          src={imageURL}
           alt="A picture of the category"
           layout="fill"
           objectFit="cover"
         />
       </Stack>
-      <Typography variant="button">{text}</Typography>
+      <Typography variant="button">{name}</Typography>
     </Button>
   );
 };
