@@ -1,5 +1,5 @@
-import { Grid, Stack, Typography } from "@mui/material";
-import type { NextPage } from "next";
+import { Grid } from "@mui/material";
+import { NextPage } from "next";
 import React from "react";
 import Categories from "~/ui/components/categories";
 import ProductCard from "~/ui/components/product-card";

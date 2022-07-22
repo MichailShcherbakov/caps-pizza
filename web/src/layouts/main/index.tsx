@@ -1,35 +1,30 @@
-import { Container, Stack, ThemeProvider } from "@mui/material";
-import type { NextPage } from "next";
 import React from "react";
+import { NextPage } from "next";
+import dynamic from "next/dynamic";
+import { Container, Stack, ThemeProvider } from "@mui/material";
 import AppBar from "~/ui/components/app-bar";
-import CookiesNotification from "~/ui/components/cookies-notification";
 import { InfoBar } from "~/ui/components/info-bar";
 import theme from "~/ui/theme";
 import ShoppingCartButton from "~/ui/components/shopping-cart-button";
 import Footer from "~/ui/components/footer";
 import styles from "./index.module.scss";
 
+export const NotificationManager = dynamic(
+  () => import("./components/notifiction-manager"),
+  {
+    ssr: false,
+  }
+);
+
 export interface MainLayoutProps {
   children?: React.ReactElement | React.ReactElement[];
 }
 
 export const MainLayout: NextPage<MainLayoutProps> = ({ children }) => {
-  const [showCookiesNotification, setShowCookiesNotification] =
-    React.useState<boolean>(true);
-
-  const onCookiesNotificatonCloseHandler = () => {
-    setShowCookiesNotification(false);
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Stack alignItems="center" className={styles["main-layout"]}>
-        {showCookiesNotification && (
-          <CookiesNotification
-            className={styles["main-layout__container"]}
-            onClose={onCookiesNotificatonCloseHandler}
-          />
-        )}
+        <NotificationManager />
         <InfoBar className={styles["main-layout__container"]} />
         <AppBar
           className={[

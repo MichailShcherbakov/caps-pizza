@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   sassOptions: {
-    prependData: '@import "ui/scss/main.scss";',
+    prependData: '@import "src/ui/scss/main.scss";',
   },
   webpack(config) {
     config.module.rules.push({
