@@ -41,7 +41,7 @@ describe("Project Contoller", () => {
   test(`/GET products`, async () => {
     const TEST_PRODUCT_LIST: Product[] = [
       {
-        uuid: "1",
+        _id: "1",
         name: "test",
         imageURL: "test",
         updated_at: new Date(),
@@ -70,7 +70,7 @@ describe("Project Contoller", () => {
 
   test(`/GET products/:productUUID`, async () => {
     const TEST_PRODUCT: Product = {
-      uuid: "1",
+      _id: "1",
       name: "test",
       imageURL: "test",
       updated_at: new Date(),
@@ -80,7 +80,7 @@ describe("Project Contoller", () => {
     (productsService.find as jest.Mock).mockReturnValueOnce(TEST_PRODUCT);
 
     const response = await request(app.getHttpServer()).get(
-      `/products/${TEST_PRODUCT.uuid}`
+      `/products/${TEST_PRODUCT._id}`
     );
 
     expect(response.statusCode).toEqual(200);
@@ -94,12 +94,12 @@ describe("Project Contoller", () => {
     });
     expect(productsService.find as jest.Mock).toBeCalledTimes(1);
     expect(productsService.find as jest.Mock).toBeCalledWith({
-      uuid: TEST_PRODUCT.uuid,
+      id: TEST_PRODUCT._id,
     });
   });
 
   it(`/GET products/:productUUID - should throw found exception`, async () => {
-    const TEST_PRODUCT_UUID = "test-uuid";
+    const TEST_PRODUCT_UUID = "test-_id";
 
     (productsService.find as jest.Mock).mockReturnValueOnce(null);
 
@@ -114,13 +114,13 @@ describe("Project Contoller", () => {
     });
     expect(productsService.find as jest.Mock).toBeCalledTimes(1);
     expect(productsService.find as jest.Mock).toBeCalledWith({
-      uuid: TEST_PRODUCT_UUID,
+      id: TEST_PRODUCT_UUID,
     });
   });
 
   it("/POST /poducts", async () => {
     const TEST_PRODUCT: Product = {
-      uuid: "1",
+      _id: "1",
       name: "test",
       imageURL: "test",
       updated_at: new Date(),
@@ -136,9 +136,6 @@ describe("Project Contoller", () => {
 
     const response = await request(app.getHttpServer())
       .post("/products")
-      .send({
-        name: TEST_PRODUCT.name,
-        imageURL: TEST_PRODUCT.imageURL,
-      } as CreateProductDto);
+      .send(TEST_CREATE_PRODUCT_DTO);
   });
 });

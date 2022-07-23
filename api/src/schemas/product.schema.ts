@@ -1,21 +1,23 @@
+import * as mongoose from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
-import * as uuid from "uuid";
 
 export type ProductDocument = Product & Document;
 
 @Schema()
 export class Product {
-  @Prop({ default: () => uuid.v4() })
-  uuid: string;
+  _id: string;
 
-  @Prop({ required: true })
+  @Prop({ type: Number, required: true, unique: true })
+  article_number: number;
+
+  @Prop({ type: String, required: true, unique: true })
   name: string;
 
-  @Prop()
+  @Prop({ type: String })
   desc?: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   imageURL: string;
 
   @Prop({ type: Date, default: () => new Date(Date.now()) })
