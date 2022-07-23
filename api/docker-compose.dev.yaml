@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  db: 
+    image: mongo:latest
+    ports: 
+      - ${MONGO_PORT}:${MONGO_PORT}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    container_name: caps_pizza_db_dev
+    restart: always
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        WORKDIR: /usr/src/caps-pizza-api
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      PORT: ${PORT}
+      HOST: ${HOST}
+      NODE_ENV: ${NODE_ENV}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_USERNAME}
+      MONGO_URL: ${MONGO_URL}
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/caps-pizza-api
+      - node_modules:/usr/src/caps-pizza-api/node_modules
+    container_name: caps_pizza_api_dev
+
+volumes:
+  node_modules:
