@@ -1,0 +1,15 @@
+{
+  "name": "MichailShcherbakov/caps-pizza",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@nestjs/cli": "^9.0.0"
+  },
+  "license": "ISC",
+  "repository": "git@github.com:MichailShcherbakov/caps-pizza.git",
+  "author": "MichailShcherbakov <50011226+MichailShcherbakov@users.noreply.github.com>",
+  "bugs": {
+    "url": "https://github.com/MichailShcherbakov/caps-pizza/issues"
+  },
+  "homepage": "https://github.com/MichailShcherbakov/caps-pizza#readme"
+}
