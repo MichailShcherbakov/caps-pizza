@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from "class-validator";
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from "class-validator";
 
 export class CreateProductDto {
   @IsNumber()
@@ -11,11 +17,41 @@ export class CreateProductDto {
   name: string;
 
   @IsString()
+  @IsOptional()
   desc?: string;
 
   @IsString()
   @IsNotEmpty()
-  imageURL: string;
+  image_url: string;
+
+  @IsString()
+  @IsNotEmpty()
+  category_uuid: string;
 }
 
-export class UpdateProductDto extends CreateProductDto {}
+export class UpdateProductDto {
+  @IsNumber()
+  @IsNotEmpty()
+  @IsPositive()
+  @IsOptional()
+  article_number?: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  name?: string;
+
+  @IsString()
+  @IsOptional()
+  desc?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  image_url?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  category_uuid?: string;
+}

@@ -1,18 +1,20 @@
 import { Module } from "@nestjs/common";
-import { MongooseModule } from "@nestjs/mongoose";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { MulterModule } from "@nestjs/platform-express";
+import { APP_ROOT_PATH, TYPEORM_CONFIG } from "./config";
 import UploaderModule from "./modules/uploader/uploader.module";
 import ProductsModule from "./modules/products/products.module";
-import { MulterModule } from "@nestjs/platform-express";
-import { APP_ROOT_PATH } from "./config";
+import CategoriesModule from "./modules/categories/categories.module";
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_URL || ""),
+    TypeOrmModule.forRoot(TYPEORM_CONFIG),
     MulterModule.register({
       dest: APP_ROOT_PATH + "/static/images",
     }),
     ProductsModule,
     UploaderModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}

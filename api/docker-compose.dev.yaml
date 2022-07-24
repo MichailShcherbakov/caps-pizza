@@ -2,17 +2,15 @@ version: "3.9"
 
 services:
   db:
-    image: mongo:latest
+    image: postgres:latest
     ports:
-      - ${MONGO_PORT}:${MONGO_PORT}
+      - ${TYPEORM_PORT}:${TYPEORM_PORT}
     environment:
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
     container_name: caps_pizza_db_dev
     restart: unless-stopped
-    # networks:
-    #   - outside
 #   api:
 #     build:
 #       context: .
@@ -37,9 +35,3 @@ services:
 
 # # volumes:
 # #   node_modules:
-
-# networks:
-#   outside:
-#     driver: bridge
-#     external: true
-#     name: outside

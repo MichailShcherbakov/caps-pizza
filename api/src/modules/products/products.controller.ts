@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from "@nestjs/common";
-import { Product } from "~/schemas/product.schema";
+import ProductEntity from "~/db/entities/product.entity";
 import { CreateProductDto, UpdateProductDto } from "./products.dto";
 import ProductsService from "./products.service";
 
@@ -17,35 +17,46 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get("/")
-  getAllProducts(): Promise<Product[]> {
-    return this.productsService.findAll();
+  getAllProducts(): Promise<ProductEntity[]> {
+    return this.productsService.find();
   }
 
-  @Get("/:productId")
-  async getProduct(@Param("productId") productId: string): Promise<Product> {
-    const foundProduct = await this.productsService.find({ id: productId });
+  @Get("/:productUUID")
+  async getProduct(
+    @Param("productUUID") productUUID: string
+  ): Promise<ProductEntity> {
+    const foundProduct = await this.productsService.findOne({
+      uuid: productUUID,
+    });
 
-    if (!foundProduct) throw new NotFoundException();
+    if (!foundProduct)
+      throw new NotFoundException(
+        "The product " + productUUID + " does not exist"
+      );
 
     return foundProduct;
   }
 
   @Post("/")
-  createProduct(@Body() createProductDto: CreateProductDto): Promise<Product> {
+  createProduct(
+    @Body() createProductDto: CreateProductDto
+  ): Promise<ProductEntity> {
     return this.productsService.create(createProductDto);
   }
 
-  @Put("/:productId")
+  @Put("/:productUUID")
   async updateProduct(
-    @Param("productId") productId: string,
+    @Param("productUUID") productUUID: string,
     @Body() updateProductDto: UpdateProductDto
   ): Promise<void> {
-    await this.productsService.update(productId, updateProductDto);
+    await this.productsService.updateOne(productUUID, updateProductDto);
   }
 
-  @Delete("/:productId")
-  async deleteProduct(@Param("productId") productId: string): Promise<void> {
-    await this.productsService.delete(productId);
+  @Delete("/:productUUID")
+  async deleteProduct(
+    @Param("productUUID") productUUID: string
+  ): Promise<void> {
+    await this.productsService.delete(productUUID);
   }
 }
 

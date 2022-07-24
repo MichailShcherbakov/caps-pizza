@@ -19,9 +19,8 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./src/*"],
-    },
-    
-  }
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["src", ".eslintrc.js"]
 }
