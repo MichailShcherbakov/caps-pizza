@@ -16,7 +16,7 @@ export class Api extends IApi {
   }
 
   deleteCategory(uuid: string): Test {
-    return this.handle.delete(`/category/${uuid}`);
+    return this.handle.delete(`/categories/${uuid}`);
   }
 }
 

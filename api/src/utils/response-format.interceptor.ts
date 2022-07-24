@@ -8,8 +8,8 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 @Injectable()
-export default class ResponseFormatInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+export class ResponseFormatInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     return next.handle().pipe(
       map((data) => {
         const statusCode = context.switchToHttp().getResponse().statusCode;
@@ -21,3 +21,5 @@ export default class ResponseFormatInterceptor implements NestInterceptor {
     );
   }
 }
+
+export default ResponseFormatInterceptor;

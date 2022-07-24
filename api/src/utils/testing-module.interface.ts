@@ -11,10 +11,10 @@ import { TYPEORM_CONFIG } from "~/config";
 import initApp from "./init-app";
 
 export type Module =
-  | Type<any>
+  | Type<unknown>
   | DynamicModule
   | Promise<DynamicModule>
-  | ForwardReference<any>;
+  | ForwardReference<unknown>;
 
 export class ITestingModule {
   protected _app: INestApplication | null;
@@ -35,6 +35,13 @@ export class ITestingModule {
     if (!this._app) throw new Error("The test module was not initialized");
 
     return this._app;
+  }
+
+  get dataSource(): DataSource {
+    if (!this._dataSource)
+      throw new Error("The test module was not initialized");
+
+    return this._dataSource;
   }
 
   async drop(): Promise<void> {
