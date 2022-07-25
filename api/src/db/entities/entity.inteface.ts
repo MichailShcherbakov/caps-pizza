@@ -7,15 +7,15 @@ import {
 
 export abstract class IEntity {
   @PrimaryGeneratedColumn("uuid")
-  public uuid: string;
+  uuid: string;
 
   @Exclude()
   @CreateDateColumn()
-  public created_at: Date;
+  created_at: Date;
 
   @Exclude()
   @UpdateDateColumn()
-  public updated_at: Date;
+  updated_at: Date;
 }
 
 export default IEntity;

@@ -5,6 +5,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from "@nestjs/common";
@@ -23,7 +24,7 @@ export class ProductsController {
 
   @Get("/:productUUID")
   async getProduct(
-    @Param("productUUID") productUUID: string
+    @Param("productUUID", ParseUUIDPipe) productUUID: string
   ): Promise<ProductEntity> {
     const foundProduct = await this.productsService.findOne({
       uuid: productUUID,
@@ -45,16 +46,16 @@ export class ProductsController {
   }
 
   @Put("/:productUUID")
-  async updateProduct(
-    @Param("productUUID") productUUID: string,
+  updateProduct(
+    @Param("productUUID", ParseUUIDPipe) productUUID: string,
     @Body() updateProductDto: UpdateProductDto
-  ): Promise<void> {
-    await this.productsService.updateOne(productUUID, updateProductDto);
+  ): Promise<ProductEntity> {
+    return this.productsService.updateOne(productUUID, updateProductDto);
   }
 
   @Delete("/:productUUID")
   async deleteProduct(
-    @Param("productUUID") productUUID: string
+    @Param("productUUID", ParseUUIDPipe) productUUID: string
   ): Promise<void> {
     await this.productsService.delete(productUUID);
   }

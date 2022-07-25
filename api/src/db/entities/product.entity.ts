@@ -10,21 +10,21 @@ export class ProductEntity extends IEntity {
   @Column({ nullable: true })
   desc?: string;
 
-  @Column({ type: "number" })
+  @Column({ type: "int4" })
   article_number: number;
 
   @Column()
   image_url: string;
 
   @Column({ type: "uuid" })
-  public category_uuid: string;
+  category_uuid: string;
 
-  @ManyToOne(() => CategoryEntity)
+  @ManyToOne(() => CategoryEntity, { onDelete: "CASCADE" })
   @JoinColumn({
     name: "category_uuid",
     referencedColumnName: "uuid",
   })
-  public category: CategoryEntity;
+  category: CategoryEntity;
 }
 
 export default ProductEntity;

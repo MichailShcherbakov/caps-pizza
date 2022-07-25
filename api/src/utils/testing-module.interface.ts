@@ -16,7 +16,7 @@ export type Module =
   | Promise<DynamicModule>
   | ForwardReference<unknown>;
 
-export class ITestingModule {
+export abstract class ITestingModule {
   protected _app: INestApplication | null;
   protected _dataSource: DataSource | null;
 
@@ -53,4 +53,6 @@ export class ITestingModule {
     this._app = null;
     this._dataSource = null;
   }
+
+  abstract clearDataSource(): Promise<void>;
 }

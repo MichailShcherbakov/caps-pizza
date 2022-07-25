@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  IsUUID,
 } from "class-validator";
 
 export class CreateProductDto {
@@ -24,6 +25,7 @@ export class CreateProductDto {
   @IsNotEmpty()
   image_url: string;
 
+  @IsUUID()
   @IsString()
   @IsNotEmpty()
   category_uuid: string;
@@ -50,6 +52,7 @@ export class UpdateProductDto {
   @IsOptional()
   image_url?: string;
 
+  @IsUUID()
   @IsString()
   @IsNotEmpty()
   @IsOptional()

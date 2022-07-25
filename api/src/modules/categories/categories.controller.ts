@@ -5,6 +5,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  ParseUUIDPipe,
   Post,
 } from "@nestjs/common";
 import CategoryEntity from "~/db/entities/category.entity";
@@ -22,7 +23,7 @@ export class CategoriesController {
 
   @Get("/:categoryUUID")
   async getCategory(
-    @Param("categoryUUID") categoryUUID: string
+    @Param("categoryUUID", ParseUUIDPipe) categoryUUID: string
   ): Promise<CategoryEntity> {
     const foundCategory = await this.categoriesService.findOne({
       uuid: categoryUUID,
@@ -45,7 +46,7 @@ export class CategoriesController {
 
   @Delete("/:categoryUUID")
   async deleteCategory(
-    @Param("categoryUUID") categoryUUID: string
+    @Param("categoryUUID", ParseUUIDPipe) categoryUUID: string
   ): Promise<void> {
     await this.categoriesService.delete(categoryUUID);
   }

@@ -45,7 +45,7 @@ describe("[Categories Module] ... ", () => {
       });
     });
 
-    it("should return special category", async () => {
+    it("should return a special category", async () => {
       const category = categories[2];
       const response = await api.getCategory(category.uuid);
 
