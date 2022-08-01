@@ -1,14 +1,14 @@
 import { ITestingModule } from "~/utils/testing-module.interface";
-import ProductsModule from "../../products.module";
+import ModifiersModule from "../../modifiers.module";
 
 export default class TestingModule extends ITestingModule {
   init(): Promise<void> {
-    return super.init([ProductsModule]);
+    return super.init([ModifiersModule]);
   }
 
   async clearDataSource(): Promise<void> {
     await this.dataSource.query(
-      "TRUNCATE products, product_categories CASCADE"
+      "TRUNCATE modifiers, modifier_categories CASCADE"
     );
   }
 }

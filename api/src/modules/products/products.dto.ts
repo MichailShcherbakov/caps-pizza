@@ -25,6 +25,11 @@ export class CreateProductDto {
   @IsNotEmpty()
   image_url: string;
 
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  price: number;
+
   @IsUUID()
   @IsString()
   @IsNotEmpty()
@@ -51,6 +56,11 @@ export class UpdateProductDto {
   @IsNotEmpty()
   @IsOptional()
   image_url?: string;
+
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  price: number;
 
   @IsUUID()
   @IsString()

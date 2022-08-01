@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import ProductCategoryEntity from "./product-category.entity";
 import IEntity from "./entity.inteface";
+import ModifierCategoryEntity from "./modifier-category.entity";
 
-@Entity("products")
-export class ProductEntity extends IEntity {
+@Entity("modifiers")
+export default class ModifierEntity extends IEntity {
   @Column({ unique: true })
   name: string;
 
@@ -13,8 +13,8 @@ export class ProductEntity extends IEntity {
   @Column({ type: "int4" })
   article_number: number;
 
-  @Column()
-  image_url: string;
+  @Column({ nullable: true })
+  image_url?: string;
 
   @Column({ type: "float4" })
   price: number;
@@ -22,12 +22,10 @@ export class ProductEntity extends IEntity {
   @Column({ type: "uuid" })
   category_uuid: string;
 
-  @ManyToOne(() => ProductCategoryEntity, { onDelete: "CASCADE" })
+  @ManyToOne(() => ModifierCategoryEntity, { onDelete: "CASCADE" })
   @JoinColumn({
     name: "category_uuid",
     referencedColumnName: "uuid",
   })
-  category: ProductCategoryEntity;
+  category: ModifierCategoryEntity;
 }
-
-export default ProductEntity;

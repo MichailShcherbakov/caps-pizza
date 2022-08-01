@@ -20,5 +20,16 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        semi: true,
+        singleQuote: false,
+        tabWidth: 2,
+        useTabs: false,
+        arrowParens: "avoid",
+        endOfLine: "lf",
+      },
+    ],
   },
 };

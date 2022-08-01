@@ -5,7 +5,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-export abstract class IEntity {
+export default abstract class IEntity {
   @PrimaryGeneratedColumn("uuid")
   uuid: string;
 
@@ -17,5 +17,3 @@ export abstract class IEntity {
   @UpdateDateColumn()
   updated_at: Date;
 }
-
-export default IEntity;

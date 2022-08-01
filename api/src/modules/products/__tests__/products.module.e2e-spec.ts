@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import createCategoriesHelper from "~/modules/categories/__tests__/helpers/create-categories.helper";
-import CategoryEntity from "~/db/entities/category.entity";
+import createProductCategoriesHelper from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
+import ProductCategoryEntity from "~/db/entities/product-category.entity";
 import TestingModule from "./helpers/testing-module.helper";
 import createProductsHelper from "./helpers/create-products.helper";
 import Api from "./helpers/api.helper";
@@ -13,7 +13,7 @@ import deleteObjectPropsHelper, {
 describe("[Product Module] ...", () => {
   let testingModule: TestingModule;
   let api: Api;
-  let categories: CategoryEntity[] = [];
+  let categories: ProductCategoryEntity[] = [];
 
   beforeAll(async () => {
     testingModule = new TestingModule();
@@ -26,7 +26,7 @@ describe("[Product Module] ...", () => {
   });
 
   beforeEach(async () => {
-    categories = await createCategoriesHelper(testingModule.dataSource);
+    categories = await createProductCategoriesHelper(testingModule.dataSource);
   });
 
   afterEach(async () => {
@@ -75,7 +75,7 @@ describe("[Product Module] ...", () => {
       });
     });
 
-    it("should return a special product", async () => {
+    it("should throw an error when getting a non-existing product", async () => {
       const fakeProductUUID = faker.datatype.uuid();
 
       const response = await api.getProduct(fakeProductUUID);
@@ -96,6 +96,7 @@ describe("[Product Module] ...", () => {
         name: faker.word.noun(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
         category_uuid: category.uuid,
       };
 
@@ -118,6 +119,7 @@ describe("[Product Module] ...", () => {
         name: faker.word.noun(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
       };
 
       const response = await api.createProduct(dto);
@@ -135,11 +137,12 @@ describe("[Product Module] ...", () => {
     });
 
     it("should throw an error when creating a product with non-exists a category", async () => {
-      const dto: any = {
+      const dto: CreateProductDto = {
         name: faker.word.noun(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         category_uuid: faker.datatype.uuid(),
+        price: faker.datatype.number(),
       };
 
       const response = await api.createProduct(dto);
@@ -164,6 +167,7 @@ describe("[Product Module] ...", () => {
       const dto: UpdateProductDto = {
         name: faker.word.noun(),
         image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
       };
 
       const response = await api.updateProduct(product.uuid, dto);
@@ -172,12 +176,15 @@ describe("[Product Module] ...", () => {
       expect(response.body).toEqual({
         statusCode: 200,
         data: fromJson(
-          toJson({
-            ...product,
-            ...dto,
-            updated_at: undefined,
-            created_at: undefined,
-          })
+          toJson(
+            deleteObjectPropsHelper(
+              {
+                ...product,
+                ...dto,
+              },
+              ["updated_at", "created_at"]
+            )
+          )
         ),
       });
     });
@@ -194,6 +201,7 @@ describe("[Product Module] ...", () => {
 
       const dto: UpdateProductDto = {
         category_uuid: category.uuid,
+        price: faker.datatype.number(),
       };
 
       const response = await api.updateProduct(product.uuid, dto);
@@ -222,6 +230,7 @@ describe("[Product Module] ...", () => {
 
       const dto: UpdateProductDto = {
         category_uuid: fakeCategoryUUID,
+        price: faker.datatype.number(),
       };
 
       const response = await api.updateProduct(product.uuid, dto);
@@ -235,7 +244,7 @@ describe("[Product Module] ...", () => {
     });
   });
 
-  describe("[Delete] /categories", () => {
+  describe("[Delete] /products/categories", () => {
     it("should successfully delete a category that already has a products", async () => {
       const products = await createProductsHelper(
         testingModule.dataSource,
@@ -246,7 +255,9 @@ describe("[Product Module] ...", () => {
 
       expect(product.category_uuid).toEqual(category.uuid);
 
-      const deleteCategoryResponse = await api.deleteCategory(category.uuid);
+      const deleteCategoryResponse = await api.deleteProductCategory(
+        category.uuid
+      );
 
       expect(deleteCategoryResponse.status).toEqual(200);
       expect(deleteCategoryResponse.body).toEqual({
@@ -264,7 +275,7 @@ describe("[Product Module] ...", () => {
     });
   });
 
-  describe("[Delete] /postgres", () => {
+  describe("[Delete] /products", () => {
     it("should successfully delete a product", async () => {
       const products = await createProductsHelper(
         testingModule.dataSource,

@@ -12,6 +12,7 @@ export class ProductsFactory extends IFactory<ProductEntity> {
       options.article_number || Number.parseInt(faker.random.numeric());
     e.category_uuid = options.category_uuid || faker.datatype.uuid();
     e.image_url = options.image_url || faker.image.imageUrl();
+    e.price = options.price || faker.datatype.number();
     return e;
   }
 }

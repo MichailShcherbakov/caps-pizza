@@ -19,8 +19,6 @@ export class UploaderController {
     FileInterceptor("file", { dest: APP_ROOT_PATH + "/static/images" })
   )
   uploadFile(@UploadedFile() file: Express.Multer.File): File {
-    console.log(file);
-
     return {
       filename: file.filename,
       url: `/images/${file.filename}`,

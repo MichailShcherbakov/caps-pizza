@@ -2,10 +2,10 @@ import * as request from "supertest";
 import { INestApplication } from "@nestjs/common";
 
 export abstract class IApi {
-  protected handle: request.SuperTest<request.Test>;
+  protected _handle: request.SuperTest<request.Test>;
 
   constructor(app: INestApplication) {
-    this.handle = request(app.getHttpServer());
+    this._handle = request(app.getHttpServer());
   }
 }
 

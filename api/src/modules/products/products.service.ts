@@ -1,17 +1,17 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
-import CategoryEntity from "~/db/entities/category.entity";
+import CategoryEntity from "~/db/entities/product-category.entity";
 import ProductEntity from "~/db/entities/product.entity";
-import CategoriesService from "../categories/categories.service";
+import ProductCategoriesService from "./modules/categories/categories.service";
 import { CreateProductDto, UpdateProductDto } from "./products.dto";
 
 @Injectable()
-export class ProductsService {
+export default class ProductsService {
   constructor(
     @InjectRepository(ProductEntity)
     private productsRepository: Repository<ProductEntity>,
-    private categoriesService: CategoriesService
+    private productCategoriesService: ProductCategoriesService
   ) {}
 
   find(
@@ -28,7 +28,7 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
     const foundCategory: CategoryEntity | null =
-      await this.categoriesService.findOne({
+      await this.productCategoriesService.findOne({
         uuid: createProductDto.category_uuid,
       });
 
@@ -42,6 +42,7 @@ export class ProductsService {
     newProduct.desc = createProductDto.desc;
     newProduct.image_url = createProductDto.image_url;
     newProduct.article_number = createProductDto.article_number;
+    newProduct.price = createProductDto.price;
     newProduct.category_uuid = createProductDto.category_uuid;
 
     return this.productsRepository.save(newProduct);
@@ -60,10 +61,11 @@ export class ProductsService {
     foundProduct.desc = updateProductDto.desc || foundProduct.desc;
     foundProduct.article_number =
       updateProductDto.article_number || foundProduct.article_number;
+    foundProduct.price = updateProductDto.price || foundProduct.price;
 
     if (updateProductDto.category_uuid) {
       const foundCategory: CategoryEntity | null =
-        await this.categoriesService.findOne({
+        await this.productCategoriesService.findOne({
           uuid: updateProductDto.category_uuid,
         });
 
@@ -82,7 +84,7 @@ export class ProductsService {
     options: FindOptionsWhere<ProductEntity>,
     updateProductDto: UpdateProductDto
   ): Promise<void> {
-    this.productsRepository.update(options, updateProductDto);
+    await this.productsRepository.update(options, updateProductDto);
   }
 
   async delete(uuid: string): Promise<void> {
@@ -94,5 +96,3 @@ export class ProductsService {
     await this.productsRepository.delete({ uuid });
   }
 }
-
-export default ProductsService;
