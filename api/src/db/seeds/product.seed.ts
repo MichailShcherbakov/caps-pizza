@@ -9,10 +9,11 @@ export class ProductsFactory extends IFactory<ProductEntity> {
     e.name = options.name || faker.commerce.productName();
     e.desc = options.desc || faker.word.adjective();
     e.article_number =
-      options.article_number || Number.parseInt(faker.random.numeric());
+      options.article_number ||
+      faker.datatype.number({ max: 99999, min: 10000 });
     e.category_uuid = options.category_uuid || faker.datatype.uuid();
     e.image_url = options.image_url || faker.image.imageUrl();
-    e.price = options.price || faker.datatype.number();
+    e.price = options.price || faker.datatype.number({ max: 1000, min: 150 });
     return e;
   }
 }

@@ -4,7 +4,7 @@ import {
   INestApplication,
   Type,
 } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
+import { Test, TestingModule } from "@nestjs/testing";
 import { getDataSourceToken, TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { TYPEORM_CONFIG } from "~/config";
@@ -20,10 +20,14 @@ export abstract class ITestingModule {
   protected _app: INestApplication | null;
   protected _dataSource: DataSource | null;
 
-  async init(modules: Module[] = []): Promise<void> {
-    const moduleFixture = await Test.createTestingModule({
+  protected compile(modules: Module[]): Promise<TestingModule> {
+    return Test.createTestingModule({
       imports: [TypeOrmModule.forRoot(TYPEORM_CONFIG), ...modules],
     }).compile();
+  }
+
+  async init(modules: Module[] = []): Promise<void> {
+    const moduleFixture = await this.compile(modules);
 
     this._app = initApp(moduleFixture.createNestApplication());
     await this._app.init();

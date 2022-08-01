@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPhoneNumber,
   IsPositive,
   IsString,
@@ -22,9 +23,14 @@ export class OrderedProduct {
   @IsNotEmpty()
   uuid: string;
 
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  count: number;
+
   @IsArray()
   @IsNotEmpty()
-  modifier: Modifier[];
+  modifiers: Modifier[];
 }
 
 export class DeliveryAddress {
@@ -46,7 +52,7 @@ export class DeliveryAddress {
   @IsNotEmpty()
   floor: number;
 
-  @IsNumber({ maxDecimalPlaces: 50 })
+  @IsNumber({ maxDecimalPlaces: 3 })
   @IsNotEmpty()
   apartment: number;
 }
@@ -62,6 +68,7 @@ export class ClientInfo {
 
   @IsEmail()
   @MaxLength(50)
+  @IsOptional()
   mail?: string;
 }
 
@@ -86,17 +93,58 @@ export class MakeAnOrderDto {
 
   @IsNumber()
   @IsPositive()
+  @IsOptional()
   score?: number;
 
   @IsNumber({ maxDecimalPlaces: 16 })
   @IsPositive()
+  @IsOptional()
   card?: number;
+
+  @IsNotEmpty()
+  client_info: ClientInfo;
 
   @IsString()
   @MaxLength(100)
   @IsNotEmpty()
+  @IsOptional()
   description?: string;
 
   @IsNotEmpty()
   payment: Payment;
+}
+
+export class FrontPadPayload {
+  product: Record<number, number>;
+  product_kol: Record<number, number>;
+  product_price: Record<number, number>;
+  product_mod: Record<number, number>;
+  score?: number;
+  sale?: number;
+  sale_amount?: number;
+  card?: number;
+  street?: string;
+  home?: string;
+  pod?: number;
+  et?: number;
+  apart?: number;
+  phone?: string;
+  mail?: string;
+  descr?: string;
+  name?: string;
+  pay?: string;
+  certificate?: number;
+  person?: number;
+  tags?: number[];
+  hook_status?: number[];
+  hook_url?: string;
+  channel?: number;
+  datetime?: string;
+  affiliate?: string;
+  point?: string;
+}
+
+export class FrontPadResponse {
+  order_id: number;
+  order_number: number;
 }
