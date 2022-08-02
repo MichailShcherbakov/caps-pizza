@@ -7,6 +7,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import React from "react";
+import styles from "./index.module.scss";
 
 export enum DeliveryConditionOperatorEnum {
   LESS = "LESS",
@@ -49,15 +50,36 @@ export const OperatorSelect: React.FC<OperatorSelectProps> = ({
         size="small"
         onChange={onSelectChangeHandler}
       >
-        <MenuItem value={DeliveryConditionOperatorEnum.GREATER}>
+        <MenuItem
+          value={DeliveryConditionOperatorEnum.GREATER}
+          className={styles["operator-menu-item"]}
+        >
           Больше
         </MenuItem>
-        <MenuItem value={DeliveryConditionOperatorEnum.LESS}>Меньше</MenuItem>
-        <MenuItem value={DeliveryConditionOperatorEnum.EQUAL}>Равно</MenuItem>
-        <MenuItem value={DeliveryConditionOperatorEnum.NOT_EQUAL}>
+        <MenuItem
+          value={DeliveryConditionOperatorEnum.LESS}
+          className={styles["operator-menu-item"]}
+        >
+          Меньше
+        </MenuItem>
+        <MenuItem
+          value={DeliveryConditionOperatorEnum.EQUAL}
+          className={styles["operator-menu-item"]}
+        >
+          Равно
+        </MenuItem>
+        <MenuItem
+          value={DeliveryConditionOperatorEnum.NOT_EQUAL}
+          className={styles["operator-menu-item"]}
+        >
           Неравно
         </MenuItem>
-        <MenuItem value={DeliveryConditionOperatorEnum.BETWEEN}>Между</MenuItem>
+        <MenuItem
+          value={DeliveryConditionOperatorEnum.BETWEEN}
+          className={styles["operator-menu-item"]}
+        >
+          Между
+        </MenuItem>
       </Select>
     </FormControl>
   );

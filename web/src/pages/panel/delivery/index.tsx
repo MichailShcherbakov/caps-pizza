@@ -66,10 +66,6 @@ export const DeliveryPage: React.FC<DeliveryPageProps> = () => {
     });
   }, []);
 
-  React.useEffect(() => {
-    console.log(ctx);
-  }, [ctx]);
-
   const onAddDeliveryHandler = () => {
     ctx.mutate({
       ...ctx,

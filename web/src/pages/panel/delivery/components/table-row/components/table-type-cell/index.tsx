@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { DeliveryContext, DeliveryContextType } from "~/pages/panel/delivery";
+import styles from "./index.module.scss";
 
 export enum DeliveryTypeEnum {
   PERCENT = "PERCENT",
@@ -52,10 +53,16 @@ export const TableTypeCell: React.FC<TableTypeCellProps> = ({
           size="small"
           onChange={onSelectChangeHandler}
         >
-          <MenuItem value={DeliveryTypeEnum.IN_CASH}>
+          <MenuItem
+            value={DeliveryTypeEnum.IN_CASH}
+            className={styles["type-menu-item"]}
+          >
             Фиксированная сумма
           </MenuItem>
-          <MenuItem value={DeliveryTypeEnum.PERCENT}>
+          <MenuItem
+            value={DeliveryTypeEnum.PERCENT}
+            className={styles["type-menu-item"]}
+          >
             Процент от суммы заказа
           </MenuItem>
         </Select>

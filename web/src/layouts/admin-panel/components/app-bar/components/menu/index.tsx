@@ -1,8 +1,8 @@
 import { Box, Drawer, IconButton, Paper } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import styles from "./index.module.scss";
 import React from "react";
 import MenuList from "./components/list";
+import styles from "./index.module.scss";
 
 export interface DrawerMenuButtonProps {}
 
@@ -26,8 +26,13 @@ export const DrawerMenuButton: React.FC<DrawerMenuButtonProps> = () => {
       >
         <MenuIcon />
       </IconButton>
-      <Drawer anchor="left" open={open} onClose={onDrawerCloseHandler}>
-        <Box role="presentation" className={styles["drawer-menu__box"]}>
+      <Drawer
+        anchor="left"
+        open={open}
+        className={styles["drawer-menu"]}
+        onClose={onDrawerCloseHandler}
+      >
+        <Box role="presentation" className={styles["drawer-menu__inner"]}>
           <MenuList />
         </Box>
       </Drawer>

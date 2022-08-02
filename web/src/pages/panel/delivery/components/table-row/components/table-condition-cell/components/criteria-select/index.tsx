@@ -7,6 +7,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import React from "react";
+import styles from "./index.module.scss";
 
 export enum DeliveryConditionCriteriaEnum {
   PRICE = "PRICE",
@@ -45,10 +46,16 @@ export const CriteriaSelect: React.FC<CriteriaSelectProps> = ({
         size="small"
         onChange={onSelectChangeHandler}
       >
-        <MenuItem value={DeliveryConditionCriteriaEnum.PRICE}>
+        <MenuItem
+          value={DeliveryConditionCriteriaEnum.PRICE}
+          className={styles["criteria-menu-item"]}
+        >
           Сумма заказа
         </MenuItem>
-        <MenuItem value={DeliveryConditionCriteriaEnum.COUNT}>
+        <MenuItem
+          value={DeliveryConditionCriteriaEnum.COUNT}
+          className={styles["criteria-menu-item"]}
+        >
           Количество товаров в заказе
         </MenuItem>
       </Select>

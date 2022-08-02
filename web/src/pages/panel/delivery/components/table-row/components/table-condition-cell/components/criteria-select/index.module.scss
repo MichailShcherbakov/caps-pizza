@@ -1,0 +1,15 @@
+.criteria-menu-item {
+  &:global(.MuiMenuItem-root) {
+    &:global(.Mui-selected) {
+      @include ui-bg-color($blue-50);
+
+      &:hover {
+        @include ui-bg-color($blue-50);
+      }
+    }
+
+    &:hover {
+      @include ui-bg-color($blue-50);
+    }
+  }
+}
