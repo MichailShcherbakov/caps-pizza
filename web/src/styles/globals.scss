@@ -68,7 +68,8 @@
   color: $gray-400;
 }
 
-.MuiButtonBase-root, .MuiButton-root {
+.MuiButtonBase-root,
+.MuiButton-root {
   width: fit-content;
   height: fit-content;
 
@@ -123,8 +124,8 @@
   @include ui-font-color($gray-900);
 }
 
-.MuiOutlinedInput-root  {
-  &:hover:not(.Mui-focused):not(.Mui-disabled) {
+.MuiOutlinedInput-root {
+  &:hover:not(.Mui-focused):not(.Mui-disabled):not(.Mui-error) {
     .MuiOutlinedInput-notchedOutline {
       @include ui-border-color($gray-400);
     }
@@ -149,6 +150,14 @@
 
 .MuiOutlinedInput-notchedOutline {
   @include ui-border-color($gray-100);
+}
+
+.MuiMenuItem-root {
+  @include ui-w-full;
+}
+
+.MuiTextField-root {
+  min-width: 96px;
 }
 
 @media screen and (max-width: $breakpoint-sm) {

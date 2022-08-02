@@ -1,0 +1,13 @@
+.drawer-menu {
+  &__btn {
+    & > :global(.MuiSvgIcon-root) {
+      @include ui-fill($white);
+    }
+  }
+
+  &__box {
+    @include ui-w(250px);
+    @include ui-h-screen;
+    @include ui-bg-color($white);
+  }
+}

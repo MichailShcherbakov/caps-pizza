@@ -1,0 +1,10 @@
+.admin-panel-layout {
+  @include ui-w-full;
+  @include ui-h-screen;
+
+  &__container {
+    @include ui-w-full;
+    @include ui-h-full;
+    @include ui-overflow-hidden;
+  }
+}
