@@ -10,7 +10,7 @@ export function deleteObjectsPropsHelper<K extends keyof T, T>(
   objs: T[],
   props: (keyof T)[]
 ): Omit<T, K>[] {
-  return objs.map((o) => deleteObjectPropsHelper(o, props));
+  return objs.map(o => deleteObjectPropsHelper(o, props));
 }
 
 export default deleteObjectPropsHelper;

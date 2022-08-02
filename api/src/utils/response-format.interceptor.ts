@@ -11,7 +11,7 @@ import { map } from "rxjs/operators";
 export class ResponseFormatInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     return next.handle().pipe(
-      map((data) => {
+      map(data => {
         const statusCode = context.switchToHttp().getResponse().statusCode;
         return {
           data,

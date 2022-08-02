@@ -21,7 +21,7 @@ export default class ProductCategoriesController {
     return this.productCategoriesService.find();
   }
 
-  @Get("/:productCategoryUUID")
+  @Get("/:productCategoryUUID/$")
   async getProdutCategory(
     @Param("productCategoryUUID", ParseUUIDPipe) productCategoryUUID: string
   ): Promise<ProductCategoryEntity> {

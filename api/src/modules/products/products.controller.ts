@@ -22,7 +22,7 @@ export class ProductsController {
     return this.productsService.find();
   }
 
-  @Get("/:productUUID")
+  @Get("/(:productUUID)/$")
   async getProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string
   ): Promise<ProductEntity> {

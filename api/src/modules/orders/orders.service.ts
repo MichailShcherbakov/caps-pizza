@@ -1,13 +1,14 @@
 import { HttpService } from "@nestjs/axios";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { In } from "typeorm";
 import ModifiersService from "../modifiers/modifiers.service";
 import ProductsService from "../products/products.service";
-import {
-  FrontPadPayload,
-  FrontPadResponse,
-  MakeAnOrderDto,
-} from "./orders.dto";
+import { FrontPadResponse, MakeAnOrderDto } from "./orders.dto";
+import * as FormData from "form-data";
 
 export const FIXED_MODIFIER_COUNT = 1;
 
@@ -34,10 +35,8 @@ export default class OrdersService {
       }),
     ]);
 
-    const productArticleNumbers: Record<number, number> = {};
-    const productCount: Record<number, number> = {};
-    const productPrice: Record<number, number> = {};
-    const productModifiers: Record<number, number> = {};
+    const payload: FormData = new FormData();
+    let currentProductIndex = 0;
 
     for (const product of dto.products) {
       const foundProduct = products.find(p => p.uuid === product.uuid);
@@ -47,11 +46,11 @@ export default class OrdersService {
           `The product ${product.uuid} does not found`
         );
 
-      const productIndex = Object.keys(productArticleNumbers).length;
+      const productIndex = currentProductIndex++;
 
-      productArticleNumbers[productIndex] = foundProduct.article_number;
-      productPrice[productIndex] = foundProduct.price;
-      productCount[productIndex] = product.count;
+      payload.append(`product[${productIndex}]`, foundProduct.article_number);
+      payload.append(`product_kol[${productIndex}]`, product.count);
+      payload.append(`product_price[${productIndex}]`, foundProduct.price);
 
       for (const modifier of product.modifiers) {
         const foundModifier = modifiers.find(m => m.uuid === modifier.uuid);
@@ -61,46 +60,45 @@ export default class OrdersService {
             `The modifier ${modifier.uuid} does not found`
           );
 
-        const modifierIndex = Object.keys(productArticleNumbers).length;
+        const modifierIndex = currentProductIndex++;
 
-        productArticleNumbers[modifierIndex] = foundModifier.article_number;
-        productPrice[modifierIndex] = foundModifier.price;
-        productCount[modifierIndex] = FIXED_MODIFIER_COUNT;
-        productModifiers[modifierIndex] = productIndex;
+        payload.append(
+          `product[${modifierIndex}]`,
+          foundModifier.article_number
+        );
+        payload.append(`product_kol[${modifierIndex}]`, FIXED_MODIFIER_COUNT);
+        payload.append(`product_price[${modifierIndex}]`, foundModifier.price);
+        payload.append(`product_mod[${modifierIndex}]`, productIndex);
       }
     }
 
-    return this.sendToFrontPad({
-      product: productArticleNumbers,
-      product_kol: productCount,
-      product_price: productPrice,
-      product_mod: productModifiers,
-      sale: 0,
-      sale_amount: 0,
-      street: dto.delivery_address.street,
-      home: dto.delivery_address.house,
-      pod: dto.delivery_address.entrance,
-      et: dto.delivery_address.floor,
-      apart: dto.delivery_address.apartment,
-      name: dto.client_info.name,
-      phone: dto.client_info.phone,
-      mail: dto.client_info.mail,
-      descr: dto.description,
-      tags: [],
-    });
+    payload.append("sale", 0);
+    payload.append("sale_amount", 0);
+    payload.append("street", dto.delivery_address.street);
+    payload.append("home", dto.delivery_address.house);
+    payload.append("pod", dto.delivery_address.entrance);
+    payload.append("et", dto.delivery_address.floor);
+    payload.append("apart", dto.delivery_address.apartment);
+    payload.append("name", dto.client_info.name);
+    payload.append("phone", dto.client_info.phone);
+    payload.append("mail", dto.client_info.mail || "");
+    payload.append("descr", dto.description || "");
+
+    return this.sendToFrontPad(payload);
   }
 
-  async sendToFrontPad(payload: FrontPadPayload): Promise<FrontPadResponse> {
-    return this.httpSevice.axiosRef.request({
+  async sendToFrontPad(payload: FormData): Promise<FrontPadResponse> {
+    payload.append("secret", process.env.SECRET || "");
+
+    const response = await this.httpSevice.axiosRef.request({
       method: "post",
       url: "https://app.frontpad.ru/api/index.php?new_order",
-      headers: {
-        "Content-Type": `multipart/form-data`,
-      },
-      data: {
-        secret: process.env.SECRET,
-        ...payload,
-      },
+      headers: payload.getHeaders(),
+      data: payload,
     });
+
+    if (response.data.error) throw new BadRequestException(response.data.error);
+
+    return response.data;
   }
 }
