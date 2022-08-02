@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormControlProps,
   InputLabel,
   MenuItem,
   Select,
@@ -14,15 +15,16 @@ export enum DeliveryTypeEnum {
   IN_CASH = "IN_CASH",
 }
 
-export interface TableTypeCellProps {
+export interface TableTypeCellProps extends FormControlProps {
   deliveryUUID?: string;
 }
 
 export const TableTypeCell: React.FC<TableTypeCellProps> = ({
   deliveryUUID,
+  ...props
 }) => {
   const ctx = React.useContext<DeliveryContextType>(DeliveryContext);
-  const delivery = ctx.deliveries.find((d) => d.uuid === deliveryUUID);
+  const delivery = ctx.deliveries.find(d => d.uuid === deliveryUUID);
 
   if (!delivery) {
     console.error("The delivery UUID " + deliveryUUID + " is not available");
@@ -34,7 +36,7 @@ export const TableTypeCell: React.FC<TableTypeCellProps> = ({
 
     ctx.mutate({
       ...ctx,
-      deliveries: ctx.deliveries.map((d) =>
+      deliveries: ctx.deliveries.map(d =>
         d.uuid === deliveryUUID ? { ...d, type: newType } : d
       ),
     });
@@ -42,7 +44,7 @@ export const TableTypeCell: React.FC<TableTypeCellProps> = ({
 
   return (
     <TableCell>
-      <FormControl fullWidth>
+      <FormControl {...props} fullWidth>
         <InputLabel size="small">Расчет</InputLabel>
         <Select
           value={delivery?.type}

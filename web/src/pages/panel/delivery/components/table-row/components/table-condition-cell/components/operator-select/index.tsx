@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormControlProps,
   InputLabel,
   MenuItem,
   Select,
@@ -15,7 +16,8 @@ export enum DeliveryConditionOperatorEnum {
   BETWEEN = "BETWEEN",
 }
 
-export interface OperatorSelectProps {
+export interface OperatorSelectProps
+  extends Omit<FormControlProps, "onChange"> {
   operator: DeliveryConditionOperatorEnum | "";
   onChange?: (operator: DeliveryConditionOperatorEnum) => void;
 }
@@ -23,6 +25,7 @@ export interface OperatorSelectProps {
 export const OperatorSelect: React.FC<OperatorSelectProps> = ({
   operator,
   onChange,
+  ...props
 }) => {
   const [op, setOp] = React.useState<DeliveryConditionOperatorEnum | "">("");
 
@@ -38,7 +41,7 @@ export const OperatorSelect: React.FC<OperatorSelectProps> = ({
   };
 
   return (
-    <FormControl fullWidth>
+    <FormControl {...props} fullWidth>
       <InputLabel size="small">Оператор</InputLabel>
       <Select
         value={op as any}

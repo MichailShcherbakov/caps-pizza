@@ -1,11 +1,12 @@
 import { InputAdornment, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
+import { TextFieldProps } from "~/ui/components/text-field";
 
-export interface NumberFieldProps {
+export interface NumberFieldProps extends Omit<TextFieldProps, "onChange"> {
   value?: number;
-  onChange?: (value: number) => void;
   adornment?: string;
   error?: boolean;
+  onChange?: (value: number) => void;
 }
 
 export const NumberField: React.FC<NumberFieldProps> = ({
@@ -13,6 +14,7 @@ export const NumberField: React.FC<NumberFieldProps> = ({
   onChange,
   adornment = "₽",
   error,
+  ...props
 }) => {
   const [val, setVal] = React.useState<number>(0);
 
@@ -31,17 +33,18 @@ export const NumberField: React.FC<NumberFieldProps> = ({
 
   return (
     <TextField
+      {...props}
       type="number"
       label="Значение"
       size="small"
       error={error}
-      onChange={onChangeHandler}
+      value={val}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">{adornment}</InputAdornment>
         ),
       }}
-      value={val}
+      onChange={onChangeHandler}
     />
   );
 };

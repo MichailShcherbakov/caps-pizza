@@ -11,7 +11,7 @@ export const AdminPanelLayout: React.FC<AdminPanelLayoutProps> = ({
   return (
     <ThemeProvider theme={theme}>
       <Stack className={styles["admin-panel-layout"]}>
-        <Appbar />
+        <Appbar color="secondary" />
         <Container className={styles["admin-panel-layout__container"]}>
           {children}
         </Container>

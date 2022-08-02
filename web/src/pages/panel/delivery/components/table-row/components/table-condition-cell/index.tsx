@@ -1,6 +1,7 @@
 import { Stack, TableCell } from "@mui/material";
 import React from "react";
 import { DeliveryContext, DeliveryContextType } from "~/pages/panel/delivery";
+import { Theme } from "~/ui/theme";
 import CriteriaSelect, {
   DeliveryConditionCriteriaEnum,
 } from "./components/criteria-select";
@@ -11,13 +12,15 @@ import OperatorSelect, {
 
 export interface TableConditionCellProps {
   deliveryUUID?: string;
+  color?: Theme.Color;
 }
 
 export const TableConditionCell: React.FC<TableConditionCellProps> = ({
   deliveryUUID,
+  color,
 }) => {
   const ctx = React.useContext<DeliveryContextType>(DeliveryContext);
-  const delivery = ctx.deliveries.find((d) => d.uuid === deliveryUUID);
+  const delivery = ctx.deliveries.find(d => d.uuid === deliveryUUID);
 
   if (!delivery) {
     console.error("The delivery UUID " + deliveryUUID + " is not available");
@@ -26,8 +29,6 @@ export const TableConditionCell: React.FC<TableConditionCellProps> = ({
 
   const isCombinedValue =
     delivery.condition.op === DeliveryConditionOperatorEnum.BETWEEN;
-
-  console.log(delivery.condition.op);
 
   const onCriteriaChange = (criteria: DeliveryConditionCriteriaEnum) => {
     const newDelivery = {
@@ -40,7 +41,7 @@ export const TableConditionCell: React.FC<TableConditionCellProps> = ({
 
     ctx.mutate({
       ...ctx,
-      deliveries: ctx.deliveries.map((d) =>
+      deliveries: ctx.deliveries.map(d =>
         d.uuid === deliveryUUID ? newDelivery : d
       ),
     });
@@ -57,7 +58,7 @@ export const TableConditionCell: React.FC<TableConditionCellProps> = ({
 
     ctx.mutate({
       ...ctx,
-      deliveries: ctx.deliveries.map((d) =>
+      deliveries: ctx.deliveries.map(d =>
         d.uuid === deliveryUUID ? newDelivery : d
       ),
     });
@@ -74,7 +75,7 @@ export const TableConditionCell: React.FC<TableConditionCellProps> = ({
 
     ctx.mutate({
       ...ctx,
-      deliveries: ctx.deliveries.map((d) =>
+      deliveries: ctx.deliveries.map(d =>
         d.uuid === deliveryUUID ? newDelivery : d
       ),
     });
@@ -85,27 +86,28 @@ export const TableConditionCell: React.FC<TableConditionCellProps> = ({
       <Stack direction="row" spacing={1}>
         <CriteriaSelect
           criteria={delivery.condition.criteria}
+          color={color}
           onChange={onCriteriaChange}
         />
         <OperatorSelect
           operator={delivery.condition.op}
+          color={color}
           onChange={onOperatorChange}
         />
         <NumberField
           value={delivery.condition.value[0]}
-          onChange={(val) => onValueChange([val, delivery.condition.value[1]])}
+          color={color}
           adornment={
             delivery.condition.criteria === DeliveryConditionCriteriaEnum.COUNT
               ? "шт"
               : "₽"
           }
+          onChange={val => onValueChange([val, delivery.condition.value[1]])}
         />
         {isCombinedValue && (
           <NumberField
             value={delivery.condition.value[1]}
-            onChange={(val) => {
-              onValueChange([delivery.condition.value[0], val]);
-            }}
+            color={color}
             adornment={
               delivery.condition.criteria ===
               DeliveryConditionCriteriaEnum.COUNT
@@ -113,6 +115,9 @@ export const TableConditionCell: React.FC<TableConditionCellProps> = ({
                 : "₽"
             }
             error={delivery.condition.value[0] > delivery.condition.value[1]}
+            onChange={val => {
+              onValueChange([delivery.condition.value[0], val]);
+            }}
           />
         )}
       </Stack>

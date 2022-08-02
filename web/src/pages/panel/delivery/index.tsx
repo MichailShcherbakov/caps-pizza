@@ -106,7 +106,11 @@ export const DeliveryPage: React.FC<DeliveryPageProps> = () => {
               </TableHead>
               <TableBody>
                 {ctx.deliveries.map(d => (
-                  <DeliveryTableRow key={d.uuid} deliveryUUID={d.uuid} />
+                  <DeliveryTableRow
+                    key={d.uuid}
+                    deliveryUUID={d.uuid}
+                    color="secondary"
+                  />
                 ))}
                 <TableRow>
                   <TableCell>

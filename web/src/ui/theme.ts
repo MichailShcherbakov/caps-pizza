@@ -1,5 +1,17 @@
 import { createTheme, PaletteColor } from "@mui/material";
 
+export namespace Theme {
+  export type Color =
+    // | "neutral"
+    "primary" | "secondary" | "error" | "info" | "success" | "warning";
+}
+
+declare module "@mui/material" {
+  interface PaletteOptions {
+    neutral: Partial<PaletteColor>;
+  }
+}
+
 declare module "@mui/material/styles" {
   interface PaletteOptions {
     neutral: Partial<PaletteColor>;
@@ -7,6 +19,12 @@ declare module "@mui/material/styles" {
 }
 
 declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    neutral: true;
+  }
+}
+
+declare module "@mui/material/TextField" {
   interface ButtonPropsColorOverrides {
     neutral: true;
   }

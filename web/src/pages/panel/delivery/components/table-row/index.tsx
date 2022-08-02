@@ -1,5 +1,6 @@
 import { InputAdornment, TableCell, TableRow, TextField } from "@mui/material";
 import React, { useContext } from "react";
+import { Theme } from "~/ui/theme";
 import { DeliveryContext, DeliveryContextType } from "../..";
 import TableConditionCell from "./components/table-condition-cell";
 import { DeliveryConditionCriteriaEnum } from "./components/table-condition-cell/components/criteria-select";
@@ -20,13 +21,16 @@ export interface Delivery {
 
 export interface DeliveryTableRowProps {
   deliveryUUID?: string;
+  color?: Theme.Color;
 }
 
 export const DeliveryTableRow: React.FC<DeliveryTableRowProps> = ({
   deliveryUUID,
+  color,
+  ...props
 }) => {
   const ctx = useContext<DeliveryContextType>(DeliveryContext);
-  const delivery = ctx.deliveries.find((d) => d.uuid === deliveryUUID);
+  const delivery = ctx.deliveries.find(d => d.uuid === deliveryUUID);
 
   if (!delivery) {
     console.error("The delivery UUID " + deliveryUUID + " is not available");
@@ -48,7 +52,7 @@ export const DeliveryTableRow: React.FC<DeliveryTableRowProps> = ({
 
     ctx.mutate({
       ...ctx,
-      deliveries: ctx.deliveries.map((d) =>
+      deliveries: ctx.deliveries.map(d =>
         d.uuid === deliveryUUID ? newDelivery : d
       ),
     });
@@ -62,7 +66,7 @@ export const DeliveryTableRow: React.FC<DeliveryTableRowProps> = ({
 
     ctx.mutate({
       ...ctx,
-      deliveries: ctx.deliveries.map((d) =>
+      deliveries: ctx.deliveries.map(d =>
         d.uuid === deliveryUUID ? newDelivery : d
       ),
     });
@@ -76,18 +80,20 @@ export const DeliveryTableRow: React.FC<DeliveryTableRowProps> = ({
           size="small"
           value={delivery.name}
           className="ui-w-full"
-          onChange={(e) => onNameChange(e.target.value)}
+          color={color}
+          onChange={e => onNameChange(e.target.value)}
         />
       </TableCell>
-      <TableConditionCell deliveryUUID={deliveryUUID} />
-      <TableTypeCell deliveryUUID={deliveryUUID} />
+      <TableConditionCell deliveryUUID={deliveryUUID} color={color} />
+      <TableTypeCell deliveryUUID={deliveryUUID} color={color} />
       <TableCell>
         <TextField
           type="number"
           size="small"
           placeholder="0"
           value={delivery.value}
-          onChange={(e) => onValueChange(e.target.value)}
+          onChange={e => onValueChange(e.target.value)}
+          color={color}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">{adornment()}</InputAdornment>

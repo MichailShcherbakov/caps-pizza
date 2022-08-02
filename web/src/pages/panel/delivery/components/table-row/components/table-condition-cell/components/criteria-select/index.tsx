@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormControlProps,
   InputLabel,
   MenuItem,
   Select,
@@ -12,7 +13,8 @@ export enum DeliveryConditionCriteriaEnum {
   COUNT = "COUNT",
 }
 
-export interface CriteriaSelectProps {
+export interface CriteriaSelectProps
+  extends Omit<FormControlProps, "onChange"> {
   criteria: DeliveryConditionCriteriaEnum | "";
   onChange?: (criteria: DeliveryConditionCriteriaEnum) => void;
 }
@@ -35,7 +37,7 @@ export const CriteriaSelect: React.FC<CriteriaSelectProps> = ({
   };
 
   return (
-    <FormControl fullWidth>
+    <FormControl color="secondary" fullWidth>
       <InputLabel size="small">Критерий</InputLabel>
       <Select
         value={crt as any}
