@@ -8,7 +8,15 @@ import {
 import ResponseFormatInterceptor from "./response-format.interceptor";
 import { Reflector } from "@nestjs/core";
 
-export const initApp = (appInstance: INestApplication): INestApplication => {
+export interface InitAppOptions {
+  usePrefix?: boolean;
+  useCors?: boolean;
+}
+
+export const initApp = (
+  appInstance: INestApplication,
+  { usePrefix, useCors }: InitAppOptions = { usePrefix: false, useCors: false }
+): INestApplication => {
   appInstance.use(cookieParser());
   appInstance.use(express.static("static"));
   appInstance.useGlobalPipes(new ValidationPipe());
@@ -16,6 +24,15 @@ export const initApp = (appInstance: INestApplication): INestApplication => {
     new ResponseFormatInterceptor(),
     new ClassSerializerInterceptor(new Reflector())
   );
+
+  if (useCors)
+    appInstance.enableCors({
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      credentials: true,
+      origin: true /* process.env.FRONTEND_URL */,
+    });
+
+  if (usePrefix) appInstance.setGlobalPrefix("/v1/api");
 
   return appInstance;
 };
