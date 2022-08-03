@@ -37,11 +37,11 @@ export const theme = createTheme({
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#073b4c;",
+      main: "#073b4c",
       contrastText: "#ffffff",
     },
     neutral: {
-      main: "#191919;",
+      main: "#95989b",
       contrastText: "#ffffff",
     },
   },

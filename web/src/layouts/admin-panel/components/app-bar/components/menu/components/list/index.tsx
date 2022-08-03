@@ -31,7 +31,7 @@ export const MENU_ITEMS = [
     icon: <InventoryIcon />,
   },
   {
-    name: "product-categories",
+    name: "products/categories",
     displayName: "Категории Товара",
     icon: <CategoryIcon />,
   },
@@ -41,7 +41,7 @@ export const MENU_ITEMS = [
     icon: <AnalyticsIcon />,
   },
   {
-    name: "modifier-categories",
+    name: "modifiers/categories",
     displayName: "Типы Модификаторов",
     icon: <BallotIcon />,
   },

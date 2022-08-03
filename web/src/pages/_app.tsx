@@ -1,14 +1,13 @@
 import "../styles/globals.scss";
-import type { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { store } from "~/store";
+import type { AppProps as NextAppProps } from "next/app";
+import AppPage from "~/interfaces/app-page.interface";
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-  return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  );
+export type AppProps = NextAppProps & {
+  Component: AppPage;
 };
 
-export default App;
+export default function App({ Component, pageProps }: AppProps) {
+  const getLayout = Component.getLayout ?? (page => page);
+
+  return getLayout(<Component {...pageProps} />);
+}

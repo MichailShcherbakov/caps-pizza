@@ -1,0 +1,38 @@
+.modal {
+  &,
+  &__form {
+    @include ui-w(480px);
+    @include ui-h(320px);
+
+    @include ui-flex;
+    @include ui-flex-col;
+  }
+
+  &__background {
+    @include ui-flex;
+    @include ui-flex-center;
+  }
+
+  &__header,
+  &__inner,
+  &__footer {
+    @include ui-w-full;
+    @include ui-p-8;
+  }
+
+  &__header {
+    @include ui-border-bottom(1px, solid, $border-color);
+    @include ui-gap(1rem);
+  }
+
+  &__footer {
+    @include ui-border-top(1px, solid, $border-color);
+    @include ui-gap(1rem);
+  }
+
+  &__inner {
+    @include ui-w-full;
+    @include ui-h-full;
+    @include ui-overflow-auto;
+  }
+}
