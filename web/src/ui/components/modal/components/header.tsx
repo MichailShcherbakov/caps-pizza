@@ -17,7 +17,7 @@ export default function ModalHeader({
       alignItems="center"
       className={styles["modal__header"]}
     >
-      <Typography variant="h3" component="p">
+      <Typography variant="h3" component="p" className="ui-w-full ui-truncate">
         {title}
       </Typography>
       <IconButton onClick={onExit}>

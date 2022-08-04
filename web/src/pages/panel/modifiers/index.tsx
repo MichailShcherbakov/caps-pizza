@@ -8,27 +8,19 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React from "react";
 import AppPage from "~/interfaces/app-page.interface";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import {
-  useDeleteModifierCategoryMutation,
-  useGetModifierCategoriesQuery,
-} from "~/services/modifier-categories.service";
-import CreateModifierCategoryModal from "./components/modal";
+  useDeleteModifierMutation,
+  useGetModifiersQuery,
+} from "~/services/modifiers.service";
+import CreateModifierModal from "./components/modal";
 
-export const ModifierCategoriesPage: AppPage = () => {
-  const {
-    data: modifierCategoriesOrError,
-    isLoading,
-    error,
-  } = useGetModifierCategoriesQuery();
-  const [deleteModifierCategory] = useDeleteModifierCategoryMutation();
+export const ModifiersPage: AppPage = () => {
+  const { data: modifiers, isLoading, isError } = useGetModifiersQuery();
+  const [deleteModifier] = useDeleteModifierMutation();
 
-  if (isLoading || error || !Array.isArray(modifierCategoriesOrError))
-    return null;
-
-  const modifierCatories = modifierCategoriesOrError;
+  if (isLoading || isError) return null;
 
   return (
     <TableContainer component={Paper}>
@@ -37,20 +29,28 @@ export const ModifierCategoriesPage: AppPage = () => {
           <TableRow>
             <TableCell>UUID</TableCell>
             <TableCell>Название</TableCell>
+            <TableCell>Описание</TableCell>
+            <TableCell>Артикул</TableCell>
+            <TableCell>Цена</TableCell>
+            <TableCell>Категория</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {modifierCatories.map(c => (
+          {modifiers.map(c => (
             <TableRow key={c.uuid}>
               <TableCell>{c.uuid}</TableCell>
               <TableCell>{c.name}</TableCell>
+              <TableCell>{c.desc}</TableCell>
+              <TableCell>{c.article_number}</TableCell>
+              <TableCell>{c.price}</TableCell>
+              <TableCell>{c.category?.name}</TableCell>
               <TableCell>
                 <Button
                   variant="outlined"
                   color="error"
                   size="small"
-                  onClick={() => deleteModifierCategory({ uuid: c.uuid })}
+                  onClick={() => deleteModifier({ uuid: c.uuid })}
                 >
                   Удалить
                 </Button>
@@ -59,7 +59,7 @@ export const ModifierCategoriesPage: AppPage = () => {
           ))}
           <TableRow>
             <TableCell>
-              <CreateModifierCategoryModal />
+              <CreateModifierModal />
             </TableCell>
           </TableRow>
         </TableBody>
@@ -68,8 +68,8 @@ export const ModifierCategoriesPage: AppPage = () => {
   );
 };
 
-ModifierCategoriesPage.getLayout = page => {
+ModifiersPage.getLayout = page => {
   return <AdminPanelLayout>{page}</AdminPanelLayout>;
 };
 
-export default ModifierCategoriesPage;
+export default ModifiersPage;

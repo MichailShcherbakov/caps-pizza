@@ -1,4 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import API from "./api.service";
+import transformResponse, {
+  APIError,
+} from "./helpers/transform-response.helper";
 
 export interface ModifierCategory {
   uuid: string;
@@ -6,38 +9,9 @@ export interface ModifierCategory {
   image_url?: string;
 }
 
-export interface Modifier {
-  uuid: string;
-  name: string;
-  desc?: string;
-  article_number: number;
-  image_url?: string;
-  price: number;
-  category_uuid: string;
-}
-
-export interface APIError {
-  error: string;
-  message: string;
-}
-
-export function transformResponse<T>(response: {
-  data?: T;
-  error?: string;
-  message?: string;
-}) {
-  return (
-    (response.data as T) ??
-    ({ error: response.error, message: response.message } as APIError)
-  );
-}
-
-export const API = createApi({
-  reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
-  tagTypes: ["ModifierCategory"],
+export const ModifierCategoryAPI = API.injectEndpoints({
   endpoints: builder => ({
-    getModifierCategories: builder.query<Modifier[] | APIError, void>({
+    getModifierCategories: builder.query<ModifierCategory[] | APIError, void>({
       query: () => `/modifiers/categories`,
       transformResponse,
       providesTags: result =>
@@ -46,7 +20,7 @@ export const API = createApi({
           : ["ModifierCategory"],
     }),
     createModifierCategory: builder.mutation<
-      Modifier | APIError,
+      ModifierCategory | APIError,
       Omit<ModifierCategory, "uuid">
     >({
       query: body => ({
@@ -74,6 +48,6 @@ export const {
   useGetModifierCategoriesQuery,
   useCreateModifierCategoryMutation,
   useDeleteModifierCategoryMutation,
-} = API;
+} = ModifierCategoryAPI;
 
-export default API;
+export default ModifierCategoryAPI;

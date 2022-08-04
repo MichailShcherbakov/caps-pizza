@@ -1,8 +1,10 @@
 .modal {
   &,
   &__form {
-    @include ui-w(480px);
-    @include ui-h(320px);
+    @include ui-min-w(480px);
+    @include ui-min-h(320px);
+    @include ui-max-w(540px);
+    @include ui-max-h(480px);
 
     @include ui-flex;
     @include ui-flex-col;
@@ -18,21 +20,20 @@
   &__footer {
     @include ui-w-full;
     @include ui-p-8;
+    @include ui-gap(1rem);
   }
 
   &__header {
     @include ui-border-bottom(1px, solid, $border-color);
-    @include ui-gap(1rem);
   }
 
   &__footer {
     @include ui-border-top(1px, solid, $border-color);
-    @include ui-gap(1rem);
   }
 
   &__inner {
     @include ui-w-full;
-    @include ui-h-full;
+    @include ui-min-h(210px);
     @include ui-overflow-auto;
   }
 }

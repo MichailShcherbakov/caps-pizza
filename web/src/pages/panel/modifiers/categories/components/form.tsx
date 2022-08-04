@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
-import { useCreateModifierCategoryMutation } from "~/services/api";
+import { useCreateModifierCategoryMutation } from "~/services/modifier-categories.service";
 import ModalContent from "~/ui/components/modal/components/content";
 import ModalFooter from "~/ui/components/modal/components/footer";
 import ModalForm, {
@@ -47,10 +47,14 @@ export default function CreateModifierCategoryForm({
 
   return (
     <ModalForm {...props} onSubmit={formik.handleSubmit}>
-      <ModalHeader title="Создание нового типа модификаторов" />
+      <ModalHeader
+        title="Создание нового типа модификаторов"
+        onExit={onCancel}
+      />
       <ModalContent className="ui-jc-center">
         <TextField
           fullWidth
+          required
           id="name"
           name="name"
           label="Введите название типа модификатора"
