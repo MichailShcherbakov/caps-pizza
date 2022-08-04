@@ -17,6 +17,15 @@ export const initApp = (
   appInstance: INestApplication,
   { usePrefix, useCors }: InitAppOptions = { usePrefix: false, useCors: false }
 ): INestApplication => {
+  if (useCors)
+    appInstance.enableCors({
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      credentials: true,
+      origin: process.env.FRONTEND_URL,
+    });
+
+  if (usePrefix) appInstance.setGlobalPrefix("/v1/api");
+
   appInstance.use(cookieParser());
   appInstance.use(express.static("static"));
   appInstance.useGlobalPipes(new ValidationPipe());
@@ -24,15 +33,6 @@ export const initApp = (
     new ResponseFormatInterceptor(),
     new ClassSerializerInterceptor(new Reflector())
   );
-
-  if (useCors)
-    appInstance.enableCors({
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-      credentials: true,
-      origin: true /* process.env.FRONTEND_URL */,
-    });
-
-  if (usePrefix) appInstance.setGlobalPrefix("/v1/api");
 
   return appInstance;
 };
