@@ -8,4 +8,7 @@ export default class ProductCategoryEntity extends IEntity {
 
   @Column()
   image_url: string;
+
+  @Column({ nullable: true })
+  display_position?: number;
 }

@@ -19,6 +19,9 @@ export default class ModifierEntity extends IEntity {
   @Column({ type: "float4" })
   price: number;
 
+  @Column({ nullable: true })
+  display_position?: number;
+
   @Column({ type: "uuid" })
   category_uuid: string;
 

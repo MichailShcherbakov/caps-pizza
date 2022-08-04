@@ -8,4 +8,7 @@ export default class ModifierCategoryEntity extends IEntity {
 
   @Column({ nullable: true })
   image_url?: string;
+
+  @Column({ nullable: true })
+  display_position?: number;
 }

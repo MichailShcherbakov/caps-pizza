@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from "typeorm";
 import ProductCategoryEntity from "./product-category.entity";
 import IEntity from "./entity.inteface";
+import ModifierEntity from "./modifier.entity";
 
 @Entity("products")
 export class ProductEntity extends IEntity {
@@ -28,6 +29,9 @@ export class ProductEntity extends IEntity {
     referencedColumnName: "uuid",
   })
   category: ProductCategoryEntity;
+
+  @ManyToMany(() => ModifierEntity)
+  modifiers: ModifierEntity[];
 }
 
 export default ProductEntity;

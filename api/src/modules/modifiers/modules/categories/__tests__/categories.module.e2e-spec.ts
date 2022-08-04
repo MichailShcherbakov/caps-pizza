@@ -3,7 +3,10 @@ import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
 import { fromJson, toJson } from "~/utils/json.helper";
-import { CreateModifierCategoryDto } from "../categories.dto";
+import {
+  CreateModifierCategoryDto,
+  UpdateModifierCategoryDto,
+} from "../categories.dto";
 import Api from "./helpers/api.helper";
 import createModifierCategoriesHelper, {
   createModifierCategoryHelper,
@@ -119,9 +122,79 @@ describe("[Modifier Categories Module] ...", () => {
         message: ["name should not be empty", "name must be a string"],
       });
     });
+
+    it("should throw an error when creating a category with existing name", async () => {
+      const dto: CreateModifierCategoryDto = {
+        name: faker.datatype.string(),
+        display_position: 1,
+      };
+
+      const firstCreateModifierCategoryResponse =
+        await api.createModifierCategory(dto);
+
+      expect(firstCreateModifierCategoryResponse.statusCode).toEqual(201);
+
+      const secondCreateModifierCategoryResponse =
+        await api.createModifierCategory(dto);
+
+      expect(secondCreateModifierCategoryResponse.statusCode).toEqual(400);
+      expect(secondCreateModifierCategoryResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier category with '${dto.name}' name already exists`,
+      });
+    });
   });
 
-  describe("[Delete] /categories", () => {
+  describe("[Update] /modifiers/categories", () => {
+    it("should successfully update a category", async () => {
+      const initialCarogory = await createModifierCategoryHelper(
+        testingModule.dataSource
+      );
+
+      const dto: UpdateModifierCategoryDto = {
+        name: faker.datatype.string(),
+        display_position: faker.datatype.number(),
+      };
+
+      const updateModifierCategoryResponse = await api.updateModifierCategory(
+        initialCarogory.uuid,
+        dto
+      );
+
+      expect(updateModifierCategoryResponse.status).toEqual(200);
+      expect(updateModifierCategoryResponse.body).toEqual({
+        statusCode: 200,
+        data: {
+          ...updateModifierCategoryResponse.body.data,
+          ...dto,
+        },
+      });
+    });
+
+    it("should throw an error when update a non-exists category", async () => {
+      const dto: UpdateModifierCategoryDto = {
+        name: faker.datatype.string(),
+        display_position: faker.datatype.number(),
+      };
+
+      const fakerModifierCategoryUUID = faker.datatype.uuid();
+
+      const updateModifierCategoryResponse = await api.updateModifierCategory(
+        fakerModifierCategoryUUID,
+        dto
+      );
+
+      expect(updateModifierCategoryResponse.status).toEqual(404);
+      expect(updateModifierCategoryResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The modifier category ${fakerModifierCategoryUUID} does not exist`,
+      });
+    });
+  });
+
+  describe("[Delete] /modifiers/categories", () => {
     it("should successfully delete a category", async () => {
       const modifierCategory = await createModifierCategoryHelper(
         testingModule.dataSource

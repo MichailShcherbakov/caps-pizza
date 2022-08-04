@@ -1,6 +1,9 @@
 import { Test } from "supertest";
 import IApi from "~/utils/api.interface";
-import { CreateModifierCategoryDto } from "../../categories.dto";
+import {
+  CreateModifierCategoryDto,
+  UpdateModifierCategoryDto,
+} from "../../categories.dto";
 
 export default class Api extends IApi {
   getModifierCategories(): Test {
@@ -13,6 +16,10 @@ export default class Api extends IApi {
 
   createModifierCategory(dto: CreateModifierCategoryDto): Test {
     return this._handle.post("/modifiers/categories").send(dto);
+  }
+
+  updateModifierCategory(uuid: string, dto: UpdateModifierCategoryDto): Test {
+    return this._handle.put(`/modifiers/categories/${uuid}`).send(dto);
   }
 
   deleteModifierCategory(uuid: string): Test {
