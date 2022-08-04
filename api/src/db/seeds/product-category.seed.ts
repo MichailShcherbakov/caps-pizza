@@ -8,6 +8,8 @@ export class ProductCategoriesFactory extends IFactory<ProductCategoryEntity> {
     const e = new ProductCategoryEntity();
     e.name = options.name || faker.commerce.productName();
     e.image_url = options.image_url || faker.image.imageUrl();
+    e.display_position =
+      options.display_position || faker.datatype.number({ min: 1, max: 5 });
     return e;
   }
 }

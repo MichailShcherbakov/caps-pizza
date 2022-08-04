@@ -7,9 +7,13 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
 } from "@nestjs/common";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
-import { CreateProductCategoryDto } from "./categories.dto";
+import {
+  CreateProductCategoryDto,
+  UpdateProductCategoryDto,
+} from "./categories.dto";
 import ProductCategoriesService from "./categories.service";
 
 @Controller("/products/categories")
@@ -21,7 +25,7 @@ export default class ProductCategoriesController {
     return this.productCategoriesService.find();
   }
 
-  @Get("/:productCategoryUUID/$")
+  @Get("/:productCategoryUUID")
   async getProdutCategory(
     @Param("productCategoryUUID", ParseUUIDPipe) productCategoryUUID: string
   ): Promise<ProductCategoryEntity> {
@@ -39,9 +43,17 @@ export default class ProductCategoriesController {
 
   @Post("/")
   createCategory(
-    @Body() createProductCategoryDto: CreateProductCategoryDto
+    @Body() dto: CreateProductCategoryDto
   ): Promise<ProductCategoryEntity> {
-    return this.productCategoriesService.create(createProductCategoryDto);
+    return this.productCategoriesService.create(dto);
+  }
+
+  @Put("/:productCategoryUUID")
+  updateCategory(
+    @Param("productCategoryUUID", ParseUUIDPipe) productCategoryUUID: string,
+    @Body() dto: UpdateProductCategoryDto
+  ): Promise<ProductCategoryEntity> {
+    return this.productCategoriesService.update(productCategoryUUID, dto);
   }
 
   @Delete("/:productCategoryUUID")

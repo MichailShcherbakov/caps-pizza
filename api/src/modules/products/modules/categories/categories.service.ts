@@ -1,8 +1,15 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOptionsWhere, Repository } from "typeorm";
+import { FindOptionsWhere, Not, Repository } from "typeorm";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
-import { CreateProductCategoryDto } from "./categories.dto";
+import {
+  CreateProductCategoryDto,
+  UpdateProductCategoryDto,
+} from "./categories.dto";
 
 @Injectable()
 export default class ProductCategoriesService {
@@ -23,12 +30,49 @@ export default class ProductCategoriesService {
     return this.productCategoriesRepository.findOne({ where: options });
   }
 
-  create(options: CreateProductCategoryDto): Promise<ProductCategoryEntity> {
+  async create(dto: CreateProductCategoryDto): Promise<ProductCategoryEntity> {
+    const foundExistsProductCategory = await this.findOne({ name: dto.name });
+
+    if (foundExistsProductCategory)
+      throw new BadRequestException(
+        `The product category with ${dto.name} name already exists`
+      );
+
     const newProductCategory = new ProductCategoryEntity();
-    newProductCategory.name = options.name;
-    newProductCategory.image_url = options.image_url;
+    newProductCategory.name = dto.name;
+    newProductCategory.image_url = dto.image_url;
+    newProductCategory.display_position = dto.display_position;
 
     return this.productCategoriesRepository.save(newProductCategory);
+  }
+
+  async update(
+    uuid: string,
+    dto: UpdateProductCategoryDto
+  ): Promise<ProductCategoryEntity> {
+    const [foundProductCagegory, foundExistsProductCategory] =
+      await Promise.all([
+        this.findOne({ uuid }),
+        this.findOne({ uuid: Not(uuid), name: dto.name }),
+      ]);
+
+    if (!foundProductCagegory)
+      throw new NotFoundException(
+        `The product category ${uuid} does not exist`
+      );
+
+    if (foundExistsProductCategory)
+      throw new BadRequestException(
+        `The product category with ${dto.name} name already exists`
+      );
+
+    foundProductCagegory.name = dto.name || foundProductCagegory.name;
+    foundProductCagegory.image_url =
+      dto.image_url || foundProductCagegory.image_url;
+    foundProductCagegory.display_position =
+      dto.display_position || foundProductCagegory.display_position;
+
+    return this.productCategoriesRepository.save(foundProductCagegory);
   }
 
   async delete(uuid: string): Promise<void> {
@@ -36,7 +80,7 @@ export default class ProductCategoriesService {
 
     if (!foundProductCategory)
       throw new NotFoundException(
-        "The product category " + uuid + " does not exist"
+        `The product category ${uuid} does not exist`
       );
 
     await this.productCategoriesRepository.delete({ uuid });

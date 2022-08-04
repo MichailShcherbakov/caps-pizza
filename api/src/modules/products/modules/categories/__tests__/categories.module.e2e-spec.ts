@@ -9,7 +9,10 @@ import TestingModule from "./helpers/testing-module.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
-import { CreateProductCategoryDto } from "../categories.dto";
+import {
+  CreateProductCategoryDto,
+  UpdateProductCategoryDto,
+} from "../categories.dto";
 
 describe("[Product Categories Module] ... ", () => {
   let testingModule: TestingModule;
@@ -84,6 +87,7 @@ describe("[Product Categories Module] ... ", () => {
       const dto: CreateProductCategoryDto = {
         name: faker.commerce.productName(),
         image_url: faker.image.imageUrl(),
+        display_position: faker.datatype.number(),
       };
 
       const createProductCategoryResponse = await api.createProductCategory(
@@ -103,6 +107,7 @@ describe("[Product Categories Module] ... ", () => {
     it("should throw an error when creating a product category without image_url", async () => {
       const dto: Partial<CreateProductCategoryDto> = {
         name: faker.commerce.productName(),
+        display_position: faker.datatype.number(),
       };
 
       const createProductCategoryResponse = await api.createProductCategory(
@@ -123,6 +128,7 @@ describe("[Product Categories Module] ... ", () => {
     it("should throw an error when creating a product category without name", async () => {
       const dto: Partial<CreateProductCategoryDto> = {
         image_url: faker.image.imageUrl(),
+        display_position: faker.datatype.number(),
       };
 
       const createProductCategoryResponse = await api.createProductCategory(
@@ -134,6 +140,104 @@ describe("[Product Categories Module] ... ", () => {
         statusCode: 400,
         error: "Bad Request",
         message: ["name should not be empty", "name must be a string"],
+      });
+    });
+
+    it("should throw an error when creating a product category with exists name", async () => {
+      const otherProductCategory = await createProductCategoryHelper(
+        testingModule.dataSource
+      );
+
+      const dto: CreateProductCategoryDto = {
+        name: otherProductCategory.name,
+        image_url: faker.image.imageUrl(),
+        display_position: faker.datatype.number(),
+      };
+
+      const createProductCategoryResponse = await api.createProductCategory(
+        dto
+      );
+
+      expect(createProductCategoryResponse.statusCode).toEqual(400);
+      expect(createProductCategoryResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The product category with ${otherProductCategory.name} name already exists`,
+      });
+    });
+  });
+
+  describe("[Update] /products/categories", () => {
+    it("should successfully update a product category", async () => {
+      const initialProductCategory = await createProductCategoryHelper(
+        testingModule.dataSource
+      );
+
+      const dto: UpdateProductCategoryDto = {
+        name: faker.commerce.productName(),
+        image_url: faker.image.imageUrl(),
+        display_position: faker.datatype.number(),
+      };
+
+      const createProductCategoryResponse = await api.updateProductCategory(
+        initialProductCategory.uuid,
+        dto
+      );
+
+      expect(createProductCategoryResponse.statusCode).toEqual(200);
+      expect(createProductCategoryResponse.body).toEqual({
+        statusCode: 200,
+        data: {
+          ...createProductCategoryResponse.body.data,
+          ...dto,
+        },
+      });
+    });
+
+    it("should throw an error when updating a non-exists product category", async () => {
+      const fakeProductCategoryUUID = faker.datatype.uuid();
+
+      const dto: UpdateProductCategoryDto = {
+        name: faker.commerce.productName(),
+        image_url: faker.image.imageUrl(),
+        display_position: faker.datatype.number(),
+      };
+
+      const createProductCategoryResponse = await api.updateProductCategory(
+        fakeProductCategoryUUID,
+        dto
+      );
+
+      expect(createProductCategoryResponse.statusCode).toEqual(404);
+      expect(createProductCategoryResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The product category ${fakeProductCategoryUUID} does not exist`,
+      });
+    });
+
+    it("should throw an error when updating a product category with exists name", async () => {
+      const initialProductCategory = await createProductCategoryHelper(
+        testingModule.dataSource
+      );
+      const otherProductCategory = await createProductCategoryHelper(
+        testingModule.dataSource
+      );
+
+      const dto: UpdateProductCategoryDto = {
+        name: otherProductCategory.name,
+      };
+
+      const createProductCategoryResponse = await api.updateProductCategory(
+        initialProductCategory.uuid,
+        dto
+      );
+
+      expect(createProductCategoryResponse.statusCode).toEqual(400);
+      expect(createProductCategoryResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The product category with ${otherProductCategory.name} name already exists`,
       });
     });
   });
