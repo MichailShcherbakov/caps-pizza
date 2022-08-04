@@ -7,9 +7,10 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
 } from "@nestjs/common";
 import ModifierEntity from "~/db/entities/modifier.entity";
-import { CreateModifierDto } from "./modifiers.dto";
+import { CreateModifierDto, UpdateModifierDto } from "./modifiers.dto";
 import ModifiersService from "./modifiers.service";
 
 @Controller("/modifiers")
@@ -40,6 +41,14 @@ export default class ModifiersController {
   @Post("/")
   createModifier(@Body() dto: CreateModifierDto): Promise<ModifierEntity> {
     return this.modifiersService.create(dto);
+  }
+
+  @Put("/:modifierUUID/$")
+  updateModifier(
+    @Param("modifierUUID", ParseUUIDPipe) modifierUUID: string,
+    @Body() dto: UpdateModifierDto
+  ): Promise<ModifierEntity> {
+    return this.modifiersService.update(modifierUUID, dto);
   }
 
   @Delete("/:modifierUUID")

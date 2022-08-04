@@ -14,6 +14,8 @@ export class ModifiersFactory extends IFactory<ModifierEntity> {
       faker.datatype.number({ max: 99999, min: 10000 });
     newModifier.price =
       options.price || faker.datatype.number({ max: 1000, min: 150 });
+    newModifier.display_position =
+      options.price || faker.datatype.number({ max: 5, min: 1 });
     newModifier.category_uuid = options.category_uuid || faker.datatype.uuid();
     return newModifier;
   }

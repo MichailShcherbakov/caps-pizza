@@ -4,7 +4,7 @@ import ModifierCategoryEntity from "./modifier-category.entity";
 
 @Entity("modifiers")
 export default class ModifierEntity extends IEntity {
-  @Column({ unique: true })
+  @Column()
   name: string;
 
   @Column({ nullable: true })

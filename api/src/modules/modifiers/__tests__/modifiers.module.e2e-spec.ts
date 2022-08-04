@@ -4,10 +4,12 @@ import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
 import { fromJson, toJson } from "~/utils/json.helper";
-import { CreateModifierDto } from "../modifiers.dto";
+import { CreateModifierDto, UpdateModifierDto } from "../modifiers.dto";
 import createModifierCategoriesHelper from "../modules/categories/__tests__/helpers/create-modifier-categories.helper";
 import Api from "./helpers/api.helper";
-import createModifiersHelper from "./helpers/create-modifiers.helper";
+import createModifiersHelper, {
+  createModifierHelper,
+} from "./helpers/create-modifiers.helper";
 import TestingModule from "./helpers/testing-module.helper";
 
 describe("[Modifier Module] ...", () => {
@@ -98,6 +100,7 @@ describe("[Modifier Module] ...", () => {
         name: faker.word.noun(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
         category_uuid: category.uuid,
       };
 
@@ -125,6 +128,7 @@ describe("[Modifier Module] ...", () => {
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
       };
 
       const createModifierResponse = await api.createModifier(dto as any);
@@ -147,6 +151,7 @@ describe("[Modifier Module] ...", () => {
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
         category_uuid: faker.datatype.uuid(),
       };
 
@@ -157,6 +162,154 @@ describe("[Modifier Module] ...", () => {
         statusCode: 404,
         error: "Not Found",
         message: `The modifier category ${dto.category_uuid} does not exist`,
+      });
+    });
+
+    it("should throw an error when creating a modifier with exists name and category", async () => {
+      const initialCategory = categories[2];
+      const initialModifier = await createModifierHelper(
+        testingModule.dataSource,
+        initialCategory
+      );
+
+      const dto: CreateModifierDto = {
+        name: initialModifier.name,
+        article_number: faker.datatype.number(),
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+        category_uuid: initialModifier.category_uuid,
+      };
+
+      const createModifierResponse = await api.createModifier(dto);
+
+      expect(createModifierResponse.status).toEqual(400);
+      expect(createModifierResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier with ${dto.name} name in ${initialCategory.name} category already exists`,
+      });
+    });
+  });
+
+  describe("[Update] /modifiers", () => {
+    it("should successfully update a modifier", async () => {
+      const initialCategory = categories[1];
+      const initialModifier = await createModifierHelper(
+        testingModule.dataSource,
+        initialCategory
+      );
+
+      const newCategory = categories[3];
+      const dto: UpdateModifierDto = {
+        name: faker.datatype.string(),
+        article_number: faker.datatype.number(),
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+        category_uuid: newCategory.uuid,
+      };
+
+      const updateModifierResponse = await api.updateModifier(
+        initialModifier.uuid,
+        dto
+      );
+
+      expect(updateModifierResponse.status).toEqual(200);
+      expect(updateModifierResponse.body).toEqual({
+        statusCode: 200,
+        data: {
+          ...updateModifierResponse.body.data,
+          ...dto,
+        },
+      });
+    });
+
+    it("should throw an error when update non-exists modifier category", async () => {
+      const initialCategory = categories[1];
+      const initialModifier = await createModifierHelper(
+        testingModule.dataSource,
+        initialCategory
+      );
+
+      const dto: UpdateModifierDto = {
+        name: faker.datatype.string(),
+        article_number: faker.datatype.number(),
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+        category_uuid: faker.datatype.uuid(),
+      };
+
+      const updateModifierResponse = await api.updateModifier(
+        initialModifier.uuid,
+        dto
+      );
+
+      expect(updateModifierResponse.status).toEqual(404);
+      expect(updateModifierResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The modifier category ${dto.category_uuid} does not exist`,
+      });
+    });
+
+    it("should throw an error when update exists name and category", async () => {
+      const initialCategory = categories[1];
+      const initialModifier = await createModifierHelper(
+        testingModule.dataSource,
+        initialCategory
+      );
+
+      const otherCategory = categories[3];
+      const otherModifier = await createModifierHelper(
+        testingModule.dataSource,
+        otherCategory
+      );
+
+      const dto: UpdateModifierDto = {
+        name: otherModifier.name,
+        article_number: faker.datatype.number(),
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+        category_uuid: otherModifier.category_uuid,
+      };
+
+      const updateModifierResponse = await api.updateModifier(
+        initialModifier.uuid,
+        dto
+      );
+
+      expect(updateModifierResponse.status).toEqual(400);
+      expect(updateModifierResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier with ${otherModifier.name} name in ${otherCategory.name} category already exists`,
+      });
+    });
+
+    it("should throw an error when update a non-exists modifier", async () => {
+      const fakeModifierUUID = faker.datatype.uuid();
+
+      const dto: UpdateModifierDto = {
+        name: faker.datatype.string(),
+        article_number: faker.datatype.number(),
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+      };
+
+      const updateModifierResponse = await api.updateModifier(
+        fakeModifierUUID,
+        dto
+      );
+
+      expect(updateModifierResponse.status).toEqual(404);
+      expect(updateModifierResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The modifier ${fakeModifierUUID} does not exist`,
       });
     });
   });
@@ -214,6 +367,19 @@ describe("[Modifier Module] ...", () => {
         statusCode: 404,
         error: "Not Found",
         message: `The modifier ${modifier.uuid} does not exist`,
+      });
+    });
+
+    it("should throw an error when delete a non-exists modifier", async () => {
+      const fakeModifierUUID = faker.datatype.uuid();
+
+      const deleteModifierResponse = await api.deleteModifier(fakeModifierUUID);
+
+      expect(deleteModifierResponse.status).toEqual(404);
+      expect(deleteModifierResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The modifier ${fakeModifierUUID} does not exist`,
       });
     });
   });
