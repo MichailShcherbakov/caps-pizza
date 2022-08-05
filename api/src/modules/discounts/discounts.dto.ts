@@ -7,6 +7,8 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  IsUUID,
+  ValidateNested,
 } from "class-validator";
 import {
   DiscountScopeEnum,
@@ -27,7 +29,7 @@ export class CreateDiscountDto {
   @IsNotEmpty()
   scope: DiscountScopeEnum;
 
-  @IsNotEmptyObject({ nullable: false })
+  @ValidateNested()
   condition: DiscountСondition;
 
   @IsNumber()
@@ -36,10 +38,12 @@ export class CreateDiscountDto {
   value: number;
 
   @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   products_uuids: string[];
 
   @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   product_categories_uuids: string[];
 }
@@ -55,7 +59,7 @@ export class UpdateDiscountDto {
   @IsOptional()
   scope?: DiscountScopeEnum;
 
-  @IsNotEmptyObject({ nullable: false })
+  @ValidateNested()
   @IsOptional()
   condition?: DiscountСondition;
 
@@ -66,11 +70,13 @@ export class UpdateDiscountDto {
   value?: number;
 
   @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   @IsOptional()
   products_uuids?: string[];
 
   @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   @IsOptional()
   product_categories_uuids?: string[];

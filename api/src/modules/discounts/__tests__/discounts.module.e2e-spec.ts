@@ -201,5 +201,125 @@ describe("[Discounts Module] ...", () => {
         message: `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`,
       });
     });
+
+    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCTS} and a non-exists product`, async () => {
+      const fakeProductUUID = faker.datatype.uuid();
+      const dto: CreateDiscountDto = {
+        name: faker.datatype.string(),
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
+        scope: DiscountScopeEnum.PRODUCTS,
+        products_uuids: [
+          products[2],
+          products[6],
+          { uuid: fakeProductUUID },
+        ].map(c => c.uuid),
+        product_categories_uuids: [],
+      };
+
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(404);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The product ${fakeProductUUID} does not exist`,
+      });
+    });
+
+    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCT_CATEGORIES} and a non-exists product category`, async () => {
+      const fakeProductCategoryUUID = faker.datatype.uuid();
+      const dto: CreateDiscountDto = {
+        name: faker.datatype.string(),
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
+        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        products_uuids: [],
+        product_categories_uuids: [
+          productCategories[2],
+          { uuid: fakeProductCategoryUUID },
+          productCategories[6],
+        ].map(c => c.uuid),
+      };
+
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(404);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The product category ${fakeProductCategoryUUID} does not exist`,
+      });
+    });
+
+    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCTS} and a invalid product uuid`, async () => {
+      const fakeProductUUID = faker.datatype.string();
+      const dto: CreateDiscountDto = {
+        name: faker.datatype.string(),
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
+        scope: DiscountScopeEnum.PRODUCTS,
+        products_uuids: [
+          products[2],
+          products[6],
+          { uuid: fakeProductUUID },
+        ].map(c => c.uuid),
+        product_categories_uuids: [],
+      };
+
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(400);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: ["each value in products_uuids must be a UUID"],
+      });
+    });
+
+    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCT_CATEGORIES} and a invalid product category uuid`, async () => {
+      const fakeProductCategoryUUID = faker.datatype.string();
+      const dto: CreateDiscountDto = {
+        name: faker.datatype.string(),
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
+        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        products_uuids: [],
+        product_categories_uuids: [
+          productCategories[2],
+          { uuid: fakeProductCategoryUUID },
+          productCategories[6],
+        ].map(c => c.uuid),
+      };
+
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(400);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: ["each value in product_categories_uuids must be a UUID"],
+      });
+    });
   });
 });

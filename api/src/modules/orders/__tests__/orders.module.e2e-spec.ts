@@ -9,7 +9,7 @@ import {
   FrontPadResponse,
   MakeAnOrderDto,
   OrderedProduct,
-  PaymentType,
+  PaymentTypeEnum,
 } from "../orders.dto";
 import OrdersService, { FIXED_MODIFIER_COUNT } from "../orders.service";
 import Api from "./helpers/api.helper";
@@ -100,7 +100,7 @@ describe("[Orders Module] ...", () => {
           apartment: faker.datatype.number({ max: 99, min: 0 }),
         },
         payment: {
-          type: PaymentType.IN_CASH,
+          type: PaymentTypeEnum.IN_CASH,
         },
         client_info: {
           name: faker.datatype.string(),

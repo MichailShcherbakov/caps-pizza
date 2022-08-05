@@ -10,6 +10,7 @@ import {
   IsString,
   IsUUID,
   MaxLength,
+  ValidateNested,
 } from "class-validator";
 
 export class Modifier {
@@ -30,6 +31,7 @@ export class OrderedProduct {
 
   @IsArray()
   @IsNotEmpty()
+  @ValidateNested({ each: true })
   modifiers: Modifier[];
 }
 
@@ -72,22 +74,24 @@ export class ClientInfo {
   mail?: string;
 }
 
-export enum PaymentType {
+export enum PaymentTypeEnum {
   IN_CASH = "IN_CASH",
   BY_CARD = "BY_CARD",
 }
 
 export class Payment {
-  @IsEnum(PaymentType)
+  @IsEnum(PaymentTypeEnum)
   @IsNotEmpty()
-  type: PaymentType;
+  type: PaymentTypeEnum;
 }
 
 export class MakeAnOrderDto {
   @IsNotEmpty()
   @IsArray()
+  @ValidateNested({ each: true })
   products: OrderedProduct[];
 
+  @ValidateNested()
   @IsNotEmpty()
   delivery_address: DeliveryAddress;
 
@@ -101,6 +105,7 @@ export class MakeAnOrderDto {
   @IsOptional()
   card?: number;
 
+  @ValidateNested()
   @IsNotEmpty()
   client_info: ClientInfo;
 

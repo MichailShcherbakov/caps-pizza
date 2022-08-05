@@ -37,6 +37,7 @@ export class CreateProductDto {
   category_uuid: string;
 
   @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   modifiers_uuids: string[];
 }
@@ -75,6 +76,7 @@ export class UpdateProductDto {
   category_uuid?: string;
 
   @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   @IsOptional()
   modifiers_uuids?: string[];

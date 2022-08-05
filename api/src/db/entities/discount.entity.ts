@@ -29,17 +29,17 @@ export enum DiscountOperatorEnum {
 }
 
 export class DiscountСondition {
-  @IsNotEmpty()
   @IsEnum(DiscountCriteriaEnum)
+  @IsNotEmpty()
   criteria: DiscountCriteriaEnum;
 
-  @IsNotEmpty()
   @IsEnum(DiscountOperatorEnum)
+  @IsNotEmpty()
   op: DiscountOperatorEnum;
 
-  @IsNotEmpty()
   @IsNumber()
   @IsPositive()
+  @IsNotEmpty()
   value: number;
 }
 
