@@ -1,7 +1,13 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
-import DiscountEntity from "~/db/entities/discount.entity";
+import DiscountEntity, {
+  DiscountTypeEnum,
+} from "~/db/entities/discount.entity";
 import { CreateDiscountDto } from "./discounts.dto";
 
 @Injectable()
@@ -14,24 +20,51 @@ export default class DiscountsService {
   find(
     options: FindOptionsWhere<DiscountEntity> = {}
   ): Promise<DiscountEntity[]> {
-    return this.discountRepository.find({ where: options });
+    return this.discountRepository.find({
+      where: options,
+      relations: {
+        products: true,
+        product_categories: true,
+      },
+      order: {
+        name: "ASC",
+      },
+    });
   }
 
   findOne(
     options: FindOptionsWhere<DiscountEntity> = {}
   ): Promise<DiscountEntity | null> {
-    return this.discountRepository.findOne({ where: options });
+    return this.discountRepository.findOne({
+      where: options,
+      relations: {
+        products: true,
+        product_categories: true,
+      },
+    });
   }
 
-  create(dto: CreateDiscountDto): Promise<DiscountEntity> {
-    const newDiscount = new DiscountEntity();
-    newDiscount.name = dto.name;
-    newDiscount.type = dto.type;
-    newDiscount.scope = dto.scope;
-    newDiscount.condition = dto.condition;
-    newDiscount.value = dto.value;
+  async create(dto: CreateDiscountDto): Promise<DiscountEntity> {
+    const foundDiscount = await this.findOne({ name: dto.name });
 
-    return this.discountRepository.save(newDiscount);
+    if (foundDiscount)
+      throw new BadRequestException(
+        `The discount ${foundDiscount.uuid} already has the ${dto.name} name`
+      );
+
+    if (dto.type === DiscountTypeEnum.PERCENT && dto.value > 100)
+      throw new BadRequestException(
+        `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`
+      );
+
+    const e = new DiscountEntity();
+    e.name = dto.name;
+    e.type = dto.type;
+    e.scope = dto.scope;
+    e.condition = dto.condition;
+    e.value = dto.value;
+
+    return this.discountRepository.save(e);
   }
 
   async delete(uuid: string): Promise<void> {

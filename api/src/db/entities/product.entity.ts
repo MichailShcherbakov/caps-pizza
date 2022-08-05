@@ -38,7 +38,7 @@ export class ProductEntity extends IEntity {
   })
   category?: ProductCategoryEntity;
 
-  @ManyToMany(() => ModifierEntity, { onDelete: "CASCADE" })
+  @ManyToMany(() => ModifierEntity)
   @JoinTable({
     name: "product_modifiers",
     joinColumn: {

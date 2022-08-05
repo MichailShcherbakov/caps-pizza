@@ -5,18 +5,26 @@ import {
   DiscountScopeEnum,
   DiscountTypeEnum,
 } from "~/db/entities/discount.entity";
+import ProductCategoryEntity from "~/db/entities/product-category.entity";
+import ProductEntity from "~/db/entities/product.entity";
+import createProductCategoriesHelper from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
+import createProductsHelper from "~/modules/products/__tests__/helpers/create-products.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
 import { fromJson, toJson } from "~/utils/json.helper";
 import { CreateDiscountDto } from "../discounts.dto";
 import Api from "./helpers/api.helper";
-import createDiscountsHelper from "./helpers/create-discounts.helper";
+import createDiscountsHelper, {
+  createDiscountHelper,
+} from "./helpers/create-discounts.helper";
 import TestingModule from "./helpers/testing-module.helper";
 
 describe("[Discounts Module] ...", () => {
   let testingModule: TestingModule;
   let api: Api;
+  let productCategories: ProductCategoryEntity[];
+  let products: ProductEntity[];
 
   beforeAll(async () => {
     testingModule = new TestingModule();
@@ -24,6 +32,14 @@ describe("[Discounts Module] ...", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
+
+    productCategories = await createProductCategoriesHelper(
+      testingModule.dataSource
+    );
+    products = await createProductsHelper(
+      testingModule.dataSource,
+      productCategories
+    );
   });
 
   afterEach(async () => {
@@ -38,14 +54,19 @@ describe("[Discounts Module] ...", () => {
     it("should return all exists discounts", async () => {
       const discounts = await createDiscountsHelper(testingModule.dataSource);
 
-      const response = await api.getDiscounts();
+      const getDiscountsResponse = await api.getDiscounts();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      expect(getDiscountsResponse.status).toEqual(200);
+      expect(getDiscountsResponse.body).toEqual({
         statusCode: 200,
         data: fromJson(
           toJson(
-            deleteObjectsPropsHelper(discounts, ["updated_at", "created_at"])
+            deleteObjectsPropsHelper(
+              discounts.sort((a, b) =>
+                a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+              ),
+              ["updated_at", "created_at"]
+            )
           )
         ),
       });
@@ -55,10 +76,10 @@ describe("[Discounts Module] ...", () => {
       const discounts = await createDiscountsHelper(testingModule.dataSource);
       const discount = discounts[2];
 
-      const response = await api.getDiscount(discount.uuid);
+      const getDiscountResponse = await api.getDiscount(discount.uuid);
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      expect(getDiscountResponse.status).toEqual(200);
+      expect(getDiscountResponse.body).toEqual({
         statusCode: 200,
         data: fromJson(
           toJson(
@@ -71,10 +92,10 @@ describe("[Discounts Module] ...", () => {
     it("should throw an error when the discount does not exist", async () => {
       const fakerDiscountUUID = faker.datatype.uuid();
 
-      const response = await api.getDiscount(fakerDiscountUUID);
+      const getDiscountResponse = await api.getDiscount(fakerDiscountUUID);
 
-      expect(response.status).toEqual(404);
-      expect(response.body).toEqual({
+      expect(getDiscountResponse.status).toEqual(404);
+      expect(getDiscountResponse.body).toEqual({
         statusCode: 404,
         error: "Not Found",
         message: `The discount ${fakerDiscountUUID} does not exist`,
@@ -84,57 +105,100 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Post] /discounts", () => {
     it("should successfully create a discount", async () => {
+      const choicedProductCategories = [
+        productCategories[2],
+        productCategories[1],
+        productCategories[6],
+      ];
+
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
         type: DiscountTypeEnum.IN_CASH,
-        scope: DiscountScopeEnum.CATEGORY,
+        value: 1299,
         condition: {
           criteria: DiscountCriteriaEnum.COUNT,
           op: DiscountOperatorEnum.EQUAL,
           value: 3,
         },
-        value: 1299,
+        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        products_uuids: [],
+        product_categories_uuids: choicedProductCategories.map(c => c.uuid),
       };
 
-      const response = await api.createDiscount(dto);
+      const createDiscountResponse = await api.createDiscount(dto);
 
-      expect(response.status).toEqual(201);
-      expect(response.body).toEqual({
+      expect(createDiscountResponse.status).toEqual(201);
+      expect(createDiscountResponse.body).toEqual({
         statusCode: 201,
         data: {
-          ...response.body.data,
-          ...dto,
+          ...createDiscountResponse.body.data,
+          ...deleteObjectPropsHelper(dto, [
+            "product_categories_uuids",
+            "products_uuids",
+          ]),
         },
       });
     });
 
-    it("should return a special discount", async () => {
-      const discounts = await createDiscountsHelper(testingModule.dataSource);
-      const discount = discounts[2];
+    it("should throw an error when creating a discount with exists name", async () => {
+      const otherDiscount = await createDiscountHelper(
+        testingModule.dataSource
+      );
 
-      const response = await api.getDiscount(discount.uuid);
+      const dto: CreateDiscountDto = {
+        name: otherDiscount.name,
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
+        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        products_uuids: [],
+        product_categories_uuids: [
+          productCategories[2],
+          productCategories[1],
+          productCategories[6],
+        ].map(c => c.uuid),
+      };
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
-        statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(discount, ["updated_at", "created_at"])
-          )
-        ),
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(400);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The discount ${otherDiscount.uuid} already has the ${dto.name} name`,
       });
     });
 
-    it("should throw an error when the discount does not exist", async () => {
-      const fakerDiscountUUID = faker.datatype.uuid();
+    it(`should throw an error when creating a discount with type ${DiscountTypeEnum.PERCENT} and the value greater then 100`, async () => {
+      const dto: CreateDiscountDto = {
+        name: faker.datatype.string(),
+        type: DiscountTypeEnum.PERCENT,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
+        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        products_uuids: [],
+        product_categories_uuids: [
+          productCategories[2],
+          productCategories[1],
+          productCategories[6],
+        ].map(c => c.uuid),
+      };
 
-      const response = await api.getDiscount(fakerDiscountUUID);
+      const createDiscountResponse = await api.createDiscount(dto);
 
-      expect(response.status).toEqual(404);
-      expect(response.body).toEqual({
-        statusCode: 404,
-        error: "Not Found",
-        message: `The discount ${fakerDiscountUUID} does not exist`,
+      expect(createDiscountResponse.status).toEqual(400);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`,
       });
     });
   });

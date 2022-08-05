@@ -1,6 +1,8 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsPositive } from "class-validator";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm";
 import IEntity from "./entity.inteface";
+import ProductCategoryEntity from "./product-category.entity";
+import ProductEntity from "./product.entity";
 
 export enum DiscountTypeEnum {
   PERCENT = "PERCENT",
@@ -13,8 +15,8 @@ export enum DiscountCriteriaEnum {
 }
 
 export enum DiscountScopeEnum {
-  PRODUCT = "PRODUCT",
-  CATEGORY = "CATEGORY",
+  PRODUCTS = "PRODUCTS",
+  PRODUCT_CATEGORIES = "PRODUCT_CATEGORIES",
   GLOBAL = "GLOBAL",
 }
 
@@ -43,7 +45,7 @@ export class DiscountСondition {
 
 @Entity("discounts")
 export default class DiscountEntity extends IEntity {
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
@@ -57,4 +59,36 @@ export default class DiscountEntity extends IEntity {
 
   @Column({ type: "float4" })
   value: number;
+
+  @ManyToMany(() => ProductEntity)
+  @JoinTable({
+    name: "discount_products",
+    joinColumn: {
+      name: "discount",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_discount_products_discount_uuid",
+    },
+    inverseJoinColumn: {
+      name: "product",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_discount_products_product_uuid",
+    },
+  })
+  products: ProductEntity[];
+
+  @ManyToMany(() => ProductCategoryEntity)
+  @JoinTable({
+    name: "discount_product_categories",
+    joinColumn: {
+      name: "discount",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_discount_products_discount_uuid",
+    },
+    inverseJoinColumn: {
+      name: "product_category",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_discount_products_product_category_uuid",
+    },
+  })
+  product_categories: ProductCategoryEntity[];
 }

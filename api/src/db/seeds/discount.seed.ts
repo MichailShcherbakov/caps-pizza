@@ -20,6 +20,8 @@ export class DiscountsFactory extends IFactory<DiscountEntity> {
       value: faker.datatype.number({ min: 2000, max: 5000 }),
     };
     e.value = faker.datatype.number({ min: 1, max: 30 });
+    e.products = options.products || [];
+    e.product_categories = options.product_categories || [];
     return e;
   }
 }
