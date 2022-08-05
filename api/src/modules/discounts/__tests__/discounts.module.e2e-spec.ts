@@ -108,7 +108,39 @@ describe("[Discounts Module] ...", () => {
   });
 
   describe("[Post] /discounts", () => {
-    it("should successfully create a discount", async () => {
+    it("should successfully create a discount with products", async () => {
+      const choicedProducts = [products[2], products[1], products[6]];
+
+      const dto: CreateDiscountDto = {
+        name: faker.word.adjective(),
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
+        scope: DiscountScopeEnum.PRODUCTS,
+        products_uuids: choicedProducts.map(c => c.uuid),
+        product_categories_uuids: [],
+      };
+
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(201);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 201,
+        data: {
+          ...createDiscountResponse.body.data,
+          ...deleteObjectPropsHelper(dto, [
+            "product_categories_uuids",
+            "products_uuids",
+          ]),
+        },
+      });
+    });
+
+    it("should successfully create a discount with product categories", async () => {
       const choicedProductCategories = [
         productCategories[2],
         productCategories[1],
@@ -565,6 +597,58 @@ describe("[Discounts Module] ...", () => {
       });
     });
 
+    it(`throw an error when updating a discount with a non-exists product`, async () => {
+      const discount = await createDiscountHelper(testingModule.dataSource);
+      const fakeProductUUID = faker.datatype.uuid();
+      const choicedProducts = [
+        products[2],
+        { uuid: fakeProductUUID },
+        products[6],
+      ];
+
+      const dto: UpdateDiscountDto = {
+        products_uuids: choicedProducts.map(p => p.uuid),
+      };
+
+      const updateDiscoutResponse = await api.updateDiscount(
+        discount.uuid,
+        dto
+      );
+
+      expect(updateDiscoutResponse.status).toEqual(404);
+      expect(updateDiscoutResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The product ${fakeProductUUID} does not exist`,
+      });
+    });
+
+    it(`throw an error when updating a discount with a non-exists product category`, async () => {
+      const discount = await createDiscountHelper(testingModule.dataSource);
+      const fakeProductCategoryUUID = faker.datatype.uuid();
+      const choicedProductCategories = [
+        productCategories[2],
+        { uuid: fakeProductCategoryUUID },
+        productCategories[6],
+      ];
+
+      const dto: UpdateDiscountDto = {
+        product_categories_uuids: choicedProductCategories.map(c => c.uuid),
+      };
+
+      const updateDiscoutResponse = await api.updateDiscount(
+        discount.uuid,
+        dto
+      );
+
+      expect(updateDiscoutResponse.status).toEqual(404);
+      expect(updateDiscoutResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The product category ${fakeProductCategoryUUID} does not exist`,
+      });
+    });
+
     it(`throw an error when updating a discount with ${DiscountTypeEnum.PERCENT} and the value greater then 100`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
         scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
@@ -621,6 +705,41 @@ describe("[Discounts Module] ...", () => {
         statusCode: 400,
         error: "Bad Request",
         message: `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`,
+      });
+    });
+  });
+
+  describe("[Delete] /discounts", () => {
+    it(`should successfully delete a discount`, async () => {
+      const discount = await createDiscountHelper(testingModule.dataSource);
+
+      const deleteDiscountResponse = await api.deleteDiscount(discount.uuid);
+
+      expect(deleteDiscountResponse.status).toEqual(200);
+      expect(deleteDiscountResponse.body).toEqual({
+        statusCode: 200,
+      });
+
+      const getDiscoutResponse = await api.getDiscount(discount.uuid);
+
+      expect(getDiscoutResponse.status).toEqual(404);
+      expect(getDiscoutResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The discount ${discount.uuid} does not exist`,
+      });
+    });
+
+    it(`should throw an error when deleting a non-exists discount`, async () => {
+      const fakeDiscountUUID = faker.datatype.uuid();
+
+      const deleteDiscountResponse = await api.deleteDiscount(fakeDiscountUUID);
+
+      expect(deleteDiscountResponse.status).toEqual(404);
+      expect(deleteDiscountResponse.body).toEqual({
+        statusCode: 404,
+        error: "Not Found",
+        message: `The discount ${fakeDiscountUUID} does not exist`,
       });
     });
   });

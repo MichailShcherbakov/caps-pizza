@@ -148,57 +148,56 @@ export default class DiscountsService {
     }
 
     if (dto.scope) {
-      foundDiscount.scope = dto.scope;
-
       if (dto.scope === DiscountScopeEnum.PRODUCTS) {
-        if (dto.products_uuids) {
-          const products = await this.productsService.find({
-            uuid: In(dto.products_uuids),
-          });
-
-          if (products.length !== dto.products_uuids.length) {
-            const productsSet = new Set(products.map(p => p.uuid));
-
-            for (const productUUID of dto.products_uuids) {
-              if (!productsSet.has(productUUID)) {
-                throw new NotFoundException(
-                  `The product ${productUUID} does not exist`
-                );
-              }
-            }
-          }
-          foundDiscount.products = products;
-        }
         foundDiscount.product_categories = [];
       } else if (dto.scope === DiscountScopeEnum.PRODUCT_CATEGORIES) {
-        if (dto.product_categories_uuids) {
-          const productCategories = await this.productCategoriesService.find({
-            uuid: In(dto.product_categories_uuids),
-          });
-
-          if (
-            productCategories.length !== dto.product_categories_uuids.length
-          ) {
-            const productCategoriesSet = new Set(
-              productCategories.map(p => p.uuid)
-            );
-
-            for (const productCategoryUUID of dto.product_categories_uuids) {
-              if (!productCategoriesSet.has(productCategoryUUID)) {
-                throw new NotFoundException(
-                  `The product category ${productCategoryUUID} does not exist`
-                );
-              }
-            }
-          }
-          foundDiscount.product_categories = productCategories;
-        }
-
         foundDiscount.products = [];
       } else {
         foundDiscount.products = [];
         foundDiscount.product_categories = [];
       }
+
+      foundDiscount.scope = dto.scope;
+    }
+
+    if (dto.products_uuids) {
+      const products = await this.productsService.find({
+        uuid: In(dto.products_uuids),
+      });
+
+      if (products.length !== dto.products_uuids.length) {
+        const productsSet = new Set(products.map(p => p.uuid));
+
+        for (const productUUID of dto.products_uuids) {
+          if (!productsSet.has(productUUID)) {
+            throw new NotFoundException(
+              `The product ${productUUID} does not exist`
+            );
+          }
+        }
+      }
+      foundDiscount.products = products;
+    }
+
+    if (dto.product_categories_uuids) {
+      const productCategories = await this.productCategoriesService.find({
+        uuid: In(dto.product_categories_uuids),
+      });
+
+      if (productCategories.length !== dto.product_categories_uuids.length) {
+        const productCategoriesSet = new Set(
+          productCategories.map(p => p.uuid)
+        );
+
+        for (const productCategoryUUID of dto.product_categories_uuids) {
+          if (!productCategoriesSet.has(productCategoryUUID)) {
+            throw new NotFoundException(
+              `The product category ${productCategoryUUID} does not exist`
+            );
+          }
+        }
+      }
+      foundDiscount.product_categories = productCategories;
     }
 
     foundDiscount.condition = dto.condition || foundDiscount.condition;
