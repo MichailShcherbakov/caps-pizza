@@ -1,0 +1,15 @@
+{
+  "name": "@MichailShcherbakov/caps-pizza",
+  "version": "0.0.1",
+  "private": true,
+  "license": "ISC",
+  "author": "MichailShcherbakov <50011226+MichailShcherbakov@users.noreply.github.com>",
+  "bugs": {
+    "url": "https://github.com/MichailShcherbakov/caps-pizza/issues"
+  },
+  "homepage": "https://github.com/MichailShcherbakov/caps-pizza#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichailShcherbakov/caps-pizza.git"
+  }
+}
