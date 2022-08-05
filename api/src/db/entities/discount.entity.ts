@@ -1,4 +1,10 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsPositive } from "class-validator";
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+} from "class-validator";
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import IEntity from "./entity.inteface";
 import ProductCategoryEntity from "./product-category.entity";
@@ -7,6 +13,7 @@ import ProductEntity from "./product.entity";
 export enum DiscountTypeEnum {
   PERCENT = "PERCENT",
   IN_CASH = "IN_CASH",
+  FIXED_PRICE = "FIXED_PRICE",
 }
 
 export enum DiscountCriteriaEnum {
@@ -41,6 +48,12 @@ export class DiscountСondition {
   @IsPositive()
   @IsNotEmpty()
   value: number;
+
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
+  @IsOptional()
+  value2?: number;
 }
 
 @Entity("discounts")

@@ -6,9 +6,13 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, In, Not, Repository } from "typeorm";
 import DiscountEntity, {
+  DiscountCriteriaEnum,
+  DiscountOperatorEnum,
   DiscountScopeEnum,
   DiscountTypeEnum,
 } from "~/db/entities/discount.entity";
+import ProductEntity from "~/db/entities/product.entity";
+import { OrderedProduct } from "../orders/orders.dto";
 import ProductCategoriesService from "../products/modules/categories/categories.service";
 import ProductsService from "../products/products.service";
 import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
@@ -213,5 +217,62 @@ export default class DiscountsService {
       throw new NotFoundException(`The discount ${uuid} does not exist`);
 
     await this.discountRepository.delete({ uuid });
+  }
+
+  async calculate(
+    orderedProducts: OrderedProduct[],
+    finalOrderCost: number
+  ): Promise<number> {
+    const discounts = await this.find();
+    const products = await this.productsService.find({
+      uuid: In(orderedProducts.map(p => p.uuid)),
+    });
+
+    for (const discount of discounts) {
+      if (discount.scope === DiscountScopeEnum.PRODUCT_CATEGORIES) {
+        const productCategoriesUUIDs = new Set(
+          discount.product_categories.map(c => c.uuid)
+        );
+
+        const suitableProductsCount = products.reduce((acc, curr) => {
+          if (productCategoriesUUIDs.has(curr.category_uuid)) acc += 1;
+          return acc;
+        }, 0);
+
+        let discountsCount = 0;
+
+        if (discount.condition.criteria === DiscountCriteriaEnum.COUNT) {
+          if (discount.condition.op === DiscountOperatorEnum.EQUAL) {
+            discountsCount = Math.floor(
+              suitableProductsCount / discount.condition.value
+            );
+          } else if (
+            discount.condition.op === DiscountOperatorEnum.GREATER &&
+            suitableProductsCount > discount.condition.value
+          ) {
+            discountsCount = 1;
+          } else if (
+            discount.condition.op === DiscountOperatorEnum.LESS &&
+            suitableProductsCount < discount.condition.value
+          ) {
+            discountsCount = 1;
+          } else if (
+            discount.condition.op === DiscountOperatorEnum.NOT_EQUAL &&
+            suitableProductsCount !== discount.condition.value
+          ) {
+            discountsCount = 1;
+          } else if (
+            discount.condition.op === DiscountOperatorEnum.BETWEEN &&
+            discount.condition.value2 &&
+            suitableProductsCount > discount.condition.value &&
+            suitableProductsCount < discount.condition.value2
+          ) {
+            discountsCount = 1;
+          }
+        }
+      }
+    }
+
+    return 0;
   }
 }

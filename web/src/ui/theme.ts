@@ -1,4 +1,5 @@
 import { createTheme, PaletteColor } from "@mui/material";
+import "external-svg-loader";
 
 export namespace Theme {
   export type Color =

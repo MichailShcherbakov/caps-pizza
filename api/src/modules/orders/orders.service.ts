@@ -9,6 +9,11 @@ import ModifiersService from "../modifiers/modifiers.service";
 import ProductsService from "../products/products.service";
 import { FrontPadResponse, MakeAnOrderDto } from "./orders.dto";
 import * as FormData from "form-data";
+import DiscountsService from "../discounts/discounts.service";
+import {
+  DiscountScopeEnum,
+  DiscountTypeEnum,
+} from "~/db/entities/discount.entity";
 
 export const FIXED_MODIFIER_COUNT = 1;
 
@@ -17,7 +22,8 @@ export default class OrdersService {
   constructor(
     private readonly httpSevice: HttpService,
     private readonly productsService: ProductsService,
-    private readonly modifiersService: ModifiersService
+    private readonly modifiersService: ModifiersService,
+    private readonly discountsService: DiscountsService
   ) {}
 
   async makeAnOrder(dto: MakeAnOrderDto): Promise<FrontPadResponse> {
