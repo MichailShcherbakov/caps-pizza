@@ -8,7 +8,7 @@ export default class Api extends CategotiesApi {
   }
 
   getProduct(uuid: string): Test {
-    return this._handle.get(`/products/${uuid}`);
+    return this._handle.get(`/products/${uuid}/`);
   }
 
   createProduct(dto: CreateProductDto): Test {
@@ -16,10 +16,10 @@ export default class Api extends CategotiesApi {
   }
 
   updateProduct(uuid: string, dto: UpdateProductDto): Test {
-    return this._handle.put(`/products/${uuid}`).send(dto);
+    return this._handle.put(`/products/${uuid}/`).send(dto);
   }
 
   deleteProduct(uuid: string): Test {
-    return this._handle.delete(`/products/${uuid}`);
+    return this._handle.delete(`/products/${uuid}/`);
   }
 }

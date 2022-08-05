@@ -10,7 +10,7 @@ export default class ModifierEntity extends IEntity {
   @Column({ nullable: true })
   desc?: string;
 
-  @Column({ type: "int4" })
+  @Column({ type: "int4", unique: true })
   article_number: number;
 
   @Column({ nullable: true })
@@ -29,6 +29,7 @@ export default class ModifierEntity extends IEntity {
   @JoinColumn({
     name: "category_uuid",
     referencedColumnName: "uuid",
+    foreignKeyConstraintName: "fk_modifiers_category_uuid",
   })
-  category: ModifierCategoryEntity;
+  category?: ModifierCategoryEntity;
 }

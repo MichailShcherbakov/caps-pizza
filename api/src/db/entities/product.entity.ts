@@ -1,17 +1,24 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+} from "typeorm";
 import ProductCategoryEntity from "./product-category.entity";
 import IEntity from "./entity.inteface";
 import ModifierEntity from "./modifier.entity";
 
 @Entity("products")
 export class ProductEntity extends IEntity {
-  @Column({ unique: true })
+  @Column()
   name: string;
 
   @Column({ nullable: true })
   desc?: string;
 
-  @Column({ type: "int4" })
+  @Column({ type: "int4", unique: true })
   article_number: number;
 
   @Column()
@@ -27,10 +34,24 @@ export class ProductEntity extends IEntity {
   @JoinColumn({
     name: "category_uuid",
     referencedColumnName: "uuid",
+    foreignKeyConstraintName: "fk_products_category_uuid",
   })
-  category: ProductCategoryEntity;
+  category?: ProductCategoryEntity;
 
-  @ManyToMany(() => ModifierEntity)
+  @ManyToMany(() => ModifierEntity, { onDelete: "CASCADE" })
+  @JoinTable({
+    name: "product_modifiers",
+    joinColumn: {
+      name: "product",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_product_modifiers_product_uuid",
+    },
+    inverseJoinColumn: {
+      name: "modifier",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_product_modifiers_modifier_uuid",
+    },
+  })
   modifiers: ModifierEntity[];
 }
 

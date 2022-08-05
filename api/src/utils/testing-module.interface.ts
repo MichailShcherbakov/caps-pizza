@@ -33,6 +33,8 @@ export abstract class ITestingModule {
     await this._app.init();
 
     this._dataSource = this._app.get<DataSource>(getDataSourceToken());
+
+    await this.dataSource.synchronize(true);
   }
 
   get app(): INestApplication {

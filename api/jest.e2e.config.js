@@ -13,4 +13,5 @@ module.exports = {
   },
   setupFilesAfterEnv: ["<rootDir>/jest.config.setup.js"],
   modulePathIgnorePatterns: ["<rootDir>/dist/"],
+  coveragePathIgnorePatterns: ["<rootDir>/src/utils", "<rootDir>/src/db"],
 };

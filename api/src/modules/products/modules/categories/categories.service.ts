@@ -15,19 +15,34 @@ import {
 export default class ProductCategoriesService {
   constructor(
     @InjectRepository(ProductCategoryEntity)
-    private productCategoriesRepository: Repository<ProductCategoryEntity>
+    private readonly productCategoriesRepository: Repository<ProductCategoryEntity>
   ) {}
 
   find(
     options: FindOptionsWhere<ProductCategoryEntity> = {}
   ): Promise<ProductCategoryEntity[]> {
-    return this.productCategoriesRepository.find({ where: options });
+    return this.productCategoriesRepository
+      .find({
+        where: options,
+      })
+      .then(categories => this.order(categories));
+  }
+
+  private order(categories: ProductCategoryEntity[]): ProductCategoryEntity[] {
+    return categories.sort((a, b) => {
+      if (!a.display_position || !b.display_position) return 0;
+      else if (a.display_position < b.display_position) return -1;
+      else if (a.display_position > b.display_position) return 1;
+      return 0;
+    });
   }
 
   findOne(
     options: FindOptionsWhere<ProductCategoryEntity> = {}
   ): Promise<ProductCategoryEntity | null> {
-    return this.productCategoriesRepository.findOne({ where: options });
+    return this.productCategoriesRepository.findOne({
+      where: options,
+    });
   }
 
   async create(dto: CreateProductCategoryDto): Promise<ProductCategoryEntity> {

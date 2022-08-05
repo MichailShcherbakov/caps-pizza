@@ -21,15 +21,30 @@ export default class ModifierCategoriesService {
   find(
     options: FindOptionsWhere<ModifierCategoryEntity> = {}
   ): Promise<ModifierCategoryEntity[]> {
-    return this.modifierCategoriesRespository.find({
-      where: options,
+    return this.modifierCategoriesRespository
+      .find({
+        where: options,
+      })
+      .then(categories => this.order(categories));
+  }
+
+  private order(
+    categories: ModifierCategoryEntity[]
+  ): ModifierCategoryEntity[] {
+    return categories.sort((a, b) => {
+      if (!a.display_position || !b.display_position) return 0;
+      else if (a.display_position < b.display_position) return -1;
+      else if (a.display_position > b.display_position) return 1;
+      return 0;
     });
   }
 
   findOne(
     options: FindOptionsWhere<ModifierCategoryEntity> = {}
   ): Promise<ModifierCategoryEntity | null> {
-    return this.modifierCategoriesRespository.findOne({ where: options });
+    return this.modifierCategoriesRespository.findOne({
+      where: options,
+    });
   }
 
   async create(

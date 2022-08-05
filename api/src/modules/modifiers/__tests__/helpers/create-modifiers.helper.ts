@@ -7,7 +7,7 @@ export function createModifierHelper(
   category: ModifierCategoryEntity
 ) {
   const seeder = new ModifiersSeeder(dataSource);
-  return seeder.seed({ category_uuid: category.uuid });
+  return seeder.seed({ category_uuid: category.uuid, category });
 }
 
 export default function createModifiersHelper(
@@ -17,6 +17,6 @@ export default function createModifiersHelper(
   const seeder = new ModifiersSeeder(dataSource);
   return seeder.run(
     categories.length,
-    categories.map(c => ({ category_uuid: c.uuid }))
+    categories.map(category => ({ category_uuid: category.uuid, category }))
   );
 }

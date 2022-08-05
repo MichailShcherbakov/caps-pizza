@@ -24,8 +24,6 @@ describe("[Discounts Module] ...", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
-
-    await testingModule.clearDataSource();
   });
 
   afterEach(async () => {

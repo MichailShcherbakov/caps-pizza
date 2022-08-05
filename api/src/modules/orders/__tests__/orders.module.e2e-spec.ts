@@ -1,12 +1,16 @@
 import { faker } from "@faker-js/faker";
-import * as FormData from "form-data";
 import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductEntity from "~/db/entities/product.entity";
 import createModifierCategoriesHelper from "~/modules/modifiers/modules/categories/__tests__/helpers/create-modifier-categories.helper";
 import createModifiersHelper from "~/modules/modifiers/__tests__/helpers/create-modifiers.helper";
 import createProductCategoriesHelper from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
 import createProductsHelper from "~/modules/products/__tests__/helpers/create-products.helper";
-import { MakeAnOrderDto, OrderedProduct, PaymentType } from "../orders.dto";
+import {
+  FrontPadResponse,
+  MakeAnOrderDto,
+  OrderedProduct,
+  PaymentType,
+} from "../orders.dto";
 import OrdersService, { FIXED_MODIFIER_COUNT } from "../orders.service";
 import Api from "./helpers/api.helper";
 import TestingModule from "./helpers/testing-module.helper";
@@ -34,8 +38,6 @@ describe("[Orders Module] ...", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
-
-    await testingModule.clearDataSource();
 
     const entities = await Promise.all<
       [Promise<ProductEntity[]>, Promise<ModifierEntity[]>]
@@ -65,7 +67,9 @@ describe("[Orders Module] ...", () => {
 
     sendToFrontPadFunc = jest
       .spyOn(orderService, "sendToFrontPad")
-      .mockImplementation(() => ({} as any));
+      .mockImplementation(() =>
+        Promise.resolve<FrontPadResponse>({} as FrontPadResponse)
+      );
   });
 
   afterAll(async () => {

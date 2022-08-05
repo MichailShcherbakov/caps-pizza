@@ -1,5 +1,7 @@
 import { faker } from "@faker-js/faker";
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
+import { createProductCategoryHelper } from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
+import { createProductHelper } from "~/modules/products/__tests__/helpers/create-products.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
@@ -23,8 +25,6 @@ describe("[Modifier Module] ...", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
-
-    await testingModule.clearDataSource();
   });
 
   beforeEach(async () => {
@@ -53,7 +53,31 @@ describe("[Modifier Module] ...", () => {
         statusCode: 200,
         data: fromJson(
           toJson(
-            deleteObjectsPropsHelper(modifiers, ["updated_at", "created_at"])
+            deleteObjectsPropsHelper(
+              modifiers.sort((a, b) => {
+                if (
+                  !a.category?.display_position ||
+                  !b.category?.display_position
+                ) {
+                  if (!a.display_position || !b.display_position) return 0;
+                  else if (a.display_position < b.display_position) return -1;
+                  else if (a.display_position > b.display_position) return 1;
+                  return 0;
+                }
+
+                if (a.category?.display_position < b.category?.display_position)
+                  return -1;
+                else if (
+                  a.category?.display_position > b.category?.display_position
+                )
+                  return 1;
+                else if (!a.display_position || !b.display_position) return 0;
+                else if (a.display_position < b.display_position) return -1;
+                else if (a.display_position > b.display_position) return 1;
+                return 0;
+              }),
+              ["updated_at", "created_at"]
+            )
           )
         ),
       });
@@ -131,7 +155,9 @@ describe("[Modifier Module] ...", () => {
         display_position: faker.datatype.number(),
       };
 
-      const createModifierResponse = await api.createModifier(dto as any);
+      const createModifierResponse = await api.createModifier(
+        dto as CreateModifierDto
+      );
 
       expect(createModifierResponse.status).toEqual(400);
       expect(createModifierResponse.body).toEqual({
@@ -190,10 +216,66 @@ describe("[Modifier Module] ...", () => {
         message: `The modifier with ${dto.name} name in ${initialCategory.name} category already exists`,
       });
     });
+
+    it("should throw an error when creating a modifier with exists product article number", async () => {
+      const productCategory = await createProductCategoryHelper(
+        testingModule.dataSource
+      );
+      const product = await createProductHelper(
+        testingModule.dataSource,
+        productCategory
+      );
+      const modifierCategory = categories[5];
+
+      const dto: CreateModifierDto = {
+        name: faker.datatype.string(),
+        article_number: product.article_number,
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+        category_uuid: modifierCategory.uuid,
+      };
+
+      const createModifierResponse = await api.createModifier(dto);
+
+      expect(createModifierResponse.status).toEqual(400);
+      expect(createModifierResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The product ${product.uuid} already has the article number`,
+      });
+    });
+
+    it("should throw an error when creating a modifier with exists modifier article number", async () => {
+      const otherCategory = categories[1];
+      const otherModifier = await createModifierHelper(
+        testingModule.dataSource,
+        otherCategory
+      );
+      const category = categories[5];
+
+      const dto: CreateModifierDto = {
+        name: faker.datatype.string(),
+        article_number: otherModifier.article_number,
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+        category_uuid: category.uuid,
+      };
+
+      const createModifierResponse = await api.createModifier(dto);
+
+      expect(createModifierResponse.status).toEqual(400);
+      expect(createModifierResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier ${otherModifier.uuid} already has the article number`,
+      });
+    });
   });
 
-  describe("[Update] /modifiers", () => {
-    it("should successfully update a modifier", async () => {
+  describe("[Put] /modifiers", () => {
+    it("should successfully updating a modifier", async () => {
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
         testingModule.dataSource,
@@ -225,7 +307,7 @@ describe("[Modifier Module] ...", () => {
       });
     });
 
-    it("should throw an error when update non-exists modifier category", async () => {
+    it("should throw an error when updating a non-exists modifier category", async () => {
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
         testingModule.dataSource,
@@ -254,7 +336,7 @@ describe("[Modifier Module] ...", () => {
       });
     });
 
-    it("should throw an error when update exists name and category", async () => {
+    it("should throw an error when updating exists name and category", async () => {
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
         testingModule.dataSource,
@@ -289,7 +371,7 @@ describe("[Modifier Module] ...", () => {
       });
     });
 
-    it("should throw an error when update a non-exists modifier", async () => {
+    it("should throw an error when updating a non-exists modifier", async () => {
       const fakeModifierUUID = faker.datatype.uuid();
 
       const dto: UpdateModifierDto = {
@@ -310,6 +392,66 @@ describe("[Modifier Module] ...", () => {
         statusCode: 404,
         error: "Not Found",
         message: `The modifier ${fakeModifierUUID} does not exist`,
+      });
+    });
+
+    it("should throw an error when updating a modifier with exists product article number", async () => {
+      const productCategory = await createProductCategoryHelper(
+        testingModule.dataSource
+      );
+      const product = await createProductHelper(
+        testingModule.dataSource,
+        productCategory
+      );
+      const initialCategory = categories[1];
+      const initialModifier = await createModifierHelper(
+        testingModule.dataSource,
+        initialCategory
+      );
+
+      const dto: UpdateModifierDto = {
+        article_number: product.article_number,
+      };
+
+      const createModifierResponse = await api.updateModifier(
+        initialModifier.uuid,
+        dto
+      );
+
+      expect(createModifierResponse.status).toEqual(400);
+      expect(createModifierResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The product ${product.uuid} already has the article number`,
+      });
+    });
+
+    it("should throw an error when updating a modifier with exists modifier article number", async () => {
+      const otherCategory = categories[1];
+      const otherModifier = await createModifierHelper(
+        testingModule.dataSource,
+        otherCategory
+      );
+      const initialCategory = categories[1];
+      const initialModifier = await createModifierHelper(
+        testingModule.dataSource,
+        initialCategory
+      );
+
+      const dto: UpdateModifierDto = {
+        article_number: otherModifier.article_number,
+      };
+
+      const createModifierResponse = await api.updateModifier(
+        initialModifier.uuid,
+        dto
+      );
+
+      expect(createModifierResponse.status).toEqual(400);
+      expect(createModifierResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier ${otherModifier.uuid} already has the article number`,
       });
     });
   });

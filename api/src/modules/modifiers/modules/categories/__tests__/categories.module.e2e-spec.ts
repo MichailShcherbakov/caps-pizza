@@ -23,8 +23,6 @@ describe("[Modifier Categories Module] ...", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
-
-    await testingModule.clearDataSource();
   });
 
   afterEach(async () => {
@@ -48,10 +46,15 @@ describe("[Modifier Categories Module] ...", () => {
         statusCode: 200,
         data: fromJson(
           toJson(
-            deleteObjectsPropsHelper(modifierCategories, [
-              "updated_at",
-              "created_at",
-            ])
+            deleteObjectsPropsHelper(
+              modifierCategories.sort((a, b) => {
+                if (!a.display_position || !b.display_position) return 0;
+                else if (a.display_position < b.display_position) return -1;
+                else if (a.display_position > b.display_position) return 1;
+                return 0;
+              }),
+              ["updated_at", "created_at"]
+            )
           )
         ),
       });
@@ -112,7 +115,7 @@ describe("[Modifier Categories Module] ...", () => {
       const dto: Partial<CreateModifierCategoryDto> = {};
 
       const createModifierCategoryResponse = await api.createModifierCategory(
-        dto as any
+        dto as CreateModifierCategoryDto
       );
 
       expect(createModifierCategoryResponse.statusCode).toEqual(400);
@@ -146,7 +149,7 @@ describe("[Modifier Categories Module] ...", () => {
     });
   });
 
-  describe("[Update] /modifiers/categories", () => {
+  describe("[Put] /modifiers/categories", () => {
     it("should successfully update a category", async () => {
       const initialCarogory = await createModifierCategoryHelper(
         testingModule.dataSource

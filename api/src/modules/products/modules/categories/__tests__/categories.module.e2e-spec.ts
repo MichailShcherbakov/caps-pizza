@@ -13,6 +13,7 @@ import {
   CreateProductCategoryDto,
   UpdateProductCategoryDto,
 } from "../categories.dto";
+import e from "express";
 
 describe("[Product Categories Module] ... ", () => {
   let testingModule: TestingModule;
@@ -23,8 +24,6 @@ describe("[Product Categories Module] ... ", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
-
-    await testingModule.clearDataSource();
   });
 
   afterEach(async () => {
@@ -52,10 +51,15 @@ describe("[Product Categories Module] ... ", () => {
         statusCode: 200,
         data: fromJson(
           toJson(
-            deleteObjectsPropsHelper(productCategories, [
-              "updated_at",
-              "created_at",
-            ])
+            deleteObjectsPropsHelper(
+              productCategories.sort((a, b) => {
+                if (!a.display_position || !b.display_position) return 0;
+                else if (a.display_position < b.display_position) return -1;
+                else if (a.display_position > b.display_position) return 1;
+                return 0;
+              }),
+              ["updated_at", "created_at"]
+            )
           )
         ),
       });
@@ -111,7 +115,7 @@ describe("[Product Categories Module] ... ", () => {
       };
 
       const createProductCategoryResponse = await api.createProductCategory(
-        dto as any
+        dto as CreateProductCategoryDto
       );
 
       expect(createProductCategoryResponse.statusCode).toEqual(400);
@@ -132,7 +136,7 @@ describe("[Product Categories Module] ... ", () => {
       };
 
       const createProductCategoryResponse = await api.createProductCategory(
-        dto as any
+        dto as CreateProductCategoryDto
       );
 
       expect(createProductCategoryResponse.statusCode).toEqual(400);
@@ -167,7 +171,7 @@ describe("[Product Categories Module] ... ", () => {
     });
   });
 
-  describe("[Update] /products/categories", () => {
+  describe("[Put] /products/categories", () => {
     it("should successfully update a product category", async () => {
       const initialProductCategory = await createProductCategoryHelper(
         testingModule.dataSource

@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -34,6 +35,10 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   category_uuid: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  modifiers_uuids: string[];
 }
 
 export class UpdateProductDto {
@@ -60,11 +65,17 @@ export class UpdateProductDto {
   @IsNumber()
   @IsPositive()
   @IsNotEmpty()
-  price: number;
+  @IsOptional()
+  price?: number;
 
   @IsUUID()
   @IsString()
   @IsNotEmpty()
   @IsOptional()
   category_uuid?: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  @IsOptional()
+  modifiers_uuids?: string[];
 }

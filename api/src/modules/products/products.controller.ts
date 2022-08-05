@@ -31,9 +31,7 @@ export class ProductsController {
     });
 
     if (!foundProduct)
-      throw new NotFoundException(
-        "The product " + productUUID + " does not exist"
-      );
+      throw new NotFoundException(`The product ${productUUID} does not exist`);
 
     return foundProduct;
   }
@@ -45,15 +43,15 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
-  @Put("/:productUUID")
+  @Put("/:productUUID/$")
   updateProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string,
     @Body() updateProductDto: UpdateProductDto
   ): Promise<ProductEntity> {
-    return this.productsService.updateOne(productUUID, updateProductDto);
+    return this.productsService.update(productUUID, updateProductDto);
   }
 
-  @Delete("/:productUUID")
+  @Delete("/:productUUID/$")
   async deleteProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string
   ): Promise<void> {

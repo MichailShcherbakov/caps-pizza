@@ -10,6 +10,14 @@ export default function createProductsHelper(
   const seeder = new ProductsSeeder(dataSource);
   return seeder.run(
     categories.length,
-    categories.map(c => ({ category_uuid: c.uuid }))
+    categories.map(category => ({ category_uuid: category.uuid, category }))
   );
+}
+
+export function createProductHelper(
+  dataSource: DataSource,
+  category: ProductCategoryEntity
+): Promise<ProductEntity> {
+  const seeder = new ProductsSeeder(dataSource);
+  return seeder.seed({ category_uuid: category.uuid, category });
 }
