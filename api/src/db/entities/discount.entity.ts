@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsPositive } from "class-validator";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import IEntity from "./entity.inteface";
 import ProductCategoryEntity from "./product-category.entity";
 import ProductEntity from "./product.entity";

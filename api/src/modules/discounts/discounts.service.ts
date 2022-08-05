@@ -4,14 +4,14 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOptionsWhere, In, Repository } from "typeorm";
+import { FindOptionsWhere, In, Not, Repository } from "typeorm";
 import DiscountEntity, {
   DiscountScopeEnum,
   DiscountTypeEnum,
 } from "~/db/entities/discount.entity";
 import ProductCategoriesService from "../products/modules/categories/categories.service";
 import ProductsService from "../products/products.service";
-import { CreateDiscountDto } from "./discounts.dto";
+import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
 
 @Injectable()
 export default class DiscountsService {
@@ -32,7 +32,7 @@ export default class DiscountsService {
         product_categories: true,
       },
       order: {
-        name: "ASC",
+        created_at: "ASC",
       },
     });
   }
@@ -112,6 +112,99 @@ export default class DiscountsService {
     }
 
     return this.discountRepository.save(e);
+  }
+
+  async update(uuid: string, dto: UpdateDiscountDto): Promise<DiscountEntity> {
+    const foundDiscount = await this.findOne({ uuid });
+
+    if (!foundDiscount)
+      throw new NotFoundException(`The discount ${uuid} does not exist`);
+
+    if (dto.name) {
+      const foundExistsDiscount = await this.findOne({
+        uuid: Not(uuid),
+        name: dto.name,
+      });
+
+      if (foundExistsDiscount)
+        throw new BadRequestException(
+          `The discount ${foundExistsDiscount.uuid} already has the ${dto.name} name`
+        );
+
+      foundDiscount.name = dto.name;
+    }
+
+    if (dto.type) {
+      if (dto.type === DiscountTypeEnum.PERCENT)
+        if (
+          (dto.value !== undefined && dto.value > 100) ||
+          (dto.value === undefined && foundDiscount.value > 100)
+        )
+          throw new BadRequestException(
+            `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`
+          );
+
+      foundDiscount.type = dto.type;
+    }
+
+    if (dto.scope) {
+      foundDiscount.scope = dto.scope;
+
+      if (dto.scope === DiscountScopeEnum.PRODUCTS) {
+        if (dto.products_uuids) {
+          const products = await this.productsService.find({
+            uuid: In(dto.products_uuids),
+          });
+
+          if (products.length !== dto.products_uuids.length) {
+            const productsSet = new Set(products.map(p => p.uuid));
+
+            for (const productUUID of dto.products_uuids) {
+              if (!productsSet.has(productUUID)) {
+                throw new NotFoundException(
+                  `The product ${productUUID} does not exist`
+                );
+              }
+            }
+          }
+          foundDiscount.products = products;
+        }
+        foundDiscount.product_categories = [];
+      } else if (dto.scope === DiscountScopeEnum.PRODUCT_CATEGORIES) {
+        if (dto.product_categories_uuids) {
+          const productCategories = await this.productCategoriesService.find({
+            uuid: In(dto.product_categories_uuids),
+          });
+
+          if (
+            productCategories.length !== dto.product_categories_uuids.length
+          ) {
+            const productCategoriesSet = new Set(
+              productCategories.map(p => p.uuid)
+            );
+
+            for (const productCategoryUUID of dto.product_categories_uuids) {
+              if (!productCategoriesSet.has(productCategoryUUID)) {
+                throw new NotFoundException(
+                  `The product category ${productCategoryUUID} does not exist`
+                );
+              }
+            }
+          }
+          foundDiscount.product_categories = productCategories;
+        }
+
+        foundDiscount.products = [];
+      } else {
+        foundDiscount.products = [];
+        foundDiscount.product_categories = [];
+      }
+    }
+
+    foundDiscount.condition = dto.condition || foundDiscount.condition;
+    foundDiscount.value = dto.value || foundDiscount.value;
+
+    return this.discountRepository.save(foundDiscount);
   }
 
   async delete(uuid: string): Promise<void> {

@@ -3,15 +3,17 @@ import DiscountEntity from "~/db/entities/discount.entity";
 import DiscountsSeeder from "~/db/seeds/discount.seed";
 
 export function createDiscountHelper(
-  dataSource: DataSource
+  dataSource: DataSource,
+  options?: Partial<DiscountEntity>
 ): Promise<DiscountEntity> {
   const seeder = new DiscountsSeeder(dataSource);
-  return seeder.seed();
+  return seeder.seed(options);
 }
 
 export default function createDiscountsHelper(
-  dataSource: DataSource
+  dataSource: DataSource,
+  options?: Partial<DiscountEntity>
 ): Promise<DiscountEntity[]> {
   const seeder = new DiscountsSeeder(dataSource);
-  return seeder.run(10);
+  return seeder.run(10, options);
 }

@@ -2,7 +2,6 @@ import {
   IsArray,
   IsEnum,
   IsNotEmpty,
-  IsNotEmptyObject,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -49,6 +48,11 @@ export class CreateDiscountDto {
 }
 
 export class UpdateDiscountDto {
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  name?: string;
+
   @IsEnum(DiscountTypeEnum)
   @IsNotEmpty()
   @IsOptional()

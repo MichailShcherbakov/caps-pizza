@@ -7,9 +7,10 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
 } from "@nestjs/common";
 import DiscountEntity from "~/db/entities/discount.entity";
-import { CreateDiscountDto } from "./discounts.dto";
+import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
 import DiscountsService from "./discounts.service";
 
 @Controller("/discounts")
@@ -40,6 +41,14 @@ export default class DiscountsContoller {
   @Post("/")
   createDiscount(@Body() dto: CreateDiscountDto): Promise<DiscountEntity> {
     return this.discountsService.create(dto);
+  }
+
+  @Put("/:discountUUID")
+  updateDiscount(
+    @Param("discountUUID", ParseUUIDPipe) discountUUID: string,
+    @Body() dto: UpdateDiscountDto
+  ): Promise<DiscountEntity> {
+    return this.discountsService.update(discountUUID, dto);
   }
 
   @Delete("/:discountUUID")
