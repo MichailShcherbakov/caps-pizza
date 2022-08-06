@@ -11,6 +11,9 @@ module.exports = {
       moduleNameMapper: {
         '^~/(.*)$': '<rootDir>/api/src/$1',
       },
+      setupFilesAfterEnv: ['<rootDir>/api/jest.config.setup.js'],
+      coverageDirectory: 'coverage',
+      coveragePathIgnorePatterns: ['__tests__'],
       testEnvironment: "node",
       globals: {
         "ts-jest": {
@@ -28,6 +31,8 @@ module.exports = {
       moduleNameMapper: {
         '^~/(.*)$': '<rootDir>/api/src/$1',
       },
+      coverageDirectory: 'coverage',
+      coveragePathIgnorePatterns: ['__tests__'],
       testEnvironment: "node",
       globals: {
         "ts-jest": {

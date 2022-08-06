@@ -85,7 +85,7 @@ export class Payment {
   type: PaymentTypeEnum;
 }
 
-export class MakeAnOrderDto {
+export class Order {
   @IsNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
@@ -118,6 +118,8 @@ export class MakeAnOrderDto {
   @IsNotEmpty()
   payment: Payment;
 }
+
+export class MakeAnOrderDto extends Order {}
 
 export class FrontPadPayload {
   product: Record<number, number>;

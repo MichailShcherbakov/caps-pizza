@@ -1,4 +1,5 @@
 const { config } = require("dotenv");
+require("./src/utils/number-times");
 
 config();
 
