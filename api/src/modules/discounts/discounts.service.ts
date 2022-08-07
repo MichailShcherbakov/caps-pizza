@@ -244,16 +244,22 @@ export default class DiscountsService {
     });
   }
 
-  isFulfilledCondition(discount: DiscountEntity, value: number): boolean {
+  isFulfilledCondition(
+    discount: DiscountEntity,
+    value: number,
+    strict = false
+  ): boolean {
     switch (discount.condition.op) {
       case DiscountOperatorEnum.EQUAL: {
+        if (strict) return value === discount.condition.value;
+
         return Math.floor(value / discount.condition.value) > 0;
       }
       case DiscountOperatorEnum.GREATER: {
-        return value >= discount.condition.value;
+        return value > discount.condition.value;
       }
       case DiscountOperatorEnum.LESS: {
-        return value <= discount.condition.value;
+        return value < discount.condition.value;
       }
       case DiscountOperatorEnum.BETWEEN: {
         return (
@@ -384,7 +390,23 @@ export default class DiscountsService {
           );
         }
         case DiscountScopeEnum.GLOBAL: {
-          break;
+          let conditionValue = 0;
+
+          if (discount.condition.criteria === DiscountCriteriaEnum.COUNT)
+            conditionValue = orderedProducts.reduce(
+              (count, p) => count + p.count,
+              0
+            );
+          else if (discount.condition.criteria === DiscountCriteriaEnum.PRICE)
+            conditionValue = totalOrderCost;
+
+          if (!this.isFulfilledCondition(discount, conditionValue, true)) break;
+
+          return this.getFinalDiscount(
+            discount,
+            totalOrderCost,
+            orderedProducts
+          );
         }
       }
     }
@@ -401,6 +423,13 @@ export default class DiscountsService {
       switch (discount.type) {
         case DiscountTypeEnum.PERCENT: {
           let discountPrice = totalOrderCost;
+
+          if (discount.scope === DiscountScopeEnum.GLOBAL) {
+            return {
+              type: DiscountTypeEnum.IN_CASH,
+              value: ((totalOrderCost * discount.value) / 100).toFixedFloat(2),
+            };
+          }
 
           if (discount.condition.op === DiscountOperatorEnum.EQUAL) {
             for (const product of products) {
@@ -432,6 +461,13 @@ export default class DiscountsService {
         case DiscountTypeEnum.IN_CASH: {
           let discountPrice = totalOrderCost;
 
+          if (discount.scope === DiscountScopeEnum.GLOBAL) {
+            return {
+              type: DiscountTypeEnum.IN_CASH,
+              value: discount.value,
+            };
+          }
+
           for (const product of products) {
             discountPrice -= product.full_priсe * product.count; // without discount
             discountPrice +=
@@ -444,7 +480,11 @@ export default class DiscountsService {
           };
         }
         case DiscountTypeEnum.FIXED_PRICE: {
-          if (DiscountOperatorEnum.EQUAL !== discount.condition.op) return null;
+          if (
+            discount.scope === DiscountScopeEnum.GLOBAL ||
+            discount.condition.op !== DiscountOperatorEnum.EQUAL
+          )
+            return null;
 
           let discountPrice = totalOrderCost;
           let productCount = products.reduce((count, p) => count + p.count, 0);
@@ -469,6 +509,13 @@ export default class DiscountsService {
         case DiscountTypeEnum.PERCENT: {
           let discountPrice = totalOrderCost;
 
+          if (discount.scope === DiscountScopeEnum.GLOBAL) {
+            return {
+              type: DiscountTypeEnum.IN_CASH,
+              value: (totalOrderCost * discount.value) / 100,
+            };
+          }
+
           for (const product of products) {
             let diff = 1;
 
@@ -491,6 +538,13 @@ export default class DiscountsService {
         }
         case DiscountTypeEnum.IN_CASH: {
           let discountPrice = totalOrderCost;
+
+          if (discount.scope === DiscountScopeEnum.GLOBAL) {
+            return {
+              type: DiscountTypeEnum.IN_CASH,
+              value: discount.value,
+            };
+          }
 
           for (const product of products) {
             let diff = Math.floor(

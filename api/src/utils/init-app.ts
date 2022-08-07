@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import ResponseFormatInterceptor from "./response-format.interceptor";
 import { Reflector } from "@nestjs/core";
-import "./number-times";
+import "./number";
 
 export interface InitAppOptions {
   usePrefix?: boolean;
