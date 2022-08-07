@@ -45,6 +45,11 @@ export class CreateDiscountDto {
   @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   product_categories_uuids: string[];
+
+  @IsArray()
+  @IsUUID(undefined, { each: true })
+  @IsNotEmpty()
+  modifiers_uuids: string[];
 }
 
 export class UpdateDiscountDto {
@@ -84,4 +89,10 @@ export class UpdateDiscountDto {
   @IsNotEmpty()
   @IsOptional()
   product_categories_uuids?: string[];
+
+  @IsArray()
+  @IsUUID(undefined, { each: true })
+  @IsNotEmpty()
+  @IsOptional()
+  modifiers_uuids?: string[];
 }

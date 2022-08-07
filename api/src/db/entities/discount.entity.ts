@@ -7,6 +7,7 @@ import {
 } from "class-validator";
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import IEntity from "./entity.inteface";
+import ModifierEntity from "./modifier.entity";
 import ProductCategoryEntity from "./product-category.entity";
 import ProductEntity from "./product.entity";
 
@@ -23,7 +24,7 @@ export enum DiscountCriteriaEnum {
 
 export enum DiscountScopeEnum {
   PRODUCTS = "PRODUCTS",
-  PRODUCT_CATEGORIES = "PRODUCT_CATEGORIES",
+  PRODUCT_FEATURES = "PRODUCT_FEATURES",
   GLOBAL = "GLOBAL",
 }
 
@@ -103,4 +104,20 @@ export default class DiscountEntity extends IEntity {
     },
   })
   product_categories: ProductCategoryEntity[];
+
+  @ManyToMany(() => ModifierEntity)
+  @JoinTable({
+    name: "discount_modifiers",
+    joinColumn: {
+      name: "discount",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_discount_modifiers_discount_uuid",
+    },
+    inverseJoinColumn: {
+      name: "modifier",
+      referencedColumnName: "uuid",
+      foreignKeyConstraintName: "fk_discount_modifiers_modifier_uuid",
+    },
+  })
+  modifiers: ModifierEntity[];
 }

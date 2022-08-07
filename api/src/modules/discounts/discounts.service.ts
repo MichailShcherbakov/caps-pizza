@@ -18,6 +18,11 @@ import ProductCategoriesService from "../products/modules/categories/categories.
 import ProductsService from "../products/products.service";
 import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
 
+export type DiscountProduct = ProductEntity & {
+  full_price: number;
+  count: number;
+};
+
 @Injectable()
 export default class DiscountsService {
   constructor(
@@ -36,6 +41,7 @@ export default class DiscountsService {
       relations: {
         products: true,
         product_categories: true,
+        modifiers: true,
       },
       order: {
         created_at: "ASC",
@@ -51,6 +57,7 @@ export default class DiscountsService {
       relations: {
         products: true,
         product_categories: true,
+        modifiers: true,
       },
     });
   }
@@ -95,10 +102,13 @@ export default class DiscountsService {
       e.products = products;
     }
 
-    if (dto.scope === DiscountScopeEnum.PRODUCT_CATEGORIES) {
-      const productCategories = await this.productCategoriesService.find({
-        uuid: In(dto.product_categories_uuids),
-      });
+    if (dto.scope === DiscountScopeEnum.PRODUCT_FEATURES) {
+      const [productCategories, modifiers] = await Promise.all([
+        this.productCategoriesService.find({
+          uuid: In(dto.product_categories_uuids),
+        }),
+        this.modifiersService.find({ uuid: In(dto.modifiers_uuids) }),
+      ]);
 
       if (productCategories.length !== dto.product_categories_uuids.length) {
         const productCategoriesSet = new Set(
@@ -114,7 +124,20 @@ export default class DiscountsService {
         }
       }
 
+      if (modifiers.length !== dto.modifiers_uuids.length) {
+        const modifiersSet = new Set(modifiers.map(p => p.uuid));
+
+        for (const modifierUUID of dto.modifiers_uuids) {
+          if (!modifiersSet.has(modifierUUID)) {
+            throw new NotFoundException(
+              `The modifier ${modifierUUID} does not exist`
+            );
+          }
+        }
+      }
+
       e.product_categories = productCategories;
+      e.modifiers = modifiers;
     }
 
     return this.discountRepository.save(e);
@@ -155,18 +178,28 @@ export default class DiscountsService {
 
     if (dto.scope) {
       if (dto.scope === DiscountScopeEnum.PRODUCTS) {
+        foundDiscount.modifiers = [];
         foundDiscount.product_categories = [];
-      } else if (dto.scope === DiscountScopeEnum.PRODUCT_CATEGORIES) {
+      } else if (dto.scope === DiscountScopeEnum.PRODUCT_FEATURES) {
         foundDiscount.products = [];
       } else {
         foundDiscount.products = [];
         foundDiscount.product_categories = [];
+        foundDiscount.modifiers = [];
       }
 
       foundDiscount.scope = dto.scope;
     }
 
     if (dto.products_uuids) {
+      if (
+        dto.scope !== DiscountScopeEnum.PRODUCTS &&
+        foundDiscount.scope !== DiscountScopeEnum.PRODUCTS
+      )
+        throw new BadRequestException(
+          `The discount cannot has the products beacuse of it has the ${foundDiscount.scope} scope`
+        );
+
       const products = await this.productsService.find({
         uuid: In(dto.products_uuids),
       });
@@ -186,6 +219,14 @@ export default class DiscountsService {
     }
 
     if (dto.product_categories_uuids) {
+      if (
+        dto.scope !== DiscountScopeEnum.PRODUCT_FEATURES &&
+        foundDiscount.scope !== DiscountScopeEnum.PRODUCT_FEATURES
+      )
+        throw new BadRequestException(
+          `The discount cannot has the product categories beacuse of it has the ${foundDiscount.scope} scope`
+        );
+
       const productCategories = await this.productCategoriesService.find({
         uuid: In(dto.product_categories_uuids),
       });
@@ -204,6 +245,33 @@ export default class DiscountsService {
         }
       }
       foundDiscount.product_categories = productCategories;
+    }
+
+    if (dto.modifiers_uuids) {
+      if (
+        dto.scope !== DiscountScopeEnum.PRODUCT_FEATURES &&
+        foundDiscount.scope !== DiscountScopeEnum.PRODUCT_FEATURES
+      )
+        throw new BadRequestException(
+          `The discount cannot has the modifiers beacuse of it has the ${foundDiscount.scope} scope`
+        );
+
+      const modifiers = await this.modifiersService.find({
+        uuid: In(dto.modifiers_uuids),
+      });
+
+      if (modifiers.length !== dto.modifiers_uuids.length) {
+        const modifiersSet = new Set(modifiers.map(p => p.uuid));
+
+        for (const modifierUUID of dto.modifiers_uuids) {
+          if (!modifiersSet.has(modifierUUID)) {
+            throw new NotFoundException(
+              `The modifier ${modifierUUID} does not exist`
+            );
+          }
+        }
+      }
+      foundDiscount.modifiers = modifiers;
     }
 
     foundDiscount.condition = dto.condition || foundDiscount.condition;
@@ -228,7 +296,7 @@ export default class DiscountsService {
           if (b.scope !== DiscountScopeEnum.PRODUCTS) return -1;
           return 0;
         }
-        case DiscountScopeEnum.PRODUCT_CATEGORIES: {
+        case DiscountScopeEnum.PRODUCT_FEATURES: {
           if (b.scope === DiscountScopeEnum.PRODUCTS) return 1;
           else if (b.scope === DiscountScopeEnum.GLOBAL) return -1;
           return 0;
@@ -253,7 +321,7 @@ export default class DiscountsService {
       case DiscountOperatorEnum.EQUAL: {
         if (strict) return value === discount.condition.value;
 
-        return Math.floor(value / discount.condition.value) > 0;
+        return Boolean(Math.floor(value / discount.condition.value));
       }
       case DiscountOperatorEnum.GREATER: {
         return value > discount.condition.value;
@@ -275,9 +343,7 @@ export default class DiscountsService {
     }
   }
 
-  async calculate(
-    order: Order
-  ): Promise<{ type: DiscountTypeEnum; value: number } | null> {
+  async calculate(order: Order): Promise<number> {
     const [discounts, products, modifiers] = await Promise.all([
       this.find().then(discounts => this.orderByScope(discounts)),
       this.productsService
@@ -309,7 +375,7 @@ export default class DiscountsService {
         return {
           ...product,
           count: p.count,
-          full_priсe:
+          full_price:
             product.price +
             p.modifiers.reduce((totalModifiersCost, orderedProductmodifier) => {
               const modifier = modifiers.get(orderedProductmodifier.uuid);
@@ -324,247 +390,217 @@ export default class DiscountsService {
         };
       })
       .sort((a, b) =>
-        a.price - b.price === 0 ? a.count - b.count : a.price - b.price
+        a.full_price - b.full_price === 0
+          ? a.count - b.count
+          : a.full_price - b.full_price
       );
 
     const totalOrderCost = orderedProducts.reduce(
-      (cost, p) => cost + p.full_priсe * p.count,
+      (cost, p) => cost + p.full_price * p.count,
       0
     );
 
     for (const discount of discounts) {
+      let validatedProducts: DiscountProduct[] = [];
+
       switch (discount.scope) {
         case DiscountScopeEnum.PRODUCTS: {
-          if (discount.condition.criteria === DiscountCriteriaEnum.PRICE) break;
+          if (discount.condition.criteria === DiscountCriteriaEnum.PRICE)
+            throw new Error("The invalid discount");
 
           const discountProductsUUIDs = new Set(
             discount.products.map(p => p.uuid)
           );
 
-          const filteredOrderedProducts = orderedProducts.filter(p =>
+          validatedProducts = orderedProducts.filter(p =>
             discountProductsUUIDs.has(p.uuid)
           );
 
-          const totalOrderedProductsCount = filteredOrderedProducts.reduce(
-            (count, p) => count + p.count,
-            0
-          );
-
-          if (!this.isFulfilledCondition(discount, totalOrderedProductsCount))
-            break;
-
-          return this.getFinalDiscount(
-            discount,
-            totalOrderCost,
-            filteredOrderedProducts
-          );
+          break;
         }
-        case DiscountScopeEnum.PRODUCT_CATEGORIES: {
+        case DiscountScopeEnum.PRODUCT_FEATURES: {
           const discountProductCategoriesUUIDs = new Set(
             discount.product_categories.map(c => c.uuid)
           );
 
-          const filteredOrderedProducts = orderedProducts.filter(p =>
-            discountProductCategoriesUUIDs.has(p.category_uuid)
-          );
+          validatedProducts = orderedProducts.filter(p => {
+            const productModifiersUUIDs = new Set(p.modifiers.map(c => c.uuid));
 
-          let conditionValue = 0;
-
-          if (discount.condition.criteria === DiscountCriteriaEnum.COUNT)
-            conditionValue = filteredOrderedProducts.reduce(
-              (count, p) => count + p.count,
-              0
-            );
-          else if (discount.condition.criteria === DiscountCriteriaEnum.PRICE)
-            conditionValue = filteredOrderedProducts.reduce(
-              (totalPrice, p) => totalPrice + p.full_priсe * p.count,
-              0
+            const hasCategory = discountProductCategoriesUUIDs.has(
+              p.category_uuid
             );
 
-          if (!this.isFulfilledCondition(discount, conditionValue)) break;
+            const hasModifier = discount.modifiers.every(m =>
+              productModifiersUUIDs.has(m.uuid)
+            );
 
-          return this.getFinalDiscount(
-            discount,
-            totalOrderCost,
-            filteredOrderedProducts
-          );
+            return (
+              (!discount.product_categories.length || hasCategory) &&
+              hasModifier
+            );
+          });
+
+          break;
         }
         case DiscountScopeEnum.GLOBAL: {
-          let conditionValue = 0;
+          validatedProducts = orderedProducts;
 
-          if (discount.condition.criteria === DiscountCriteriaEnum.COUNT)
-            conditionValue = orderedProducts.reduce(
-              (count, p) => count + p.count,
-              0
-            );
-          else if (discount.condition.criteria === DiscountCriteriaEnum.PRICE)
-            conditionValue = totalOrderCost;
-
-          if (!this.isFulfilledCondition(discount, conditionValue, true)) break;
-
-          return this.getFinalDiscount(
-            discount,
-            totalOrderCost,
-            orderedProducts
-          );
+          break;
         }
       }
+
+      const checkValue = this.getCheckValue(discount, validatedProducts);
+
+      if (
+        !this.isFulfilledCondition(
+          discount,
+          checkValue,
+          discount.scope === DiscountScopeEnum.GLOBAL
+        )
+      )
+        break;
+
+      return this.getFinalDiscount(
+        validatedProducts,
+        discount,
+        checkValue,
+        totalOrderCost
+      );
     }
 
-    return null;
+    return 0;
+  }
+
+  private getCheckValue(
+    discount: DiscountEntity,
+    products: DiscountProduct[]
+  ): number {
+    if (discount.condition.criteria === DiscountCriteriaEnum.COUNT)
+      return products.reduce((count, p) => count + p.count, 0);
+
+    if (discount.condition.criteria === DiscountCriteriaEnum.PRICE)
+      return products.reduce(
+        (totalPrice, p) => totalPrice + p.full_price * p.count,
+        0
+      );
+
+    return 0;
   }
 
   private getFinalDiscount(
+    products: (ProductEntity & { full_price: number; count: number })[],
     discount: DiscountEntity,
-    totalOrderCost: number,
-    products: (ProductEntity & { full_priсe: number; count: number })[]
-  ) {
-    if (discount.condition.criteria === DiscountCriteriaEnum.COUNT) {
-      switch (discount.type) {
-        case DiscountTypeEnum.PERCENT: {
-          let discountPrice = totalOrderCost;
+    checkValue: number,
+    totalOrderCost: number
+  ): number {
+    let finalDiscount = 0;
 
-          if (discount.scope === DiscountScopeEnum.GLOBAL) {
-            return {
-              type: DiscountTypeEnum.IN_CASH,
-              value: ((totalOrderCost * discount.value) / 100).toFixedFloat(2),
-            };
-          }
+    switch (discount.type) {
+      case DiscountTypeEnum.PERCENT: {
+        let localDiscount = 0;
+        let localCheckValue = checkValue;
 
-          if (discount.condition.op === DiscountOperatorEnum.EQUAL) {
-            for (const product of products) {
-              const diff = Math.floor(product.count / discount.condition.value);
-              discountPrice -=
-                product.full_priсe * diff * discount.condition.value; // without discount
-              discountPrice +=
-                (product.full_priсe *
-                  diff *
-                  discount.condition.value *
-                  discount.value) /
-                100; // with percent discount
-            }
-          }
-
-          if (discount.condition.op !== DiscountOperatorEnum.EQUAL) {
-            for (const product of products) {
-              discountPrice -= product.full_priсe * product.count; // without discount
-              discountPrice +=
-                (product.full_priсe * product.count * discount.value) / 100; // with percent discount
-            }
-          }
-
-          return {
-            type: DiscountTypeEnum.IN_CASH,
-            value: totalOrderCost - discountPrice,
-          };
+        if (discount.scope === DiscountScopeEnum.GLOBAL) {
+          finalDiscount = (totalOrderCost * discount.value) / 100;
+          break;
         }
-        case DiscountTypeEnum.IN_CASH: {
-          let discountPrice = totalOrderCost;
 
-          if (discount.scope === DiscountScopeEnum.GLOBAL) {
-            return {
-              type: DiscountTypeEnum.IN_CASH,
-              value: discount.value,
-            };
-          }
-
+        if (
+          discount.condition.op === DiscountOperatorEnum.EQUAL &&
+          discount.condition.criteria === DiscountCriteriaEnum.COUNT
+        ) {
+          let currentProductCount = 0;
           for (const product of products) {
-            discountPrice -= product.full_priсe * product.count; // without discount
-            discountPrice +=
-              product.full_priсe * product.count - discount.value; // with in cash discount
-          }
+            let availableProductCount = product.count;
 
-          return {
-            type: DiscountTypeEnum.IN_CASH,
-            value: totalOrderCost - discountPrice,
-          };
-        }
-        case DiscountTypeEnum.FIXED_PRICE: {
-          if (
-            discount.scope === DiscountScopeEnum.GLOBAL ||
-            discount.condition.op !== DiscountOperatorEnum.EQUAL
-          )
-            return null;
-
-          let discountPrice = totalOrderCost;
-          let productCount = products.reduce((count, p) => count + p.count, 0);
-
-          for (const product of products) {
-            if (productCount - discount.condition.value < 0) break;
-
-            discountPrice -= product.full_priсe * discount.condition.value; // without discount
-            discountPrice += discount.value; // with fixed price discount
-
-            productCount -= discount.condition.value;
-          }
-
-          return {
-            type: DiscountTypeEnum.IN_CASH,
-            value: totalOrderCost - discountPrice,
-          };
-        }
-      }
-    } else if (discount.condition.criteria === DiscountCriteriaEnum.PRICE) {
-      switch (discount.type) {
-        case DiscountTypeEnum.PERCENT: {
-          let discountPrice = totalOrderCost;
-
-          if (discount.scope === DiscountScopeEnum.GLOBAL) {
-            return {
-              type: DiscountTypeEnum.IN_CASH,
-              value: (totalOrderCost * discount.value) / 100,
-            };
-          }
-
-          for (const product of products) {
-            let diff = 1;
-
-            if (discount.condition.op === DiscountOperatorEnum.EQUAL)
-              diff = Math.floor(
-                (product.full_priсe * product.count) / discount.condition.value
+            do {
+              const productCount = Math.min(
+                availableProductCount,
+                discount.condition.value - currentProductCount
               );
 
-            discountPrice -=
-              product.full_priсe *
-              product.count *
-              diff *
-              (discount.value / 100);
-          }
+              availableProductCount -= productCount;
+              currentProductCount += productCount;
+              localDiscount += product.full_price * productCount;
+              localCheckValue -= productCount;
 
-          return {
-            type: DiscountTypeEnum.IN_CASH,
-            value: totalOrderCost - discountPrice,
-          };
+              if (currentProductCount < discount.condition.value) break;
+              else {
+                finalDiscount += (localDiscount * discount.value) / 100;
+                localDiscount = 0;
+                currentProductCount = 0;
+              }
+            } while (
+              localCheckValue >= discount.condition.value &&
+              availableProductCount
+            );
+          }
+        } else {
+          finalDiscount =
+            (products.reduce(
+              (totalPrice, p) => totalPrice + p.full_price * p.count,
+              0
+            ) *
+              discount.value) /
+            100;
         }
-        case DiscountTypeEnum.IN_CASH: {
-          let discountPrice = totalOrderCost;
+        break;
+      }
+      case DiscountTypeEnum.IN_CASH: {
+        if (
+          discount.scope === DiscountScopeEnum.GLOBAL ||
+          discount.condition.criteria === DiscountCriteriaEnum.PRICE
+        ) {
+          finalDiscount = discount.value;
+          break;
+        }
 
-          if (discount.scope === DiscountScopeEnum.GLOBAL) {
-            return {
-              type: DiscountTypeEnum.IN_CASH,
-              value: discount.value,
-            };
-          }
+        const diff = Math.floor(checkValue / discount.condition.value) || 1;
+        finalDiscount = diff * discount.value;
 
-          for (const product of products) {
-            let diff = Math.floor(
-              (product.full_priсe * product.count) / discount.condition.value
+        break;
+      }
+      case DiscountTypeEnum.FIXED_PRICE: {
+        let localDiscount = 0;
+        let localCheckValue = checkValue;
+
+        if (
+          discount.scope === DiscountScopeEnum.GLOBAL ||
+          discount.condition.criteria === DiscountCriteriaEnum.PRICE ||
+          discount.condition.op !== DiscountOperatorEnum.EQUAL
+        )
+          throw new Error(`The invalid discount`);
+
+        let currentProductCount = 0;
+        for (const product of products) {
+          let availableProductCount = product.count;
+
+          do {
+            const productCount = Math.min(
+              availableProductCount,
+              discount.condition.value - currentProductCount
             );
 
-            if (discount.condition.op === DiscountOperatorEnum.LESS) diff = 1;
+            availableProductCount -= productCount;
+            currentProductCount += productCount;
+            localDiscount += product.full_price * productCount;
+            localCheckValue -= productCount;
 
-            discountPrice -= product.full_priсe * product.count; // without discount
-            discountPrice +=
-              product.full_priсe * product.count - discount.value * diff; // with in cash discount
-          }
-
-          return {
-            type: DiscountTypeEnum.IN_CASH,
-            value: totalOrderCost - discountPrice,
-          };
+            if (currentProductCount < discount.condition.value) break;
+            else {
+              finalDiscount += localDiscount - discount.value;
+              localDiscount = 0;
+              currentProductCount = 0;
+            }
+          } while (
+            localCheckValue >= discount.condition.value &&
+            availableProductCount
+          );
         }
+        break;
       }
     }
-    return null;
+
+    return finalDiscount;
   }
 }

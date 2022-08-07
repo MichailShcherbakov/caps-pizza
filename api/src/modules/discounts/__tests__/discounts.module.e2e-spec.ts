@@ -123,6 +123,7 @@ describe("[Discounts Module] ...", () => {
         scope: DiscountScopeEnum.PRODUCTS,
         products_uuids: choicedProducts.map(c => c.uuid),
         product_categories_uuids: [],
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -135,6 +136,7 @@ describe("[Discounts Module] ...", () => {
           ...deleteObjectPropsHelper(dto, [
             "product_categories_uuids",
             "products_uuids",
+            "modifiers_uuids",
           ]),
         },
       });
@@ -156,9 +158,10 @@ describe("[Discounts Module] ...", () => {
           op: DiscountOperatorEnum.EQUAL,
           value: 3,
         },
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         products_uuids: [],
         product_categories_uuids: choicedProductCategories.map(c => c.uuid),
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -171,6 +174,7 @@ describe("[Discounts Module] ...", () => {
           ...deleteObjectPropsHelper(dto, [
             "product_categories_uuids",
             "products_uuids",
+            "modifiers_uuids",
           ]),
         },
       });
@@ -190,13 +194,14 @@ describe("[Discounts Module] ...", () => {
           op: DiscountOperatorEnum.EQUAL,
           value: 3,
         },
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         products_uuids: [],
         product_categories_uuids: [
           productCategories[2],
           productCategories[1],
           productCategories[6],
         ].map(c => c.uuid),
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -219,13 +224,14 @@ describe("[Discounts Module] ...", () => {
           op: DiscountOperatorEnum.EQUAL,
           value: 3,
         },
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         products_uuids: [],
         product_categories_uuids: [
           productCategories[2],
           productCategories[1],
           productCategories[6],
         ].map(c => c.uuid),
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -256,6 +262,7 @@ describe("[Discounts Module] ...", () => {
           { uuid: fakeProductUUID },
         ].map(c => c.uuid),
         product_categories_uuids: [],
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -268,7 +275,7 @@ describe("[Discounts Module] ...", () => {
       });
     });
 
-    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCT_CATEGORIES} and a non-exists product category`, async () => {
+    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCT_FEATURES} and a non-exists product category`, async () => {
       const fakeProductCategoryUUID = faker.datatype.uuid();
       const dto: CreateDiscountDto = {
         name: faker.datatype.string(),
@@ -279,13 +286,14 @@ describe("[Discounts Module] ...", () => {
           op: DiscountOperatorEnum.EQUAL,
           value: 3,
         },
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         products_uuids: [],
         product_categories_uuids: [
           productCategories[2],
           { uuid: fakeProductCategoryUUID },
           productCategories[6],
         ].map(c => c.uuid),
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -316,6 +324,7 @@ describe("[Discounts Module] ...", () => {
           { uuid: fakeProductUUID },
         ].map(c => c.uuid),
         product_categories_uuids: [],
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -328,7 +337,7 @@ describe("[Discounts Module] ...", () => {
       });
     });
 
-    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCT_CATEGORIES} and a invalid product category uuid`, async () => {
+    it(`should throw an error when creating a discount with scope ${DiscountScopeEnum.PRODUCT_FEATURES} and a invalid product category uuid`, async () => {
       const fakeProductCategoryUUID = faker.datatype.string();
       const dto: CreateDiscountDto = {
         name: faker.datatype.string(),
@@ -339,13 +348,14 @@ describe("[Discounts Module] ...", () => {
           op: DiscountOperatorEnum.EQUAL,
           value: 3,
         },
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         products_uuids: [],
         product_categories_uuids: [
           productCategories[2],
           { uuid: fakeProductCategoryUUID },
           productCategories[6],
         ].map(c => c.uuid),
+        modifiers_uuids: [],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -376,18 +386,17 @@ describe("[Discounts Module] ...", () => {
           op: DiscountOperatorEnum.EQUAL,
           value: 3,
         },
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
-        products_uuids: [],
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         product_categories_uuids: choisedProductCategories.map(c => c.uuid),
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(200);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(200);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
         data: fromJson(
           toJson(
@@ -396,7 +405,7 @@ describe("[Discounts Module] ...", () => {
                 ...discount,
                 ...dto,
                 product_categories:
-                  updateDiscoutResponse.body.data.product_categories,
+                  updateDiscountResponse.body.data.product_categories,
               },
               [
                 "updated_at",
@@ -410,7 +419,7 @@ describe("[Discounts Module] ...", () => {
       });
     });
 
-    it(`should clear products when a discount scope has been changed (${DiscountScopeEnum.PRODUCT_CATEGORIES})`, async () => {
+    it(`should clear products when a discount scope has been changed (${DiscountScopeEnum.PRODUCT_FEATURES})`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
         scope: DiscountScopeEnum.PRODUCTS,
         products: [products[5], products[1], products[3]],
@@ -421,17 +430,17 @@ describe("[Discounts Module] ...", () => {
       ];
 
       const dto: UpdateDiscountDto = {
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         product_categories_uuids: choisedProductCategories.map(c => c.uuid),
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(200);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(200);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
         data: fromJson(
           toJson(
@@ -441,7 +450,7 @@ describe("[Discounts Module] ...", () => {
                 ...dto,
                 products: [],
                 product_categories:
-                  updateDiscoutResponse.body.data.product_categories,
+                  updateDiscountResponse.body.data.product_categories,
               },
               [
                 "updated_at",
@@ -457,7 +466,7 @@ describe("[Discounts Module] ...", () => {
 
     it(`should clear product categories when a discount scope has been changed (${DiscountScopeEnum.PRODUCTS})`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         product_categories: [
           productCategories[5],
           productCategories[1],
@@ -471,13 +480,13 @@ describe("[Discounts Module] ...", () => {
         products_uuids: choisedProducts.map(c => c.uuid),
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(200);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(200);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
         data: fromJson(
           toJson(
@@ -486,7 +495,7 @@ describe("[Discounts Module] ...", () => {
                 ...discount,
                 ...dto,
                 product_categories: [],
-                products: updateDiscoutResponse.body.data.products,
+                products: updateDiscountResponse.body.data.products,
               },
               [
                 "updated_at",
@@ -502,7 +511,7 @@ describe("[Discounts Module] ...", () => {
 
     it(`should clear products and product categories when a discount scope has been changed (${DiscountScopeEnum.GLOBAL})`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         product_categories: [
           productCategories[5],
           productCategories[1],
@@ -514,13 +523,13 @@ describe("[Discounts Module] ...", () => {
         scope: DiscountScopeEnum.GLOBAL,
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(200);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(200);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
         data: fromJson(
           toJson(
@@ -550,13 +559,13 @@ describe("[Discounts Module] ...", () => {
         scope: DiscountScopeEnum.GLOBAL,
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         fakeDiscountUUID,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(404);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(404);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 404,
         error: "Not Found",
         message: `The discount ${fakeDiscountUUID} does not exist`,
@@ -567,11 +576,11 @@ describe("[Discounts Module] ...", () => {
       const otherDiscount = await createDiscountHelper(
         testingModule.dataSource,
         {
-          scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
         }
       );
       const discount = await createDiscountHelper(testingModule.dataSource, {
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         product_categories: [
           productCategories[5],
           productCategories[1],
@@ -584,13 +593,13 @@ describe("[Discounts Module] ...", () => {
         scope: DiscountScopeEnum.GLOBAL,
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(400);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(400);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
         message: `The discount ${otherDiscount.uuid} already has the ${dto.name} name`,
@@ -598,7 +607,9 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with a non-exists product`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule.dataSource, {
+        scope: DiscountScopeEnum.PRODUCTS,
+      });
       const fakeProductUUID = faker.datatype.uuid();
       const choicedProducts = [
         products[2],
@@ -610,13 +621,13 @@ describe("[Discounts Module] ...", () => {
         products_uuids: choicedProducts.map(p => p.uuid),
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(404);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(404);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 404,
         error: "Not Found",
         message: `The product ${fakeProductUUID} does not exist`,
@@ -624,7 +635,9 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with a non-exists product category`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule.dataSource, {
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
+      });
       const fakeProductCategoryUUID = faker.datatype.uuid();
       const choicedProductCategories = [
         productCategories[2],
@@ -636,13 +649,13 @@ describe("[Discounts Module] ...", () => {
         product_categories_uuids: choicedProductCategories.map(c => c.uuid),
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(404);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(404);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 404,
         error: "Not Found",
         message: `The product category ${fakeProductCategoryUUID} does not exist`,
@@ -651,7 +664,7 @@ describe("[Discounts Module] ...", () => {
 
     it(`throw an error when updating a discount with ${DiscountTypeEnum.PERCENT} and the value greater then 100`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         product_categories: [
           productCategories[5],
           productCategories[1],
@@ -666,13 +679,13 @@ describe("[Discounts Module] ...", () => {
         value: 10000,
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(400);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(400);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
         message: `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`,
@@ -681,7 +694,7 @@ describe("[Discounts Module] ...", () => {
 
     it(`throw an error when updating a discount with ${DiscountTypeEnum.PERCENT} and the exist value greater then 100`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
-        scope: DiscountScopeEnum.PRODUCT_CATEGORIES,
+        scope: DiscountScopeEnum.PRODUCT_FEATURES,
         product_categories: [
           productCategories[5],
           productCategories[1],
@@ -695,13 +708,13 @@ describe("[Discounts Module] ...", () => {
         type: DiscountTypeEnum.PERCENT,
       };
 
-      const updateDiscoutResponse = await api.updateDiscount(
+      const updateDiscountResponse = await api.updateDiscount(
         discount.uuid,
         dto
       );
 
-      expect(updateDiscoutResponse.status).toEqual(400);
-      expect(updateDiscoutResponse.body).toEqual({
+      expect(updateDiscountResponse.status).toEqual(400);
+      expect(updateDiscountResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
         message: `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`,
