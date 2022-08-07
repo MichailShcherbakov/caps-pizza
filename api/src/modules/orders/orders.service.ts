@@ -10,10 +10,6 @@ import ProductsService from "../products/products.service";
 import { FrontPadResponse, MakeAnOrderDto } from "./orders.dto";
 import * as FormData from "form-data";
 import DiscountsService from "../discounts/discounts.service";
-import {
-  DiscountScopeEnum,
-  DiscountTypeEnum,
-} from "~/db/entities/discount.entity";
 
 export const FIXED_MODIFIER_COUNT = 1;
 

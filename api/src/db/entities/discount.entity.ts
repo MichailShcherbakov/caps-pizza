@@ -30,7 +30,6 @@ export enum DiscountScopeEnum {
 export enum DiscountOperatorEnum {
   LESS = "LESS",
   GREATER = "GREATER",
-  NOT_EQUAL = "NOT_EQUAL",
   EQUAL = "EQUAL",
   BETWEEN = "BETWEEN",
 }

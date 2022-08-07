@@ -1,18 +1,14 @@
+import { faker } from "@faker-js/faker";
 import ModifierEntity from "~/db/entities/modifier.entity";
-import TEST_MODIFIER_CATEGORIES from "./modifier-categories.data";
+import { TEST_DOUGH_MODIFIER_CATEGORY } from "./modifier-categories.data";
 
-export const TEST_MODIFIERS: ModifierEntity[] = [
-  {
-    uuid: "0",
-    name: "Tiny Dough",
-    article_number: 20001,
-    price: 10,
-    image_url: "",
-    category_uuid: TEST_MODIFIER_CATEGORIES[0].uuid,
-    category: TEST_MODIFIER_CATEGORIES[0],
-    updated_at: new Date(),
-    created_at: new Date(),
-  },
-];
-
-export default TEST_MODIFIERS;
+export const TEST_TRADITIONAL_DOUGH_MODIFIER: ModifierEntity = {
+  uuid: faker.datatype.uuid(),
+  name: "Tiny Dough",
+  article_number: faker.datatype.number(),
+  price: 50,
+  category_uuid: TEST_DOUGH_MODIFIER_CATEGORY.uuid,
+  category: TEST_DOUGH_MODIFIER_CATEGORY,
+  updated_at: new Date(),
+  created_at: new Date(),
+};
