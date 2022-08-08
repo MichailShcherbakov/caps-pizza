@@ -22,7 +22,7 @@ export default class ModifiersController {
     return this.modifiersService.find();
   }
 
-  @Get("/:modifierUUID/$")
+  @Get("/:modifierUUID")
   async getMofifier(
     @Param("modifierUUID", ParseUUIDPipe) modifierUUID: string
   ): Promise<ModifierEntity> {
@@ -43,7 +43,7 @@ export default class ModifiersController {
     return this.modifiersService.create(dto);
   }
 
-  @Put("/:modifierUUID/$")
+  @Put("/:modifierUUID")
   updateModifier(
     @Param("modifierUUID", ParseUUIDPipe) modifierUUID: string,
     @Body() dto: UpdateModifierDto

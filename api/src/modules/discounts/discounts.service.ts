@@ -33,9 +33,7 @@ export default class DiscountsService {
     private readonly modifiersService: ModifiersService
   ) {}
 
-  find(
-    options: FindOptionsWhere<DiscountEntity> = {}
-  ): Promise<DiscountEntity[]> {
+  find(options?: FindOptionsWhere<DiscountEntity>): Promise<DiscountEntity[]> {
     return this.discountRepository.find({
       where: options,
       relations: {
@@ -50,7 +48,7 @@ export default class DiscountsService {
   }
 
   findOne(
-    options: FindOptionsWhere<DiscountEntity> = {}
+    options?: FindOptionsWhere<DiscountEntity>
   ): Promise<DiscountEntity | null> {
     return this.discountRepository.findOne({
       where: options,

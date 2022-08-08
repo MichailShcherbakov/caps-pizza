@@ -16,7 +16,7 @@ import {
 } from "./categories.dto";
 import ModifierCategoriesService from "./categories.service";
 
-@Controller("/modifiers/categories")
+@Controller("/modifiers/-/categories")
 export default class ModifierCategoriesController {
   constructor(
     private readonly modifierCategoriesService: ModifierCategoriesService

@@ -22,9 +22,7 @@ export default class ModifiersService {
     private readonly productsService: ProductsService
   ) {}
 
-  find(
-    options: FindOptionsWhere<ModifierEntity> = {}
-  ): Promise<ModifierEntity[]> {
+  find(options?: FindOptionsWhere<ModifierEntity>): Promise<ModifierEntity[]> {
     return this.modifiersRepository
       .find({
         where: options,
@@ -54,7 +52,7 @@ export default class ModifiersService {
   }
 
   findOne(
-    options: FindOptionsWhere<ModifierEntity> = {}
+    options?: FindOptionsWhere<ModifierEntity>
   ): Promise<ModifierEntity | null> {
     return this.modifiersRepository.findOne({
       where: options,

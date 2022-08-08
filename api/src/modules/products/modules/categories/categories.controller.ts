@@ -16,7 +16,7 @@ import {
 } from "./categories.dto";
 import ProductCategoriesService from "./categories.service";
 
-@Controller("/products/categories")
+@Controller("/products/-/categories")
 export default class ProductCategoriesController {
   constructor(private productCategoriesService: ProductCategoriesService) {}
 

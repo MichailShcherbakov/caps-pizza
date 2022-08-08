@@ -19,7 +19,7 @@ export default class ProductCategoriesService {
   ) {}
 
   find(
-    options: FindOptionsWhere<ProductCategoryEntity> = {}
+    options?: FindOptionsWhere<ProductCategoryEntity>
   ): Promise<ProductCategoryEntity[]> {
     return this.productCategoriesRepository
       .find({
@@ -38,7 +38,7 @@ export default class ProductCategoriesService {
   }
 
   findOne(
-    options: FindOptionsWhere<ProductCategoryEntity> = {}
+    options?: FindOptionsWhere<ProductCategoryEntity>
   ): Promise<ProductCategoryEntity | null> {
     return this.productCategoriesRepository.findOne({
       where: options,

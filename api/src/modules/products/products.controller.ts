@@ -22,7 +22,7 @@ export class ProductsController {
     return this.productsService.find();
   }
 
-  @Get("/(:productUUID)/$")
+  @Get("/(:productUUID)")
   async getProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string
   ): Promise<ProductEntity> {
@@ -43,7 +43,7 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
-  @Put("/:productUUID/$")
+  @Put("/:productUUID")
   updateProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string,
     @Body() updateProductDto: UpdateProductDto
@@ -51,7 +51,7 @@ export class ProductsController {
     return this.productsService.update(productUUID, updateProductDto);
   }
 
-  @Delete("/:productUUID/$")
+  @Delete("/:productUUID")
   async deleteProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string
   ): Promise<void> {

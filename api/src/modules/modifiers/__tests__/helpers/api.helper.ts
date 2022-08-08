@@ -8,7 +8,7 @@ export default class Api extends ModifierCategoryApi {
   }
 
   getModifier(uuid: string): Test {
-    return this._handle.get(`/modifiers/${uuid}/`);
+    return this._handle.get(`/modifiers/${uuid}`);
   }
 
   createModifier(dto: CreateModifierDto): Test {
@@ -16,10 +16,10 @@ export default class Api extends ModifierCategoryApi {
   }
 
   updateModifier(uuid: string, dto: UpdateModifierDto): Test {
-    return this._handle.put(`/modifiers/${uuid}/`).send(dto);
+    return this._handle.put(`/modifiers/${uuid}`).send(dto);
   }
 
   deleteModifier(uuid: string): Test {
-    return this._handle.delete(`/modifiers/${uuid}/`);
+    return this._handle.delete(`/modifiers/${uuid}`);
   }
 }

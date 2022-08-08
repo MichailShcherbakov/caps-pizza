@@ -19,7 +19,7 @@ export default class ModifierCategoriesService {
   ) {}
 
   find(
-    options: FindOptionsWhere<ModifierCategoryEntity> = {}
+    options?: FindOptionsWhere<ModifierCategoryEntity>
   ): Promise<ModifierCategoryEntity[]> {
     return this.modifierCategoriesRespository
       .find({
@@ -40,7 +40,7 @@ export default class ModifierCategoriesService {
   }
 
   findOne(
-    options: FindOptionsWhere<ModifierCategoryEntity> = {}
+    options?: FindOptionsWhere<ModifierCategoryEntity>
   ): Promise<ModifierCategoryEntity | null> {
     return this.modifierCategoriesRespository.findOne({
       where: options,
