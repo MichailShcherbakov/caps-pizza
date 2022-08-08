@@ -1,6 +1,13 @@
 import { faker } from "@faker-js/faker";
+import DiscountEntity, {
+  DiscountCriteriaEnum,
+  DiscountOperatorEnum,
+  DiscountScopeEnum,
+  DiscountTypeEnum,
+} from "~/db/entities/discount.entity";
 import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductEntity from "~/db/entities/product.entity";
+import { createDiscountHelper } from "~/modules/discounts/__tests__/helpers/create-discounts.helper";
 import createModifierCategoriesHelper from "~/modules/modifiers/modules/categories/__tests__/helpers/create-modifier-categories.helper";
 import createModifiersHelper from "~/modules/modifiers/__tests__/helpers/create-modifiers.helper";
 import createProductCategoriesHelper from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
@@ -30,6 +37,7 @@ describe("[Orders Module] ...", () => {
   let api: Api;
   let products: ProductEntity[];
   let modifiers: ModifierEntity[];
+  let discount: DiscountEntity;
   let sendToFrontPadFunc: jest.SpyInstance;
 
   beforeAll(async () => {
@@ -40,7 +48,11 @@ describe("[Orders Module] ...", () => {
     api = new Api(testingModule.app);
 
     const entities = await Promise.all<
-      [Promise<ProductEntity[]>, Promise<ModifierEntity[]>]
+      [
+        Promise<ProductEntity[]>,
+        Promise<ModifierEntity[]>,
+        Promise<DiscountEntity>
+      ]
     >([
       new Promise((res, rej) => {
         createProductCategoriesHelper(testingModule.dataSource)
@@ -58,10 +70,25 @@ describe("[Orders Module] ...", () => {
           .then(modifiers => res(modifiers))
           .catch(e => rej(e));
       }),
+      new Promise((res, rej) =>
+        createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.GLOBAL,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.GREATER,
+            value: 5,
+          },
+          type: DiscountTypeEnum.IN_CASH,
+          value: 100,
+        })
+          .then(discount => res(discount))
+          .catch(e => rej(e))
+      ),
     ]);
 
     products = entities[0];
     modifiers = entities[1];
+    discount = entities[2];
 
     const orderService = testingModule.app.get<OrdersService>(OrdersService);
 
@@ -80,7 +107,7 @@ describe("[Orders Module] ...", () => {
   describe("[Post] /orders", () => {
     it("should correct make an order", async () => {
       const orderedProducts = products.slice(2, 7);
-      const usedModifiers = modifiers.slice(1, 5);
+      const usedModifiers = modifiers.slice(1, 6);
 
       const dto: MakeAnOrderDto = {
         products: orderedProducts.map<OrderedProduct>(p => ({
@@ -171,8 +198,7 @@ describe("[Orders Module] ...", () => {
         }
       }
 
-      expect(payload.append).toBeCalledWith("sale", 0);
-      expect(payload.append).toBeCalledWith("sale_amount", 0);
+      expect(payload.append).toBeCalledWith("sale_amount", discount.value);
       expect(payload.append).toBeCalledWith(
         "street",
         dto.delivery_address.street
@@ -192,7 +218,7 @@ describe("[Orders Module] ...", () => {
       expect(payload.append).toBeCalledWith("mail", dto.client_info.mail || "");
       expect(payload.append).toBeCalledWith("descr", dto.description || "");
 
-      callsCount += 11;
+      callsCount += 10;
 
       expect(payload.append).toBeCalledTimes(callsCount);
     });

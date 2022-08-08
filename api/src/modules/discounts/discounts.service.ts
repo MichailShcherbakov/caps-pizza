@@ -351,14 +351,16 @@ export default class DiscountsService {
         .then(products => new Map(products.map(p => [p.uuid, p]))),
       this.modifiersService
         .find({
-          uuid: In([
-            order.products.reduce((modifiersUUIDs, product) => {
-              product.modifiers.forEach(
-                m => !modifiersUUIDs.has(m.uuid) && modifiersUUIDs.add(m.uuid)
-              );
-              return modifiersUUIDs;
-            }, new Set()),
-          ]),
+          uuid: In(
+            Array.from(
+              order.products.reduce((modifiersUUIDs, product) => {
+                product.modifiers.forEach(
+                  m => !modifiersUUIDs.has(m.uuid) && modifiersUUIDs.add(m.uuid)
+                );
+                return modifiersUUIDs;
+              }, new Set())
+            )
+          ),
         })
         .then(modifiers => new Map(modifiers.map(m => [m.uuid, m]))),
     ]);

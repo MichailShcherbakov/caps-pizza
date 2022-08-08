@@ -74,8 +74,8 @@ export default class OrdersService {
       }
     }
 
-    payload.append("sale", 0);
-    payload.append("sale_amount", 0);
+    payload.append("sale_amount", await this.discountsService.calculate(dto));
+
     payload.append("street", dto.delivery_address.street);
     payload.append("home", dto.delivery_address.house);
     payload.append("pod", dto.delivery_address.entrance);
