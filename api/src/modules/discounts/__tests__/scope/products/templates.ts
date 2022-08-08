@@ -15,6 +15,7 @@ import {
 } from "../../helpers/test-template.helper";
 
 export const testValidDiscount: TestTemplateFunc = async (
+  testingModule,
   discountOptions,
   counts,
   getTruthyDiscount = () => -1
@@ -57,6 +58,7 @@ export const testValidDiscount: TestTemplateFunc = async (
   });
 
   const { calculatedDiscount, totalOrderCost } = await testTemplate(
+    testingModule,
     products,
     discount,
     counts
@@ -75,6 +77,7 @@ export const testValidDiscount: TestTemplateFunc = async (
 };
 
 export const testInvalidDiscount: TestTemplateFunc = async (
+  testingModule,
   discountOptions,
   counts,
   _ = () => -1
@@ -118,7 +121,7 @@ export const testInvalidDiscount: TestTemplateFunc = async (
     modifiers: [],
   });
 
-  await expect(testTemplate(products, discount, counts)).rejects.toThrowError(
-    "The invalid discount"
-  );
+  await expect(
+    testTemplate(testingModule, products, discount, counts)
+  ).rejects.toThrowError("The invalid discount");
 };

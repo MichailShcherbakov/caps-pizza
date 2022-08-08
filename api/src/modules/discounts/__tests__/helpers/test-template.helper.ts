@@ -1,22 +1,23 @@
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import DiscountEntity, {
   DiscountTypeEnum,
   DiscountСondition,
 } from "~/db/entities/discount.entity";
 import ProductEntity from "~/db/entities/product.entity";
+import ModifiersService from "~/modules/modifiers/modifiers.service";
 import { Order, OrderedProduct } from "~/modules/orders/orders.dto";
-import { DiscountProduct } from "../../discounts.service";
+import ProductsService from "~/modules/products/products.service";
+import { ITestingModule } from "~/utils/testing-module.interface";
+import DiscountsService, { DiscountProduct } from "../../discounts.service";
 import {
   TEST_FLUFFY_DOUGH_MODIFIER,
   TEST_TRADITIONAL_DOUGH_MODIFIER,
 } from "../data/modifiers.data";
-import {
-  discountsServiceWrapper,
-  modifiersServiceWrapper,
-  productsServiceWrapper,
-} from "../__mocks__/discounts.service";
 import computeFinalOrderCostHelper from "./compute-final-order-cost.helper";
 
 export type TestFunc = (
+  testingModule: ITestingModule,
   products: (ProductEntity & { full_price: number })[],
   discount: DiscountEntity,
   counts: Array<number>
@@ -26,6 +27,7 @@ export type TestFunc = (
 }>;
 
 export type TestTemplateFunc = (
+  testingModule: ITestingModule,
   discountOptions: {
     type: DiscountTypeEnum;
     value: number;
@@ -39,11 +41,25 @@ export type TestTemplateFunc = (
   ) => number
 ) => void;
 
-export const testTemplate: TestFunc = async (products, discount, counts) => {
-  jest.spyOn(productsServiceWrapper, "find").mockResolvedValueOnce(products);
-  jest.spyOn(discountsServiceWrapper, "find").mockResolvedValueOnce([discount]);
+export const testTemplate: TestFunc = async (
+  testingModule,
+  products,
+  discount,
+  counts
+) => {
+  const discountsService =
+    testingModule.get<DiscountsService>(DiscountsService);
+  const productsService = testingModule.get<ProductsService>(ProductsService);
+  const discountsRepository = testingModule.get<Repository<DiscountEntity>>(
+    getRepositoryToken(DiscountEntity)
+  );
+  const modifiersService =
+    testingModule.get<ModifiersService>(ModifiersService);
+
+  jest.spyOn(productsService, "find").mockResolvedValueOnce(products);
+  jest.spyOn(discountsRepository, "find").mockResolvedValueOnce([discount]);
   jest
-    .spyOn(modifiersServiceWrapper, "find")
+    .spyOn(modifiersService, "find")
     .mockResolvedValueOnce([
       TEST_TRADITIONAL_DOUGH_MODIFIER,
       TEST_FLUFFY_DOUGH_MODIFIER,
@@ -61,7 +77,7 @@ export const testTemplate: TestFunc = async (products, discount, counts) => {
     products.map(p => p.modifiers)
   );
 
-  const calculatedDiscount = await discountsServiceWrapper.calculate({
+  const calculatedDiscount = await discountsService.calculate({
     products: orderedProducts,
   } as Order);
 

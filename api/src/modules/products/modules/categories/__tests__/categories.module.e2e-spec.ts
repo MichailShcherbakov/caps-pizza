@@ -13,7 +13,6 @@ import {
   CreateProductCategoryDto,
   UpdateProductCategoryDto,
 } from "../categories.dto";
-import e from "express";
 
 describe("[Product Categories Module] ... ", () => {
   let testingModule: TestingModule;

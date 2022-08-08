@@ -4,20 +4,29 @@ import {
   DiscountScopeEnum,
   DiscountTypeEnum,
 } from "~/db/entities/discount.entity";
+import { UnitTestingModule } from "../../__mocks__/discounts.service";
 import { testInvalidDiscount, testValidDiscount } from "./templates";
 
-describe("[Unit] [Discounts Module] ...", () => {
+describe("[Unit] [Discounts Module] ... ", () => {
+  let testingModule: UnitTestingModule;
+
+  beforeAll(async () => {
+    testingModule = new UnitTestingModule();
+    await testingModule.init();
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
     jest.resetAllMocks();
   });
 
-  describe(`[SCOPE: ${DiscountScopeEnum.PRODUCTS}] ...`, () => {
-    describe(`[CRITERIA: ${DiscountCriteriaEnum.COUNT}] ...`, () => {
-      describe(`[OP: ${DiscountOperatorEnum.EQUAL}]`, () => {
+  describe(`[SCOPE: ${DiscountScopeEnum.PRODUCTS}] ... `, () => {
+    describe(`[CRITERIA: ${DiscountCriteriaEnum.COUNT}] ... `, () => {
+      describe(`[OP: ${DiscountOperatorEnum.EQUAL}] ... `, () => {
         describe("[strict comparison]", () => {
           it("should provide a percent discount for a special product", async () => {
             await testValidDiscount(
+              testingModule,
               {
                 type: DiscountTypeEnum.PERCENT,
                 value: 3,
@@ -36,6 +45,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
           it("should provide a in cash discount for a special product", async () => {
             await testValidDiscount(
+              testingModule,
               {
                 type: DiscountTypeEnum.IN_CASH,
                 value: 220,
@@ -53,6 +63,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
           it("should provide a fixed price discount for a special product", async () => {
             await testValidDiscount(
+              testingModule,
               {
                 type: DiscountTypeEnum.FIXED_PRICE,
                 value: 1000,
@@ -72,6 +83,7 @@ describe("[Unit] [Discounts Module] ...", () => {
         describe("[not strict comparison]", () => {
           it("should provide a percent discount for a special product", async () => {
             await testValidDiscount(
+              testingModule,
               {
                 type: DiscountTypeEnum.PERCENT,
                 value: 3,
@@ -92,6 +104,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
           it("should provide a in cash discount for a special product", async () => {
             await testValidDiscount(
+              testingModule,
               {
                 type: DiscountTypeEnum.IN_CASH,
                 value: 220,
@@ -109,6 +122,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
           it("should provide a fixed price discount for a special product", async () => {
             await testValidDiscount(
+              testingModule,
               {
                 type: DiscountTypeEnum.FIXED_PRICE,
                 value: 1000,
@@ -133,6 +147,7 @@ describe("[Unit] [Discounts Module] ...", () => {
       describe(`[OP: ${DiscountOperatorEnum.GREATER}]`, () => {
         it("should provide a percent discount for a special product", async () => {
           await testValidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.PERCENT,
               value: 3,
@@ -151,6 +166,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a in cash discount for a special product", async () => {
           await testValidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.IN_CASH,
               value: 220,
@@ -168,6 +184,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a fixed price discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.FIXED_PRICE,
               value: 1000,
@@ -186,6 +203,7 @@ describe("[Unit] [Discounts Module] ...", () => {
       describe(`[OP: ${DiscountOperatorEnum.LESS}]`, () => {
         it("should provide a percent discount for a special product", async () => {
           await testValidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.PERCENT,
               value: 3,
@@ -204,6 +222,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a in cash discount for a special product", async () => {
           await testValidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.IN_CASH,
               value: 220,
@@ -221,6 +240,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a fixed price discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.FIXED_PRICE,
               value: 1000,
@@ -239,6 +259,7 @@ describe("[Unit] [Discounts Module] ...", () => {
       describe(`[OP: ${DiscountOperatorEnum.BETWEEN}]`, () => {
         it("should provide a percent discount for a special product", async () => {
           await testValidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.PERCENT,
               value: 3,
@@ -258,6 +279,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a in cash discount for a special product", async () => {
           await testValidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.IN_CASH,
               value: 220,
@@ -276,6 +298,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a fixed price discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.FIXED_PRICE,
               value: 1000,
@@ -297,6 +320,7 @@ describe("[Unit] [Discounts Module] ...", () => {
       describe(`[OP: ${DiscountOperatorEnum.EQUAL}]`, () => {
         it("should provide a percent discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.PERCENT,
               value: 3,
@@ -312,6 +336,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a in cash discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.IN_CASH,
               value: 220,
@@ -327,6 +352,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a fixed price discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.FIXED_PRICE,
               value: 1000,
@@ -344,6 +370,7 @@ describe("[Unit] [Discounts Module] ...", () => {
       describe(`[OP: ${DiscountOperatorEnum.GREATER}]`, () => {
         it("should provide a percent discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.PERCENT,
               value: 3,
@@ -359,6 +386,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a in cash discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.IN_CASH,
               value: 220,
@@ -374,6 +402,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a fixed price discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.FIXED_PRICE,
               value: 1000,
@@ -391,6 +420,7 @@ describe("[Unit] [Discounts Module] ...", () => {
       describe(`[OP: ${DiscountOperatorEnum.LESS}]`, () => {
         it("should provide a percent discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.PERCENT,
               value: 3,
@@ -406,6 +436,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a in cash discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.IN_CASH,
               value: 220,
@@ -421,6 +452,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a fixed price discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.FIXED_PRICE,
               value: 1000,
@@ -438,6 +470,7 @@ describe("[Unit] [Discounts Module] ...", () => {
       describe(`[OP: ${DiscountOperatorEnum.BETWEEN}]`, () => {
         it("should provide a percent discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.PERCENT,
               value: 3,
@@ -454,6 +487,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a in cash discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.IN_CASH,
               value: 220,
@@ -470,6 +504,7 @@ describe("[Unit] [Discounts Module] ...", () => {
 
         it("should provide a fixed price discount for a special product (Invalid discount)", async () => {
           await testInvalidDiscount(
+            testingModule,
             {
               type: DiscountTypeEnum.FIXED_PRICE,
               value: 1000,

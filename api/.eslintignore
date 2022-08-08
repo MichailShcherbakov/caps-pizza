@@ -1,5 +1,4 @@
-dist
 .github
+dist
+coverage
 node_modules
-
-**/__tests__/*

@@ -19,6 +19,7 @@ export type Module =
 export abstract class ITestingModule {
   protected _app: INestApplication | null;
   protected _dataSource: DataSource | null;
+  protected _handle: TestingModule | null;
 
   protected compile(modules: Module[]): Promise<TestingModule> {
     return Test.createTestingModule({
@@ -27,14 +28,18 @@ export abstract class ITestingModule {
   }
 
   async init(modules: Module[] = []): Promise<void> {
-    const moduleFixture = await this.compile(modules);
+    this._handle = await this.compile(modules);
 
-    this._app = initApp(moduleFixture.createNestApplication());
+    this._app = initApp(this._handle.createNestApplication());
     await this._app.init();
 
     this._dataSource = this._app.get<DataSource>(getDataSourceToken());
 
     await this.dataSource.synchronize(true);
+  }
+
+  protected async initMock(modules: Module[] = []): Promise<void> {
+    this._handle = await this.compile(modules);
   }
 
   get app(): INestApplication {
@@ -58,6 +63,20 @@ export abstract class ITestingModule {
 
     this._app = null;
     this._dataSource = null;
+  }
+
+  get handle(): TestingModule {
+    if (!this._handle) throw new Error("The test module was not initialized");
+
+    return this._handle;
+  }
+
+  get<T>(
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    typeOrToken: string | symbol | Function | Type<T>,
+    options?: { strict: boolean } | undefined
+  ): T {
+    return this.handle.get<T>(typeOrToken, options);
   }
 
   abstract clearDataSource(): Promise<void>;
