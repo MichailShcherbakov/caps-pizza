@@ -7,6 +7,7 @@ import {
   IsPositive,
   IsString,
   IsUUID,
+  Min,
   ValidateNested,
 } from "class-validator";
 import {
@@ -32,7 +33,7 @@ export class CreateDiscountDto {
   condition: DiscountСondition;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsNotEmpty()
   value: number;
 
@@ -73,7 +74,7 @@ export class UpdateDiscountDto {
   condition?: DiscountСondition;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsNotEmpty()
   @IsOptional()
   value?: number;

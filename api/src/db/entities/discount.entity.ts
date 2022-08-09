@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsOptional,
   IsPositive,
+  Min,
 } from "class-validator";
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import IEntity from "./entity.inteface";
@@ -45,12 +46,12 @@ export class DiscountСondition {
   op: DiscountOperatorEnum;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsNotEmpty()
   value: number;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsNotEmpty()
   @IsOptional()
   value2?: number;

@@ -6,12 +6,13 @@ import {
   IsPositive,
   IsString,
   IsUUID,
+  Min,
 } from "class-validator";
 
 export class CreateProductDto {
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
+  @Min(0)
   article_number: number;
 
   @IsString()
@@ -27,7 +28,7 @@ export class CreateProductDto {
   image_url: string;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsNotEmpty()
   price: number;
 
@@ -45,7 +46,7 @@ export class CreateProductDto {
 export class UpdateProductDto {
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
+  @Min(0)
   @IsOptional()
   article_number?: number;
 
@@ -64,7 +65,7 @@ export class UpdateProductDto {
   image_url?: string;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsNotEmpty()
   @IsOptional()
   price?: number;

@@ -11,7 +11,7 @@ import {
 export class CreateModifierDto {
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
+  @Min(0)
   article_number: number;
 
   @IsString()
@@ -36,7 +36,7 @@ export class CreateModifierDto {
 
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
+  @Min(0)
   price: number;
 
   @IsUUID()
@@ -48,7 +48,7 @@ export class CreateModifierDto {
 export class UpdateModifierDto {
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
+  @Min(0)
   @IsOptional()
   article_number?: number;
 
@@ -75,7 +75,7 @@ export class UpdateModifierDto {
 
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
+  @Min(0)
   @IsOptional()
   price?: number;
 

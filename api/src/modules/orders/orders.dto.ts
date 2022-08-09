@@ -10,6 +10,7 @@ import {
   IsString,
   IsUUID,
   MaxLength,
+  Min,
   ValidateNested,
 } from "class-validator";
 
@@ -25,7 +26,7 @@ export class OrderedProduct {
   uuid: string;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsNotEmpty()
   count: number;
 
@@ -96,12 +97,12 @@ export class Order {
   delivery_address: DeliveryAddress;
 
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsOptional()
   score?: number;
 
   @IsNumber({ maxDecimalPlaces: 16 })
-  @IsPositive()
+  @Min(0)
   @IsOptional()
   card?: number;
 
