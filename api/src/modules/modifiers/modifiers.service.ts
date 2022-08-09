@@ -33,17 +33,17 @@ export default class ModifiersService {
 
   private order(modifiers: ModifierEntity[]) {
     return modifiers.sort((a, b) => {
-      if (!a.category?.display_position || !b.category?.display_position) {
-        if (!a.display_position || !b.display_position) return 0;
-        else if (a.display_position < b.display_position) return -1;
-        else if (a.display_position > b.display_position) return 1;
-        return 0;
-      }
-
-      if (a.category?.display_position < b.category?.display_position)
-        return -1;
-      else if (a.category?.display_position > b.category?.display_position)
+      if (!a.category?.display_position && b.category?.display_position)
         return 1;
+      else if (a.category?.display_position && !b.category?.display_position)
+        return -1;
+      else if (a.category?.display_position && b.category?.display_position) {
+        if (a.category?.display_position < b.category?.display_position)
+          return -1;
+        else if (a.category?.display_position > b.category?.display_position)
+          return 1;
+      } else if (!a.display_position && b.display_position) return 1;
+      else if (a.display_position && !b.display_position) return -1;
       else if (!a.display_position || !b.display_position) return 0;
       else if (a.display_position < b.display_position) return -1;
       else if (a.display_position > b.display_position) return 1;
