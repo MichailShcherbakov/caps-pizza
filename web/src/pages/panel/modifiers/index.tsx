@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import AppPage from "~/interfaces/app-page.interface";
+import AppPage from "~/common/interfaces/app-page.interface";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import {
   useDeleteModifierMutation,

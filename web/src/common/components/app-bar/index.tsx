@@ -3,16 +3,16 @@ import { Fade, Container, Stack, Typography } from "@mui/material";
 import React from "react";
 import Categories from "./components/categories";
 import Logo from "./components/logo";
-import ShoppingCartButton from "../shopping-cart-button";
 import styles from "./index.module.scss";
 import { useAppSelector } from "~/store/hook";
 import { selectTotalOrderPrice } from "~/store/order.reducer";
+import ShoppingCartButton from "../shopping-cart-button";
 
 export interface AppBarProps extends StackProps {}
 
 export const APP_BAR_TOP_OFFSET = 210;
 
-export const AppBar: React.FC<AppBarProps> = (props) => {
+export const AppBar: React.FC<AppBarProps> = props => {
   const totalOrderPrice = useAppSelector(selectTotalOrderPrice);
 
   const [showCategories, setShowCatefories] = React.useState<boolean>(false);

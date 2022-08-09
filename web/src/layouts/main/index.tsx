@@ -2,7 +2,7 @@ import React from "react";
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { Container, Stack, ThemeProvider } from "@mui/material";
-import AppBar from "~/ui/components/app-bar";
+import AppBar from "~/common/components/app-bar";
 import { InfoBar } from "~/ui/components/info-bar";
 import theme from "~/ui/theme";
 import ShoppingCartButton from "~/ui/components/shopping-cart-button";

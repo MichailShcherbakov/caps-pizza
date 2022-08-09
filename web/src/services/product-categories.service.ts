@@ -17,7 +17,7 @@ export const ProductCategoryAPI = API.injectEndpoints({
       APIData<ProductCategory[]> | APIError,
       APIPayload<void>
     >({
-      query: () => `/products/categories`,
+      query: () => `/products/-/categories`,
       transformResponse,
       providesTags: ["ProductCategory"],
     }),
@@ -26,7 +26,7 @@ export const ProductCategoryAPI = API.injectEndpoints({
       APIPayload<Omit<ProductCategory, "uuid">>
     >({
       query: body => ({
-        url: `/products/categories`,
+        url: `/products/-/categories`,
         method: "POST",
         body,
       }),
@@ -38,7 +38,7 @@ export const ProductCategoryAPI = API.injectEndpoints({
       APIPayload<{ uuid: string }>
     >({
       query: ({ uuid }) => ({
-        url: `/products/categories/${uuid}`,
+        url: `/products/-/categories/${uuid}`,
         method: "DELETE",
       }),
       transformResponse,

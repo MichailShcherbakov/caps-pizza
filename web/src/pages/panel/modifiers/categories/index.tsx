@@ -1,70 +1,29 @@
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Paper, Stack } from "@mui/material";
+import dynamic from "next/dynamic";
 import React from "react";
-import AppPage from "~/interfaces/app-page.interface";
+import AppPage from "~/common/interfaces/app-page.interface";
 import AdminPanelLayout from "~/layouts/admin-panel";
-import {
-  useDeleteModifierCategoryMutation,
-  useGetModifierCategoriesQuery,
-} from "~/services/modifier-categories.service";
-import CreateModifierCategoryModal from "./components/modal";
+import CreateModifierCategoryModal from "./components/modals/create-modifier-category.modal";
+import ModifierCategoriesTableSkeleton from "./components/table.skeleton";
+
+export const ModifierCategoriesTable = dynamic(
+  () => import("./components/table"),
+  {
+    suspense: true,
+    ssr: false,
+  }
+);
 
 export const ModifierCategoriesPage: AppPage = () => {
-  const {
-    data: modifierCategoriesOrError,
-    isLoading,
-    error,
-  } = useGetModifierCategoriesQuery();
-  const [deleteModifierCategory] = useDeleteModifierCategoryMutation();
-
-  if (isLoading || error || !Array.isArray(modifierCategoriesOrError))
-    return null;
-
-  const modifierCatories = modifierCategoriesOrError;
-
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>UUID</TableCell>
-            <TableCell>Название</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {modifierCatories.map(c => (
-            <TableRow key={c.uuid}>
-              <TableCell>{c.uuid}</TableCell>
-              <TableCell>{c.name}</TableCell>
-              <TableCell>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  size="small"
-                  onClick={() => deleteModifierCategory({ uuid: c.uuid })}
-                >
-                  Удалить
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-          <TableRow>
-            <TableCell>
-              <CreateModifierCategoryModal />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper>
+      <React.Suspense fallback={<ModifierCategoriesTableSkeleton />}>
+        <ModifierCategoriesTable />
+      </React.Suspense>
+      <Stack direction="row" alignItems="center" className="ui-p-8">
+        <CreateModifierCategoryModal />
+      </Stack>
+    </Paper>
   );
 };
 

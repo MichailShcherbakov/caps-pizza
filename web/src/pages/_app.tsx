@@ -1,6 +1,7 @@
 import "../styles/globals.scss";
+import "../common/utils";
 import type { AppProps as NextAppProps } from "next/app";
-import AppPage from "~/interfaces/app-page.interface";
+import AppPage from "~/common/interfaces/app-page.interface";
 
 export type AppProps = NextAppProps & {
   Component: AppPage;

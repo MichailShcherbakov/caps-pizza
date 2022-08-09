@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import React from "react";
 import Categories from "~/ui/components/categories";
 import ProductCard from "~/ui/components/product-card";
-import Article from "~/ui/components/article";
+import Article from "~/common/components/article";
 import MainLayout from "~/layouts/main";
 import Title from "~/ui/components/title";
 import CategorySection from "~/ui/components/category-section";
@@ -13,13 +13,13 @@ import { useProductOrderList } from "~/api/order";
 export const HomePage: NextPage = () => {
   const { addProduct } = useProductOrderList();
 
-  const products = useAppSelector((state) => state.products.value);
-  const categories = useAppSelector((state) => state.categories.value);
+  const products = useAppSelector(state => state.products.value);
+  const categories = useAppSelector(state => state.categories.value);
 
   let sections: JSX.Element[] = [];
 
   for (const category of categories) {
-    const p = products.filter((p) => p.categoryUUID === category.categoryUUID);
+    const p = products.filter(p => p.categoryUUID === category.categoryUUID);
 
     if (!p.length) continue;
 
@@ -27,7 +27,7 @@ export const HomePage: NextPage = () => {
       <CategorySection key={category.categoryUUID} id={category.name}>
         <Title text={category.name} />
         <Grid container spacing={2} className="ui-py-8">
-          {p.map((p) => (
+          {p.map(p => (
             <Grid key={p.productUUID} item xl={3} lg={3} md={4} sm={6} xs={12}>
               <ProductCard
                 {...p}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, ButtonProps } from "@mui/material";
-import Modal from "~/ui/components/modal";
+import { Modal } from "~/ui";
 import CreateProductCategoryForm from "./form";
 
 export interface CreateProductCategoryModalProps extends ButtonProps {}

@@ -1,6 +1,6 @@
 import { Container, Stack, StackProps, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
-import { store } from "~/stores/admin";
+import { store } from "~/stores/admin-panel";
 import theme from "~/ui/theme";
 import Appbar from "./components/app-bar";
 import styles from "./index.module.scss";

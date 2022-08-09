@@ -1,11 +1,11 @@
 import { createTheme, PaletteColor } from "@mui/material";
 import "external-svg-loader";
 
-export namespace Theme {
+/* export namespace Theme {
   export type Color =
     // | "neutral"
     "primary" | "secondary" | "error" | "info" | "success" | "warning";
-}
+} */
 
 declare module "@mui/material" {
   interface PaletteOptions {
@@ -43,6 +43,10 @@ export const theme = createTheme({
     },
     neutral: {
       main: "#95989b",
+      contrastText: "#ffffff",
+    },
+    error: {
+      main: "#e23535",
       contrastText: "#ffffff",
     },
   },

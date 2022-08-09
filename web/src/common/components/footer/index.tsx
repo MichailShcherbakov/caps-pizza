@@ -1,5 +1,5 @@
 import { Container, Grid, Stack, Typography } from "@mui/material";
-import Logo from "../app-bar/components/logo";
+import Logo from "../../../common/components/app-bar/components/logo";
 import styles from "./index.module.scss";
 import PhoneIcon from "~/assets/phone.svg";
 import EmailIcon from "~/assets/email.svg";

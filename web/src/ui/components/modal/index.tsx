@@ -16,20 +16,19 @@ export interface ModalProps extends Omit<MUIModalProps, "children"> {
   onCancel?: () => void;
 }
 
-export default function Modal({
+export const ModalForm: React.FC<ModalProps> = ({
   children,
   onSubmit = () => {},
   onCancel = () => {},
-  onClose = () => {},
   ...props
-}: ModalProps) {
+}) => {
   return (
     <MUIModal
       {...props}
       className={styles["modal__background"]}
-      onClose={onClose}
+      closeAfterTransition
     >
       <Paper className={styles["modal"]}>{children}</Paper>
     </MUIModal>
   );
-}
+};
