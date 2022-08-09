@@ -1,4 +1,5 @@
 import {
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -17,10 +18,22 @@ export const ModifierCategoriesTableSkeleton: React.FC<
       <TableHead>
         <TableRow>
           <TableCell>
-            <UiKit.Skeleton width={48} height={16}></UiKit.Skeleton>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-start"
+            >
+              <UiKit.Skeleton width={48} height={16}></UiKit.Skeleton>
+            </Stack>
           </TableCell>
           <TableCell>
-            <UiKit.Skeleton width={72} height={16}></UiKit.Skeleton>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              <UiKit.Skeleton width={72} height={16}></UiKit.Skeleton>
+            </Stack>
           </TableCell>
           <TableCell></TableCell>
         </TableRow>
@@ -29,13 +42,33 @@ export const ModifierCategoriesTableSkeleton: React.FC<
         {(3).map(i => (
           <TableRow key={i}>
             <TableCell>
-              <UiKit.Skeleton width={196} height={16}></UiKit.Skeleton>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <UiKit.Skeleton width={196} height={16}></UiKit.Skeleton>
+              </Stack>
             </TableCell>
             <TableCell>
-              <UiKit.Skeleton width={128} height={16}></UiKit.Skeleton>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-end"
+              >
+                <UiKit.Skeleton width={128} height={16}></UiKit.Skeleton>
+              </Stack>
             </TableCell>
             <TableCell>
-              <UiKit.Skeleton width={96} height={24}></UiKit.Skeleton>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                spacing={2}
+              >
+                <UiKit.Skeleton width={96} height={28}></UiKit.Skeleton>
+                <UiKit.Skeleton width={96} height={28}></UiKit.Skeleton>
+              </Stack>
             </TableCell>
           </TableRow>
         ))}

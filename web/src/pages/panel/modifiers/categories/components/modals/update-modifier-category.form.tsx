@@ -1,17 +1,9 @@
 import React from "react";
-import * as yup from "yup";
 import { useFormik } from "formik";
 import { Stack, TextField } from "@mui/material";
 import UiKit, { FormModalProps } from "~/ui";
 import { ModifierCategory } from "~/services/modifier-categories.service";
-
-const validationSchema = yup.object({
-  name: yup
-    .string()
-    .max(50, "Название не должно превышать 50 символов")
-    .required("Это поле является обязательным"),
-  display_position: yup.number().min(1, "Позиция не должна быть меньше 1"),
-});
+import validationSchema from "../helpers/validation-schema";
 
 export interface UpdateModifierCategoryFormProps
   extends Omit<FormModalProps, "title" | "onSubmit"> {

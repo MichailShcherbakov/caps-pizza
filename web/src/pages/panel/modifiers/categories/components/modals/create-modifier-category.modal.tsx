@@ -5,10 +5,8 @@ import { useCreateModifierCategoryMutation } from "~/services/modifier-categorie
 import ErrorHandler from "~/common/components/error-handler";
 import CreateModifierCategoryForm from "./create-modifier-category.form";
 import { APIResult } from "~/services/helpers/transform-response.helper";
-import {
-  TheNameAlreadyExistsApiError,
-  UnknownApiError,
-} from "~/common/components/error-handler/api-errors";
+import { UnknownApiError } from "~/common/components/error-handler/api-errors";
+import { TheNameAlreadyExistsApiError } from "../api-errors";
 
 export interface CreateModifierCategoryModalProps extends ButtonProps {}
 

@@ -8,10 +8,8 @@ import {
 import ErrorHandler from "~/common/components/error-handler";
 import UpdateModifierCategoryForm from "./update-modifier-category.form";
 import { APIResult } from "~/services/helpers/transform-response.helper";
-import {
-  TheNameAlreadyExistsApiError,
-  UnknownApiError,
-} from "~/common/components/error-handler/api-errors";
+import { UnknownApiError } from "~/common/components/error-handler/api-errors";
+import { TheNameAlreadyExistsApiError } from "../api-errors";
 
 export interface UpdateModifierCategoryModalProps extends ButtonProps {
   category: ModifierCategory;

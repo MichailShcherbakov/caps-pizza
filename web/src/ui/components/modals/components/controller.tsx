@@ -33,12 +33,14 @@ export const ModalController: React.FC<ModalControllerProps> = React.memo(
     return (
       <>
         {controller}
-        <Modal
-          {...ModalProps}
-          open={isOpen}
-          onSubmit={onModalSubmitHandler}
-          onClose={onModalCloseHandler}
-        />
+        {isOpen && (
+          <Modal
+            {...ModalProps}
+            open={isOpen}
+            onSubmit={onModalSubmitHandler}
+            onClose={onModalCloseHandler}
+          />
+        )}
       </>
     );
   }
