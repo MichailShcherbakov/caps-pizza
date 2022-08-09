@@ -27,13 +27,21 @@ export const ModifiersTableRow: React.FC<ModifiersTableRowProps> = React.memo(
     return (
       <TableRow>
         <TableCell>{modifier.uuid}</TableCell>
-        <TableCell>{modifier.name}</TableCell>
-        <TableCell>{modifier.desc}</TableCell>
-        <TableCell>{modifier.article_number}</TableCell>
-        <TableCell>{modifier.price}</TableCell>
-        <TableCell>{modifier.category?.name}</TableCell>
+        <TableCell align="right">{modifier.name}</TableCell>
+        <TableCell align="right">{modifier.desc ?? "Нет"}</TableCell>
+        <TableCell align="right">{modifier.article_number}</TableCell>
+        <TableCell align="right">{modifier.price}</TableCell>
+        <TableCell align="right">{modifier.category?.name}</TableCell>
+        <TableCell align="right">
+          {modifier.display_position ?? "Не указано"}
+        </TableCell>
         <TableCell>
-          <Stack direction="row" alignItems="center" spacing={2}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            spacing={2}
+          >
             <UpdateModifierModal modifier={modifier} />
             <WarnDeletingNotificationModal
               title="Удаление модификатора необратимо"

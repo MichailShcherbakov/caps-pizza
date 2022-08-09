@@ -1,13 +1,18 @@
+import { number } from "yup";
+
 export type APIData<T> = T | undefined;
 
-export type APIError = {
+export class APIError extends Error {
   status: number;
-  data: {
-    statusCode: number;
-    error: string;
-    message: string;
-  };
-};
+
+  constructor(
+    public readonly data: { statusCode: number; error: string; message: string }
+  ) {
+    super(data.message);
+
+    this.status = data.statusCode;
+  }
+}
 
 export type APIResult = {
   error?: APIError;

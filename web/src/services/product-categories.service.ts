@@ -9,12 +9,13 @@ export interface ProductCategory {
   uuid: string;
   name: string;
   image_url: string;
+  display_position?: number;
 }
 
 export const ProductCategoryAPI = API.injectEndpoints({
   endpoints: builder => ({
     getProductCategories: builder.query<
-      APIData<ProductCategory[]> | APIError,
+      APIData<ProductCategory[]>,
       APIPayload<void>
     >({
       query: () => `/products/-/categories`,
@@ -22,7 +23,7 @@ export const ProductCategoryAPI = API.injectEndpoints({
       providesTags: ["ProductCategory"],
     }),
     createProductCategory: builder.mutation<
-      APIData<ProductCategory> | APIError,
+      APIData<ProductCategory>,
       APIPayload<Omit<ProductCategory, "uuid">>
     >({
       query: body => ({
@@ -33,8 +34,20 @@ export const ProductCategoryAPI = API.injectEndpoints({
       transformResponse,
       invalidatesTags: ["ProductCategory"],
     }),
+    updateProductCategory: builder.mutation<
+      APIData<ProductCategory>,
+      APIPayload<ProductCategory>
+    >({
+      query: body => ({
+        url: `/products/-/categories/${body.uuid}`,
+        method: "PUT",
+        body,
+      }),
+      transformResponse,
+      invalidatesTags: ["ProductCategory"],
+    }),
     deleteProductCategory: builder.mutation<
-      APIData<void> | APIError,
+      APIData<void>,
       APIPayload<{ uuid: string }>
     >({
       query: ({ uuid }) => ({
@@ -50,6 +63,7 @@ export const ProductCategoryAPI = API.injectEndpoints({
 export const {
   useGetProductCategoriesQuery,
   useCreateProductCategoryMutation,
+  useUpdateProductCategoryMutation,
   useDeleteProductCategoryMutation,
 } = ProductCategoryAPI;
 

@@ -12,7 +12,7 @@ import ModifiersTableSkeleton from "./table.skeleton";
 export interface ModifiersTableProps {}
 
 export const ModifiersTable: React.FC<ModifiersTableProps> = () => {
-  const { data: modifiers, isLoading, isError } = useGetModifiersQuery();
+  const { data: modifiers = [], isLoading, isError } = useGetModifiersQuery();
 
   return isLoading || isError ? (
     <>
@@ -23,11 +23,12 @@ export const ModifiersTable: React.FC<ModifiersTableProps> = () => {
       <TableHead>
         <TableRow>
           <TableCell>UUID</TableCell>
-          <TableCell>Название</TableCell>
-          <TableCell>Описание</TableCell>
-          <TableCell>Артикул</TableCell>
-          <TableCell>Цена</TableCell>
-          <TableCell>Категория</TableCell>
+          <TableCell align="right">Название</TableCell>
+          <TableCell align="right">Описание</TableCell>
+          <TableCell align="right">Артикул</TableCell>
+          <TableCell align="right">Цена</TableCell>
+          <TableCell align="right">Категория</TableCell>
+          <TableCell align="right">Позиция</TableCell>
           <TableCell></TableCell>
         </TableRow>
       </TableHead>

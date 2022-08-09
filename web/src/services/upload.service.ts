@@ -12,10 +12,7 @@ export interface Image {
 
 export const UploadAPI = API.injectEndpoints({
   endpoints: builder => ({
-    uploadImage: builder.mutation<
-      APIData<Image> | APIError,
-      APIPayload<FormData>
-    >({
+    uploadImage: builder.mutation<APIData<Image>, APIPayload<FormData>>({
       query: body => ({
         url: `/upload`,
         method: "POST",

@@ -29,7 +29,7 @@ export const ModifierCategoriesTableRow: React.FC<ModifierCategoriesTableRowProp
         <TableCell>{category.uuid}</TableCell>
         <TableCell align="right">{category.name}</TableCell>
         <TableCell align="right">
-          {category.display_position ?? "Не указана"}
+          {category.display_position ?? "Не указано"}
         </TableCell>
         <TableCell align="right">
           <Stack
