@@ -1,70 +1,26 @@
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Paper, Stack } from "@mui/material";
+import dynamic from "next/dynamic";
+import React from "react";
 import AppPage from "~/common/interfaces/app-page.interface";
 import AdminPanelLayout from "~/layouts/admin-panel";
-import {
-  useDeleteModifierMutation,
-  useGetModifiersQuery,
-} from "~/services/modifiers.service";
-import CreateModifierModal from "./components/modal";
+import CreateModifierModal from "./components/modals/create-modifier.modal";
+import ModifiersTableSkeleton from "./components/table.skeleton";
+
+export const ModifiersTable = dynamic(() => import("./components/table"), {
+  suspense: true,
+  ssr: false,
+});
 
 export const ModifiersPage: AppPage = () => {
-  const { data: modifiers, isLoading, isError } = useGetModifiersQuery();
-  const [deleteModifier] = useDeleteModifierMutation();
-
-  if (isLoading || isError) return null;
-
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>UUID</TableCell>
-            <TableCell>Название</TableCell>
-            <TableCell>Описание</TableCell>
-            <TableCell>Артикул</TableCell>
-            <TableCell>Цена</TableCell>
-            <TableCell>Категория</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {modifiers.map(c => (
-            <TableRow key={c.uuid}>
-              <TableCell>{c.uuid}</TableCell>
-              <TableCell>{c.name}</TableCell>
-              <TableCell>{c.desc}</TableCell>
-              <TableCell>{c.article_number}</TableCell>
-              <TableCell>{c.price}</TableCell>
-              <TableCell>{c.category?.name}</TableCell>
-              <TableCell>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  size="small"
-                  onClick={() => deleteModifier({ uuid: c.uuid })}
-                >
-                  Удалить
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-          <TableRow>
-            <TableCell>
-              <CreateModifierModal />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper>
+      <React.Suspense fallback={<ModifiersTableSkeleton />}>
+        <ModifiersTable />
+      </React.Suspense>
+      <Stack direction="row" alignItems="center" className="ui-p-8">
+        <CreateModifierModal />
+      </Stack>
+    </Paper>
   );
 };
 
