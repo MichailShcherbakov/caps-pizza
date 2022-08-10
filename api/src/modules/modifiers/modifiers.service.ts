@@ -126,7 +126,8 @@ export default class ModifiersService {
           `The modifier category ${dto.category_uuid} does not exist`
         );
 
-      foundModifier.category_uuid = dto.category_uuid;
+      foundModifier.category_uuid = foundModifierCategory.uuid;
+      foundModifier.category = foundModifierCategory;
 
       if (dto.name) {
         const foundExistsModifier = await this.findOne({

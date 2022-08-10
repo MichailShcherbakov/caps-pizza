@@ -6,7 +6,6 @@ import {
   IsNumber,
   IsOptional,
   IsPhoneNumber,
-  IsPositive,
   IsString,
   IsUUID,
   MaxLength,

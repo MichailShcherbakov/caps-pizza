@@ -137,7 +137,8 @@ export default class ProductsService {
           `The category ${dto.category_uuid} does not exist`
         );
 
-      foundProduct.category_uuid = dto.category_uuid;
+      foundProduct.category_uuid = foundCategory.uuid;
+      foundProduct.category = foundCategory;
     }
 
     if (dto.modifiers_uuids) {
@@ -194,6 +195,7 @@ export default class ProductsService {
 
     foundProduct.name = dto.name || foundProduct.name;
     foundProduct.desc = dto.desc || foundProduct.desc;
+    foundProduct.image_url = dto.image_url || foundProduct.image_url;
     foundProduct.price = dto.price || foundProduct.price;
 
     return this.productsRepository.save(foundProduct);

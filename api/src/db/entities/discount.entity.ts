@@ -1,11 +1,4 @@
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  Min,
-} from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, Min } from "class-validator";
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import IEntity from "./entity.inteface";
 import ModifierEntity from "./modifier.entity";
