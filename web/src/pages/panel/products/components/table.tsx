@@ -1,33 +1,48 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { UnknownApiError } from "~/common/components/error-handler/api-errors";
 import { useGetModifierCategoriesQuery } from "~/services/modifier-categories.service";
 import { useGetProductsQuery } from "~/services/products.service";
-import UiKit from "~/ui";
 import ProductsTableRow from "./table-row";
-// import ProductsTableSkeleton from "./table.skeleton";
+import ProductsTableSkeleton from "./table.skeleton";
 
 export interface ProductsTableProps {}
 
 export const ProductsTable: React.FC<ProductsTableProps> = () => {
-  const { data: products = [], isLoading, isError } = useGetProductsQuery();
+  const {
+    data: products = [],
+    error,
+    isLoading,
+    isError,
+  } = useGetProductsQuery();
   const { data: modifierCategories = [] } = useGetModifierCategoriesQuery();
 
   return isLoading || isError ? (
-    <>{/* <ProductsTableSkeleton /> */}</>
+    <>
+      <ProductsTableSkeleton />
+      {error ? <UnknownApiError /> : undefined}
+    </>
   ) : (
-    <UiKit.Table>
-      <UiKit.TableHead>
-        <UiKit.TableRow>
-          <UiKit.TableTextCell></UiKit.TableTextCell>
-          <UiKit.TableTextCell>UUID</UiKit.TableTextCell>
-          <UiKit.TableTextCell align="right">Изображение</UiKit.TableTextCell>
-          <UiKit.TableTextCell align="right">Название</UiKit.TableTextCell>
-          <UiKit.TableTextCell align="right">Описание</UiKit.TableTextCell>
-          <UiKit.TableTextCell align="right">Артикул</UiKit.TableTextCell>
-          <UiKit.TableTextCell align="right">Цена</UiKit.TableTextCell>
-          <UiKit.TableTextCell align="right">Категория</UiKit.TableTextCell>
-          <UiKit.TableCell></UiKit.TableCell>
-        </UiKit.TableRow>
-      </UiKit.TableHead>
-      <UiKit.TableBody>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell></TableCell>
+          <TableCell>UUID</TableCell>
+          <TableCell align="right">Изображение</TableCell>
+          <TableCell align="right">Название</TableCell>
+          <TableCell align="right">Описание</TableCell>
+          <TableCell align="right">Артикул</TableCell>
+          <TableCell align="right">Цена</TableCell>
+          <TableCell align="right">Категория</TableCell>
+          <TableCell></TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {products.map(product => (
           <ProductsTableRow
             key={product.uuid}
@@ -35,8 +50,8 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
             modifierCategories={modifierCategories}
           />
         ))}
-      </UiKit.TableBody>
-    </UiKit.Table>
+      </TableBody>
+    </Table>
   );
 };
 
