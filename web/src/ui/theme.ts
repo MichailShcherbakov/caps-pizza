@@ -1,12 +1,6 @@
 import { createTheme, PaletteColor } from "@mui/material";
 import "external-svg-loader";
 
-/* export namespace Theme {
-  export type Color =
-    // | "neutral"
-    "primary" | "secondary" | "error" | "info" | "success" | "warning";
-} */
-
 declare module "@mui/material" {
   interface PaletteOptions {
     neutral: Partial<PaletteColor>;
@@ -26,7 +20,13 @@ declare module "@mui/material/Button" {
 }
 
 declare module "@mui/material/TextField" {
-  interface ButtonPropsColorOverrides {
+  interface TextFieldPropsColorOverrides {
+    neutral: true;
+  }
+}
+
+declare module "@mui/material/Checkbox" {
+  interface CheckboxPropsColorOverrides {
     neutral: true;
   }
 }

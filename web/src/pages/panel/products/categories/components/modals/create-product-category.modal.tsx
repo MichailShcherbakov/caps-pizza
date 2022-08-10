@@ -12,8 +12,10 @@ import {
   TheFileIsTooLargeApiError,
   TheNameAlreadyExistsApiError,
 } from "../api-errors";
-import { useUploadImageMutation } from "~/services/upload.service";
-import { IMAGE_FILE_SIZE } from "../helpers/config";
+import {
+  IMAGE_FILE_SIZE,
+  useUploadImageMutation,
+} from "~/services/upload.service";
 
 export interface CreateProductCategoryModalProps extends ButtonProps {}
 
@@ -67,7 +69,7 @@ export const CreateProductCategoryModal: React.FC<
         }
       },
     }),
-    [createProductCategory]
+    [uploadImage, createProductCategory]
   );
 
   return (

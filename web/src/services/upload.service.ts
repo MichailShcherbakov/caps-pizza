@@ -1,11 +1,12 @@
 import API from "./api.service";
 import transformResponse, {
   APIData,
-  APIError,
   APIPayload,
 } from "./helpers/transform-response.helper";
 
-export interface Image {
+export const IMAGE_FILE_SIZE = 200 * 1024; // 200 kb
+
+export class Image {
   filename: string;
   url: string;
 }

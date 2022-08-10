@@ -13,9 +13,11 @@ import {
   TheFileIsTooLargeApiError,
   TheNameAlreadyExistsApiError,
 } from "../api-errors";
-import { useUploadImageMutation } from "~/services/upload.service";
+import {
+  IMAGE_FILE_SIZE,
+  useUploadImageMutation,
+} from "~/services/upload.service";
 import { UpdateProductCategorySubmitData } from "./update-product-category.form";
-import { IMAGE_FILE_SIZE } from "../helpers/config";
 
 export interface UpdateProductCategoryModalProps extends ButtonProps {
   category: ProductCategory;
@@ -40,7 +42,7 @@ export const UpdateProductCategoryModal: React.FC<
         Изменить
       </Button>
     ),
-    []
+    [props]
   );
 
   return (

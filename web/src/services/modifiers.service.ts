@@ -5,7 +5,7 @@ import transformResponse, {
 } from "./helpers/transform-response.helper";
 import { ModifierCategory } from "./modifier-categories.service";
 
-export interface Modifier {
+export class Modifier {
   uuid: string;
   name: string;
   desc?: string;

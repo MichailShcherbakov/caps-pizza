@@ -8,7 +8,7 @@ import { ProductCategory } from "~/services/product-categories.service";
 import validationSchema from "../helpers/validation-schema";
 
 export type CreateProductCategorySubmitData = Omit<ProductCategory, "uuid"> & {
-  image: any;
+  image?: File;
 };
 
 export interface CreateProductCategoryFormProps
@@ -22,7 +22,7 @@ export default function CreateProductCategoryForm(
   const formik = useFormik({
     initialValues: {
       name: "",
-      image: null,
+      image: undefined,
       image_url: "",
       display_position: "",
     },

@@ -3,7 +3,14 @@ import { HYDRATE } from "next-redux-wrapper";
 
 export const API = createApi({
   reducerPath: "api",
-  tagTypes: ["ModifierCategory", "Modifier", "ProductCategory", "Product"],
+  tagTypes: [
+    "ModifierCategory",
+    "Modifier",
+    "ProductCategory",
+    "Product",
+    "Discount",
+    "Delivery",
+  ],
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
   endpoints: () => ({}),
   extractRehydrationInfo(action, { reducerPath }) {

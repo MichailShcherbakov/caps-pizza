@@ -6,3 +6,4 @@ export * from "./modals/form";
 export * from "./modals/notification";
 export * from "./skeleton";
 export * from "./external-svg";
+export * from "./table";

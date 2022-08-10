@@ -59,4 +59,6 @@ export const ProductCategoriesTableRow: React.FC<ProductCategoriesTableRowProps>
     );
   });
 
+ProductCategoriesTableRow.displayName = "ProductCategoriesTableRow";
+
 export default ProductCategoriesTableRow;

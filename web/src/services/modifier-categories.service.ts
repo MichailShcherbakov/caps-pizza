@@ -4,7 +4,7 @@ import transformResponse, {
   APIPayload,
 } from "./helpers/transform-response.helper";
 
-export interface ModifierCategory {
+export class ModifierCategory {
   uuid: string;
   name: string;
   image_url?: string;

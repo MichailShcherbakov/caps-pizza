@@ -57,4 +57,6 @@ export const ModifiersTableRow: React.FC<ModifiersTableRowProps> = React.memo(
   }
 );
 
+ModifiersTableRow.displayName = "ModifiersTableRow";
+
 export default ModifiersTableRow;

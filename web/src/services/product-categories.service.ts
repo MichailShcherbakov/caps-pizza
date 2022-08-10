@@ -1,11 +1,10 @@
 import API from "./api.service";
 import transformResponse, {
   APIData,
-  APIError,
   APIPayload,
 } from "./helpers/transform-response.helper";
 
-export interface ProductCategory {
+export class ProductCategory {
   uuid: string;
   name: string;
   image_url: string;

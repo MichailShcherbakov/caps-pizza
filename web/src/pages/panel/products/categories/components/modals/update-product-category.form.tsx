@@ -8,7 +8,7 @@ import validationSchema from "../helpers/validation-schema";
 import { ProductCategory } from "~/services/product-categories.service";
 
 export type UpdateProductCategorySubmitData = ProductCategory & {
-  image: any;
+  image?: File;
 };
 
 export interface UpdateProductCategoryFormProps
@@ -24,7 +24,7 @@ export default function UpdateProductCategoryForm({
   const formik = useFormik({
     initialValues: {
       name: category.name,
-      image: null,
+      image: undefined,
       image_url: category.image_url,
       display_position: category.display_position?.toString() ?? "",
     },
