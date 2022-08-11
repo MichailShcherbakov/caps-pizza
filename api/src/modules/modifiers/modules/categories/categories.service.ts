@@ -69,11 +69,11 @@ export default class ModifierCategoriesService {
         `The modifier category ${uuid} does not exist`
       );
 
-    foundModifierCategory.name = dto.name || foundModifierCategory.name;
+    foundModifierCategory.name = dto.name ?? foundModifierCategory.name;
     foundModifierCategory.image_url =
-      dto.image_url || foundModifierCategory.image_url;
+      dto.image_url ?? foundModifierCategory.image_url;
     foundModifierCategory.display_position =
-      dto.display_position || foundModifierCategory.display_position;
+      dto.display_position ?? foundModifierCategory.display_position;
 
     return this.modifierCategoriesRespository.save(foundModifierCategory);
   }

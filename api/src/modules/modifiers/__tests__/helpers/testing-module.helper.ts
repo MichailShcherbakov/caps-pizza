@@ -1,9 +1,13 @@
+import SyncService from "~/modules/sync/sync.service";
 import { ITestingModule } from "~/utils/testing-module.interface";
 import ModifiersModule from "../../modifiers.module";
 
 export default class TestingModule extends ITestingModule {
-  init(): Promise<void> {
-    return super.init([ModifiersModule]);
+  async init(): Promise<void> {
+    await super.init([ModifiersModule]);
+
+    const syncService = this.get<SyncService>(SyncService);
+    syncService.syncWithFrontPad = jest.fn(() => Promise.resolve(true));
   }
 
   async clearDataSource(): Promise<void> {

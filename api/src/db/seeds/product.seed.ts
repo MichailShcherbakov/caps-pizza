@@ -14,13 +14,13 @@ export class ProductsFactory extends IFactory<ProductEntity> {
       Pick<ProductEntity, "category_uuid">
   ): ProductEntity {
     const e = new ProductEntity();
-    e.name = options.name || faker.commerce.productName();
-    e.desc = options.desc || faker.word.adjective();
+    e.name = options.name ?? faker.commerce.productName();
+    e.desc = options.desc ?? faker.word.adjective();
     e.article_number =
-      options.article_number ||
+      options.article_number ??
       faker.datatype.number({ max: 99999, min: 10000 });
-    e.image_url = options.image_url || faker.image.imageUrl();
-    e.price = options.price || faker.datatype.number({ max: 1000, min: 150 });
+    e.image_url = options.image_url ?? faker.image.imageUrl();
+    e.price = options.price ?? faker.datatype.number({ max: 1000, min: 150 });
     e.category_uuid = options.category_uuid;
     e.category =
       options.category &&
@@ -33,7 +33,7 @@ export class ProductsFactory extends IFactory<ProductEntity> {
         (deleteObjectsPropsHelper(options.modifiers, [
           "updated_at",
           "created_at",
-        ]) as ModifierEntity[])) ||
+        ]) as ModifierEntity[])) ??
       [];
     return e;
   }

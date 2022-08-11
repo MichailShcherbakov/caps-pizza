@@ -2,6 +2,7 @@ import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import ProductEntity from "~/db/entities/product.entity";
 import ModifiersModule from "../modifiers/modifiers.module";
+import SyncModule from "../sync/sync.module";
 import ProductCategoriesModule from "./modules/categories/categories.module";
 import ProductsController from "./products.controller";
 import ProductsService from "./products.service";
@@ -11,6 +12,7 @@ import ProductsService from "./products.service";
     TypeOrmModule.forFeature([ProductEntity]),
     ProductCategoriesModule,
     forwardRef(() => ModifiersModule),
+    forwardRef(() => SyncModule),
   ],
   controllers: [ProductsController],
   providers: [ProductsService],

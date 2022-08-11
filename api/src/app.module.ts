@@ -7,6 +7,7 @@ import ProductsModule from "./modules/products/products.module";
 import DiscountsModule from "./modules/discounts/discounts.module";
 import OrderModule from "./modules/orders/orders.module";
 import ModifiersModule from "./modules/modifiers/modifiers.module";
+import SyncModule from "./modules/sync/sync.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import ModifiersModule from "./modules/modifiers/modifiers.module";
     DiscountsModule,
     OrderModule,
     UploaderModule,
+    SyncModule,
   ],
 })
 export default class AppModule {}

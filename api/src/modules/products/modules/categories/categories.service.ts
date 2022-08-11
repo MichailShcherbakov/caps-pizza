@@ -76,11 +76,11 @@ export default class ProductCategoriesService {
         `The product category with ${dto.name} name already exists`
       );
 
-    foundProductCagegory.name = dto.name || foundProductCagegory.name;
+    foundProductCagegory.name = dto.name ?? foundProductCagegory.name;
     foundProductCagegory.image_url =
-      dto.image_url || foundProductCagegory.image_url;
+      dto.image_url ?? foundProductCagegory.image_url;
     foundProductCagegory.display_position =
-      dto.display_position || foundProductCagegory.display_position;
+      dto.display_position ?? foundProductCagegory.display_position;
 
     return this.productCategoriesRepository.save(foundProductCagegory);
   }

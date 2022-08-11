@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Not, Repository } from "typeorm";
 import ModifierEntity from "~/db/entities/modifier.entity";
-import ProductsService from "../products/products.service";
+import SyncService from "../sync/sync.service";
 import { CreateModifierDto, UpdateModifierDto } from "./modifiers.dto";
 import ModifierCategoriesService from "./modules/categories/categories.service";
 
@@ -18,8 +18,8 @@ export default class ModifiersService {
     @InjectRepository(ModifierEntity)
     private readonly modifiersRepository: Repository<ModifierEntity>,
     private readonly modifierCategoriesService: ModifierCategoriesService,
-    @Inject(forwardRef(() => ProductsService))
-    private readonly productsService: ProductsService
+    @Inject(forwardRef(() => SyncService))
+    private readonly syncService: SyncService
   ) {}
 
   find(options?: FindOptionsWhere<ModifierEntity>): Promise<ModifierEntity[]> {
@@ -45,18 +45,11 @@ export default class ModifiersService {
   }
 
   async create(dto: CreateModifierDto): Promise<ModifierEntity> {
-    const [
-      foundModifierCategory,
-      foundExistsModifier,
-      foundExistsArticleProduct,
-      foundExistsArticleModifier,
-    ] = await Promise.all([
+    const [foundModifierCategory, foundExistsModifier] = await Promise.all([
       this.modifierCategoriesService.findOne({
         uuid: dto.category_uuid,
       }),
       this.findOne({ name: dto.name, category_uuid: dto.category_uuid }),
-      this.productsService.findOne({ article_number: dto.article_number }),
-      this.findOne({ article_number: dto.article_number }),
     ]);
 
     if (!foundModifierCategory)
@@ -69,22 +62,15 @@ export default class ModifiersService {
         `The modifier with ${dto.name} name in ${foundModifierCategory.name} category already exists`
       );
 
-    if (foundExistsArticleProduct)
-      throw new BadRequestException(
-        `The product ${foundExistsArticleProduct.uuid} already has the article number`
-      );
-
-    if (foundExistsArticleModifier)
-      throw new BadRequestException(
-        `The modifier ${foundExistsArticleModifier.uuid} already has the article number`
-      );
+    await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
 
     const newModifier = new ModifierEntity();
     newModifier.name = dto.name;
     newModifier.desc = dto.desc;
     newModifier.image_url = dto.image_url;
     newModifier.article_number = dto.article_number;
-    newModifier.category_uuid = dto.category_uuid;
+    newModifier.category_uuid = foundModifierCategory.uuid;
+    newModifier.category = foundModifierCategory;
     newModifier.display_position = dto.display_position;
     newModifier.price = dto.price;
 
@@ -131,31 +117,17 @@ export default class ModifiersService {
       dto.article_number &&
       dto.article_number !== foundModifier.article_number
     ) {
-      const [foundExistsArticleProduct, foundExistsArticleModifier] =
-        await Promise.all([
-          this.productsService.findOne({ article_number: dto.article_number }),
-          this.findOne({ article_number: dto.article_number }),
-        ]);
-
-      if (foundExistsArticleProduct)
-        throw new BadRequestException(
-          `The product ${foundExistsArticleProduct.uuid} already has the article number`
-        );
-
-      if (foundExistsArticleModifier)
-        throw new BadRequestException(
-          `The modifier ${foundExistsArticleModifier.uuid} already has the article number`
-        );
+      await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
 
       foundModifier.article_number = dto.article_number;
     }
 
-    foundModifier.name = dto.name || foundModifier.name;
-    foundModifier.desc = dto.desc || foundModifier.desc;
-    foundModifier.image_url = dto.image_url || foundModifier.desc;
+    foundModifier.name = dto.name ?? foundModifier.name;
+    foundModifier.desc = dto.desc ?? foundModifier.desc;
+    foundModifier.image_url = dto.image_url ?? foundModifier.desc;
     foundModifier.display_position =
-      dto.display_position || foundModifier.display_position;
-    foundModifier.price = dto.price || foundModifier.price;
+      dto.display_position ?? foundModifier.display_position;
+    foundModifier.price = dto.price ?? foundModifier.price;
 
     return this.modifiersRepository.save(foundModifier);
   }

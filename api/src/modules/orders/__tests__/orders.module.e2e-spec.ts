@@ -215,8 +215,8 @@ describe("[Orders Module] ...", () => {
       );
       expect(payload.append).toBeCalledWith("name", dto.client_info.name);
       expect(payload.append).toBeCalledWith("phone", dto.client_info.phone);
-      expect(payload.append).toBeCalledWith("mail", dto.client_info.mail || "");
-      expect(payload.append).toBeCalledWith("descr", dto.description || "");
+      expect(payload.append).toBeCalledWith("mail", dto.client_info.mail ?? "");
+      expect(payload.append).toBeCalledWith("descr", dto.description ?? "");
 
       callsCount += 10;
 

@@ -8,10 +8,10 @@ export class ModifierCategoriesFactory extends IFactory<ModifierCategoryEntity> 
     options: Partial<ModifierCategoryEntity> = {}
   ): ModifierCategoryEntity {
     const newModifierCategory = new ModifierCategoryEntity();
-    newModifierCategory.name = options.name || faker.word.noun();
-    newModifierCategory.image_url = options.image_url || faker.image.imageUrl();
+    newModifierCategory.name = options.name ?? faker.word.noun();
+    newModifierCategory.image_url = options.image_url ?? faker.image.imageUrl();
     newModifierCategory.display_position =
-      options.display_position || faker.datatype.number({ min: 1, max: 5 });
+      options.display_position ?? faker.datatype.number({ min: 1, max: 5 });
     return newModifierCategory;
   }
 }

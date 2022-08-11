@@ -104,6 +104,8 @@ describe("[Modifier Module] ...", () => {
         name: faker.word.noun(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
+        desc: faker.datatype.string(),
+        image_url: faker.image.imageUrl(),
         display_position: faker.datatype.number(),
         category_uuid: category.uuid,
       };
@@ -111,16 +113,14 @@ describe("[Modifier Module] ...", () => {
       const createModifierResponse = await api.createModifier(dto);
 
       expect(createModifierResponse.status).toEqual(201);
-      expect(createModifierResponse.body.data).toHaveProperty("uuid");
-      expect(createModifierResponse.body.data).toHaveProperty("name");
-      expect(createModifierResponse.body.data).toHaveProperty("desc");
-      expect(createModifierResponse.body.data).toHaveProperty("image_url");
-      expect(createModifierResponse.body.data).toHaveProperty("article_number");
-      expect(createModifierResponse.body.data).toHaveProperty("category_uuid");
       expect(createModifierResponse.body).toEqual({
         statusCode: 201,
         data: {
-          ...createModifierResponse.body.data,
+          uuid: createModifierResponse.body.data.uuid,
+          category: deleteObjectPropsHelper(category, [
+            "updated_at",
+            "created_at",
+          ]),
           ...dto,
         },
       });
@@ -130,8 +130,9 @@ describe("[Modifier Module] ...", () => {
       const dto: Partial<CreateModifierDto> = {
         name: faker.word.noun(),
         article_number: faker.datatype.number(),
-        image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        desc: faker.datatype.string(),
+        image_url: faker.image.imageUrl(),
         display_position: faker.datatype.number(),
       };
 
@@ -155,8 +156,9 @@ describe("[Modifier Module] ...", () => {
       const dto: CreateModifierDto = {
         name: faker.word.noun(),
         article_number: faker.datatype.number(),
-        image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        desc: faker.datatype.string(),
+        image_url: faker.image.imageUrl(),
         display_position: faker.datatype.number(),
         category_uuid: faker.datatype.uuid(),
       };
@@ -181,8 +183,9 @@ describe("[Modifier Module] ...", () => {
       const dto: CreateModifierDto = {
         name: initialModifier.name,
         article_number: faker.datatype.number(),
-        image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        desc: faker.datatype.string(),
+        image_url: faker.image.imageUrl(),
         display_position: faker.datatype.number(),
         category_uuid: initialModifier.category_uuid,
       };
@@ -211,6 +214,7 @@ describe("[Modifier Module] ...", () => {
         name: faker.datatype.string(),
         article_number: product.article_number,
         image_url: faker.image.imageUrl(),
+        desc: faker.datatype.string(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),
         category_uuid: modifierCategory.uuid,
@@ -237,6 +241,7 @@ describe("[Modifier Module] ...", () => {
       const dto: CreateModifierDto = {
         name: faker.datatype.string(),
         article_number: otherModifier.article_number,
+        desc: faker.datatype.string(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),
@@ -266,6 +271,7 @@ describe("[Modifier Module] ...", () => {
       const dto: UpdateModifierDto = {
         name: faker.datatype.string(),
         article_number: faker.datatype.number(),
+        desc: faker.datatype.string(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),
@@ -281,7 +287,47 @@ describe("[Modifier Module] ...", () => {
       expect(updateModifierResponse.body).toEqual({
         statusCode: 200,
         data: {
-          ...updateModifierResponse.body.data,
+          uuid: updateModifierResponse.body.data.uuid,
+          category: deleteObjectPropsHelper(newCategory, [
+            "updated_at",
+            "created_at",
+          ]),
+          ...dto,
+        },
+      });
+    });
+
+    it("should successfully updating the modifier with the same unique props", async () => {
+      const initialCategory = categories[1];
+      const initialModifier = await createModifierHelper(
+        testingModule.dataSource,
+        initialCategory
+      );
+
+      const dto: UpdateModifierDto = {
+        name: initialModifier.name,
+        article_number: initialModifier.article_number,
+        desc: faker.datatype.string(),
+        image_url: faker.image.imageUrl(),
+        price: faker.datatype.number(),
+        display_position: faker.datatype.number(),
+        category_uuid: initialCategory.uuid,
+      };
+
+      const updateModifierResponse = await api.updateModifier(
+        initialModifier.uuid,
+        dto
+      );
+
+      expect(updateModifierResponse.status).toEqual(200);
+      expect(updateModifierResponse.body).toEqual({
+        statusCode: 200,
+        data: {
+          uuid: updateModifierResponse.body.data.uuid,
+          category: deleteObjectPropsHelper(initialCategory, [
+            "updated_at",
+            "created_at",
+          ]),
           ...dto,
         },
       });
@@ -297,6 +343,7 @@ describe("[Modifier Module] ...", () => {
       const dto: UpdateModifierDto = {
         name: faker.datatype.string(),
         article_number: faker.datatype.number(),
+        desc: faker.datatype.string(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),
@@ -332,6 +379,7 @@ describe("[Modifier Module] ...", () => {
       const dto: UpdateModifierDto = {
         name: otherModifier.name,
         article_number: faker.datatype.number(),
+        desc: faker.datatype.string(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),
@@ -357,6 +405,7 @@ describe("[Modifier Module] ...", () => {
       const dto: UpdateModifierDto = {
         name: faker.datatype.string(),
         article_number: faker.datatype.number(),
+        desc: faker.datatype.string(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),

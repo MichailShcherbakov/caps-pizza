@@ -16,7 +16,7 @@ export const FIXED_MODIFIER_COUNT = 1;
 @Injectable()
 export default class OrdersService {
   constructor(
-    private readonly httpSevice: HttpService,
+    private readonly httpService: HttpService,
     private readonly productsService: ProductsService,
     private readonly modifiersService: ModifiersService,
     private readonly discountsService: DiscountsService
@@ -83,16 +83,16 @@ export default class OrdersService {
     payload.append("apart", dto.delivery_address.apartment);
     payload.append("name", dto.client_info.name);
     payload.append("phone", dto.client_info.phone);
-    payload.append("mail", dto.client_info.mail || "");
-    payload.append("descr", dto.description || "");
+    payload.append("mail", dto.client_info.mail ?? "");
+    payload.append("descr", dto.description ?? "");
 
     return this.sendToFrontPad(payload);
   }
 
   async sendToFrontPad(payload: FormData): Promise<FrontPadResponse> {
-    payload.append("secret", process.env.SECRET || "");
+    payload.append("secret", process.env.SECRET ?? "");
 
-    const response = await this.httpSevice.axiosRef.request({
+    const response = await this.httpService.axiosRef.request({
       method: "post",
       url: "https://app.frontpad.ru/api/index.php?new_order",
       headers: payload.getHeaders(),

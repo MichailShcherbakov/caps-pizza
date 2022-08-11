@@ -9,6 +9,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, In, Repository } from "typeorm";
 import ProductEntity from "~/db/entities/product.entity";
 import ModifiersService from "../modifiers/modifiers.service";
+import SyncService from "../sync/sync.service";
 import ProductCategoriesService from "./modules/categories/categories.service";
 import { CreateProductDto, UpdateProductDto } from "./products.dto";
 
@@ -19,7 +20,9 @@ export default class ProductsService {
     private readonly productsRepository: Repository<ProductEntity>,
     private readonly productCategoriesService: ProductCategoriesService,
     @Inject(forwardRef(() => ModifiersService))
-    private readonly modifiersService: ModifiersService
+    private readonly modifiersService: ModifiersService,
+    @Inject(forwardRef(() => SyncService))
+    private readonly syncService: SyncService
   ) {}
 
   find(options?: FindOptionsWhere<ProductEntity>): Promise<ProductEntity[]> {
@@ -45,18 +48,11 @@ export default class ProductsService {
   }
 
   async create(dto: CreateProductDto): Promise<ProductEntity> {
-    const [
-      foundCategory,
-      foundModifiers,
-      foundExistsArticleProduct,
-      foundExistsArticleModifier,
-    ] = await Promise.all([
+    const [foundCategory, foundModifiers] = await Promise.all([
       this.productCategoriesService.findOne({
         uuid: dto.category_uuid,
       }),
       this.modifiersService.find({ uuid: In(dto.modifiers_uuids) }),
-      this.findOne({ article_number: dto.article_number }),
-      this.modifiersService.findOne({ article_number: dto.article_number }),
     ]);
 
     if (!foundCategory)
@@ -85,15 +81,7 @@ export default class ProductsService {
       return acc;
     }, {});
 
-    if (foundExistsArticleProduct)
-      throw new BadRequestException(
-        `The product ${foundExistsArticleProduct.uuid} already has the article number`
-      );
-
-    if (foundExistsArticleModifier)
-      throw new BadRequestException(
-        `The modifier ${foundExistsArticleModifier.uuid} already has the article number`
-      );
+    await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
 
     const e = new ProductEntity();
     e.name = dto.name;
@@ -101,8 +89,9 @@ export default class ProductsService {
     e.image_url = dto.image_url;
     e.article_number = dto.article_number;
     e.price = dto.price;
+    e.category_uuid = foundCategory.uuid;
     e.category = foundCategory;
-    e.modifiers = foundModifiers;
+    e.modifiers = ModifiersService.sort(foundModifiers);
 
     return this.productsRepository.save(e);
   }
@@ -152,36 +141,22 @@ export default class ProductsService {
         return acc;
       }, {});
 
-      foundProduct.modifiers = foundModifiers;
+      foundProduct.modifiers = ModifiersService.sort(foundModifiers);
     }
 
     if (
       dto.article_number &&
       dto.article_number !== foundProduct.article_number
     ) {
-      const [foundExistsArticleProduct, foundExistsArticleModifier] =
-        await Promise.all([
-          this.findOne({ article_number: dto.article_number }),
-          this.modifiersService.findOne({ article_number: dto.article_number }),
-        ]);
-
-      if (foundExistsArticleProduct)
-        throw new BadRequestException(
-          `The product ${foundExistsArticleProduct.uuid} already has the article number`
-        );
-
-      if (foundExistsArticleModifier)
-        throw new BadRequestException(
-          `The modifier ${foundExistsArticleModifier.uuid} already has the article number`
-        );
+      await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
 
       foundProduct.article_number = dto.article_number;
     }
 
-    foundProduct.name = dto.name || foundProduct.name;
-    foundProduct.desc = dto.desc || foundProduct.desc;
-    foundProduct.image_url = dto.image_url || foundProduct.image_url;
-    foundProduct.price = dto.price || foundProduct.price;
+    foundProduct.name = dto.name ?? foundProduct.name;
+    foundProduct.desc = dto.desc ?? foundProduct.desc;
+    foundProduct.image_url = dto.image_url ?? foundProduct.image_url;
+    foundProduct.price = dto.price ?? foundProduct.price;
 
     return this.productsRepository.save(foundProduct);
   }
