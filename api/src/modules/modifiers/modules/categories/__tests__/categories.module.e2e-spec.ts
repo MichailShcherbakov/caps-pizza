@@ -7,6 +7,7 @@ import {
   CreateModifierCategoryDto,
   UpdateModifierCategoryDto,
 } from "../categories.dto";
+import ModifierCategoriesService from "../categories.service";
 import Api from "./helpers/api.helper";
 import createModifierCategoriesHelper, {
   createModifierCategoryHelper,
@@ -47,12 +48,7 @@ describe("[Modifier Categories Module] ...", () => {
         data: fromJson(
           toJson(
             deleteObjectsPropsHelper(
-              modifierCategories.sort((a, b) => {
-                if (!a.display_position || !b.display_position) return 0;
-                else if (a.display_position < b.display_position) return -1;
-                else if (a.display_position > b.display_position) return 1;
-                return 0;
-              }),
+              ModifierCategoriesService.sort(modifierCategories),
               ["updated_at", "created_at"]
             )
           )

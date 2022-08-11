@@ -2,8 +2,10 @@ export function deleteObjectPropsHelper<K extends keyof T, T>(
   obj: T,
   props: (keyof T)[]
 ): Omit<T, K> {
-  for (const prop of props) delete obj[prop];
-  return obj;
+  const newObj = { ...obj };
+
+  for (const prop of props) delete newObj[prop];
+  return newObj;
 }
 
 export function deleteObjectsPropsHelper<K extends keyof T, T>(

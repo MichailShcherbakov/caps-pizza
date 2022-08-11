@@ -13,6 +13,7 @@ import {
   CreateProductCategoryDto,
   UpdateProductCategoryDto,
 } from "../categories.dto";
+import ProductCategoriesService from "../categories.service";
 
 describe("[Product Categories Module] ... ", () => {
   let testingModule: TestingModule;
@@ -51,12 +52,7 @@ describe("[Product Categories Module] ... ", () => {
         data: fromJson(
           toJson(
             deleteObjectsPropsHelper(
-              productCategories.sort((a, b) => {
-                if (!a.display_position || !b.display_position) return 0;
-                else if (a.display_position < b.display_position) return -1;
-                else if (a.display_position > b.display_position) return 1;
-                return 0;
-              }),
+              ProductCategoriesService.sort(productCategories),
               ["updated_at", "created_at"]
             )
           )

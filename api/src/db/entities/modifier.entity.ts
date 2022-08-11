@@ -32,4 +32,22 @@ export default class ModifierEntity extends IEntity {
     foreignKeyConstraintName: "fk_modifiers_category_uuid",
   })
   category?: ModifierCategoryEntity;
+
+  static compare(a?: ModifierEntity, b?: ModifierEntity): number {
+    const categoryCompare = ModifierCategoryEntity.compare(
+      a?.category,
+      b?.category
+    );
+
+    if (categoryCompare !== 0) return categoryCompare;
+    else if (!a && b) return 1;
+    else if (a && !b) return -1;
+    else if (!a || !b) return 0;
+    else if (!a.display_position && b.display_position) return 1;
+    else if (a.display_position && !b.display_position) return -1;
+    else if (!a.display_position || !b.display_position) return 0;
+    else if (a.display_position < b.display_position) return -1;
+    else if (a.display_position > b.display_position) return 1;
+    return 0;
+  }
 }

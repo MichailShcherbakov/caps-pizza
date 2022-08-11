@@ -25,20 +25,11 @@ export default class ModifierCategoriesService {
       .find({
         where: options,
       })
-      .then(categories => this.order(categories));
+      .then(categories => ModifierCategoriesService.sort(categories));
   }
 
-  private order(
-    categories: ModifierCategoryEntity[]
-  ): ModifierCategoryEntity[] {
-    return categories.sort((a, b) => {
-      if (!a.display_position && b.display_position) return 1;
-      else if (a.display_position && !b.display_position) return -1;
-      else if (!a.display_position || !b.display_position) return 0;
-      else if (a.display_position < b.display_position) return -1;
-      else if (a.display_position > b.display_position) return 1;
-      return 0;
-    });
+  static sort(categories: ModifierCategoryEntity[]): ModifierCategoryEntity[] {
+    return categories.sort((a, b) => ModifierCategoryEntity.compare(a, b));
   }
 
   findOne(

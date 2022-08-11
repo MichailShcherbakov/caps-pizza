@@ -18,7 +18,7 @@ import ProductCategoriesService from "../products/modules/categories/categories.
 import ProductsService from "../products/products.service";
 import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
 
-export type DiscountProduct = ProductEntity & {
+export type DiscountProduct = Omit<ProductEntity, "compare"> & {
   full_price: number;
   count: number;
 };
@@ -34,17 +34,16 @@ export default class DiscountsService {
   ) {}
 
   find(options?: FindOptionsWhere<DiscountEntity>): Promise<DiscountEntity[]> {
-    return this.discountRepository.find({
-      where: options,
-      relations: {
-        products: true,
-        product_categories: true,
-        modifiers: true,
-      },
-      order: {
-        created_at: "ASC",
-      },
-    });
+    return this.discountRepository
+      .find({
+        where: options,
+        relations: {
+          products: true,
+          product_categories: true,
+          modifiers: true,
+        },
+      })
+      .then(discounts => DiscountsService.sort(discounts));
   }
 
   findOne(
@@ -60,7 +59,10 @@ export default class DiscountsService {
     });
   }
 
-  /// TODO: Add the checking for the correct discount
+  static sort(discounts: DiscountEntity[]): DiscountEntity[] {
+    return discounts.sort((a, b) => DiscountEntity.compare(a, b));
+  }
+
   async create(dto: CreateDiscountDto): Promise<DiscountEntity> {
     const foundDiscount = await this.findOne({ name: dto.name });
 
@@ -76,11 +78,34 @@ export default class DiscountsService {
 
     const e = new DiscountEntity();
     e.name = dto.name;
-    e.type = dto.type;
     e.scope = dto.scope;
     e.value = dto.value;
 
+    if (dto.type === DiscountTypeEnum.FIXED_PRICE) {
+      if (dto.scope === DiscountScopeEnum.GLOBAL)
+        throw new BadRequestException(
+          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`
+        );
+
+      if (dto.condition?.criteria !== DiscountCriteriaEnum.COUNT)
+        throw new BadRequestException(
+          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`
+        );
+
+      if (dto.condition?.op !== DiscountOperatorEnum.EQUAL)
+        throw new BadRequestException(
+          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`
+        );
+    }
+
+    e.type = dto.type;
+
     if (dto.scope === DiscountScopeEnum.PRODUCTS) {
+      if (dto.condition.criteria === DiscountCriteriaEnum.PRICE)
+        throw new BadRequestException(
+          `The ${DiscountCriteriaEnum.PRICE} discount criteria is not available with the ${DiscountScopeEnum.PRODUCTS} discount scope`
+        );
+
       const products = await this.productsService.find({
         uuid: In(dto.products_uuids),
       });
@@ -138,7 +163,6 @@ export default class DiscountsService {
       e.modifiers = modifiers;
     }
 
-    /// TODO: Add tests for it
     if (
       dto.condition.op === DiscountOperatorEnum.BETWEEN &&
       !dto.condition.value2
@@ -152,7 +176,6 @@ export default class DiscountsService {
     return this.discountRepository.save(e);
   }
 
-  /// TODO: Add the checking for the correct discount
   async update(uuid: string, dto: UpdateDiscountDto): Promise<DiscountEntity> {
     const foundDiscount = await this.findOne({ uuid });
 
@@ -184,6 +207,39 @@ export default class DiscountsService {
           );
 
       foundDiscount.type = dto.type;
+    }
+
+    if (
+      dto.type === DiscountTypeEnum.FIXED_PRICE ||
+      foundDiscount.type === DiscountTypeEnum.FIXED_PRICE
+    ) {
+      if (
+        dto.scope === DiscountScopeEnum.GLOBAL ||
+        foundDiscount.scope == DiscountScopeEnum.GLOBAL
+      )
+        throw new BadRequestException(
+          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`
+        );
+
+      if (
+        (dto.condition?.criteria &&
+          dto.condition?.criteria !== DiscountCriteriaEnum.COUNT) ||
+        (dto.condition?.criteria === undefined &&
+          foundDiscount.condition.criteria !== DiscountCriteriaEnum.COUNT)
+      )
+        throw new BadRequestException(
+          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`
+        );
+
+      if (
+        (dto.condition?.op &&
+          dto.condition?.op !== DiscountOperatorEnum.EQUAL) ||
+        (dto.condition?.op === undefined &&
+          foundDiscount.condition.op !== DiscountOperatorEnum.EQUAL)
+      )
+        throw new BadRequestException(
+          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`
+        );
     }
 
     if (dto.scope) {
@@ -284,7 +340,16 @@ export default class DiscountsService {
       foundDiscount.modifiers = modifiers;
     }
 
-    /// TODO: Add tests for it
+    if (
+      (dto.scope === DiscountScopeEnum.PRODUCTS ||
+        foundDiscount.scope === DiscountScopeEnum.PRODUCTS) &&
+      (dto.condition?.criteria === DiscountCriteriaEnum.PRICE ||
+        foundDiscount.condition.criteria === DiscountCriteriaEnum.PRICE)
+    )
+      throw new BadRequestException(
+        `The ${DiscountCriteriaEnum.PRICE} discount criteria is not available with the ${DiscountScopeEnum.PRODUCTS} discount scope`
+      );
+
     if (dto.condition) {
       if (
         dto.condition.op === DiscountOperatorEnum.BETWEEN &&
@@ -512,7 +577,7 @@ export default class DiscountsService {
   }
 
   private getFinalDiscount(
-    products: (ProductEntity & { full_price: number; count: number })[],
+    products: DiscountProduct[],
     discount: DiscountEntity,
     checkValue: number,
     totalOrderCost: number
@@ -590,7 +655,7 @@ export default class DiscountsService {
 
         if (
           discount.scope === DiscountScopeEnum.GLOBAL ||
-          discount.condition.criteria === DiscountCriteriaEnum.PRICE ||
+          discount.condition.criteria !== DiscountCriteriaEnum.COUNT ||
           discount.condition.op !== DiscountOperatorEnum.EQUAL
         )
           throw new Error(`The invalid discount`);

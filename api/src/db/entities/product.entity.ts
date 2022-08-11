@@ -53,6 +53,21 @@ export class ProductEntity extends IEntity {
     },
   })
   modifiers: ModifierEntity[];
+
+  static compare(a?: ProductEntity, b?: ProductEntity): number {
+    const categoryCompare = ProductCategoryEntity.compare(
+      a?.category,
+      b?.category
+    );
+
+    if (categoryCompare !== 0) return categoryCompare;
+    else if (!a && b) return 1;
+    else if (a && !b) return -1;
+    else if (!a || !b) return 0;
+    else if (a.name < b.name) return -1;
+    else if (a.name > b.name) return 1;
+    return 0;
+  }
 }
 
 export default ProductEntity;

@@ -25,18 +25,11 @@ export default class ProductCategoriesService {
       .find({
         where: options,
       })
-      .then(categories => this.order(categories));
+      .then(categories => ProductCategoriesService.sort(categories));
   }
 
-  private order(categories: ProductCategoryEntity[]): ProductCategoryEntity[] {
-    return categories.sort((a, b) => {
-      if (!a.display_position && b.display_position) return 1;
-      else if (a.display_position && !b.display_position) return -1;
-      else if (!a.display_position || !b.display_position) return 0;
-      else if (a.display_position < b.display_position) return -1;
-      else if (a.display_position > b.display_position) return 1;
-      return 0;
-    });
+  static sort(categories: ProductCategoryEntity[]): ProductCategoryEntity[] {
+    return categories.sort((a, b) => ProductCategoryEntity.compare(a, b));
   }
 
   findOne(

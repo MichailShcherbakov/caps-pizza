@@ -28,27 +28,11 @@ export default class ModifiersService {
         where: options,
         relations: { category: true },
       })
-      .then(modifiers => this.order(modifiers));
+      .then(modifiers => ModifiersService.sort(modifiers));
   }
 
-  private order(modifiers: ModifierEntity[]) {
-    return modifiers.sort((a, b) => {
-      if (!a.category?.display_position && b.category?.display_position)
-        return 1;
-      else if (a.category?.display_position && !b.category?.display_position)
-        return -1;
-      else if (a.category?.display_position && b.category?.display_position) {
-        if (a.category?.display_position < b.category?.display_position)
-          return -1;
-        else if (a.category?.display_position > b.category?.display_position)
-          return 1;
-      } else if (!a.display_position && b.display_position) return 1;
-      else if (a.display_position && !b.display_position) return -1;
-      else if (!a.display_position || !b.display_position) return 0;
-      else if (a.display_position < b.display_position) return -1;
-      else if (a.display_position > b.display_position) return 1;
-      return 0;
-    });
+  static sort(modifiers: ModifierEntity[]) {
+    return modifiers.sort((a, b) => ModifierEntity.compare(a, b));
   }
 
   findOne(

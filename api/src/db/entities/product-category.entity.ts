@@ -11,4 +11,18 @@ export default class ProductCategoryEntity extends IEntity {
 
   @Column({ nullable: true })
   display_position?: number;
+
+  static compare(a?: ProductCategoryEntity, b?: ProductCategoryEntity): number {
+    if (!a && b) return 1;
+    else if (a && !b) return -1;
+    else if (!a || !b) return 0;
+    else if (!a.display_position && b.display_position) return 1;
+    else if (a.display_position && !b.display_position) return -1;
+    else if (!a.display_position || !b.display_position) return 0;
+    else if (a.display_position < b.display_position) return -1;
+    else if (a.display_position > b.display_position) return 1;
+    else if (a.name < b.name) return -1;
+    else if (a.name > b.name) return 1;
+    return 0;
+  }
 }

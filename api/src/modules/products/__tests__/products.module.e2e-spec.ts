@@ -17,6 +17,8 @@ import createModifiersHelper, {
 } from "~/modules/modifiers/__tests__/helpers/create-modifiers.helper";
 import createModifierCategoriesHelper from "~/modules/modifiers/modules/categories/__tests__/helpers/create-modifier-categories.helper";
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
+import ProductsService from "../products.service";
+import ModifiersService from "~/modules/modifiers/modifiers.service";
 
 describe("[Product Module] ...", () => {
   let testingModule: TestingModule;
@@ -60,29 +62,10 @@ describe("[Product Module] ...", () => {
         statusCode: 200,
         data: fromJson(
           toJson(
-            deleteObjectsPropsHelper(
-              products.sort((a, b) => {
-                if (
-                  !a.category?.display_position ||
-                  !b.category?.display_position
-                ) {
-                  if (a.name < b.name) return -1;
-                  else if (a.name > b.name) return 1;
-                  return 0;
-                }
-
-                if (a.category?.display_position < b.category?.display_position)
-                  return -1;
-                else if (
-                  a.category?.display_position > b.category?.display_position
-                )
-                  return 1;
-                else if (a.name < b.name) return -1;
-                else if (a.name > b.name) return 1;
-                return 0;
-              }),
-              ["updated_at", "created_at"]
-            )
+            deleteObjectsPropsHelper(ProductsService.sort(products), [
+              "updated_at",
+              "created_at",
+            ])
           )
         ),
       });
@@ -322,17 +305,16 @@ describe("[Product Module] ...", () => {
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(
-              {
-                ...product,
-                ...dto,
-                modifiers: response.body.data.modifiers,
-              },
-              ["updated_at", "created_at", "modifiers_uuids"]
-            )
-          )
+        data: deleteObjectPropsHelper(
+          {
+            ...product,
+            ...dto,
+            modifiers: deleteObjectsPropsHelper(
+              ModifiersService.sort(newModifiers),
+              ["updated_at", "created_at"]
+            ),
+          },
+          ["updated_at", "created_at", "modifiers_uuids"]
         ),
       });
     });
@@ -346,9 +328,7 @@ describe("[Product Module] ...", () => {
       );
 
       const dto: UpdateProductDto = {
-        name: faker.datatype.string(),
         category_uuid: otherCategory.uuid,
-        price: faker.datatype.number(),
       };
 
       const updateProductResponse = await api.updateProduct(product.uuid, dto);
@@ -356,16 +336,12 @@ describe("[Product Module] ...", () => {
       expect(updateProductResponse.status).toEqual(200);
       expect(updateProductResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(
-              {
-                ...product,
-                ...dto,
-              },
-              ["updated_at", "created_at"]
-            )
-          )
+        data: deleteObjectPropsHelper(
+          {
+            ...product,
+            ...dto,
+          },
+          ["updated_at", "created_at"]
         ),
       });
     });

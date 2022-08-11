@@ -28,25 +28,11 @@ export default class ProductsService {
         where: options,
         relations: { category: true, modifiers: true },
       })
-      .then(products => this.order(products));
+      .then(products => ProductsService.sort(products));
   }
 
-  private order(products: ProductEntity[]) {
-    return products.sort((a, b) => {
-      if (!a.category?.display_position || !b.category?.display_position) {
-        if (a.name < b.name) return -1;
-        else if (a.name > b.name) return 1;
-        return 0;
-      }
-
-      if (a.category?.display_position < b.category?.display_position)
-        return -1;
-      else if (a.category?.display_position > b.category?.display_position)
-        return 1;
-      else if (a.name < b.name) return -1;
-      else if (a.name > b.name) return 1;
-      return 0;
-    });
+  static sort(products: ProductEntity[]) {
+    return products.sort((a, b) => ProductEntity.compare(a, b));
   }
 
   findOne(
@@ -138,7 +124,6 @@ export default class ProductsService {
         );
 
       foundProduct.category_uuid = foundCategory.uuid;
-      foundProduct.category = foundCategory;
     }
 
     if (dto.modifiers_uuids) {

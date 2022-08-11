@@ -7,6 +7,7 @@ import deleteObjectPropsHelper, {
 } from "~/utils/delete-object-props.helper";
 import { fromJson, toJson } from "~/utils/json.helper";
 import { CreateModifierDto, UpdateModifierDto } from "../modifiers.dto";
+import ModifiersService from "../modifiers.service";
 import createModifierCategoriesHelper from "../modules/categories/__tests__/helpers/create-modifier-categories.helper";
 import Api from "./helpers/api.helper";
 import createModifiersHelper, {
@@ -53,31 +54,10 @@ describe("[Modifier Module] ...", () => {
         statusCode: 200,
         data: fromJson(
           toJson(
-            deleteObjectsPropsHelper(
-              modifiers.sort((a, b) => {
-                if (
-                  !a.category?.display_position ||
-                  !b.category?.display_position
-                ) {
-                  if (!a.display_position || !b.display_position) return 0;
-                  else if (a.display_position < b.display_position) return -1;
-                  else if (a.display_position > b.display_position) return 1;
-                  return 0;
-                }
-
-                if (a.category?.display_position < b.category?.display_position)
-                  return -1;
-                else if (
-                  a.category?.display_position > b.category?.display_position
-                )
-                  return 1;
-                else if (!a.display_position || !b.display_position) return 0;
-                else if (a.display_position < b.display_position) return -1;
-                else if (a.display_position > b.display_position) return 1;
-                return 0;
-              }),
-              ["updated_at", "created_at"]
-            )
+            deleteObjectsPropsHelper(ModifiersService.sort(modifiers), [
+              "updated_at",
+              "created_at",
+            ])
           )
         ),
       });

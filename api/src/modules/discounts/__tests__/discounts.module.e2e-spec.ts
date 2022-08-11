@@ -8,15 +8,19 @@ import {
 import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
 import ProductEntity from "~/db/entities/product.entity";
+import ModifiersService from "~/modules/modifiers/modifiers.service";
 import createModifierCategoriesHelper from "~/modules/modifiers/modules/categories/__tests__/helpers/create-modifier-categories.helper";
 import createModifiersHelper from "~/modules/modifiers/__tests__/helpers/create-modifiers.helper";
+import ProductCategoriesService from "~/modules/products/modules/categories/categories.service";
 import createProductCategoriesHelper from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
+import ProductsService from "~/modules/products/products.service";
 import createProductsHelper from "~/modules/products/__tests__/helpers/create-products.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
 import { fromJson, toJson } from "~/utils/json.helper";
 import { CreateDiscountDto, UpdateDiscountDto } from "../discounts.dto";
+import DiscountsService from "../discounts.service";
 import Api from "./helpers/api.helper";
 import createDiscountsHelper, {
   createDiscountHelper,
@@ -73,16 +77,10 @@ describe("[Discounts Module] ...", () => {
         statusCode: 200,
         data: fromJson(
           toJson(
-            deleteObjectsPropsHelper(
-              discounts.sort((a, b) =>
-                a.created_at < b.created_at
-                  ? -1
-                  : a.created_at > b.created_at
-                  ? 1
-                  : 0
-              ),
-              ["updated_at", "created_at"]
-            )
+            deleteObjectsPropsHelper(DiscountsService.sort(discounts), [
+              "updated_at",
+              "created_at",
+            ])
           )
         ),
       });
@@ -121,7 +119,16 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Post] /discounts", () => {
     it("should successfully create a discount with products", async () => {
-      const choicedProducts = [products[2], products[1], products[6]];
+      const choicedProducts = ProductsService.sort([
+        products[2],
+        products[1],
+        products[6],
+      ]).map(p => ({
+        ...p,
+        category:
+          p.category &&
+          deleteObjectPropsHelper(p.category, ["updated_at", "created_at"]),
+      }));
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -144,7 +151,11 @@ describe("[Discounts Module] ...", () => {
       expect(createDiscountResponse.body).toEqual({
         statusCode: 201,
         data: {
-          ...createDiscountResponse.body.data,
+          uuid: createDiscountResponse.body.data.uuid,
+          products: deleteObjectsPropsHelper(choicedProducts, [
+            "updated_at",
+            "created_at",
+          ]),
           ...deleteObjectPropsHelper(dto, [
             "product_categories_uuids",
             "products_uuids",
@@ -155,11 +166,11 @@ describe("[Discounts Module] ...", () => {
     });
 
     it("should successfully create a discount with product categories", async () => {
-      const choicedProductCategories = [
+      const choicedProductCategories = ProductCategoriesService.sort([
         productCategories[2],
         productCategories[1],
         productCategories[6],
-      ];
+      ]);
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -182,7 +193,12 @@ describe("[Discounts Module] ...", () => {
       expect(createDiscountResponse.body).toEqual({
         statusCode: 201,
         data: {
-          ...createDiscountResponse.body.data,
+          uuid: createDiscountResponse.body.data.uuid,
+          modifiers: [],
+          product_categories: deleteObjectsPropsHelper(
+            choicedProductCategories,
+            ["updated_at", "created_at"]
+          ),
           ...deleteObjectPropsHelper(dto, [
             "product_categories_uuids",
             "products_uuids",
@@ -193,7 +209,11 @@ describe("[Discounts Module] ...", () => {
     });
 
     it("should successfully create a discount with modifiers", async () => {
-      const choicedModifiers = [modifiers[2], modifiers[1], modifiers[6]];
+      const choicedModifiers = ModifiersService.sort([
+        modifiers[2],
+        modifiers[1],
+        modifiers[6],
+      ]);
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -216,7 +236,12 @@ describe("[Discounts Module] ...", () => {
       expect(createDiscountResponse.body).toEqual({
         statusCode: 201,
         data: {
-          ...createDiscountResponse.body.data,
+          uuid: createDiscountResponse.body.data.uuid,
+          modifiers: deleteObjectsPropsHelper(choicedModifiers, [
+            "updated_at",
+            "created_at",
+          ]),
+          product_categories: [],
           ...deleteObjectPropsHelper(dto, [
             "product_categories_uuids",
             "products_uuids",
@@ -444,15 +469,149 @@ describe("[Discounts Module] ...", () => {
         message: ["each value in product_categories_uuids must be a UUID"],
       });
     });
+
+    it(`should throw an error when creating a discount with ${DiscountOperatorEnum.BETWEEN} criteria operator and without provided value2`, async () => {
+      const dto: CreateDiscountDto = {
+        name: faker.datatype.string(),
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.BETWEEN,
+          value: 1,
+        },
+        scope: DiscountScopeEnum.GLOBAL,
+        products_uuids: [],
+        product_categories_uuids: [],
+        modifiers_uuids: [],
+      };
+
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(400);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`,
+      });
+    });
+
+    it(`should throw an error when creating a discount with ${DiscountScopeEnum.PRODUCTS} discount scope and with ${DiscountCriteriaEnum.PRICE} discount criteria`, async () => {
+      const dto: CreateDiscountDto = {
+        name: faker.datatype.string(),
+        type: DiscountTypeEnum.IN_CASH,
+        value: 1299,
+        condition: {
+          criteria: DiscountCriteriaEnum.PRICE,
+          op: DiscountOperatorEnum.GREATER,
+          value: 1000,
+        },
+        scope: DiscountScopeEnum.PRODUCTS,
+        products_uuids: [],
+        product_categories_uuids: [],
+        modifiers_uuids: [],
+      };
+
+      const createDiscountResponse = await api.createDiscount(dto);
+
+      expect(createDiscountResponse.status).toEqual(400);
+      expect(createDiscountResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The ${DiscountCriteriaEnum.PRICE} discount criteria is not available with the ${DiscountScopeEnum.PRODUCTS} discount scope`,
+      });
+    });
+
+    describe(`should throw an erro when creating the discount with ${DiscountTypeEnum.FIXED_PRICE} and ...`, () => {
+      test(`with ${DiscountScopeEnum.GLOBAL} discount scope`, async () => {
+        const dto: CreateDiscountDto = {
+          name: faker.datatype.string(),
+          type: DiscountTypeEnum.FIXED_PRICE,
+          value: 1299,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 1000,
+          },
+          scope: DiscountScopeEnum.GLOBAL,
+          products_uuids: [],
+          product_categories_uuids: [],
+          modifiers_uuids: [],
+        };
+
+        const createDiscountResponse = await api.createDiscount(dto);
+
+        expect(createDiscountResponse.status).toEqual(400);
+        expect(createDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`,
+        });
+      });
+
+      test(`with ${DiscountCriteriaEnum.PRICE} discount criteria`, async () => {
+        const dto: CreateDiscountDto = {
+          name: faker.datatype.string(),
+          type: DiscountTypeEnum.FIXED_PRICE,
+          value: 1299,
+          condition: {
+            criteria: DiscountCriteriaEnum.PRICE,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 1000,
+          },
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          products_uuids: [],
+          product_categories_uuids: [],
+          modifiers_uuids: [],
+        };
+
+        const createDiscountResponse = await api.createDiscount(dto);
+
+        expect(createDiscountResponse.status).toEqual(400);
+        expect(createDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`,
+        });
+      });
+
+      test(`with not ${DiscountOperatorEnum.EQUAL} discount operator`, async () => {
+        const dto: CreateDiscountDto = {
+          name: faker.datatype.string(),
+          type: DiscountTypeEnum.FIXED_PRICE,
+          value: 1299,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.GREATER,
+            value: 1000,
+          },
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          products_uuids: [],
+          product_categories_uuids: [],
+          modifiers_uuids: [],
+        };
+
+        const createDiscountResponse = await api.createDiscount(dto);
+
+        expect(createDiscountResponse.status).toEqual(400);
+        expect(createDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`,
+        });
+      });
+    });
   });
 
   describe("[Put] /discounts", () => {
     it(`should successfully update a discount`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
-      const choisedProductCategories = [
+      const discount = await createDiscountHelper(testingModule.dataSource, {
+        scope: DiscountScopeEnum.GLOBAL,
+      });
+      const choisedProductCategories = ProductCategoriesService.sort([
         productCategories[2],
         productCategories[6],
-      ];
+      ]);
       const choisedModifiers = [modifiers[3]];
 
       const dto: UpdateDiscountDto = {
@@ -477,25 +636,26 @@ describe("[Discounts Module] ...", () => {
       expect(updateDiscountResponse.status).toEqual(200);
       expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(
-              {
-                ...discount,
-                ...dto,
-                product_categories:
-                  updateDiscountResponse.body.data.product_categories,
-                modifiers: updateDiscountResponse.body.data.modifiers,
-              },
-              [
-                "updated_at",
-                "created_at",
-                "products_uuids",
-                "product_categories_uuids",
-                "modifiers_uuids",
-              ]
-            )
-          )
+        data: deleteObjectPropsHelper(
+          {
+            ...discount,
+            ...dto,
+            product_categories: deleteObjectsPropsHelper(
+              choisedProductCategories,
+              ["updated_at", "created_at"]
+            ),
+            modifiers: deleteObjectsPropsHelper(choisedModifiers, [
+              "updated_at",
+              "created_at",
+            ]),
+          },
+          [
+            "updated_at",
+            "created_at",
+            "products_uuids",
+            "product_categories_uuids",
+            "modifiers_uuids",
+          ]
         ),
       });
     });
@@ -505,10 +665,10 @@ describe("[Discounts Module] ...", () => {
         scope: DiscountScopeEnum.PRODUCTS,
         products: [products[5], products[1], products[3]],
       });
-      const choisedProductCategories = [
+      const choisedProductCategories = ProductCategoriesService.sort([
         productCategories[2],
         productCategories[6],
-      ];
+      ]);
 
       const dto: UpdateDiscountDto = {
         scope: DiscountScopeEnum.PRODUCT_FEATURES,
@@ -523,24 +683,22 @@ describe("[Discounts Module] ...", () => {
       expect(updateDiscountResponse.status).toEqual(200);
       expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(
-              {
-                ...discount,
-                ...dto,
-                products: [],
-                product_categories:
-                  updateDiscountResponse.body.data.product_categories,
-              },
-              [
-                "updated_at",
-                "created_at",
-                "products_uuids",
-                "product_categories_uuids",
-              ]
-            )
-          )
+        data: deleteObjectPropsHelper(
+          {
+            ...discount,
+            ...dto,
+            products: [],
+            product_categories: deleteObjectsPropsHelper(
+              choisedProductCategories,
+              ["updated_at", "created_at"]
+            ),
+          },
+          [
+            "updated_at",
+            "created_at",
+            "products_uuids",
+            "product_categories_uuids",
+          ]
         ),
       });
     });
@@ -548,13 +706,18 @@ describe("[Discounts Module] ...", () => {
     it(`should clear product categories when a discount scope has been changed (${DiscountScopeEnum.PRODUCTS})`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
         scope: DiscountScopeEnum.PRODUCT_FEATURES,
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.EQUAL,
+          value: 3,
+        },
         product_categories: [
           productCategories[5],
           productCategories[1],
           productCategories[3],
         ],
       });
-      const choisedProducts = [products[2], products[6]];
+      const choisedProducts = ProductsService.sort([products[2], products[6]]);
 
       const dto: UpdateDiscountDto = {
         scope: DiscountScopeEnum.PRODUCTS,
@@ -569,24 +732,23 @@ describe("[Discounts Module] ...", () => {
       expect(updateDiscountResponse.status).toEqual(200);
       expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(
-              {
-                ...discount,
-                ...dto,
-                product_categories: [],
-                modifiers: [],
-                products: updateDiscountResponse.body.data.products,
-              },
-              [
-                "updated_at",
-                "created_at",
-                "products_uuids",
-                "product_categories_uuids",
-              ]
-            )
-          )
+        data: deleteObjectPropsHelper(
+          {
+            ...discount,
+            ...dto,
+            product_categories: [],
+            modifiers: [],
+            products: deleteObjectsPropsHelper(choisedProducts, [
+              "updated_at",
+              "created_at",
+            ]),
+          },
+          [
+            "updated_at",
+            "created_at",
+            "products_uuids",
+            "product_categories_uuids",
+          ]
         ),
       });
     });
@@ -903,6 +1065,396 @@ describe("[Discounts Module] ...", () => {
         statusCode: 400,
         error: "Bad Request",
         message: `The discount cannot has the modifiers beacuse of it has the ${DiscountScopeEnum.GLOBAL} scope`,
+      });
+    });
+
+    it(`should throw an error when updating a discount with ${DiscountOperatorEnum.BETWEEN} criteria operator and without provided value2`, async () => {
+      const discount = await createDiscountHelper(testingModule.dataSource, {
+        scope: DiscountScopeEnum.GLOBAL,
+      });
+
+      const dto: UpdateDiscountDto = {
+        condition: {
+          criteria: DiscountCriteriaEnum.PRICE,
+          op: DiscountOperatorEnum.BETWEEN,
+          value: 1000,
+        },
+      };
+
+      const updateDiscountResponse = await api.updateDiscount(
+        discount.uuid,
+        dto
+      );
+
+      expect(updateDiscountResponse.status).toEqual(400);
+      expect(updateDiscountResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`,
+      });
+    });
+
+    describe(`should throw an error when updating a discount with ${DiscountScopeEnum.PRODUCTS} discount scope and with ${DiscountCriteriaEnum.PRICE} discount criteria`, () => {
+      test(`with full update`, async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.GLOBAL,
+        });
+
+        const dto: UpdateDiscountDto = {
+          scope: DiscountScopeEnum.PRODUCTS,
+          condition: {
+            criteria: DiscountCriteriaEnum.PRICE,
+            op: DiscountOperatorEnum.GREATER,
+            value: 1000,
+          },
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountCriteriaEnum.PRICE} discount criteria is not available with the ${DiscountScopeEnum.PRODUCTS} discount scope`,
+        });
+      });
+
+      test(`with scope update`, async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.GLOBAL,
+          condition: {
+            criteria: DiscountCriteriaEnum.PRICE,
+            op: DiscountOperatorEnum.GREATER,
+            value: 1000,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          scope: DiscountScopeEnum.PRODUCTS,
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountCriteriaEnum.PRICE} discount criteria is not available with the ${DiscountScopeEnum.PRODUCTS} discount scope`,
+        });
+      });
+
+      test(`with criteria update`, async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCTS,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.GREATER,
+            value: 5,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          condition: {
+            criteria: DiscountCriteriaEnum.PRICE,
+            op: DiscountOperatorEnum.GREATER,
+            value: 5000,
+          },
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountCriteriaEnum.PRICE} discount criteria is not available with the ${DiscountScopeEnum.PRODUCTS} discount scope`,
+        });
+      });
+    });
+
+    describe(`should throw an error when upading the discount with ${DiscountTypeEnum.FIXED_PRICE} discount type and with ${DiscountScopeEnum.GLOBAL} discount scope`, () => {
+      test("with full update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.PERCENT,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          scope: DiscountScopeEnum.GLOBAL,
+          type: DiscountTypeEnum.FIXED_PRICE,
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`,
+        });
+      });
+
+      test("with scope update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.FIXED_PRICE,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          scope: DiscountScopeEnum.GLOBAL,
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`,
+        });
+      });
+
+      test("with type update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.GLOBAL,
+          type: DiscountTypeEnum.PERCENT,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          type: DiscountTypeEnum.FIXED_PRICE,
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`,
+        });
+      });
+    });
+
+    describe(`should throw an error when upading the discount with ${DiscountTypeEnum.FIXED_PRICE} discount type and with ${DiscountCriteriaEnum.PRICE} discount criteria`, () => {
+      test("with full update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.PERCENT,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          type: DiscountTypeEnum.FIXED_PRICE,
+          condition: {
+            criteria: DiscountCriteriaEnum.PRICE,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3000,
+          },
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`,
+        });
+      });
+
+      test("with criteria update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.FIXED_PRICE,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          condition: {
+            criteria: DiscountCriteriaEnum.PRICE,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3000,
+          },
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`,
+        });
+      });
+
+      test("with type update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.PERCENT,
+          condition: {
+            criteria: DiscountCriteriaEnum.PRICE,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3000,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          type: DiscountTypeEnum.FIXED_PRICE,
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`,
+        });
+      });
+    });
+
+    describe(`should throw an error when upading the discount with ${DiscountTypeEnum.FIXED_PRICE} discount type and with not ${DiscountOperatorEnum.EQUAL} discount operator`, () => {
+      test("with full update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.PERCENT,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          type: DiscountTypeEnum.FIXED_PRICE,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.GREATER,
+            value: 3,
+          },
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`,
+        });
+      });
+
+      test("with operator update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.FIXED_PRICE,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.EQUAL,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.GREATER,
+            value: 3,
+          },
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`,
+        });
+      });
+
+      test("with type update", async () => {
+        const discount = await createDiscountHelper(testingModule.dataSource, {
+          scope: DiscountScopeEnum.PRODUCT_FEATURES,
+          type: DiscountTypeEnum.PERCENT,
+          condition: {
+            criteria: DiscountCriteriaEnum.COUNT,
+            op: DiscountOperatorEnum.GREATER,
+            value: 3,
+          },
+        });
+
+        const dto: UpdateDiscountDto = {
+          type: DiscountTypeEnum.FIXED_PRICE,
+        };
+
+        const updateDiscountResponse = await api.updateDiscount(
+          discount.uuid,
+          dto
+        );
+
+        expect(updateDiscountResponse.status).toEqual(400);
+        expect(updateDiscountResponse.body).toEqual({
+          statusCode: 400,
+          error: "Bad Request",
+          message: `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`,
+        });
       });
     });
   });
