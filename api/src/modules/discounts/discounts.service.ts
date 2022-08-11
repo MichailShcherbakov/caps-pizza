@@ -60,6 +60,7 @@ export default class DiscountsService {
     });
   }
 
+  /// TODO: Add the checking for the correct discount
   async create(dto: CreateDiscountDto): Promise<DiscountEntity> {
     const foundDiscount = await this.findOne({ name: dto.name });
 
@@ -77,7 +78,6 @@ export default class DiscountsService {
     e.name = dto.name;
     e.type = dto.type;
     e.scope = dto.scope;
-    e.condition = dto.condition;
     e.value = dto.value;
 
     if (dto.scope === DiscountScopeEnum.PRODUCTS) {
@@ -138,9 +138,21 @@ export default class DiscountsService {
       e.modifiers = modifiers;
     }
 
+    /// TODO: Add tests for it
+    if (
+      dto.condition.op === DiscountOperatorEnum.BETWEEN &&
+      !dto.condition.value2
+    )
+      throw new BadRequestException(
+        `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
+      );
+
+    e.condition = dto.condition;
+
     return this.discountRepository.save(e);
   }
 
+  /// TODO: Add the checking for the correct discount
   async update(uuid: string, dto: UpdateDiscountDto): Promise<DiscountEntity> {
     const foundDiscount = await this.findOne({ uuid });
 
@@ -189,7 +201,7 @@ export default class DiscountsService {
       foundDiscount.scope = dto.scope;
     }
 
-    if (dto.products_uuids) {
+    if (dto.products_uuids?.length) {
       if (
         dto.scope !== DiscountScopeEnum.PRODUCTS &&
         foundDiscount.scope !== DiscountScopeEnum.PRODUCTS
@@ -216,7 +228,7 @@ export default class DiscountsService {
       foundDiscount.products = products;
     }
 
-    if (dto.product_categories_uuids) {
+    if (dto.product_categories_uuids?.length) {
       if (
         dto.scope !== DiscountScopeEnum.PRODUCT_FEATURES &&
         foundDiscount.scope !== DiscountScopeEnum.PRODUCT_FEATURES
@@ -245,7 +257,7 @@ export default class DiscountsService {
       foundDiscount.product_categories = productCategories;
     }
 
-    if (dto.modifiers_uuids) {
+    if (dto.modifiers_uuids?.length) {
       if (
         dto.scope !== DiscountScopeEnum.PRODUCT_FEATURES &&
         foundDiscount.scope !== DiscountScopeEnum.PRODUCT_FEATURES
@@ -272,7 +284,19 @@ export default class DiscountsService {
       foundDiscount.modifiers = modifiers;
     }
 
-    foundDiscount.condition = dto.condition || foundDiscount.condition;
+    /// TODO: Add tests for it
+    if (dto.condition) {
+      if (
+        dto.condition.op === DiscountOperatorEnum.BETWEEN &&
+        !dto.condition.value2
+      )
+        throw new BadRequestException(
+          `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
+        );
+
+      foundDiscount.condition = dto.condition || foundDiscount.condition;
+    }
+
     foundDiscount.value = dto.value || foundDiscount.value;
 
     return this.discountRepository.save(foundDiscount);
