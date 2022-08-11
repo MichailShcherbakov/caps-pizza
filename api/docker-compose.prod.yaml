@@ -6,10 +6,10 @@ services:
     ports:
       - ${TYPEORM_PORT}:${TYPEORM_PORT}
     environment:
-      POSTGRES_DB: caps_pizza_dev_db
+      POSTGRES_DB: caps_pizza_db
       POSTGRES_USER: ${TYPEORM_USERNAME}
       POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
-    container_name: caps_pizza_dev_db
+    container_name: caps_pizza_db
     restart: unless-stopped
 #   api:
 #     build:
