@@ -2,7 +2,6 @@ import React from "react";
 import NextImage from "next/image";
 import {
   Button,
-  Collapse,
   TableRow,
   TableCell,
   TableBody,
@@ -18,6 +17,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ModifierCategory } from "~/services/modifier-categories.service";
 import UpdateProductModal from "./modals/update-product.modal";
+import { CollapsibleTableRow } from "~/ui";
 
 export interface ProductsTableRowProps {
   product: Product;
@@ -94,53 +94,43 @@ export const ProductsTableRow: React.FC<ProductsTableRowProps> = React.memo(
             </Stack>
           </TableCell>
         </TableRow>
-        <TableRow>
-          <TableCell
-            colSpan={9}
-            className="ui-p-0"
-            style={{ borderWidth: isCollapsed ? 0 : 1 }}
-          >
-            <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
-              <Stack className="ui-py-8" spacing={2}>
-                <Typography className="ui-px-8">Модификаторы</Typography>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>UUID</TableCell>
-                      <TableCell align="right">Название</TableCell>
-                      <TableCell align="right">Описание</TableCell>
-                      <TableCell align="right">Артикул</TableCell>
-                      <TableCell align="right">Цена</TableCell>
-                      <TableCell align="right">Категория</TableCell>
-                      <TableCell align="right">Позиция</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {product.modifiers.map(m => (
-                      <TableRow
-                        key={m.uuid}
-                        onClick={() => setIsCollapsed(!isCollapsed)}
-                      >
-                        <TableCell>{m.uuid}</TableCell>
-                        <TableCell align="right">{m.name}</TableCell>
-                        <TableCell align="right">{m.desc ?? "Нет"}</TableCell>
-                        <TableCell align="right">{m.article_number}</TableCell>
-                        <TableCell align="right">{m.price}</TableCell>
-                        <TableCell align="right">
-                          {modifierCategoriesMap.get(m.category_uuid)?.name ??
-                            "Не указано"}
-                        </TableCell>
-                        <TableCell align="right">
-                          {m.display_position ?? "Не указано"}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Stack>
-            </Collapse>
-          </TableCell>
-        </TableRow>
+        <CollapsibleTableRow in={!isCollapsed} colSpan={9}>
+          <Typography className="ui-px-8">Модификаторы</Typography>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>UUID</TableCell>
+                <TableCell align="right">Название</TableCell>
+                <TableCell align="right">Описание</TableCell>
+                <TableCell align="right">Артикул</TableCell>
+                <TableCell align="right">Цена</TableCell>
+                <TableCell align="right">Категория</TableCell>
+                <TableCell align="right">Позиция</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {product.modifiers.map(m => (
+                <TableRow
+                  key={m.uuid}
+                  onClick={() => setIsCollapsed(!isCollapsed)}
+                >
+                  <TableCell>{m.uuid}</TableCell>
+                  <TableCell align="right">{m.name}</TableCell>
+                  <TableCell align="right">{m.desc ?? "Нет"}</TableCell>
+                  <TableCell align="right">{m.article_number}</TableCell>
+                  <TableCell align="right">{m.price}</TableCell>
+                  <TableCell align="right">
+                    {modifierCategoriesMap.get(m.category_uuid)?.name ??
+                      "Не указано"}
+                  </TableCell>
+                  <TableCell align="right">
+                    {m.display_position ?? "Не указано"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CollapsibleTableRow>
       </>
     );
   }

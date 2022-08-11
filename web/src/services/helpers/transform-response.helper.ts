@@ -1,5 +1,3 @@
-import { number } from "yup";
-
 export type APIData<T> = T | undefined;
 
 export class APIError extends Error {

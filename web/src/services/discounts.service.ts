@@ -50,6 +50,24 @@ export class Discount {
   modifiers: Modifier[];
 }
 
+export type CreateDiscountPayload = Omit<
+  Discount,
+  "uuid" | "products" | "product_categories" | "modifiers"
+> & {
+  products_uuids: string[];
+  product_categories_uuids: string[];
+  modifiers_uuids: string[];
+};
+
+export type UpdateDiscountPayload = Omit<
+  Discount,
+  "products" | "product_categories" | "modifiers"
+> & {
+  products_uuids: string[];
+  product_categories_uuids: string[];
+  modifiers_uuids: string[];
+};
+
 export const DiscountAPI = API.injectEndpoints({
   endpoints: builder => ({
     getDiscounts: builder.query<APIData<Discount[]>, APIPayload<void>>({
@@ -59,7 +77,7 @@ export const DiscountAPI = API.injectEndpoints({
     }),
     createDiscount: builder.mutation<
       APIData<Discount>,
-      APIPayload<Omit<Discount, "uuid">>
+      APIPayload<CreateDiscountPayload>
     >({
       query: body => ({
         url: `/discounts`,
@@ -69,7 +87,10 @@ export const DiscountAPI = API.injectEndpoints({
       transformResponse,
       invalidatesTags: ["Discount"],
     }),
-    updateDiscount: builder.mutation<APIData<Discount>, APIPayload<Discount>>({
+    updateDiscount: builder.mutation<
+      APIData<Discount>,
+      APIPayload<UpdateDiscountPayload>
+    >({
       query: body => ({
         url: `/discounts/${body.uuid}`,
         method: "PUT",

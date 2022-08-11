@@ -19,7 +19,7 @@ export const ErrorHandler: React.FC<ErrorHandlerProps> = ({
 }) => {
   return (
     <ErrorHandlerContext.Provider value={{ error }}>
-      {children}
+      {error ? children : undefined}
     </ErrorHandlerContext.Provider>
   );
 };

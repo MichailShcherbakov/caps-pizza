@@ -9,7 +9,10 @@ import styles from "./index.module.scss";
 
 export interface ModalProps
   extends Omit<MUIModalProps, "children" | "onClose"> {
-  children?: React.ReactElement | React.ReactElement[];
+  children?:
+    | React.ReactElement
+    | (React.ReactElement | null | undefined)[]
+    | null;
   component?: any;
   onClose?: () => void;
 }

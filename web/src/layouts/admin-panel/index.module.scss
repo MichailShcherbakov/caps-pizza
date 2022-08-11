@@ -5,7 +5,6 @@
   &__container {
     @include ui-w-full;
     @include ui-h-full;
-    @include ui-overflow-hidden;
     @include ui-py-8;
   }
 }
