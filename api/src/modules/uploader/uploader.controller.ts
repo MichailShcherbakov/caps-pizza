@@ -6,11 +6,6 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import {
-  APP_IMAGES_LOCATION_FULL_URL,
-  APP_IMAGES_LOCATION_PATH,
-  APP_IMAGES_LOCATION_URL,
-} from "~/config";
 
 export class File {
   filename: string;
@@ -20,7 +15,7 @@ export class File {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, APP_IMAGES_LOCATION_PATH);
+    cb(null, __APP_IMAGES_LOCATION_PATH__);
   },
   filename: function (req, file, cb) {
     const ext = file.mimetype.split("/")[1].split("+")[0];
@@ -36,8 +31,8 @@ export class UploaderController {
   uploadFile(@UploadedFile() file: Express.Multer.File): File {
     return {
       filename: file.filename,
-      url: `${APP_IMAGES_LOCATION_URL}/${file.filename}`,
-      full_url: `${APP_IMAGES_LOCATION_FULL_URL}/${file.filename}`,
+      url: `${__APP_IMAGES_LOCATION_URL__}/${file.filename}`,
+      full_url: `${__APP_IMAGES_LOCATION_FULL_URL__}/${file.filename}`,
     };
   }
 }

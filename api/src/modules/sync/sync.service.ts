@@ -53,6 +53,8 @@ export default class SyncService {
         );
       else return false;
 
+    if (__DEV__ && !__SYNC_ON__) return true;
+
     const syncResult = await this.syncWithFrontPad(articleNumber);
 
     if (!syncResult && throwError)
@@ -63,7 +65,7 @@ export default class SyncService {
 
   async syncWithFrontPad(articleNumber: number): Promise<boolean> {
     const payload = new FormData();
-    payload.append("secret", process.env.SECRET ?? "");
+    payload.append("secret", __SECRET__ ?? "");
 
     const response = await this.httpService.axiosRef.request({
       method: "post",

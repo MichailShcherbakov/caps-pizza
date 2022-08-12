@@ -1,15 +1,21 @@
 import { resolve } from "path";
 import { config } from "dotenv";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import "~/utils/number";
 
 config();
 
-export const APP_ROOT_PATH = resolve(__dirname, "../");
-export const APP_ROOT_URL = process.env.URL;
-export const APP_IMAGES_LOCATION_PATH = `${APP_ROOT_PATH}/static/images`;
-export const APP_IMAGES_LOCATION_FULL_URL = `${APP_ROOT_URL}/images`;
-export const APP_IMAGES_LOCATION_URL = `/images`;
-export const TYPEORM_CONFIG: TypeOrmModule = {
+global.__PORT__ = Number.parseInt(process.env.PORT ?? "8080");
+global.__DEV__ = process.env.NODE_ENV === "development";
+global.__SECRET__ = process.env.SECRET ?? "";
+global.__SYNC_ON__ = Boolean(process.env.SYNC_ON ?? true);
+global.__FRONTEND_URL__ = process.env.FRONTEND_URL ?? "*";
+global.__APP_ROOT_PATH__ = resolve(__dirname, "../");
+global.__APP_ROOT_URL__ = process.env.URL ?? "";
+global.__APP_IMAGES_LOCATION_PATH__ = `${__APP_ROOT_PATH__}/static/images`;
+
+global.__APP_IMAGES_LOCATION_FULL_URL__ = `${__APP_ROOT_URL__}/images`;
+global.__APP_IMAGES_LOCATION_URL__ = `/images`;
+global.__TYPEORM_CONFIG__ = {
   type: "postgres",
   host: process.env.TYPEORM_HOST,
   username: process.env.TYPEORM_USERNAME,

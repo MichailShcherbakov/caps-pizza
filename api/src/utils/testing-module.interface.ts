@@ -7,7 +7,6 @@ import {
 import { Test, TestingModule } from "@nestjs/testing";
 import { getDataSourceToken, TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
-import { TYPEORM_CONFIG } from "~/config";
 import initApp from "./init-app";
 
 export type Module =
@@ -23,7 +22,7 @@ export abstract class ITestingModule {
 
   protected compile(modules: Module[]): Promise<TestingModule> {
     return Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(TYPEORM_CONFIG), ...modules],
+      imports: [TypeOrmModule.forRoot(__TYPEORM_CONFIG__), ...modules],
     }).compile();
   }
 

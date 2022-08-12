@@ -90,7 +90,7 @@ export default class OrdersService {
   }
 
   async sendToFrontPad(payload: FormData): Promise<FrontPadResponse> {
-    payload.append("secret", process.env.SECRET ?? "");
+    payload.append("secret", __SECRET__);
 
     const response = await this.httpService.axiosRef.request({
       method: "post",

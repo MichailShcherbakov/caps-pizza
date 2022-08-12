@@ -1,6 +1,3 @@
-const { config } = require("dotenv");
-require("./src/utils/number");
-
-config();
+require("./src/config");
 
 jest.setTimeout(15000); // 15 sec

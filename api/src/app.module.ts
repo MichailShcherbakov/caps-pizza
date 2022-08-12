@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { MulterModule } from "@nestjs/platform-express";
-import { TYPEORM_CONFIG } from "./config";
 import UploaderModule from "./modules/uploader/uploader.module";
 import ProductsModule from "./modules/products/products.module";
 import DiscountsModule from "./modules/discounts/discounts.module";
@@ -12,7 +11,7 @@ import DeliveryModule from "./modules/delivery/deliveries.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(TYPEORM_CONFIG),
+    TypeOrmModule.forRoot(__TYPEORM_CONFIG__),
     MulterModule.register(),
     ProductsModule,
     ModifiersModule,
