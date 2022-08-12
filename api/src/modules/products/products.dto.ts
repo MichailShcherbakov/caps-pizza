@@ -6,7 +6,9 @@ import {
   IsString,
   IsUUID,
   Min,
+  ValidateNested,
 } from "class-validator";
+import { ProductVolume, ProductWeight } from "~/db/entities/product.entity";
 
 export class CreateProductDto {
   @IsNumber()
@@ -25,6 +27,14 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   image_url: string;
+
+  @ValidateNested()
+  @IsOptional()
+  weight?: ProductWeight;
+
+  @ValidateNested()
+  @IsOptional()
+  volume?: ProductVolume;
 
   @IsNumber()
   @Min(0)
@@ -62,6 +72,14 @@ export class UpdateProductDto {
   @IsNotEmpty()
   @IsOptional()
   image_url?: string;
+
+  @ValidateNested()
+  @IsOptional()
+  weight?: ProductWeight;
+
+  @ValidateNested()
+  @IsOptional()
+  volume?: ProductVolume;
 
   @IsNumber()
   @Min(0)

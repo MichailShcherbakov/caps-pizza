@@ -6,7 +6,10 @@ import deleteObjectPropsHelper, {
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import ModifierEntity from "../entities/modifier.entity";
 import ProductCategoryEntity from "../entities/product-category.entity";
-import ProductEntity from "../entities/product.entity";
+import ProductEntity, {
+  ProductVolumeType,
+  ProductWeightType,
+} from "../entities/product.entity";
 
 export class ProductsFactory extends IFactory<ProductEntity> {
   create(
@@ -22,6 +25,14 @@ export class ProductsFactory extends IFactory<ProductEntity> {
     e.image_url = options.image_url ?? faker.image.imageUrl();
     e.price = options.price ?? faker.datatype.number({ max: 1000, min: 150 });
     e.category_uuid = options.category_uuid;
+    e.volume = options.volume ?? {
+      type: ProductVolumeType.QUANTITY,
+      value: 1,
+    };
+    e.weight = options.weight ?? {
+      type: ProductWeightType.GRAMS,
+      value: 240,
+    };
     e.category =
       options.category &&
       (deleteObjectPropsHelper(options.category, [

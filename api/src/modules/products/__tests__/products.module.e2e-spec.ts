@@ -18,6 +18,10 @@ import createModifierCategoriesHelper from "~/modules/modifiers/modules/categori
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
 import ProductsService from "../products.service";
 import ModifiersService from "~/modules/modifiers/modifiers.service";
+import {
+  ProductVolumeType,
+  ProductWeightType,
+} from "~/db/entities/product.entity";
 
 describe("[Product Module] ...", () => {
   let testingModule: TestingModule;
@@ -108,6 +112,14 @@ describe("[Product Module] ...", () => {
         price: faker.datatype.number(),
         category_uuid: category.uuid,
         modifiers_uuids: choisedModifiers.map(m => m.uuid),
+        volume: {
+          type: ProductVolumeType.QUANTITY,
+          value: 4,
+        },
+        weight: {
+          type: ProductWeightType.GRAMS,
+          value: 200,
+        },
       };
 
       const createProductResponse = await api.createProduct(dto);

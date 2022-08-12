@@ -9,6 +9,37 @@ import {
 import ProductCategoryEntity from "./product-category.entity";
 import IEntity from "./entity.inteface";
 import ModifierEntity from "./modifier.entity";
+import { IsEnum, IsNotEmpty, IsNumber } from "class-validator";
+
+export enum ProductWeightType {
+  GRAMS = "GRAMS",
+  LITERS = "LITERS",
+}
+
+export class ProductWeight {
+  @IsEnum(ProductWeightType)
+  @IsNotEmpty()
+  type: ProductWeightType;
+
+  @IsNumber()
+  @IsNotEmpty()
+  value: number;
+}
+
+export enum ProductVolumeType {
+  DIAMETER = "DIAMETER",
+  QUANTITY = "QUANTITY",
+}
+
+export class ProductVolume {
+  @IsEnum(ProductVolumeType)
+  @IsNotEmpty()
+  type: ProductVolumeType;
+
+  @IsNumber()
+  @IsNotEmpty()
+  value: number;
+}
 
 @Entity("products")
 export class ProductEntity extends IEntity {
@@ -26,6 +57,12 @@ export class ProductEntity extends IEntity {
 
   @Column({ type: "float4" })
   price: number;
+
+  @Column({ type: "jsonb", nullable: true })
+  weight?: ProductWeight;
+
+  @Column({ type: "jsonb", nullable: true })
+  volume?: ProductVolume;
 
   @Column({ type: "uuid" })
   category_uuid: string;
