@@ -1,5 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken, TypeOrmModule } from "@nestjs/typeorm";
+import DeliveryEntity from "~/db/entities/delivery.entity";
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
 import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
@@ -20,6 +21,7 @@ export default class UnitTestingModule extends ITestingModule {
           ProductCategoryEntity,
           ModifierEntity,
           ModifierCategoryEntity,
+          DeliveryEntity,
         ]),
         ...modules,
       ],
@@ -31,6 +33,8 @@ export default class UnitTestingModule extends ITestingModule {
       .overrideProvider(getRepositoryToken(ModifierEntity))
       .useValue({})
       .overrideProvider(getRepositoryToken(ModifierCategoryEntity))
+      .useValue({})
+      .overrideProvider(getRepositoryToken(DeliveryEntity))
       .useValue({})
       .overrideProvider(ProductsService)
       .useValue({ findOne: jest.fn() })

@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOptionsWhere, In, Not, Repository } from "typeorm";
+import { FindOptionsWhere, In, Repository } from "typeorm";
 import DiscountEntity, {
   DiscountCriteriaEnum,
   DiscountOperatorEnum,
@@ -182,9 +182,8 @@ export default class DiscountsService {
     if (!foundDiscount)
       throw new NotFoundException(`The discount ${uuid} does not exist`);
 
-    if (dto.name) {
+    if (dto.name && dto.name !== foundDiscount.name) {
       const foundExistsDiscount = await this.findOne({
-        uuid: Not(uuid),
         name: dto.name,
       });
 
@@ -196,26 +195,30 @@ export default class DiscountsService {
       foundDiscount.name = dto.name;
     }
 
-    if (dto.type) {
-      if (dto.type === DiscountTypeEnum.PERCENT)
-        if (
-          (dto.value !== undefined && dto.value > 100) ||
-          (dto.value === undefined && foundDiscount.value > 100)
-        )
-          throw new BadRequestException(
-            `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`
-          );
+    if (
+      dto.type === DiscountTypeEnum.PERCENT ||
+      (dto.type === undefined && foundDiscount.type == DiscountTypeEnum.PERCENT)
+    ) {
+      if (
+        (dto.value !== undefined && dto.value > 100) ||
+        (dto.value === undefined && foundDiscount.value > 100)
+      )
+        throw new BadRequestException(
+          `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`
+        );
 
-      foundDiscount.type = dto.type;
+      foundDiscount.type = dto.type ?? foundDiscount.type;
     }
 
     if (
       dto.type === DiscountTypeEnum.FIXED_PRICE ||
-      foundDiscount.type === DiscountTypeEnum.FIXED_PRICE
+      (dto.type === undefined &&
+        foundDiscount.type === DiscountTypeEnum.FIXED_PRICE)
     ) {
       if (
         dto.scope === DiscountScopeEnum.GLOBAL ||
-        foundDiscount.scope == DiscountScopeEnum.GLOBAL
+        (dto.scope === undefined &&
+          foundDiscount.scope == DiscountScopeEnum.GLOBAL)
       )
         throw new BadRequestException(
           `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`
@@ -223,7 +226,7 @@ export default class DiscountsService {
 
       if (
         (dto.condition?.criteria &&
-          dto.condition?.criteria !== DiscountCriteriaEnum.COUNT) ||
+          dto.condition.criteria !== DiscountCriteriaEnum.COUNT) ||
         (dto.condition?.criteria === undefined &&
           foundDiscount.condition.criteria !== DiscountCriteriaEnum.COUNT)
       )
@@ -233,7 +236,7 @@ export default class DiscountsService {
 
       if (
         (dto.condition?.op &&
-          dto.condition?.op !== DiscountOperatorEnum.EQUAL) ||
+          dto.condition.op !== DiscountOperatorEnum.EQUAL) ||
         (dto.condition?.op === undefined &&
           foundDiscount.condition.op !== DiscountOperatorEnum.EQUAL)
       )
@@ -341,10 +344,11 @@ export default class DiscountsService {
     }
 
     if (
-      (dto.scope === DiscountScopeEnum.PRODUCTS ||
-        foundDiscount.scope === DiscountScopeEnum.PRODUCTS) &&
-      (dto.condition?.criteria === DiscountCriteriaEnum.PRICE ||
-        foundDiscount.condition.criteria === DiscountCriteriaEnum.PRICE)
+      dto.scope === DiscountScopeEnum.PRODUCTS ||
+      (dto.scope === undefined &&
+        foundDiscount.scope === DiscountScopeEnum.PRODUCTS &&
+        (dto.condition?.criteria === DiscountCriteriaEnum.PRICE ||
+          foundDiscount.condition.criteria === DiscountCriteriaEnum.PRICE))
     )
       throw new BadRequestException(
         `The ${DiscountCriteriaEnum.PRICE} discount criteria is not available with the ${DiscountScopeEnum.PRODUCTS} discount scope`

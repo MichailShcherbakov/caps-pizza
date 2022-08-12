@@ -8,6 +8,7 @@ import DiscountsModule from "./modules/discounts/discounts.module";
 import OrderModule from "./modules/orders/orders.module";
 import ModifiersModule from "./modules/modifiers/modifiers.module";
 import SyncModule from "./modules/sync/sync.module";
+import DeliveryModule from "./modules/delivery/deliveries.module";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import SyncModule from "./modules/sync/sync.module";
     ProductsModule,
     ModifiersModule,
     DiscountsModule,
+    DeliveryModule,
     OrderModule,
     UploaderModule,
     SyncModule,

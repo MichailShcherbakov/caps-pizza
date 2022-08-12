@@ -6,6 +6,7 @@ import {
   Injectable,
 } from "@nestjs/common";
 import * as FormData from "form-data";
+import DeliveryService from "../delivery/deliveries.service";
 import ModifiersService from "../modifiers/modifiers.service";
 import ProductsService from "../products/products.service";
 
@@ -16,16 +17,19 @@ export default class SyncService {
     @Inject(forwardRef(() => ProductsService))
     private readonly productsService: ProductsService,
     @Inject(forwardRef(() => ModifiersService))
-    private readonly modifiersService: ModifiersService
+    private readonly modifiersService: ModifiersService,
+    @Inject(forwardRef(() => DeliveryService))
+    private readonly deliveryService: DeliveryService
   ) {}
 
   async isArticleNumberAvaliable(
     articleNumber: number,
     throwError?: boolean
   ): Promise<boolean> {
-    const [product, modifier] = await Promise.all([
+    const [product, modifier, delivery] = await Promise.all([
       this.productsService.findOne({ article_number: articleNumber }),
       this.modifiersService.findOne({ article_number: articleNumber }),
+      this.deliveryService.findOne({ article_number: articleNumber }),
     ]);
 
     if (product)
@@ -39,6 +43,13 @@ export default class SyncService {
       if (throwError)
         throw new BadRequestException(
           `The modifier ${modifier.uuid} already has the article number`
+        );
+      else return false;
+
+    if (delivery)
+      if (throwError)
+        throw new BadRequestException(
+          `The delivery ${delivery.uuid} already has the article number`
         );
       else return false;
 
