@@ -664,6 +664,11 @@ describe("[Discounts Module] ...", () => {
       const discount = await createDiscountHelper(testingModule.dataSource, {
         scope: DiscountScopeEnum.PRODUCTS,
         products: [products[5], products[1], products[3]],
+        condition: {
+          criteria: DiscountCriteriaEnum.COUNT,
+          op: DiscountOperatorEnum.GREATER,
+          value: 5,
+        },
       });
       const choisedProductCategories = ProductCategoriesService.sort([
         productCategories[2],

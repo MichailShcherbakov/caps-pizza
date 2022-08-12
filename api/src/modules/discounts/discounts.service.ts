@@ -196,8 +196,8 @@ export default class DiscountsService {
     }
 
     if (
-      dto.type === DiscountTypeEnum.PERCENT ||
-      (dto.type === undefined && foundDiscount.type == DiscountTypeEnum.PERCENT)
+      (dto.type && dto.type === DiscountTypeEnum.PERCENT) ||
+      (!dto.type && foundDiscount.type == DiscountTypeEnum.PERCENT)
     ) {
       if (
         (dto.value !== undefined && dto.value > 100) ||
@@ -206,19 +206,15 @@ export default class DiscountsService {
         throw new BadRequestException(
           `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`
         );
-
-      foundDiscount.type = dto.type ?? foundDiscount.type;
     }
 
     if (
       dto.type === DiscountTypeEnum.FIXED_PRICE ||
-      (dto.type === undefined &&
-        foundDiscount.type === DiscountTypeEnum.FIXED_PRICE)
+      (!dto.type && foundDiscount.type === DiscountTypeEnum.FIXED_PRICE)
     ) {
       if (
         dto.scope === DiscountScopeEnum.GLOBAL ||
-        (dto.scope === undefined &&
-          foundDiscount.scope == DiscountScopeEnum.GLOBAL)
+        (!dto.scope && foundDiscount.scope == DiscountScopeEnum.GLOBAL)
       )
         throw new BadRequestException(
           `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available with ${DiscountScopeEnum.GLOBAL} discount scope`
@@ -245,19 +241,15 @@ export default class DiscountsService {
         );
     }
 
-    if (dto.scope) {
-      if (dto.scope === DiscountScopeEnum.PRODUCTS) {
-        foundDiscount.modifiers = [];
-        foundDiscount.product_categories = [];
-      } else if (dto.scope === DiscountScopeEnum.PRODUCT_FEATURES) {
-        foundDiscount.products = [];
-      } else {
-        foundDiscount.products = [];
-        foundDiscount.product_categories = [];
-        foundDiscount.modifiers = [];
-      }
-
-      foundDiscount.scope = dto.scope;
+    if (dto.scope === DiscountScopeEnum.PRODUCTS) {
+      foundDiscount.modifiers = [];
+      foundDiscount.product_categories = [];
+    } else if (dto.scope === DiscountScopeEnum.PRODUCT_FEATURES) {
+      foundDiscount.products = [];
+    } else if (dto.scope === DiscountScopeEnum.GLOBAL) {
+      foundDiscount.products = [];
+      foundDiscount.product_categories = [];
+      foundDiscount.modifiers = [];
     }
 
     if (dto.products_uuids?.length) {
@@ -344,10 +336,11 @@ export default class DiscountsService {
     }
 
     if (
-      dto.scope === DiscountScopeEnum.PRODUCTS ||
-      (dto.scope === undefined &&
-        foundDiscount.scope === DiscountScopeEnum.PRODUCTS &&
-        (dto.condition?.criteria === DiscountCriteriaEnum.PRICE ||
+      (dto.scope === DiscountScopeEnum.PRODUCTS ||
+        (!dto.scope && foundDiscount.scope === DiscountScopeEnum.PRODUCTS)) &&
+      ((dto.condition &&
+        dto.condition.criteria === DiscountCriteriaEnum.PRICE) ||
+        (!dto.condition &&
           foundDiscount.condition.criteria === DiscountCriteriaEnum.PRICE))
     )
       throw new BadRequestException(
@@ -362,11 +355,12 @@ export default class DiscountsService {
         throw new BadRequestException(
           `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
         );
-
-      foundDiscount.condition = dto.condition || foundDiscount.condition;
     }
 
-    foundDiscount.value = dto.value || foundDiscount.value;
+    foundDiscount.scope = dto.scope ?? foundDiscount.scope;
+    foundDiscount.condition = dto.condition ?? foundDiscount.condition;
+    foundDiscount.type = dto.type ?? foundDiscount.type;
+    foundDiscount.value = dto.value ?? foundDiscount.value;
 
     return this.discountRepository.save(foundDiscount);
   }
