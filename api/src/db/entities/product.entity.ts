@@ -64,6 +64,9 @@ export class ProductEntity extends IEntity {
   @Column({ type: "jsonb", nullable: true })
   volume?: ProductVolume;
 
+  @Column({ type: "jsonb", nullable: true })
+  tags?: string[];
+
   @Column({ type: "uuid" })
   category_uuid: string;
 

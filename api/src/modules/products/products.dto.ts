@@ -36,6 +36,11 @@ export class CreateProductDto {
   @IsOptional()
   volume?: ProductVolume;
 
+  @IsArray()
+  @IsNotEmpty()
+  @IsOptional()
+  tags?: string[];
+
   @IsNumber()
   @Min(0)
   @IsNotEmpty()
@@ -80,6 +85,11 @@ export class UpdateProductDto {
   @ValidateNested()
   @IsOptional()
   volume?: ProductVolume;
+
+  @IsArray()
+  @IsNotEmpty()
+  @IsOptional()
+  tags?: string[];
 
   @IsNumber()
   @Min(0)

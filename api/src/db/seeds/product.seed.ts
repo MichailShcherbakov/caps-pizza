@@ -33,6 +33,7 @@ export class ProductsFactory extends IFactory<ProductEntity> {
       type: ProductWeightType.GRAMS,
       value: 240,
     };
+    e.tags = ["first:2", "second:4"];
     e.category =
       options.category &&
       (deleteObjectPropsHelper(options.category, [

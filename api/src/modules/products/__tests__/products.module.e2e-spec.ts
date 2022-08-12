@@ -120,6 +120,7 @@ describe("[Product Module] ...", () => {
           type: ProductWeightType.GRAMS,
           value: 200,
         },
+        tags: ["first:1", "second:2"],
       };
 
       const createProductResponse = await api.createProduct(dto);
@@ -309,6 +310,15 @@ describe("[Product Module] ...", () => {
         desc: faker.datatype.string(),
         category_uuid: otherCategory.uuid,
         modifiers_uuids: newModifiers.map(m => m.uuid),
+        weight: {
+          type: ProductWeightType.GRAMS,
+          value: 250,
+        },
+        volume: {
+          type: ProductVolumeType.QUANTITY,
+          value: 2,
+        },
+        tags: ["first:1", "second:2"],
       };
 
       const response = await api.updateProduct(product.uuid, dto);
