@@ -17,9 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "@/*": ["./src/*"],
-      "~/public/*": ["./public/*"],
-      "@/public/*": ["./public/*"],
+      "~/public/*": ["./public/*"]
     },
     "types": ["@types/node"],
     "skipLibCheck": true,

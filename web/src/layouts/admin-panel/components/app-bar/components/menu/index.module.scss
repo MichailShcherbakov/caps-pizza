@@ -1,0 +1,27 @@
+.drawer-menu {
+  &__btn {
+    & > :global(.MuiSvgIcon-root) {
+      @include ui-fill($white);
+    }
+  }
+
+  &__inner {
+    @include ui-w(320px);
+    @include ui-h-screen;
+    @include ui-bg-color($white);
+
+    & :global(.MuiListItemButton-root) {
+      &:global(.Mui-selected) {
+        @include ui-bg-color($blue-50);
+
+        &:hover {
+          @include ui-bg-color($blue-50);
+        }
+      }
+
+      &:hover {
+        @include ui-bg-color($blue-50);
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+FROM node
+
+ARG WORKDIR
+
+RUN mkdir ${WORKDIR}
+
+WORKDIR ${WORKDIR}
+
+COPY package*.json ./
+RUN yarn install
+
+COPY . .
+
+EXPOSE ${PORT}
+
+CMD yarn start:dev 

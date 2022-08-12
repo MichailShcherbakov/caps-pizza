@@ -1,0 +1,17 @@
+.upload-image-btn {
+  @include ui-w(200px);
+  @include ui-h(200px);
+}
+
+.category-select {
+  & > :global(.MuiInputBase-input) {
+    @include ui-flex;
+    @include ui-flex-row;
+  }
+}
+
+.modifier-list {
+  @include ui-min-h(180px);
+  @include ui-max-h(180px);
+  @include ui-overflow-auto;
+}

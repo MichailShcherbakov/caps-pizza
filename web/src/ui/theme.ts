@@ -1,4 +1,11 @@
 import { createTheme, PaletteColor } from "@mui/material";
+import "external-svg-loader";
+
+declare module "@mui/material" {
+  interface PaletteOptions {
+    neutral: Partial<PaletteColor>;
+  }
+}
 
 declare module "@mui/material/styles" {
   interface PaletteOptions {
@@ -12,6 +19,18 @@ declare module "@mui/material/Button" {
   }
 }
 
+declare module "@mui/material/TextField" {
+  interface TextFieldPropsColorOverrides {
+    neutral: true;
+  }
+}
+
+declare module "@mui/material/Checkbox" {
+  interface CheckboxPropsColorOverrides {
+    neutral: true;
+  }
+}
+
 export const theme = createTheme({
   palette: {
     primary: {
@@ -19,11 +38,15 @@ export const theme = createTheme({
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#FFEEE2;",
-      contrastText: "#ff7010",
+      main: "#073b4c",
+      contrastText: "#ffffff",
     },
     neutral: {
-      main: "#191919;",
+      main: "#95989b",
+      contrastText: "#ffffff",
+    },
+    error: {
+      main: "#e23535",
       contrastText: "#ffffff",
     },
   },

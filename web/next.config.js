@@ -13,6 +13,9 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: [process.env.HOST],
+  },
 };
 
 module.exports = nextConfig;

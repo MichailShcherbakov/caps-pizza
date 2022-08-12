@@ -1,0 +1,5 @@
+.product-features-list {
+  @include ui-min-h(180px);
+  @include ui-max-h(180px);
+  @include ui-overflow-auto;
+}

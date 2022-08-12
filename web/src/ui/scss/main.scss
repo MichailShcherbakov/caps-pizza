@@ -62,6 +62,10 @@
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
+.ui-truncate {
+  @include ui-truncate();
+}
+
 $breakpoint-xxs: 390px;
 $breakpoint-xs: 450px;
 $breakpoint-sm: 599px;
@@ -78,3 +82,8 @@ $orange-100: #ffeee2;
 $orange-400: #ff7010;
 
 $red-400: #e23535;
+
+$blue-50: rgba(7, 59, 76, 0.08);
+$blue-400: #264653;
+
+$border-color: $gray-100;

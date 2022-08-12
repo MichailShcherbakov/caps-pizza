@@ -1,0 +1,26 @@
+.modal {
+  @include ui-min-w(540px);
+  @include ui-max-w(680px);
+  @include ui-max-h(480px);
+
+  @include ui-flex;
+  @include ui-flex-col;
+
+  &__overlay {
+    @include ui-flex;
+    @include ui-flex-center;
+  }
+
+  &__header,
+  &__inner,
+  &__footer {
+    @include ui-w-full;
+    @include ui-p-8;
+    @include ui-min-h(72px);
+  }
+
+  &__inner {
+    @include ui-w-full;
+    @include ui-overflow-auto;
+  }
+}

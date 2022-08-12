@@ -1,21 +1,13 @@
 @import "cursor.scss";
 
-.ui-rounded-none {
-  @include ui-rounded-none;
+.ui-cursor-default {
+  @include ui-cursor-default;
 }
 
-.ui-rounded-1 {
-  @include ui-rounded-1;
+.ui-cursor-pointer {
+  @include ui-cursor-pointer;
 }
 
-.ui-rounded-2 {
-  @include ui-rounded-2;
-}
-
-.ui-rounded-3 {
-  @include ui-rounded-3;
-}
-
-.ui-rounded {
-  @include ui-rounded;
+.ui-cursor-text {
+  @include ui-cursor-text;
 }
