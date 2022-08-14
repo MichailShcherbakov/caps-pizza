@@ -7,7 +7,7 @@ config();
 global.__PORT__ = Number.parseInt(process.env.PORT ?? "8080");
 global.__DEV__ = process.env.NODE_ENV === "development";
 global.__SECRET__ = process.env.SECRET ?? "";
-global.__SYNC_ON__ = Boolean(process.env.SYNC_ON ?? true);
+global.__SYNC_ON__ = process.env.SYNC_ON === "true";
 global.__FRONTEND_URL__ = process.env.FRONTEND_URL ?? "*";
 global.__APP_ROOT_PATH__ = resolve(__dirname, "../");
 global.__APP_ROOT_URL__ = process.env.URL ?? "";
