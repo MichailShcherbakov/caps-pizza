@@ -24,7 +24,7 @@ export interface DataTableHeadColumn {
 }
 
 export interface DataTableTextHeadColumn extends DataTableHeadColumn {
-  type: "text" | undefined;
+  type?: "text";
 }
 
 export interface DataTableImageHeadColumn extends DataTableHeadColumn {

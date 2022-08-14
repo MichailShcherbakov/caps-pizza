@@ -54,7 +54,7 @@ export const CreateProductCategoryModal: React.FC<
               name,
               image_url: uploadedImage.url,
               display_position,
-            });
+            }).unwrap();
           } catch (e) {
             setError(e);
           }

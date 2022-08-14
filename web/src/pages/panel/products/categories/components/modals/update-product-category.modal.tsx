@@ -68,7 +68,7 @@ export const UpdateProductCategoryModal: React.FC<
                   category.image = undefined;
                 }
 
-                await updateProductCategory(category);
+                await updateProductCategory(category).unwrap();
               } catch (e) {
                 setError(e);
               }

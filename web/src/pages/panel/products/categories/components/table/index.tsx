@@ -20,7 +20,7 @@ export const ProductCategoriesTable: React.FC<
     <>
       {error ? <ModalErrorCatcher error={error as APIError} /> : undefined}
       <DataTable
-        emptyTitle="Список категориц товаров пуст"
+        emptyTitle="Список категорий товаров пуст"
         emptySubTitle="Чтобы создать категорию товара, нажмите на кнопку Добавить"
         head={head}
         loading={isLoading}
