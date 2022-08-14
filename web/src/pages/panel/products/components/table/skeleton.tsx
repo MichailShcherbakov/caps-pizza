@@ -6,7 +6,7 @@ export interface ProductsTableProps {}
 export const ProductsTableSkeleton: React.FC<ProductsTableProps> = () => {
   const head = useDataTableHead();
 
-  return <DataTable collapsible loading={true} head={head} />;
+  return <DataTable head={head} loading />;
 };
 
 export default ProductsTableSkeleton;

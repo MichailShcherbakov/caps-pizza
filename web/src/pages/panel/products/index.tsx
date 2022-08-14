@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import AppPage from "~/common/interfaces/app-page.interface";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import CreateProductModal from "./components/modals/create-product.modal";
@@ -18,7 +18,13 @@ export const ProductsPage: AppPage = () => {
         <ProductsTable />
       </React.Suspense>
       <Stack direction="row" alignItems="center" className="ui-p-8">
-        <CreateProductModal />
+        <CreateProductModal>
+          {({ open }) => (
+            <Button variant="outlined" color="secondary" onClick={open}>
+              Добавить
+            </Button>
+          )}
+        </CreateProductModal>
       </Stack>
     </>
   );

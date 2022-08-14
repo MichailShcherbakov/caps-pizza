@@ -1,9 +1,9 @@
 import React from "react";
-import { Paper, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import AppPage from "~/common/interfaces/app-page.interface";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import dynamic from "next/dynamic";
-import ProductCategoriesTableSkeleton from "./components/table.skeleton";
+import ProductCategoriesTableSkeleton from "./components/table/skeleton";
 import CreateProductCategoryModal from "./components/modals/create-product-category.modal";
 
 const ProductCategoriesTable = dynamic(() => import("./components/table"), {
@@ -13,14 +13,20 @@ const ProductCategoriesTable = dynamic(() => import("./components/table"), {
 
 export const ProductCategoriesPage: AppPage = () => {
   return (
-    <Paper>
+    <>
       <React.Suspense fallback={<ProductCategoriesTableSkeleton />}>
         <ProductCategoriesTable />
       </React.Suspense>
       <Stack direction="row" alignItems="center" className="ui-p-8">
-        <CreateProductCategoryModal />
+        <CreateProductCategoryModal>
+          {({ open }) => (
+            <Button variant="outlined" color="secondary" onClick={open}>
+              Добавить
+            </Button>
+          )}
+        </CreateProductCategoryModal>
       </Stack>
-    </Paper>
+    </>
   );
 };
 

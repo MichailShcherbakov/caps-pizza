@@ -24,10 +24,14 @@ import VolumeTextField from "./components/volume-text-field";
 import WeightTextField from "./components/weight-text-field";
 import styles from "../index.module.scss";
 
+export type CreateProductFormSubmitData = Omit<Product, "uuid"> & {
+  image?: File;
+};
+
 export interface CreateProductFormProps {
   modifiers: Modifier[];
   productCategories: ProductCategory[];
-  onSubmit?: (data: Omit<Product, "uuid"> & { image?: File }) => void;
+  onSubmit?: (data: CreateProductFormSubmitData) => void;
   onCancel?: () => void;
 }
 
@@ -103,7 +107,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
 
   return (
     <ModalControl component="form" onSubmit={formik.handleSubmit}>
-      <ModalHeader title={"Создание нового товара"} />
+      <ModalHeader title="Создание нового товара" />
       <ModalContent>
         <Stack direction="row" alignItems="center" justifyContent="center">
           <ImageUploader

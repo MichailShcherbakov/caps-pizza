@@ -17,6 +17,8 @@ export const useProductsTableHead = () => {
           name: "image",
           type: "image",
           displayName: "Изображение",
+          imageWidth: 72,
+          imageHeight: 72,
           skeleton: {
             head: {
               width: 96,

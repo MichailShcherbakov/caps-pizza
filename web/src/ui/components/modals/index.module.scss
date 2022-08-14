@@ -14,14 +14,12 @@
   &__inner,
   &__footer {
     @include ui-w-full;
-    @include ui-px-8;
-    @include ui-my-8;
+    @include ui-p-8;
     @include ui-min-h(48px);
   }
 
   &__inner {
     @include ui-w-full;
-    @include ui-m-0;
     @include ui-min-h(fit-content);
     @include ui-overflow-auto;
   }

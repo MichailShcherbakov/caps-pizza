@@ -2,52 +2,21 @@ import React from "react";
 import { Grid, IconButton, Stack, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import {
-  CollapsibleTableRow,
-  TableCell,
-  TableRow,
-  TableTextCell,
-} from "../table";
+import { CollapsibleTableRow, TableCell, TableRow } from "../table";
 import NextImage from "next/image";
 import { useMediaQuery } from "../../theme";
+import {
+  DataTableColumn,
+  DataTableHead,
+  DataTableHeadColumnTypes,
+} from "./types";
+import DataTableRowResolver from "./row-resolver";
 
-export interface DataTableColumn<T = any> {
-  name: string;
-  value?: string | boolean | number | T;
-}
-
-export interface DataTableHeadColumn<T> {
-  name: string;
-  displayName: string;
-  type?: "text" | "image" | "component";
-  headColClassName?: string;
-  rowColClassName?: string;
-  collapsed?: boolean;
-  primary?: boolean;
-  fullWidth?: boolean;
-  skeleton?: {
-    head?: {
-      width?: number;
-      height?: number;
-    };
-    row?: {
-      width?: number;
-      height?: number;
-    };
-  };
-  component?: (value?: T) => React.ReactElement;
-}
-
-export interface DataTableHead<T = any> {
-  cols: DataTableHeadColumn<T>[];
-}
-
-export interface DataTableRowProps<T = any> {
+export interface DataTableRowProps {
   head: DataTableHead;
   cols: DataTableColumn[];
   collapsible?: boolean;
-  collapsedRowSpace?: (value?: T) => React.ReactElement | React.ReactElement[];
-  value?: T;
+  collapsedRowSpace?: () => React.ReactElement | React.ReactElement[];
 }
 
 export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
@@ -57,11 +26,11 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
 
     const colsMap = new Map(cols.map(col => [col.name, col]));
 
-    const currentRenderCols = matches
+    const currentRenderCols: DataTableHeadColumnTypes[] = matches
       ? head.cols.filter(col => !col.collapsed)
       : head.cols.filter(col => col.primary);
 
-    const hiddenCols = matches
+    const hiddenCols: DataTableHeadColumnTypes[] = matches
       ? head.cols.filter(col => col.collapsed)
       : head.cols.filter(col => !col.primary);
 
@@ -82,45 +51,19 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
               </IconButton>
             ) : undefined}
           </TableCell>
-          {currentRenderCols.map((col, idx) =>
-            !col.type || col.type === "text" ? (
-              <TableTextCell
-                key={col.name}
-                className={col.rowColClassName}
-                align={!idx ? "left" : "right"}
-              >
-                {colsMap.get(col.name)?.value}
-              </TableTextCell>
-            ) : col.type === "image" ? (
-              <TableCell key={col.name}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="flex-end"
-                  className={col.rowColClassName}
-                >
-                  <NextImage
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${
-                      colsMap.get(col.name)?.value
-                    }`}
-                    width={72}
-                    height={72}
-                    layout="fixed"
-                    alt="product image"
-                  />
-                </Stack>
-              </TableCell>
-            ) : col.type === "component" && col.component ? (
-              <TableCell key={col.name} className={col.rowColClassName}>
-                {col.component(colsMap.get(col.name)?.value)}
-              </TableCell>
-            ) : undefined
-          )}
+          {currentRenderCols.map((col, idx) => (
+            <DataTableRowResolver
+              key={col.name}
+              col={col}
+              value={colsMap.get(col.name)?.value}
+              options={{ align: !idx ? "left" : "right" }}
+            />
+          ))}
         </TableRow>
         {hasCollapsedSpace ? (
           <CollapsibleTableRow
             in={isOpen}
-            colSpan={currentRenderCols.length + 1} // with collapse button
+            colSpan={currentRenderCols.length + 1} // + 1 collapse button
           >
             <Stack spacing={2}>
               {hiddenCols.length ? (
@@ -135,9 +78,10 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                   >
                     {hiddenCols.filter(col => col.type === "image").length ? (
                       <Stack>
-                        {hiddenCols
-                          .filter(col => col.type === "image")
-                          .map(col => (
+                        {hiddenCols.map(col => {
+                          if (col.type !== "image") return undefined;
+
+                          return (
                             <Stack key={col.name}>
                               <Typography variant="subtitle1">
                                 {col.displayName}
@@ -154,7 +98,8 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                                 />
                               </Stack>
                             </Stack>
-                          ))}
+                          );
+                        })}
                       </Stack>
                     ) : undefined}
                     <Grid

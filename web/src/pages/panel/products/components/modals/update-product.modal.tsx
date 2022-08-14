@@ -1,9 +1,14 @@
 import React from "react";
-import { Modal, ModalController, ModalControllerProps, ModalProps } from "~/ui";
+import {
+  FormModal,
+  ModalController,
+  ModalControllerProps,
+  ModalProps,
+} from "~/ui";
 import { Product, useUpdateProductMutation } from "~/services/products.service";
 import UpdateProductForm, {
   UpdateProductFormProps,
-} from "./update-product.form";
+} from "../forms/update-product.form";
 import { APIError } from "~/services/helpers/transform-response.helper";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
@@ -13,28 +18,11 @@ import {
 } from "~/services/upload.service";
 import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
-export const UpdateProductModalControl: React.FC<
-  ModalProps & { UpdateProductFormProps: UpdateProductFormProps }
-> = ({ UpdateProductFormProps, ...props }) => {
-  return (
-    <Modal {...props}>
-      <UpdateProductForm
-        {...UpdateProductFormProps}
-        onCancel={props.onClose}
-        onSubmit={e => {
-          UpdateProductFormProps.onSubmit && UpdateProductFormProps.onSubmit(e);
-          props.onClose && props.onClose();
-        }}
-      />
-    </Modal>
-  );
-};
-
 export interface UpdateProductModalProps
-  extends Pick<ModalControllerProps, "children"> {
+  extends Pick<ModalControllerProps, "children">,
+    Pick<UpdateProductFormProps, "onSubmit">,
+    Pick<ModalProps, "onClose"> {
   product: Product;
-  onSubmit?: () => void;
-  onClose?: () => void;
 }
 
 export const UpdateProductModal: React.FC<UpdateProductModalProps> = ({
@@ -53,11 +41,12 @@ export const UpdateProductModal: React.FC<UpdateProductModalProps> = ({
     <>
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={UpdateProductModalControl}
+        Modal={FormModal}
         ModalProps={{
           onSubmit,
           onClose,
-          UpdateProductFormProps: {
+          Form: UpdateProductForm,
+          FormProps: {
             product,
             modifiers,
             productCategories,

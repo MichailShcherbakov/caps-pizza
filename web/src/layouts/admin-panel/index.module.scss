@@ -1,6 +1,7 @@
 .admin-panel-layout {
   @include ui-w-full;
   @include ui-h-screen;
+  @include ui-overflow-auto;
 
   &__container {
     @include ui-w-full;

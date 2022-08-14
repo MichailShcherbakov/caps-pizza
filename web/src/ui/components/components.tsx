@@ -12,6 +12,7 @@ export * from "./skeleton";
 export * from "./external-svg";
 export * from "./table";
 export * from "./data-table";
+export * from "./data-table/types";
 export * from "./data-table/row";
 export * from "./data-table/control-cell";
 export * from "./data-table/skeleton-row";

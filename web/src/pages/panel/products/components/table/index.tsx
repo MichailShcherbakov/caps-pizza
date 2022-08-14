@@ -19,7 +19,6 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
     <>
       {error && <ModalErrorCatcher error={error as APIError} />}
       <DataTable
-        collapsible
         loading={isLoading}
         head={head}
         emptyTitle="Список товаров пуст"
