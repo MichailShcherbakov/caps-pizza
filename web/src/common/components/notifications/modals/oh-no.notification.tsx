@@ -14,9 +14,6 @@ export const OhNoNotificationModal: React.FC<
           title: "О нет...",
           desc: "Что-то пошло не так. Запомните, какие последние действия вы выполняли, и скорее обратитесь к тех. поддержке.",
           variant: "error",
-          AcceptButtonProps: {
-            children: "Попробовать еще раз",
-          },
         } as NotificationModalProps
       }
     />

@@ -42,11 +42,11 @@ export default function CreateProductCategoryForm(
   return (
     <UiKit.FormModal
       {...props}
-      title="Создание нового типа модификаторов"
+      title="Создание новой категории товаров"
       onSubmit={formik.handleSubmit}
       onCancel={props.onClose}
     >
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" alignItems="center" spacing={2}>
         <TextField
           fullWidth
           required
@@ -96,6 +96,7 @@ export default function CreateProductCategoryForm(
                 alt="loaded image"
                 width={32}
                 height={32}
+                layout="fixed"
               />
             ) : (
               <ImageIcon />

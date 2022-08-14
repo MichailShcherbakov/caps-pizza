@@ -10,21 +10,18 @@ export interface FormModalProps extends ModalProps {
   onCancel?: () => void;
 }
 
-export const FormModal: React.FC<FormModalProps> = ({
-  title,
-  onSubmit,
-  onClose,
-  onCancel,
-  children,
-  ...props
-}) => {
-  return (
-    <Modal {...props} component="form" onSubmit={onSubmit} onClose={onClose}>
-      <ModalHeader title={title} onExit={onClose} />
-      <ModalContent>{children}</ModalContent>
-      <ModalFooter onCancel={onCancel} />
-    </Modal>
-  );
-};
+export const FormModal: React.FC<FormModalProps> = React.memo(
+  ({ title, onSubmit, onClose, onCancel, children, ...props }) => {
+    return (
+      <Modal {...props} component="form" onSubmit={onSubmit} onClose={onClose}>
+        <ModalHeader title={title} onExit={onClose} />
+        <ModalContent>{children}</ModalContent>
+        <ModalFooter onCancel={onCancel} />
+      </Modal>
+    );
+  }
+);
+
+FormModal.displayName = "FormModal";
 
 export default FormModal;

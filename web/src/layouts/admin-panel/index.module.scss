@@ -6,5 +6,18 @@
     @include ui-w-full;
     @include ui-h-full;
     @include ui-py-8;
+
+    &-inner {
+      @include ui-border(1px, solid, $border-color);
+      @include ui-rounded-1;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .admin-panel-layout {
+    &__container {
+      @include ui-px-0;
+    }
   }
 }

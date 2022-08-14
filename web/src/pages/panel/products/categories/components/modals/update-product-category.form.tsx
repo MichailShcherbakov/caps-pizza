@@ -44,7 +44,7 @@ export default function UpdateProductCategoryForm({
   return (
     <UiKit.FormModal
       {...props}
-      title="Создание нового типа модификаторов"
+      title="Изменение категории товара"
       onSubmit={formik.handleSubmit}
       onCancel={props.onClose}
     >
@@ -99,6 +99,7 @@ export default function UpdateProductCategoryForm({
                   alt="loaded image"
                   width={32}
                   height={32}
+                  layout="fixed"
                 />
               ) : (
                 <ExternalSvg

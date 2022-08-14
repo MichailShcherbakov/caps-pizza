@@ -6,12 +6,35 @@ import transformResponse, {
 import { Modifier } from "./modifiers.service";
 import { ProductCategory } from "./product-categories.service";
 
+export enum ProductWeightType {
+  GRAMS = "GRAMS",
+  LITERS = "LITERS",
+}
+
+export class ProductWeight {
+  type: ProductWeightType;
+  value: number;
+}
+
+export enum ProductVolumeType {
+  DIAMETER = "DIAMETER",
+  QUANTITY = "QUANTITY",
+}
+
+export class ProductVolume {
+  type: ProductVolumeType;
+  value: number;
+}
+
 export class Product {
   uuid: string;
   name: string;
   desc?: string;
   article_number: number;
   image_url: string;
+  weight?: ProductWeight;
+  volume?: ProductVolume;
+  tags?: string[];
   price: number;
   category_uuid: string;
   category?: ProductCategory;

@@ -135,7 +135,7 @@ export default function UpdateModifierForm({
           color="secondary"
           onChange={formik.handleChange}
         />
-        <FormControl fullWidth>
+        <FormControl size="small" fullWidth>
           <InputLabel
             id="modifier-category-select-label"
             color="secondary"

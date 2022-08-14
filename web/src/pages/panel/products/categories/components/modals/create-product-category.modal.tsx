@@ -2,20 +2,15 @@ import React from "react";
 import { Button, ButtonProps } from "@mui/material";
 import { ModalController } from "~/ui";
 import { useCreateProductCategoryMutation } from "~/services/product-categories.service";
-import ErrorHandler from "~/common/components/error-handler";
 import CreateProductCategoryForm, {
   CreateProductCategorySubmitData,
 } from "./create-product-category.form";
 import { APIError } from "~/services/helpers/transform-response.helper";
-import { UnknownApiError } from "~/common/components/error-handler/api-errors";
-import {
-  TheFileIsTooLargeApiError,
-  TheNameAlreadyExistsApiError,
-} from "../api-errors";
 import {
   IMAGE_FILE_SIZE,
   useUploadImageMutation,
 } from "~/services/upload.service";
+import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
 export interface CreateProductCategoryModalProps extends ButtonProps {}
 
@@ -43,7 +38,7 @@ export const CreateProductCategoryModal: React.FC<
         display_position,
       }: CreateProductCategorySubmitData) => {
         try {
-          if (image.size > IMAGE_FILE_SIZE)
+          if (!image || image.size > IMAGE_FILE_SIZE)
             throw new APIError({
               statusCode: 1010,
               error: "Client Error",
@@ -74,11 +69,7 @@ export const CreateProductCategoryModal: React.FC<
 
   return (
     <>
-      <ErrorHandler error={error}>
-        <TheFileIsTooLargeApiError />
-        <TheNameAlreadyExistsApiError />
-        <UnknownApiError />
-      </ErrorHandler>
+      <ModalErrorCatcher error={error} />
       <ModalController
         Modal={CreateProductCategoryForm}
         ModalProps={createProductCategoryFormProps}

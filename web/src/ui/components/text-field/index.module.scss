@@ -1,6 +1,5 @@
-
-
 .text-field {
-    @include ui-w-full;
-    @include ui-bg-color($white);
+  &__select {
+    @include ui-min-w(72px);
+  }
 }

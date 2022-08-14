@@ -6,7 +6,6 @@ import {
 } from "@mui/material";
 
 import styles from "./index.module.scss";
-
 export interface ModalProps
   extends Omit<MUIModalProps, "children" | "onClose"> {
   children?:

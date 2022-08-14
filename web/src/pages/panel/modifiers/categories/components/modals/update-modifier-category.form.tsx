@@ -38,7 +38,7 @@ export default function UpdateModifierCategoryForm({
       onSubmit={formik.handleSubmit}
       onCancel={props.onClose}
     >
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" alignItems="center" spacing={2}>
         <TextField
           fullWidth
           required

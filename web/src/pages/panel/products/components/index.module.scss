@@ -1,6 +1,5 @@
 .upload-image-btn {
-  @include ui-w(200px);
-  @include ui-h(200px);
+  @include ui-size(200px);
 }
 
 .category-select {
@@ -11,7 +10,27 @@
 }
 
 .modifier-list {
-  @include ui-min-h(180px);
-  @include ui-max-h(180px);
-  @include ui-overflow-auto;
+  @include ui-p-0;
+
+  &__title {
+    @include ui-px-8;
+    @include ui-pb-8;
+    @include ui-pos-sticky;
+    @include ui-bg-color($white);
+  }
+}
+
+.product-form {
+  &__features {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .product-form {
+    &__features {
+      @include ui-flex-col;
+      @include ui-m-0;
+    }
+  }
 }

@@ -2,21 +2,12 @@ import React from "react";
 import { Button, ButtonProps } from "@mui/material";
 import { ModalController } from "~/ui";
 import { useCreateDiscountMutation } from "~/services/discounts.service";
-import ErrorHandler from "~/common/components/error-handler";
 import CreateDiscountForm from "./create-discount.form";
 import { APIError } from "~/services/helpers/transform-response.helper";
-import { UnknownApiError } from "~/common/components/error-handler/api-errors";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
 import { useGetProductsQuery } from "~/services/products.service";
-import {
-  TheNameAlreadyExistsApiError,
-  ThePercentGreaterThen100ApiError,
-  TheProductNotFoundApiError,
-  TheProductCategoryNotFoundApiError,
-  TheModifierNotFoundApiError,
-  TheValue2NotProvidedApiError,
-} from "../api-errors";
+import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
 export interface CreateDiscountModalProps extends ButtonProps {}
 
@@ -56,15 +47,7 @@ export const CreateDiscountModal: React.FC<CreateDiscountModalProps> = ({
 
   return (
     <>
-      <ErrorHandler error={error}>
-        <TheNameAlreadyExistsApiError />
-        <ThePercentGreaterThen100ApiError />
-        <TheProductNotFoundApiError />
-        <TheProductCategoryNotFoundApiError />
-        <TheModifierNotFoundApiError />
-        <TheValue2NotProvidedApiError />
-        <UnknownApiError />
-      </ErrorHandler>
+      <ModalErrorCatcher error={error} />
       <ModalController
         Modal={CreateDiscountForm}
         ModalProps={createDiscountFormProps}

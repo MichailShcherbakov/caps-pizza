@@ -1,9 +1,12 @@
 import { Stack, StackProps } from "@mui/material";
+import React from "react";
 import styles from "../index.module.scss";
 
 export interface ModalContentProps extends StackProps {}
 
-export default function ModalContent(props: ModalContentProps) {
+export const ModalContent: React.FC<ModalContentProps> = (
+  props: ModalContentProps
+) => {
   return (
     <Stack
       spacing={2}
@@ -11,4 +14,6 @@ export default function ModalContent(props: ModalContentProps) {
       className={[styles["modal__inner"], props.className].join(" ")}
     />
   );
-}
+};
+
+export default ModalContent;

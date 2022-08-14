@@ -8,11 +8,11 @@ import {
 
 export interface WarnDeletingNotificationModalProps
   extends Pick<ModalControllerProps, "children">,
-    Pick<NotificationModalProps, "title" | "desc" | "onAccept"> {}
+    Pick<NotificationModalProps, "title" | "desc" | "onAccept" | "onClose"> {}
 
 export const WarnDeletingNotificationModal: React.FC<
   WarnDeletingNotificationModalProps
-> = ({ title, desc, onAccept, ...props }) => {
+> = ({ title, desc, onAccept, onClose, ...props }) => {
   return (
     <ModalController
       {...props}
@@ -29,6 +29,7 @@ export const WarnDeletingNotificationModal: React.FC<
             variant: "dialog",
           },
           onAccept,
+          onClose,
         } as NotificationModalProps
       }
     />

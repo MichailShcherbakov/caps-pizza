@@ -1,6 +1,10 @@
 @import "../ui/scss/normalize.scss";
 @import "../ui/scss/main.scss";
 
+.ui-truncate.MuiTypography-root {
+  @include ui-truncate();
+}
+
 .MuiTypography-root {
   font-family: "Inter", sans-serif;
   height: fit-content;
@@ -166,6 +170,12 @@
   min-width: 96px;
 }
 
+.MuiPaper-root {
+  @include ui-box-shadow-light;
+  @include ui-border(1px, solid, $border-color);
+  @include ui-rounded-1;
+}
+
 @media screen and (max-width: $breakpoint-sm) {
   .MuiTypography-h1 {
     font-size: 28px;
@@ -206,4 +216,8 @@
   .MuiTypography-subtitle1 {
     font-size: 12px;
   }
+}
+
+.MuiTableCell-root {
+  @include ui-border-color($border-color);
 }

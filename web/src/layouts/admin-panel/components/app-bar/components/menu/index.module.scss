@@ -1,7 +1,7 @@
 .drawer-menu {
   &__btn {
     & > :global(.MuiSvgIcon-root) {
-      @include ui-fill($white);
+      @include ui-fill($blue-400);
     }
   }
 

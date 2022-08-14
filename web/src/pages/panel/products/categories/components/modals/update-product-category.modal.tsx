@@ -5,19 +5,14 @@ import {
   ProductCategory,
   useUpdateProductCategoryMutation,
 } from "~/services/product-categories.service";
-import ErrorHandler from "~/common/components/error-handler";
 import UpdateProductCategoryForm from "./update-product-category.form";
 import { APIError } from "~/services/helpers/transform-response.helper";
-import { UnknownApiError } from "~/common/components/error-handler/api-errors";
-import {
-  TheFileIsTooLargeApiError,
-  TheNameAlreadyExistsApiError,
-} from "../api-errors";
 import {
   IMAGE_FILE_SIZE,
   useUploadImageMutation,
 } from "~/services/upload.service";
 import { UpdateProductCategorySubmitData } from "./update-product-category.form";
+import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
 export interface UpdateProductCategoryModalProps extends ButtonProps {
   category: ProductCategory;
@@ -47,11 +42,7 @@ export const UpdateProductCategoryModal: React.FC<
 
   return (
     <>
-      <ErrorHandler error={error}>
-        <TheFileIsTooLargeApiError />
-        <TheNameAlreadyExistsApiError />
-        <UnknownApiError />
-      </ErrorHandler>
+      <ModalErrorCatcher error={error} />
       <ModalController
         Modal={UpdateProductCategoryForm}
         ModalProps={{

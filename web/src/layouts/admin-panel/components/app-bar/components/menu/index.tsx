@@ -1,4 +1,4 @@
-import { Box, Drawer, IconButton, Paper } from "@mui/material";
+import { Box, Drawer, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
 import MenuList from "./components/list";

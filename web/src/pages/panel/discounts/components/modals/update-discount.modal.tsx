@@ -5,22 +5,12 @@ import {
   Discount,
   useUpdateDiscountMutation,
 } from "~/services/discounts.service";
-import ErrorHandler from "~/common/components/error-handler";
 import UpdateDiscountForm from "./update-discount.form";
 import { APIError } from "~/services/helpers/transform-response.helper";
-import { UnknownApiError } from "~/common/components/error-handler/api-errors";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
 import { useGetProductsQuery } from "~/services/products.service";
-import {
-  TheNameAlreadyExistsApiError,
-  ThePercentGreaterThen100ApiError,
-  TheProductNotFoundApiError,
-  TheProductCategoryNotFoundApiError,
-  TheModifierNotFoundApiError,
-  TheInvalidProductScopeApiError,
-  TheValue2NotProvidedApiError,
-} from "../api-errors";
+import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
 export interface UpdateDiscountModalProps extends ButtonProps {
   discount: Discount;
@@ -53,16 +43,7 @@ export const UpdateDiscountModal: React.FC<UpdateDiscountModalProps> = ({
 
   return (
     <>
-      <ErrorHandler error={error}>
-        <TheNameAlreadyExistsApiError />
-        <ThePercentGreaterThen100ApiError />
-        <TheProductNotFoundApiError />
-        <TheProductCategoryNotFoundApiError />
-        <TheModifierNotFoundApiError />
-        <TheInvalidProductScopeApiError />
-        <TheValue2NotProvidedApiError />
-        <UnknownApiError />
-      </ErrorHandler>
+      <ModalErrorCatcher error={error} />
       <ModalController
         Modal={UpdateDiscountForm}
         ModalProps={{

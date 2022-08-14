@@ -9,14 +9,17 @@ import styles from "./index.module.scss";
 
 export type TextFieldProps = MUITextFieldProps;
 
-export const TextField: React.FC<TextFieldProps> = (props) => {
-  return (
-    <MUITextField
-      {...props}
-      className={[styles["text-field"], props.className].join(" ")}
-    ></MUITextField>
-  );
+export const TextField: React.FC<TextFieldProps> = props => {
+  return <MUITextField {...props} />;
 };
+
+export type MemoTextFieldProps = MUITextFieldProps;
+
+export const MemoTextField: React.FC<MemoTextFieldProps> = React.memo(props => {
+  return <MUITextField {...props} />;
+});
+
+MemoTextField.displayName = "MemoTextField";
 
 export type MaskedTextFieldProps = MUITextFieldProps & {
   options: IMask.AnyMaskedOptions;
@@ -34,7 +37,7 @@ export const MaskedTextField: React.FC<MaskedTextFieldProps> = ({
       value={value}
       InputProps={{ inputRef: ref }}
       className={styles["text-field"]}
-    ></MUITextField>
+    />
   );
 };
 

@@ -5,13 +5,13 @@ import {
 
 export interface SkeletonProps extends MUISkeletonProps {}
 
-export const Skeleton: React.FC<SkeletonProps> = props => {
+export const Skeleton: React.FC<SkeletonProps> = ({ className, ...props }) => {
   return (
     <MUISkeleton
       {...props}
       variant="rectangular"
       animation="wave"
-      className="ui-rounded-1"
+      className={["ui-rounded-1", className].join(" ")}
     />
   );
 };

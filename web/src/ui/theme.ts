@@ -1,4 +1,4 @@
-import { createTheme, PaletteColor } from "@mui/material";
+import { createTheme, PaletteColor, Theme, useMediaQuery as useMQ } from "@mui/material";
 import "external-svg-loader";
 
 declare module "@mui/material" {
@@ -10,6 +10,15 @@ declare module "@mui/material" {
 declare module "@mui/material/styles" {
   interface PaletteOptions {
     neutral: Partial<PaletteColor>;
+  }
+
+  interface BreakpointOverrides {
+    xxs: true,
+    xs: true,
+    sm: true,
+    md: true,
+    lg: true,
+    xl: true,
   }
 }
 
@@ -45,8 +54,12 @@ export const theme = createTheme({
       main: "#95989b",
       contrastText: "#ffffff",
     },
+    success: {
+      main: "#2a9d8f",
+      contrastText: "#ffffff",
+    },
     error: {
-      main: "#e23535",
+      main: "#e63946",
       contrastText: "#ffffff",
     },
   },
@@ -58,8 +71,10 @@ export const theme = createTheme({
       md: 900,
       lg: 1280,
       xl: 1536,
-    } as any,
+    } 
   },
 });
+
+export const useMediaQuery = useMQ<Theme>;
 
 export default theme;

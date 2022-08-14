@@ -50,6 +50,17 @@
   @include ui-pos-fixed;
 }
 
+@mixin ui-pos-sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.ui-pos-sticky {
+  @include ui-pos-sticky;
+}
+
 @mixin ui-opacity($v) {
   opacity: $v;
 }
@@ -64,6 +75,26 @@
 
 .ui-truncate {
   @include ui-truncate();
+}
+
+@mixin ui-blur {
+  backdrop-filter: blur(20px);
+}
+
+.ui-blur {
+  @include ui-blur();
+}
+
+.ui-gap-1 {
+  @include ui-gap(0.5rem);
+}
+
+.ui-gap-2 {
+  @include ui-gap(1rem);
+}
+
+.ui-w-fit-content {
+  width: fit-content;
 }
 
 $breakpoint-xxs: 390px;
@@ -86,4 +117,4 @@ $red-400: #e23535;
 $blue-50: rgba(7, 59, 76, 0.08);
 $blue-400: #264653;
 
-$border-color: $gray-100;
+$border-color: #e7ebf0;

@@ -113,7 +113,7 @@ export default function CreateDiscountForm({
         color="secondary"
         onChange={formik.handleChange}
       />
-      <FormControl color="secondary" fullWidth>
+      <FormControl color="secondary" size="small" fullWidth>
         <InputLabel size="small">Область действия</InputLabel>
         <Select
           id="scope"
@@ -135,7 +135,7 @@ export default function CreateDiscountForm({
         </Select>
       </FormControl>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <FormControl color="secondary" fullWidth>
+        <FormControl color="secondary" size="small" fullWidth>
           <InputLabel size="small">Критерий</InputLabel>
           <Select
             id="conditionCriteria"
@@ -153,7 +153,7 @@ export default function CreateDiscountForm({
             </MenuItem>
           </Select>
         </FormControl>
-        <FormControl color="secondary" fullWidth>
+        <FormControl color="secondary" size="small" fullWidth>
           <InputLabel size="small">Оператор</InputLabel>
           <Select
             id="conditionOp"
@@ -218,7 +218,7 @@ export default function CreateDiscountForm({
           />
         ) : undefined}
       </Stack>
-      <FormControl color="secondary" fullWidth>
+      <FormControl color="secondary" size="small" fullWidth>
         <InputLabel size="small">Тип</InputLabel>
         <Select
           id="type"

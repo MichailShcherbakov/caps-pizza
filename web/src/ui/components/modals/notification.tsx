@@ -4,6 +4,7 @@ import Modal, { ModalProps } from ".";
 import ModalHeader from "./components/header";
 import ModalFooter, { ModalFooterProps } from "./components/footer";
 import ModalContent from "./components/content";
+import { ModalControl } from "../components";
 
 export interface NotificationModalProps extends ModalProps {
   title: string;
@@ -34,24 +35,26 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
 }) => {
   return (
     <Modal {...props} onClose={props.onClose}>
-      <ModalHeader title={HEAD_TITLES[variant]} onExit={props.onClose} />
-      <ModalContent spacing={1}>
-        <Typography variant="h3" textAlign="center">
-          {title}
-        </Typography>
-        {desc && <Typography textAlign="center">{desc}</Typography>}
-      </ModalContent>
-      <ModalFooter
-        variant="accept"
-        {...ModalFooterProps}
-        AcceptButtonProps={{
-          ...AcceptButtonProps,
-          color: variant,
-        }}
-        CancelButtonProps={CancelButtonProps}
-        onAccept={onAccept}
-        onCancel={props.onClose}
-      />
+      <ModalControl>
+        <ModalHeader title={HEAD_TITLES[variant]} onExit={props.onClose} />
+        <ModalContent justifyContent="center" spacing={1}>
+          <Typography variant="h3" textAlign="center">
+            {title}
+          </Typography>
+          {desc && <Typography textAlign="center">{desc}</Typography>}
+        </ModalContent>
+        <ModalFooter
+          variant="accept"
+          {...ModalFooterProps}
+          AcceptButtonProps={{
+            ...AcceptButtonProps,
+            color: variant,
+          }}
+          CancelButtonProps={CancelButtonProps}
+          onAccept={onAccept}
+          onCancel={props.onClose}
+        />
+      </ModalControl>
     </Modal>
   );
 };

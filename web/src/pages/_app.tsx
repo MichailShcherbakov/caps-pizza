@@ -1,5 +1,6 @@
 import "../styles/globals.scss";
 import "../common/utils";
+import "../config";
 import type { AppProps as NextAppProps } from "next/app";
 import AppPage from "~/common/interfaces/app-page.interface";
 

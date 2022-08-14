@@ -5,11 +5,9 @@ import {
   ModifierCategory,
   useUpdateModifierCategoryMutation,
 } from "~/services/modifier-categories.service";
-import ErrorHandler from "~/common/components/error-handler";
 import UpdateModifierCategoryForm from "./update-modifier-category.form";
 import { APIResult } from "~/services/helpers/transform-response.helper";
-import { UnknownApiError } from "~/common/components/error-handler/api-errors";
-import { TheNameAlreadyExistsApiError } from "../api-errors";
+import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
 export interface UpdateModifierCategoryModalProps extends ButtonProps {
   category: ModifierCategory;
@@ -39,10 +37,7 @@ export const UpdateModifierCategoryModal: React.FC<
 
   return (
     <>
-      <ErrorHandler error={error}>
-        <TheNameAlreadyExistsApiError />
-        <UnknownApiError />
-      </ErrorHandler>
+      <ModalErrorCatcher error={error} />
       <ModalController
         Modal={UpdateModifierCategoryForm}
         ModalProps={{

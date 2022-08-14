@@ -1,26 +1,35 @@
 import React from "react";
 import { Button, ButtonProps } from "@mui/material";
-import { ModalController } from "~/ui";
+import { Modal, ModalController, ModalProps } from "~/ui";
 import { useCreateProductMutation } from "~/services/products.service";
-import ErrorHandler from "~/common/components/error-handler";
 import CreateProductForm, {
   CreateProductFormProps,
 } from "./create-product.form";
 import { APIError } from "~/services/helpers/transform-response.helper";
-import { UnknownApiError } from "~/common/components/error-handler/api-errors";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
 import {
   IMAGE_FILE_SIZE,
   useUploadImageMutation,
 } from "~/services/upload.service";
-import {
-  TheArticleNumberAlreadyExistsApiError,
-  TheFileIsTooLargeApiError,
-  TheModifierNotFoundApiError,
-  TheProductCategoryNotFoundApiError,
-  TheProductHasSeveralModifiersOneCategoryApiError,
-} from "../api-errors";
+import ModalErrorCatcher from "~/common/components/error-catcher/modal";
+
+export const CreateProductModalControl: React.FC<
+  ModalProps & { CreateProductFormProps: CreateProductFormProps }
+> = ({ CreateProductFormProps, ...props }) => {
+  return (
+    <Modal {...props}>
+      <CreateProductForm
+        {...CreateProductFormProps}
+        onCancel={props.onClose}
+        onSubmit={e => {
+          CreateProductFormProps.onSubmit && CreateProductFormProps.onSubmit(e);
+          props.onClose && props.onClose();
+        }}
+      />
+    </Modal>
+  );
+};
 
 export interface CreateProductModalProps extends ButtonProps {}
 
@@ -33,25 +42,25 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = props => {
 
   const modalController = React.useCallback(
     ({ open }) => (
-      <Button {...props} variant="contained" color="secondary" onClick={open}>
+      <Button {...props} variant="outlined" color="secondary" onClick={open}>
         Добавить
       </Button>
     ),
     [props]
   );
 
-  const createProductFormProps = React.useMemo(
-    () =>
-      ({
+  const CreateProductModalControlProps = React.useMemo(
+    () => ({
+      CreateProductFormProps: {
         modifiers,
         productCategories,
         onSubmit: async value => {
           try {
             if (!value.image) {
               throw new APIError({
-                statusCode: 1010,
+                statusCode: 1020,
                 error: "Client Error",
-                message: `The image is not loaded`,
+                message: `The image not loaded`,
               });
             }
 
@@ -76,6 +85,9 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = props => {
               desc: value.desc,
               article_number: value.article_number,
               image_url: uploadedImage.url,
+              volume: value.volume,
+              weight: value.weight,
+              tags: value.tags,
               price: value.price,
               category_uuid: value.category_uuid,
               modifiers_uuids: value.modifiers.map(m => m.uuid),
@@ -84,23 +96,17 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = props => {
             setError(e);
           }
         },
-      } as Partial<CreateProductFormProps>),
+      } as CreateProductFormProps,
+    }),
     [modifiers, productCategories, uploadImage, createProduct]
   );
 
   return (
     <>
-      <ErrorHandler error={error}>
-        <TheProductCategoryNotFoundApiError />
-        <TheModifierNotFoundApiError />
-        <TheProductHasSeveralModifiersOneCategoryApiError />
-        <TheArticleNumberAlreadyExistsApiError />
-        <TheFileIsTooLargeApiError />
-        <UnknownApiError />
-      </ErrorHandler>
+      <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={CreateProductForm}
-        ModalProps={createProductFormProps}
+        Modal={CreateProductModalControl}
+        ModalProps={CreateProductModalControlProps}
       >
         {modalController}
       </ModalController>
