@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { TableCell, TableRow } from "../table";
-import { useMediaQuery } from "~/ui/theme";
+import { useMediaQuery } from "../../theme";
 import { DataTableRowProps } from "./row";
 import Skeleton from "../skeleton";
 

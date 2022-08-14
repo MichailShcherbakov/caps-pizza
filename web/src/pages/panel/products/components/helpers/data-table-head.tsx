@@ -1,7 +1,6 @@
 import React from "react";
-import DataTableControlCell from "~/ui/components/data-table/control-cell";
+import { DataTableHead, DataTableControlCell } from "~/ui";
 import { Product } from "~/services/products.service";
-import { DataTableHead } from "~/ui/components/data-table/row";
 import DeleteProductModal from "../modals/delete-product.modal";
 import UpdateProductModal from "../modals/update-product.modal";
 

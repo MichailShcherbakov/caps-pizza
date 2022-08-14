@@ -9,7 +9,7 @@ import {
   TableRow,
   TableTextCell,
 } from "~/ui";
-import { useMediaQuery } from "~/ui/theme";
+import { useMediaQuery } from "../../theme";
 import DataTableRow, { DataTableHead, DataTableRowProps } from "./row";
 import DataTableSkeletonRow from "./skeleton-row";
 

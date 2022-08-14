@@ -9,7 +9,7 @@ import {
   TableTextCell,
 } from "../table";
 import NextImage from "next/image";
-import { useMediaQuery } from "~/ui/theme";
+import { useMediaQuery } from "../../theme";
 
 export interface DataTableColumn<T = any> {
   name: string;
