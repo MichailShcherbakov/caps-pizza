@@ -1,46 +1,50 @@
 import React from "react";
-import { Button, ButtonProps } from "@mui/material";
-import { ModalController } from "~/ui";
+import {
+  FormModal,
+  ModalController,
+  ModalControllerProps,
+  ModalProps,
+} from "~/ui";
 import { useCreateModifierCategoryMutation } from "~/services/modifier-categories.service";
-import CreateModifierCategoryForm from "./create-modifier-category.form";
-import { APIResult } from "~/services/helpers/transform-response.helper";
+import CreateModifierCategoryForm, {
+  CreateModifierCategoryFormProps,
+  CreateModifierCategoryFormSubmitData,
+} from "../forms/create-modifier-category.form";
+import { APIError } from "~/services/helpers/transform-response.helper";
 import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
-export interface CreateModifierCategoryModalProps extends ButtonProps {}
+export interface CreateModifierCategoryModalProps
+  extends Pick<ModalControllerProps, "children">,
+    Pick<ModalProps, "onClose">,
+    Pick<CreateModifierCategoryFormProps, "onSubmit"> {}
 
 export const CreateModifierCategoryModal: React.FC<
   CreateModifierCategoryModalProps
-> = props => {
-  const [createModifierCategory, result] = useCreateModifierCategoryMutation();
-
-  const { error } = result as APIResult;
-
-  const modalController = React.useCallback(
-    ({ open }) => (
-      <Button {...props} variant="contained" color="secondary" onClick={open}>
-        Добавить
-      </Button>
-    ),
-    [props]
-  );
-
-  const createModifierCategoryFormProps = React.useMemo(
-    () => ({
-      onSubmit: value => {
-        createModifierCategory(value);
-      },
-    }),
-    [createModifierCategory]
-  );
+> = ({ children, onSubmit, onClose }) => {
+  const [error, setError] = React.useState<APIError>();
+  const [createModifierCategory] = useCreateModifierCategoryMutation();
 
   return (
     <>
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={CreateModifierCategoryForm}
-        ModalProps={createModifierCategoryFormProps}
+        Modal={FormModal}
+        ModalProps={{
+          onSubmit,
+          onClose,
+          Form: CreateModifierCategoryForm,
+          FormProps: {
+            onSubmit: async (value: CreateModifierCategoryFormSubmitData) => {
+              try {
+                await createModifierCategory(value).unwrap();
+              } catch (e) {
+                setError(e);
+              }
+            },
+          },
+        }}
       >
-        {modalController}
+        {children}
       </ModalController>
     </>
   );

@@ -1,53 +1,59 @@
 import React from "react";
-import { Button, ButtonProps } from "@mui/material";
-import { ModalController } from "~/ui";
+import {
+  FormModal,
+  ModalController,
+  ModalControllerProps,
+  ModalProps,
+} from "~/ui";
 import {
   ModifierCategory,
   useUpdateModifierCategoryMutation,
 } from "~/services/modifier-categories.service";
-import UpdateModifierCategoryForm from "./update-modifier-category.form";
-import { APIResult } from "~/services/helpers/transform-response.helper";
+import UpdateModifierCategoryForm, {
+  UpdateModifierCategoryFormSubmitData,
+} from "../forms/update-modifier-category.form";
+import { APIError } from "~/services/helpers/transform-response.helper";
 import ModalErrorCatcher from "~/common/components/error-catcher/modal";
+import { CreateModifierCategoryFormProps } from "../forms/create-modifier-category.form";
 
-export interface UpdateModifierCategoryModalProps extends ButtonProps {
+export interface UpdateModifierCategoryModalProps
+  extends Pick<ModalControllerProps, "children">,
+    Pick<ModalProps, "onClose">,
+    Pick<CreateModifierCategoryFormProps, "onSubmit"> {
   category: ModifierCategory;
 }
 
 export const UpdateModifierCategoryModal: React.FC<
   UpdateModifierCategoryModalProps
-> = ({ category, ...props }) => {
-  const [updateModifierCategory, result] = useUpdateModifierCategoryMutation();
-
-  const { error } = result as APIResult;
-
-  const modalController = React.useCallback(
-    ({ open }) => (
-      <Button
-        {...props}
-        variant="outlined"
-        color="warning"
-        size="small"
-        onClick={open}
-      >
-        Изменить
-      </Button>
-    ),
-    [props]
-  );
+> = ({ category, children, onSubmit, onClose }) => {
+  const [error, setError] = React.useState<APIError>();
+  const [updateModifierCategory] = useUpdateModifierCategoryMutation();
 
   return (
     <>
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={UpdateModifierCategoryForm}
+        Modal={FormModal}
         ModalProps={{
-          category,
-          onSubmit: value => {
-            updateModifierCategory({ ...category, ...value });
+          onSubmit,
+          onClose,
+          Form: UpdateModifierCategoryForm,
+          FormProps: {
+            category,
+            onSubmit: async (value: UpdateModifierCategoryFormSubmitData) => {
+              try {
+                await updateModifierCategory({
+                  ...category,
+                  ...value,
+                }).unwrap();
+              } catch (e) {
+                setError(e);
+              }
+            },
           },
         }}
       >
-        {modalController}
+        {children}
       </ModalController>
     </>
   );
