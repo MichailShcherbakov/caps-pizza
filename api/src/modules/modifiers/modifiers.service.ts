@@ -62,7 +62,7 @@ export default class ModifiersService {
         `The modifier with ${dto.name} name in ${foundModifierCategory.name} category already exists`
       );
 
-    await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
+    await this.syncService.isArticleNumberAvailable(dto.article_number, true);
 
     const newModifier = new ModifierEntity();
     newModifier.name = dto.name;
@@ -117,7 +117,7 @@ export default class ModifiersService {
       dto.article_number &&
       dto.article_number !== foundModifier.article_number
     ) {
-      await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
+      await this.syncService.isArticleNumberAvailable(dto.article_number, true);
 
       foundModifier.article_number = dto.article_number;
     }

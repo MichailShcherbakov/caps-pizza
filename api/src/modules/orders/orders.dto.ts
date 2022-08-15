@@ -95,6 +95,11 @@ export class Order {
   @IsNotEmpty()
   delivery_address: DeliveryAddress;
 
+  @IsUUID()
+  @IsNotEmpty()
+  @IsOptional()
+  delivery_uuid?: string;
+
   @IsNumber()
   @Min(0)
   @IsOptional()

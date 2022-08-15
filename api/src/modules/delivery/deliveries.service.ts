@@ -8,6 +8,7 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 import DeliveryEntity, {
+  DeliveryCriteriaEnum,
   DeliveryOperatorEnum,
   DeliveryTypeEnum,
 } from "~/db/entities/delivery.entity";
@@ -39,6 +40,19 @@ export default class DeliveriesService {
     return this.deliveryRepository.findOne({ where: options });
   }
 
+  async findOneOrFail(
+    options?: FindOptionsWhere<DeliveryEntity>
+  ): Promise<DeliveryEntity> {
+    const delivery = await this.findOne(options);
+
+    if (!delivery)
+      throw new NotFoundException(
+        `The delivery ${options?.uuid} does not exist`
+      );
+
+    return delivery;
+  }
+
   async create(dto: CreateDeliveryDto): Promise<DeliveryEntity> {
     const foundExistsDelivery = await this.findOne({
       name: dto.name,
@@ -62,7 +76,7 @@ export default class DeliveriesService {
         `The delivery has the ${DeliveryOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
       );
 
-    await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
+    await this.syncService.isArticleNumberAvailable(dto.article_number, true);
 
     const e = new DeliveryEntity();
     e.name = dto.name;
@@ -107,7 +121,7 @@ export default class DeliveriesService {
       dto.article_number &&
       dto.article_number !== foundDelivery.article_number
     ) {
-      await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
+      await this.syncService.isArticleNumberAvailable(dto.article_number, true);
     }
 
     if (
@@ -136,5 +150,85 @@ export default class DeliveriesService {
       throw new NotFoundException(`The delivery ${uuid} does not exist`);
 
     await this.deliveryRepository.delete({ uuid });
+  }
+
+  async getAvailableDeliveries({
+    orderedProductsCount,
+    orderCost,
+  }: {
+    orderedProductsCount: number;
+    orderCost: number;
+  }): Promise<DeliveryEntity[]> {
+    const deliveries = await this.find();
+
+    const availableDeliveries = deliveries.filter(delivery => {
+      switch (delivery.condition.criteria) {
+        case DeliveryCriteriaEnum.COUNT: {
+          return this.isFulfilledCondition(delivery, orderedProductsCount);
+        }
+        case DeliveryCriteriaEnum.PRICE: {
+          return this.isFulfilledCondition(delivery, orderCost);
+        }
+        default: {
+          return false;
+        }
+      }
+    });
+
+    return availableDeliveries.sort(
+      (a, b) =>
+        this.calculate(b, { orderCost }) - this.calculate(a, { orderCost })
+    );
+  }
+
+  isFulfilledCondition(delivery: DeliveryEntity, value: number): boolean {
+    switch (delivery.condition.op) {
+      case DeliveryOperatorEnum.EQUAL: {
+        return value === delivery.condition.value;
+      }
+      case DeliveryOperatorEnum.GREATER: {
+        return value > delivery.condition.value;
+      }
+      case DeliveryOperatorEnum.LESS: {
+        return value < delivery.condition.value;
+      }
+      case DeliveryOperatorEnum.BETWEEN: {
+        return (
+          delivery.condition.value2 !== undefined &&
+          value >=
+            Math.min(delivery.condition.value, delivery.condition.value2) &&
+          value <= Math.max(delivery.condition.value, delivery.condition.value2)
+        );
+      }
+      default: {
+        return false;
+      }
+    }
+  }
+
+  async isAvailableDelivery(
+    delivery: DeliveryEntity,
+    options: {
+      orderedProductsCount: number;
+      orderCost: number;
+    }
+  ): Promise<boolean> {
+    const availableDeliveries = await this.getAvailableDeliveries(options);
+    return availableDeliveries.some(d => d.uuid === delivery.uuid);
+  }
+
+  calculate(
+    delivery: DeliveryEntity,
+    { orderCost }: { orderCost: number }
+  ): number {
+    switch (delivery.type) {
+      case DeliveryTypeEnum.PERCENT: {
+        return (orderCost * delivery.value) / 100;
+      }
+      case DeliveryTypeEnum.IN_CASH:
+      default: {
+        return delivery.value;
+      }
+    }
   }
 }

@@ -10,6 +10,7 @@ import DeliveryEntity, {
 export class DeliveryFactory extends IFactory<DeliveryEntity> {
   create(options?: Partial<DeliveryEntity>): DeliveryEntity {
     const e = new DeliveryEntity();
+    e.uuid = options?.uuid ?? faker.datatype.uuid();
     e.name = options?.name ?? faker.datatype.string();
     e.article_number = options?.article_number ?? faker.datatype.number();
     e.type = options?.type ?? DeliveryTypeEnum.PERCENT;

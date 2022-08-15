@@ -49,7 +49,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       syncWithFrontPadWrapper.mockResolvedValueOnce(true);
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
       ).resolves.toBeTruthy();
     });
 
@@ -59,7 +59,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneProductWrapper.mockResolvedValueOnce({});
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
       ).resolves.toBeFalsy();
     });
 
@@ -69,7 +69,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneModifierWrapper.mockResolvedValueOnce({});
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
       ).resolves.toBeFalsy();
     });
 
@@ -79,7 +79,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneDeliveryWrapper.mockResolvedValueOnce({});
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
       ).resolves.toBeFalsy();
     });
 
@@ -89,7 +89,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       syncWithFrontPadWrapper.mockResolvedValueOnce(false);
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
       ).resolves.toBeFalsy();
     });
   });
@@ -102,7 +102,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneProductWrapper.mockResolvedValueOnce(TEST_PRODUCT);
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER, true)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(
           `The product ${TEST_PRODUCT.uuid} already has the article number`
@@ -117,7 +117,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneModifierWrapper.mockResolvedValueOnce(TEST_MODIFIER);
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER, true)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(
           `The modifier ${TEST_MODIFIER.uuid} already has the article number`
@@ -132,7 +132,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneDeliveryWrapper.mockResolvedValueOnce(TEST_DELIVERY);
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER, true)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(
           `The delivery ${TEST_DELIVERY.uuid} already has the article number`
@@ -146,7 +146,7 @@ describe("[Unit] [Sync Module] ... ", () => {
       syncWithFrontPadWrapper.mockResolvedValueOnce(false);
 
       expect(
-        syncService.isArticleNumberAvaliable(TEST_ARTICLE_NUMBER, true)
+        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(`Sync error. The article number not found`)
       );

@@ -20,7 +20,7 @@ export const ModifierList: React.FC<ModifierListProps> = React.memo(
   ({ value, modifiers, onChange }) => {
     const checked = new Set<string>(value.map(m => m.uuid));
 
-    const isAvaliable = (m: Modifier) => {
+    const isAvailable = (m: Modifier) => {
       for (const modifier of modifiers) {
         if (
           modifier.uuid !== m.uuid &&
@@ -51,7 +51,7 @@ export const ModifierList: React.FC<ModifierListProps> = React.memo(
               color="neutral"
               onClick={handleToggle(m)}
               dense
-              disabled={!isAvaliable(m)}
+              disabled={!isAvailable(m)}
             >
               <Stack direction="row" alignItems="center" spacing={2}>
                 <Checkbox

@@ -81,7 +81,7 @@ export default class ProductsService {
       return acc;
     }, {});
 
-    await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
+    await this.syncService.isArticleNumberAvailable(dto.article_number, true);
 
     const e = new ProductEntity();
     e.name = dto.name;
@@ -151,7 +151,7 @@ export default class ProductsService {
       dto.article_number &&
       dto.article_number !== foundProduct.article_number
     ) {
-      await this.syncService.isArticleNumberAvaliable(dto.article_number, true);
+      await this.syncService.isArticleNumberAvailable(dto.article_number, true);
 
       foundProduct.article_number = dto.article_number;
     }

@@ -22,7 +22,7 @@ export default class SyncService {
     private readonly deliveryService: DeliveryService
   ) {}
 
-  async isArticleNumberAvaliable(
+  async isArticleNumberAvailable(
     articleNumber: number,
     throwError?: boolean
   ): Promise<boolean> {
