@@ -1,48 +1,42 @@
 import * as yup from "yup";
 import {
-  DiscountCriteriaEnum,
-  DiscountOperatorEnum,
-  DiscountScopeEnum,
-  DiscountTypeEnum,
-} from "~/services/discounts.service";
+  DeliveryCriteriaEnum,
+  DeliveryOperatorEnum,
+  DeliveryTypeEnum,
+} from "~/services/delivery.service";
 
 export const validationSchema = yup.object({
   name: yup
     .string()
     .max(50, "Название не должно превышать 50 символов")
     .required("Это поле является обязательным"),
+  articleNumber: yup
+    .number()
+    .min(0, "Артикул доставки должен быть положительным")
+    .required("Это поле является обязательным"),
   type: yup
     .string()
-    .oneOf([
-      DiscountTypeEnum.PERCENT,
-      DiscountTypeEnum.IN_CASH,
-      DiscountTypeEnum.FIXED_PRICE,
-    ])
-    .required("Это поле является обязательным"),
-  scope: yup
-    .string()
-    .oneOf([
-      DiscountScopeEnum.PRODUCTS,
-      DiscountScopeEnum.PRODUCT_FEATURES,
-      DiscountScopeEnum.GLOBAL,
-    ])
+    .oneOf([DeliveryTypeEnum.PERCENT, DeliveryTypeEnum.IN_CASH])
     .required("Это поле является обязательным"),
   conditionCriteria: yup
     .string()
-    .oneOf([DiscountCriteriaEnum.PRICE, DiscountCriteriaEnum.COUNT])
+    .oneOf([DeliveryCriteriaEnum.PRICE, DeliveryCriteriaEnum.COUNT])
     .required("Это поле является обязательным"),
   conditionOp: yup
     .string()
     .oneOf([
-      DiscountOperatorEnum.LESS,
-      DiscountOperatorEnum.GREATER,
-      DiscountOperatorEnum.EQUAL,
-      DiscountOperatorEnum.BETWEEN,
+      DeliveryOperatorEnum.LESS,
+      DeliveryOperatorEnum.GREATER,
+      DeliveryOperatorEnum.EQUAL,
+      DeliveryOperatorEnum.BETWEEN,
     ])
     .required("Это поле является обязательным"),
   conditionValue: yup.number().required("Это поле является обязательным"),
   conditionValue2: yup.number(),
-  value: yup.number().required("Это поле является обязательным"),
+  value: yup
+    .number()
+    .min(0, "Цена доставки должена быть положительной")
+    .required("Это поле является обязательным"),
 });
 
 export default validationSchema;

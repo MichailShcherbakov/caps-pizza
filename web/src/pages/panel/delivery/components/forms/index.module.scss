@@ -1,0 +1,9 @@
+.delivery-condition {
+  @include ui-gap(1rem);
+}
+
+@media (max-width: $breakpoint-sm) {
+  .delivery-condition {
+    @include ui-flex-col;
+  }
+}
