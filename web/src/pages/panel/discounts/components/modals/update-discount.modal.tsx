@@ -1,24 +1,36 @@
 import React from "react";
-import { Button, ButtonProps } from "@mui/material";
-import { ModalController } from "~/ui";
+import {
+  FormModal,
+  ModalController,
+  ModalControllerProps,
+  ModalProps,
+} from "~/ui";
 import {
   Discount,
   useUpdateDiscountMutation,
 } from "~/services/discounts.service";
-import UpdateDiscountForm from "./update-discount.form";
+import UpdateDiscountForm, {
+  UpdateDiscountFormProps,
+  UpdateDiscountFormSubmitData,
+} from "../forms/update-discount.form";
 import { APIError } from "~/services/helpers/transform-response.helper";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
 import { useGetProductsQuery } from "~/services/products.service";
 import ModalErrorCatcher from "~/common/components/error-catcher/modal";
 
-export interface UpdateDiscountModalProps extends ButtonProps {
+export interface UpdateDiscountModalProps
+  extends Pick<ModalControllerProps, "children">,
+    Pick<ModalProps, "onClose">,
+    Pick<UpdateDiscountFormProps, "onSubmit"> {
   discount: Discount;
 }
 
 export const UpdateDiscountModal: React.FC<UpdateDiscountModalProps> = ({
   discount,
-  ...props
+  children,
+  onSubmit,
+  onClose,
 }) => {
   const [error, setError] = React.useState<APIError | undefined>();
   const [updateDiscount] = useUpdateDiscountMutation();
@@ -26,41 +38,31 @@ export const UpdateDiscountModal: React.FC<UpdateDiscountModalProps> = ({
   const { data: productCategories } = useGetProductCategoriesQuery();
   const { data: modifiers } = useGetModifiersQuery();
 
-  const modalController = React.useCallback(
-    ({ open }) => (
-      <Button
-        {...props}
-        variant="outlined"
-        color="warning"
-        size="small"
-        onClick={open}
-      >
-        Изменить
-      </Button>
-    ),
-    [props]
-  );
-
   return (
     <>
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={UpdateDiscountForm}
+        Modal={FormModal}
         ModalProps={{
-          discount,
-          products,
-          productCategories,
-          modifiers,
-          onSubmit: async value => {
-            try {
-              await updateDiscount(value).unwrap();
-            } catch (e) {
-              setError(e);
-            }
+          onSubmit,
+          onClose,
+          Form: UpdateDiscountForm,
+          FormProps: {
+            discount,
+            products,
+            productCategories,
+            modifiers,
+            onSubmit: async (value: UpdateDiscountFormSubmitData) => {
+              try {
+                await updateDiscount(value).unwrap();
+              } catch (e) {
+                setError(e);
+              }
+            },
           },
         }}
       >
-        {modalController}
+        {children}
       </ModalController>
     </>
   );

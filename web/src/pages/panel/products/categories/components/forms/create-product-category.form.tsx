@@ -1,9 +1,15 @@
 import React from "react";
 import { useFormik } from "formik";
 import NextImage from "next/image";
-import { IconButton, Stack, TextField, Tooltip } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
-import { ModalContent, ModalControl, ModalFooter, ModalHeader } from "~/ui";
+import {
+  MemoTextField,
+  ModalContent,
+  ModalControl,
+  ModalFooter,
+  ModalHeader,
+} from "~/ui";
 import { ProductCategory } from "~/services/product-categories.service";
 import validationSchema from "../helpers/validation-schema";
 
@@ -44,7 +50,7 @@ export const CreateProductCategoryForm: React.FC<
       <ModalHeader title="Создание новой категории товаров" />
       <ModalContent>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <TextField
+          <MemoTextField
             fullWidth
             required
             id="name"
@@ -101,7 +107,7 @@ export const CreateProductCategoryForm: React.FC<
             </IconButton>
           </Tooltip>
         </Stack>
-        <TextField
+        <MemoTextField
           id="display_position"
           name="display_position"
           label="Введите позицию"

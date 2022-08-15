@@ -2,13 +2,19 @@ import React from "react";
 import { useFormik } from "formik";
 import {
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  TextField,
 } from "@mui/material";
-import { ModalContent, ModalControl, ModalFooter, ModalHeader } from "~/ui";
+import {
+  MemoTextField,
+  ModalContent,
+  ModalControl,
+  ModalFooter,
+  ModalHeader,
+} from "~/ui";
 import { Modifier } from "~/services/modifiers.service";
 import validationSchema from "../helpers/validation-schema";
 import { ModifierCategory } from "~/services/modifier-categories.service";
@@ -55,7 +61,7 @@ export const CreateModifierForm: React.FC<CreateModifierFormProps> = ({
       <ModalHeader title="Создание нового модификатора" />
       <ModalContent>
         <Stack spacing={2}>
-          <TextField
+          <MemoTextField
             fullWidth
             required
             id="name"
@@ -68,7 +74,7 @@ export const CreateModifierForm: React.FC<CreateModifierFormProps> = ({
             color="secondary"
             onChange={formik.handleChange}
           />
-          <TextField
+          <MemoTextField
             fullWidth
             id="desc"
             name="desc"
@@ -81,7 +87,7 @@ export const CreateModifierForm: React.FC<CreateModifierFormProps> = ({
             onChange={formik.handleChange}
           />
           <Stack direction="row" alignItems="center" spacing={2}>
-            <TextField
+            <MemoTextField
               fullWidth
               required
               id="article_number"
@@ -100,7 +106,7 @@ export const CreateModifierForm: React.FC<CreateModifierFormProps> = ({
               color="secondary"
               onChange={formik.handleChange}
             />
-            <TextField
+            <MemoTextField
               fullWidth
               required
               id="price"
@@ -113,10 +119,14 @@ export const CreateModifierForm: React.FC<CreateModifierFormProps> = ({
               size="small"
               color="secondary"
               onChange={formik.handleChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">₽</InputAdornment>
+                ),
+              }}
             />
           </Stack>
-
-          <TextField
+          <MemoTextField
             id="display_position"
             name="display_position"
             label="Введите позицию"

@@ -40,8 +40,8 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
     return (
       <>
         <TableRow>
-          <TableCell>
-            {hasCollapsedSpace ? (
+          {hasCollapsedSpace ? (
+            <TableCell>
               <IconButton
                 aria-label="expand row"
                 size="small"
@@ -49,8 +49,8 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
               >
                 {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
-            ) : undefined}
-          </TableCell>
+            </TableCell>
+          ) : undefined}
           {currentRenderCols.map((col, idx) => (
             <DataTableRowResolver
               key={col.name}
@@ -63,7 +63,7 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
         {hasCollapsedSpace ? (
           <CollapsibleTableRow
             in={isOpen}
-            colSpan={currentRenderCols.length + 1} // + 1 collapse button
+            colSpan={currentRenderCols.length + (collapsible ? 1 : 0)} // + 1 collapse button
           >
             <Stack spacing={2}>
               {hiddenCols.length ? (

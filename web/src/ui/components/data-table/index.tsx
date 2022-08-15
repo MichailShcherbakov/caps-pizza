@@ -10,8 +10,9 @@ import {
   TableTextCell,
 } from "~/ui";
 import { useMediaQuery } from "../../theme";
-import DataTableRow, { DataTableHead, DataTableRowProps } from "./row";
+import DataTableRow, { DataTableRowProps } from "./row";
 import DataTableSkeletonRow from "./skeleton-row";
+import { DataTableHead } from "./types";
 
 export interface DataTableProps {
   head: DataTableHead;
@@ -103,9 +104,9 @@ export const DataTable: React.FC<DataTableProps> = React.memo(
             : rows.map((row, idx) => (
                 <DataTableRow
                   key={idx}
+                  collapsible={collapsible}
                   {...row}
                   head={head}
-                  collapsible={collapsible}
                 />
               ))}
         </TableBody>

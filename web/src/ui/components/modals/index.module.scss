@@ -15,7 +15,6 @@
   &__footer {
     @include ui-w-full;
     @include ui-p-8;
-    @include ui-min-h(48px);
   }
 
   &__inner {

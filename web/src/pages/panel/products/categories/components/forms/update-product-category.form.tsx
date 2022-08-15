@@ -1,10 +1,11 @@
 import React from "react";
 import { useFormik } from "formik";
 import NextImage from "next/image";
-import { IconButton, Stack, TextField, Tooltip } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import {
   ExternalSvg,
+  MemoTextField,
   ModalContent,
   ModalControl,
   ModalFooter,
@@ -51,7 +52,7 @@ export const UpdateProductCategoryForm: React.FC<
       <ModalHeader title="Изменение категории товара" />
       <ModalContent>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <TextField
+          <MemoTextField
             fullWidth
             required
             id="name"
@@ -115,7 +116,7 @@ export const UpdateProductCategoryForm: React.FC<
             </IconButton>
           </Tooltip>
         </Stack>
-        <TextField
+        <MemoTextField
           id="display_position"
           name="display_position"
           label="Введите позицию"

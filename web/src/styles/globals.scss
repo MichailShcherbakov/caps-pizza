@@ -221,3 +221,7 @@
 .MuiTableCell-root {
   @include ui-border-color($border-color);
 }
+
+.MuiGrid-root:last-child {
+  padding-bottom: 0 !important;
+}
