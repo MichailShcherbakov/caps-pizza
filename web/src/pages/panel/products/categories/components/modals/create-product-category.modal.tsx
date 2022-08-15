@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FormModal,
+  LoadingBackdrop,
   ModalController,
   ModalControllerProps,
   ModalProps,
@@ -25,6 +26,7 @@ export const CreateProductCategoryModal: React.FC<
   CreateProductCategoryModalProps
 > = ({ children }) => {
   const [error, setError] = React.useState<APIError | undefined>();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [createProductCategory] = useCreateProductCategoryMutation();
   const [uploadImage] = useUploadImageMutation();
 
@@ -34,6 +36,8 @@ export const CreateProductCategoryModal: React.FC<
       FormProps: {
         onSubmit: async ({ name, image, display_position }) => {
           try {
+            setLoading(true);
+
             if (!image || image.size > IMAGE_FILE_SIZE)
               throw new APIError({
                 statusCode: 1010,
@@ -57,6 +61,8 @@ export const CreateProductCategoryModal: React.FC<
             }).unwrap();
           } catch (e) {
             setError(e);
+          } finally {
+            setLoading(false);
           }
         },
       },
@@ -66,6 +72,7 @@ export const CreateProductCategoryModal: React.FC<
 
   return (
     <>
+      <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
         Modal={FormModal}

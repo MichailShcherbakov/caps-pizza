@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FormModal,
+  LoadingBackdrop,
   ModalController,
   ModalControllerProps,
   ModalProps,
@@ -29,6 +30,7 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
   onClose,
 }) => {
   const [error, setError] = React.useState<APIError | undefined>();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [createProduct] = useCreateProductMutation();
   const [uploadImage] = useUploadImageMutation();
   const { data: productCategories = [] } = useGetProductCategoriesQuery();
@@ -36,6 +38,7 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
 
   return (
     <>
+      <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
         Modal={FormModal}
@@ -48,6 +51,8 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
             productCategories,
             onSubmit: async value => {
               try {
+                setLoading(true);
+
                 if (!value.image) {
                   throw new APIError({
                     statusCode: 1020,
@@ -86,6 +91,8 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
                 }).unwrap();
               } catch (e) {
                 setError(e);
+              } finally {
+                setLoading(false);
               }
             },
           } as CreateProductFormProps,

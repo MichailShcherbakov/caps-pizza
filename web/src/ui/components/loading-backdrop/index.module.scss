@@ -1,0 +1,24 @@
+.ui-loading {
+  &__icon {
+    @include ui-size(6rem);
+    animation: 1.4s linear 0s infinite normal none running loading-animation;
+
+    &--primary {
+      @include ui-fill($orange-400);
+    }
+
+    &--secondary {
+      @include ui-fill($blue-400);
+    }
+  }
+}
+
+@keyframes loading-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

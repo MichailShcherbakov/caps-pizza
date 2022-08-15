@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FormModal,
+  LoadingBackdrop,
   ModalController,
   ModalControllerProps,
   ModalProps,
@@ -27,6 +28,7 @@ export const CreateDiscountModal: React.FC<CreateDiscountModalProps> = ({
   onClose,
 }) => {
   const [error, setError] = React.useState<APIError | undefined>();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [createDiscount] = useCreateDiscountMutation();
   const { data: products } = useGetProductsQuery();
   const { data: productCategories } = useGetProductCategoriesQuery();
@@ -34,6 +36,7 @@ export const CreateDiscountModal: React.FC<CreateDiscountModalProps> = ({
 
   return (
     <>
+      <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
         Modal={FormModal}
@@ -47,9 +50,13 @@ export const CreateDiscountModal: React.FC<CreateDiscountModalProps> = ({
             modifiers,
             onSubmit: async (value: CreateDiscountFormSubmitData) => {
               try {
+                setLoading(true);
+
                 await createDiscount(value).unwrap();
               } catch (e) {
                 setError(e);
+              } finally {
+                setLoading(false);
               }
             },
           },

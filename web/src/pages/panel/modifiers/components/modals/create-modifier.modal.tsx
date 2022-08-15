@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FormModal,
+  LoadingBackdrop,
   ModalController,
   ModalControllerProps,
   ModalProps,
@@ -25,11 +26,13 @@ export const CreateModifierModal: React.FC<CreateModifierModalProps> = ({
   onClose,
 }) => {
   const [error, setError] = React.useState<APIError>();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [createModifier] = useCreateModifierMutation();
   const { data: modifierCategories } = useGetModifierCategoriesQuery();
 
   return (
     <>
+      <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
         Modal={FormModal}
@@ -41,9 +44,13 @@ export const CreateModifierModal: React.FC<CreateModifierModalProps> = ({
             modifierCategories,
             onSubmit: async (value: CreateModifierFormSubmitData) => {
               try {
+                setLoading(true);
+
                 await createModifier(value).unwrap();
               } catch (e) {
                 setError(e);
+              } finally {
+                setLoading(false);
               }
             },
           },

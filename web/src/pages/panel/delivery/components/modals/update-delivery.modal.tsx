@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FormModal,
+  LoadingBackdrop,
   ModalController,
   ModalControllerProps,
   ModalProps,
@@ -30,10 +31,12 @@ export const UpdateDeliveryModal: React.FC<UpdateDeliveryModalProps> = ({
   onClose,
 }) => {
   const [error, setError] = React.useState<APIError | undefined>();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [createDelivery] = useUpdateDeliveryMutation();
 
   return (
     <>
+      <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
         Modal={FormModal}
@@ -45,9 +48,13 @@ export const UpdateDeliveryModal: React.FC<UpdateDeliveryModalProps> = ({
             delivery,
             onSubmit: async (value: UpdateDeliveryFormSubmitData) => {
               try {
+                setLoading(true);
+
                 await createDelivery(value).unwrap();
               } catch (e) {
                 setError(e);
+              } finally {
+                setLoading(false);
               }
             },
           },
