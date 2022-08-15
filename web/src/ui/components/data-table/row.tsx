@@ -34,21 +34,22 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
       ? head.cols.filter(col => col.collapsed)
       : head.cols.filter(col => !col.primary);
 
-    const hasCollapsedSpace =
-      collapsible && (collapsedRowSpace || hiddenCols.length);
+    const hasCollapsedSpace = collapsedRowSpace || hiddenCols.length;
 
     return (
       <>
         <TableRow>
-          {hasCollapsedSpace ? (
+          {collapsible ? (
             <TableCell>
-              <IconButton
-                aria-label="expand row"
-                size="small"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
+              {hasCollapsedSpace ? (
+                <IconButton
+                  aria-label="expand row"
+                  size="small"
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+              ) : undefined}
             </TableCell>
           ) : undefined}
           {currentRenderCols.map((col, idx) => (

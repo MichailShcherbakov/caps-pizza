@@ -34,7 +34,7 @@ export const ModifiersTable: React.FC<ModifiersTableProps> = () => {
             },
             {
               name: "price",
-              value: modifier.price,
+              value: `${modifier.price} ₽`,
             },
             {
               name: "category",

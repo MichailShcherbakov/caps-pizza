@@ -53,7 +53,7 @@ export const ProductFeaturesTable: React.FC<ProductFeaturesTableProps> = ({
           },
           {
             name: "price",
-            value: feature._type === "modifier" ? feature.price : "Нет",
+            value: feature._type === "modifier" ? `${feature.price} ₽` : "Нет",
           },
         ],
       }))}

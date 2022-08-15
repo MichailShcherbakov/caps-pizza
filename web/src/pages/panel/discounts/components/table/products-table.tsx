@@ -40,7 +40,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({ products }) => {
           },
           {
             name: "price",
-            value: product.price,
+            value: `${product.price} ₽`,
           },
         ],
       }))}
