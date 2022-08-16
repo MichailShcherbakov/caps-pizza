@@ -4,6 +4,8 @@ declare namespace globalThis {
   var __FRONTEND_URL__: string;
   var __DEV__: boolean;
   var __SECRET__: string;
+  var __JWT_ACCESS_TOKEN_SECRET__: string;
+  var __JWT_REFRESH_TOKEN_SECRET__: string;
   var __SYNC_ON__: boolean;
   var __APP_ROOT_PATH__: string;
   var __APP_ROOT_URL__: string;
