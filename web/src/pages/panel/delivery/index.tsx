@@ -17,7 +17,7 @@ export const DeliveryPage: AppPage = () => {
       <React.Suspense fallback={<DeliveryTableSkeleton />}>
         <DeliveryTable />
       </React.Suspense>
-      <Stack direction="row" alignItems="center" className="ui-p-8">
+      <Stack direction="row" alignItems="center">
         <CreateDeliveryModal>
           {({ open }) => (
             <Button variant="outlined" color="secondary" onClick={open}>

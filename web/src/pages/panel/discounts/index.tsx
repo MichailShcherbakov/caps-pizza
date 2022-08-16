@@ -17,7 +17,7 @@ export const DiscountsPage: AppPage = () => {
       <React.Suspense fallback={<DiscountsTableSkeleton />}>
         <DiscountsTable />
       </React.Suspense>
-      <Stack direction="row" alignItems="center" className="ui-p-8">
+      <Stack direction="row" alignItems="center">
         <CreateDiscountModal>
           {({ open }) => (
             <Button variant="outlined" color="secondary" onClick={open}>

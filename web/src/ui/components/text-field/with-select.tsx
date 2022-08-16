@@ -37,13 +37,14 @@ export const TextFieldWithSelect: React.FC<TextFieldWithSelectProps> =
           )}
         />
         <FormControl size="small" className={styles["text-field__select"]}>
-          <InputLabel id="input-select-label" color="secondary">
+          <InputLabel id="input-select-label" color="secondary" size="small">
             {SelectProps?.label}
           </InputLabel>
           <Select
             {...SelectProps}
             labelId="input-select-label"
             color="secondary"
+            size="small"
           >
             {options.map(opt => (
               <MenuItem key={opt.value} value={opt.value}>

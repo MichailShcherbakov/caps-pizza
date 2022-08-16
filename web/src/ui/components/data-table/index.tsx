@@ -47,7 +47,7 @@ export const DataTable: React.FC<DataTableProps> = React.memo(
 
     if (!loading && !rows.length)
       return (
-        <Stack className="ui-p-8">
+        <Stack>
           {EmptyComponent ? (
             EmptyComponent
           ) : (

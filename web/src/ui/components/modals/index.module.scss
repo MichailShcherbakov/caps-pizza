@@ -1,9 +1,16 @@
-.modal {
+.modal,
+.modal__control {
   @include ui-max-w(680px);
   @include ui-max-h(480px);
 
   @include ui-flex;
   @include ui-flex-col;
+  @include ui-gap(1rem);
+  @include ui-overflow-auto;
+
+  &:not(& > .modal__control) {
+    @include ui-p-8;
+  }
 
   &__overlay {
     @include ui-flex;
@@ -14,7 +21,6 @@
   &__inner,
   &__footer {
     @include ui-w-full;
-    @include ui-p-8;
   }
 
   &__inner {
@@ -35,10 +41,10 @@
 }
 
 @media (max-width: $breakpoint-xs) {
-  .modal {
+  .modal,
+  .modal__control {
     @include ui-w(100%);
     @include ui-max-h(80vh);
-    @include ui-min-w(360px);
 
     &__overlay {
       align-items: flex-end;

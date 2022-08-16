@@ -17,7 +17,7 @@ export const ModifiersPage: AppPage = () => {
       <React.Suspense fallback={<ModifiersTableSkeleton />}>
         <ModifiersTable />
       </React.Suspense>
-      <Stack direction="row" alignItems="center" className="ui-p-8">
+      <Stack direction="row" alignItems="center">
         <CreateModifierModal>
           {({ open }) => (
             <Button variant="outlined" color="secondary" onClick={open}>

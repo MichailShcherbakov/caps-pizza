@@ -22,7 +22,7 @@
 
 .product-form {
   &__features {
-    gap: 1rem;
+    @include ui-gap(1rem);
   }
 }
 

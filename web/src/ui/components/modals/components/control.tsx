@@ -4,7 +4,7 @@ import styles from "../index.module.scss";
 export interface ModalControlProps extends StackProps<any> {}
 
 export const ModalControl: React.FC<ModalControlProps> = props => {
-  return <Stack {...props} className={styles["modal"]} />;
+  return <Stack {...props} className={styles["modal__control"]} />;
 };
 
 export default ModalControl;

@@ -17,7 +17,7 @@ export const ProductCategoriesPage: AppPage = () => {
       <React.Suspense fallback={<ProductCategoriesTableSkeleton />}>
         <ProductCategoriesTable />
       </React.Suspense>
-      <Stack direction="row" alignItems="center" className="ui-p-8">
+      <Stack direction="row" alignItems="center">
         <CreateProductCategoryModal>
           {({ open }) => (
             <Button variant="outlined" color="secondary" onClick={open}>
