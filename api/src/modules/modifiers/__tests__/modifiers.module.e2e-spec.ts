@@ -26,6 +26,8 @@ describe("[Modifier Module] ...", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
+
+    await api.init();
   });
 
   beforeEach(async () => {

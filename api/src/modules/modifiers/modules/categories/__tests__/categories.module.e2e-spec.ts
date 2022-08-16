@@ -24,6 +24,8 @@ describe("[Modifier Categories Module] ...", () => {
     await testingModule.init();
 
     api = new Api(testingModule.app);
+
+    await api.init();
   });
 
   afterEach(async () => {

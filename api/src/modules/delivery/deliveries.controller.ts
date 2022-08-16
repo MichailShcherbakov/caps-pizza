@@ -10,6 +10,7 @@ import {
   Put,
 } from "@nestjs/common";
 import DeliveryEntity from "~/db/entities/delivery.entity";
+import AuthGuard from "../auth/auth.guard";
 import { CreateDeliveryDto, UpdateDeliveryDto } from "./deliveries.dto";
 import DeliveryService from "./deliveries.service";
 
@@ -38,11 +39,13 @@ export default class DeliveriesController {
     return foundDelivery;
   }
 
+  @AuthGuard()
   @Post("/")
   createDelivery(@Body() dto: CreateDeliveryDto): Promise<DeliveryEntity> {
     return this.deliveryService.create(dto);
   }
 
+  @AuthGuard()
   @Put("/:deliveryUUID")
   updateDelivery(
     @Param("deliveryUUID", ParseUUIDPipe) deliveryUUID: string,
@@ -51,6 +54,7 @@ export default class DeliveriesController {
     return this.deliveryService.update(deliveryUUID, dto);
   }
 
+  @AuthGuard()
   @Delete("/:deliveryUUID")
   deleteDelivery(@Param("deliveryUUID", ParseUUIDPipe) deliveryUUID: string) {
     return this.deliveryService.delete(deliveryUUID);

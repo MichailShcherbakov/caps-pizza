@@ -36,6 +36,8 @@ describe("[Product Module] ...", () => {
 
     api = new Api(testingModule.app);
 
+    await api.init();
+
     modifiers = await createModifiersHelper(
       testingModule.dataSource,
       await createModifierCategoriesHelper(testingModule.dataSource)

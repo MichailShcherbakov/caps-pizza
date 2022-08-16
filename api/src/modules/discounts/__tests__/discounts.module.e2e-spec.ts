@@ -41,6 +41,8 @@ describe("[Discounts Module] ...", () => {
 
     api = new Api(testingModule.app);
 
+    await api.init();
+
     productCategories = await createProductCategoriesHelper(
       testingModule.dataSource
     );

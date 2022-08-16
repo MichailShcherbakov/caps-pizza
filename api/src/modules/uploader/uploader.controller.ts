@@ -6,6 +6,7 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import AuthGuard from "../auth/auth.guard";
 
 export class File {
   filename: string;
@@ -26,6 +27,7 @@ const storage = multer.diskStorage({
 
 @Controller()
 export class UploaderController {
+  @AuthGuard()
   @Post("/upload")
   @UseInterceptors(FileInterceptor("file", { storage }))
   uploadFile(@UploadedFile() file: Express.Multer.File): File {

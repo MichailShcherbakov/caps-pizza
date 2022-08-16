@@ -1,11 +1,11 @@
 import { Test } from "supertest";
-import IApi from "~/utils/api.interface";
 import {
   CreateModifierCategoryDto,
   UpdateModifierCategoryDto,
 } from "../../categories.dto";
+import { AuthApiHelper } from "~/modules/auth/__tests__/helpers/api.helper";
 
-export default class Api extends IApi {
+export default class Api extends AuthApiHelper {
   getModifierCategories(): Test {
     return this._handle.get("/modifiers/-/categories");
   }
@@ -15,14 +15,22 @@ export default class Api extends IApi {
   }
 
   createModifierCategory(dto: CreateModifierCategoryDto): Test {
-    return this._handle.post("/modifiers/-/categories").send(dto);
+    return this._handle
+      .post("/modifiers/-/categories")
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   updateModifierCategory(uuid: string, dto: UpdateModifierCategoryDto): Test {
-    return this._handle.put(`/modifiers/-/categories/${uuid}`).send(dto);
+    return this._handle
+      .put(`/modifiers/-/categories/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   deleteModifierCategory(uuid: string): Test {
-    return this._handle.delete(`/modifiers/-/categories/${uuid}`);
+    return this._handle
+      .delete(`/modifiers/-/categories/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`);
   }
 }

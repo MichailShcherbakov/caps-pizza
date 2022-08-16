@@ -1,8 +1,8 @@
 import { Test } from "supertest";
-import IApi from "~/utils/api.interface";
+import { AuthApiHelper } from "../../../auth/__tests__/helpers/api.helper";
 import { CreateDiscountDto, UpdateDiscountDto } from "../../discounts.dto";
 
-export default class Api extends IApi {
+export default class Api extends AuthApiHelper {
   getDiscounts(): Test {
     return this._handle.get("/discounts");
   }
@@ -12,14 +12,22 @@ export default class Api extends IApi {
   }
 
   createDiscount(dto: CreateDiscountDto): Test {
-    return this._handle.post("/discounts").send(dto);
+    return this._handle
+      .post("/discounts")
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   updateDiscount(uuid: string, dto: UpdateDiscountDto): Test {
-    return this._handle.put(`/discounts/${uuid}`).send(dto);
+    return this._handle
+      .put(`/discounts/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   deleteDiscount(uuid: string): Test {
-    return this._handle.delete(`/discounts/${uuid}`);
+    return this._handle
+      .delete(`/discounts/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`);
   }
 }

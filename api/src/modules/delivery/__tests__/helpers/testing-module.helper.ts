@@ -1,10 +1,11 @@
+import AuthModule from "~/modules/auth/auth.module";
 import SyncService from "~/modules/sync/sync.service";
 import { ITestingModule } from "~/utils/testing-module.interface";
 import DeliveryModule from "../../deliveries.module";
 
 export default class TestingModule extends ITestingModule {
   async init(): Promise<void> {
-    await super.init([DeliveryModule]);
+    await super.init([AuthModule, DeliveryModule]);
 
     const syncService = this.get<SyncService>(SyncService);
     syncService.syncWithFrontPad = jest.fn(() => Promise.resolve(true));

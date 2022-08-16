@@ -10,6 +10,7 @@ import {
   Put,
 } from "@nestjs/common";
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
+import AuthGuard from "~/modules/auth/auth.guard";
 import {
   CreateModifierCategoryDto,
   UpdateModifierCategoryDto,
@@ -43,6 +44,7 @@ export default class ModifierCategoriesController {
     return foundModifierCategory;
   }
 
+  @AuthGuard()
   @Post("/")
   createModifierCategory(
     @Body() dto: CreateModifierCategoryDto
@@ -50,6 +52,7 @@ export default class ModifierCategoriesController {
     return this.modifierCategoriesService.create(dto);
   }
 
+  @AuthGuard()
   @Put("/:modifierCategoryUUID")
   updateModifierCategory(
     @Param("modifierCategoryUUID", ParseUUIDPipe) modifierCategoryUUID: string,
@@ -58,6 +61,7 @@ export default class ModifierCategoriesController {
     return this.modifierCategoriesService.update(modifierCategoryUUID, dto);
   }
 
+  @AuthGuard()
   @Delete("/:modifierCategoryUUID")
   deleteModifierCategory(
     @Param("modifierCategoryUUID", ParseUUIDPipe) modifierCategoryUUID: string

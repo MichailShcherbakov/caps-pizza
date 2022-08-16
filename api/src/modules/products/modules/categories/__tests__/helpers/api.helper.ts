@@ -1,11 +1,11 @@
 import { Test } from "supertest";
-import IApi from "~/utils/api.interface";
+import { AuthApiHelper } from "~/modules/auth/__tests__/helpers/api.helper";
 import {
   CreateProductCategoryDto,
   UpdateProductCategoryDto,
 } from "../../categories.dto";
 
-export default class Api extends IApi {
+export default class Api extends AuthApiHelper {
   getProductCategories(): Test {
     return this._handle.get("/products/-/categories");
   }
@@ -15,14 +15,22 @@ export default class Api extends IApi {
   }
 
   createProductCategory(dto: CreateProductCategoryDto): Test {
-    return this._handle.post("/products/-/categories").send(dto);
+    return this._handle
+      .post("/products/-/categories")
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   updateProductCategory(uuid: string, dto: UpdateProductCategoryDto): Test {
-    return this._handle.put(`/products/-/categories/${uuid}`).send(dto);
+    return this._handle
+      .put(`/products/-/categories/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   deleteProductCategory(uuid: string): Test {
-    return this._handle.delete(`/products/-/categories/${uuid}`);
+    return this._handle
+      .delete(`/products/-/categories/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`);
   }
 }

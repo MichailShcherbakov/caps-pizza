@@ -1,8 +1,8 @@
 import { Test } from "supertest";
-import CategotiesApi from "~/modules/products/modules/categories/__tests__/helpers/api.helper";
+import ProductCategotiesApi from "../../modules/categories/__tests__/helpers/api.helper";
 import { CreateProductDto, UpdateProductDto } from "../../products.dto";
 
-export default class Api extends CategotiesApi {
+export default class Api extends ProductCategotiesApi {
   getProducts(): Test {
     return this._handle.get("/products");
   }
@@ -12,14 +12,22 @@ export default class Api extends CategotiesApi {
   }
 
   createProduct(dto: CreateProductDto): Test {
-    return this._handle.post("/products").send(dto);
+    return this._handle
+      .post("/products")
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   updateProduct(uuid: string, dto: UpdateProductDto): Test {
-    return this._handle.put(`/products/${uuid}`).send(dto);
+    return this._handle
+      .put(`/products/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   deleteProduct(uuid: string): Test {
-    return this._handle.delete(`/products/${uuid}`);
+    return this._handle
+      .delete(`/products/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`);
   }
 }

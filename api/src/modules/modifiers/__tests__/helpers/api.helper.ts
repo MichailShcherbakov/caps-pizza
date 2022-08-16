@@ -12,14 +12,22 @@ export default class Api extends ModifierCategoryApi {
   }
 
   createModifier(dto: CreateModifierDto): Test {
-    return this._handle.post("/modifiers").send(dto);
+    return this._handle
+      .post("/modifiers")
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   updateModifier(uuid: string, dto: UpdateModifierDto): Test {
-    return this._handle.put(`/modifiers/${uuid}`).send(dto);
+    return this._handle
+      .put(`/modifiers/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`)
+      .send(dto);
   }
 
   deleteModifier(uuid: string): Test {
-    return this._handle.delete(`/modifiers/${uuid}`);
+    return this._handle
+      .delete(`/modifiers/${uuid}`)
+      .set("Authorization", `Bearer ${this.accessToken}`);
   }
 }

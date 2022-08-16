@@ -10,6 +10,7 @@ import {
   Put,
 } from "@nestjs/common";
 import ProductEntity from "~/db/entities/product.entity";
+import AuthGuard from "../auth/auth.guard";
 import { CreateProductDto, UpdateProductDto } from "./products.dto";
 import ProductsService from "./products.service";
 
@@ -36,6 +37,7 @@ export class ProductsController {
     return foundProduct;
   }
 
+  @AuthGuard()
   @Post("/")
   createProduct(
     @Body() createProductDto: CreateProductDto
@@ -43,6 +45,7 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
+  @AuthGuard()
   @Put("/:productUUID")
   updateProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string,
@@ -51,6 +54,7 @@ export class ProductsController {
     return this.productsService.update(productUUID, updateProductDto);
   }
 
+  @AuthGuard()
   @Delete("/:productUUID")
   async deleteProduct(
     @Param("productUUID", ParseUUIDPipe) productUUID: string

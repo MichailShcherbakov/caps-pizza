@@ -10,6 +10,7 @@ import {
   Put,
 } from "@nestjs/common";
 import DiscountEntity from "~/db/entities/discount.entity";
+import AuthGuard from "../auth/auth.guard";
 import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
 import DiscountsService from "./discounts.service";
 
@@ -38,11 +39,13 @@ export default class DiscountsContoller {
     return foundDiscount;
   }
 
+  @AuthGuard()
   @Post("/")
   createDiscount(@Body() dto: CreateDiscountDto): Promise<DiscountEntity> {
     return this.discountsService.create(dto);
   }
 
+  @AuthGuard()
   @Put("/:discountUUID")
   updateDiscount(
     @Param("discountUUID", ParseUUIDPipe) discountUUID: string,
@@ -51,6 +54,7 @@ export default class DiscountsContoller {
     return this.discountsService.update(discountUUID, dto);
   }
 
+  @AuthGuard()
   @Delete("/:discountUUID")
   async deleteDiscount(
     @Param("discountUUID", ParseUUIDPipe) discountUUID: string
