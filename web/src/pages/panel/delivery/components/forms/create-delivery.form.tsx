@@ -19,6 +19,7 @@ import DeliveryCriteriaSelect from "./components/condition-criteria-select";
 import DeliveryOperatorSelect from "./components/condition-operator-select";
 import DeliveryTypeSelect from "./components/type-select";
 import styles from "./index.module.scss";
+import { DiscountTypeEnum } from "~/services/discounts.service";
 
 export type CreateDeliveryFormSubmitData = CreateDeliveryPayload;
 
@@ -175,7 +176,16 @@ export const CreateDeliveryForm: React.FC<CreateDeliveryFormProps> = ({
         </Stack>
         <DeliveryTypeSelect
           value={formik.values.type}
-          onChange={formik.handleChange}
+          onChange={e => {
+            if (
+              e.target.value === DeliveryTypeEnum.PERCENT &&
+              Number.parseFloat(formik.values.value) > 100
+            ) {
+              formik.setFieldValue("value", "");
+            }
+
+            formik.handleChange(e);
+          }}
         />
         <MemoTextField
           fullWidth
@@ -189,7 +199,16 @@ export const CreateDeliveryForm: React.FC<CreateDeliveryFormProps> = ({
           helperText={formik.touched.value && formik.errors.value}
           size="small"
           color="secondary"
-          onChange={formik.handleChange}
+          onChange={e => {
+            if (
+              formik.values.type === DiscountTypeEnum.PERCENT &&
+              Number.parseFloat(e.target.value) > 100
+            ) {
+              return;
+            }
+
+            formik.handleChange(e);
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="start">
