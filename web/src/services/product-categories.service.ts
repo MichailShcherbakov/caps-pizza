@@ -57,6 +57,7 @@ export const ProductCategoryAPI = API.injectEndpoints({
       invalidatesTags: ["ProductCategory"],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

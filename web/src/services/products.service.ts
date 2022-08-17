@@ -90,6 +90,7 @@ export const ProductAPI = API.injectEndpoints({
       invalidatesTags: ["Product"],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

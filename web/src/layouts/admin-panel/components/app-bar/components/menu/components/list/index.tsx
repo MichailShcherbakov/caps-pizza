@@ -4,56 +4,47 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
 } from "@mui/material";
-import DiscountIcon from "@mui/icons-material/Discount";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import CategoryIcon from "@mui/icons-material/Category";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import TrackChangesIcon from "@mui/icons-material/TrackChanges";
-import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
-import BallotIcon from "@mui/icons-material/Ballot";
+import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
+import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
+import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
+import BackupTableOutlinedIcon from "@mui/icons-material/BackupTableOutlined";
+import InsertChartOutlinedSharpIcon from "@mui/icons-material/InsertChartOutlinedSharp";
 import { useRouter } from "next/router";
 
 export interface MenuListProps {}
 
 export const MENU_ITEMS = [
   {
-    name: "promotions",
-    displayName: "Акции",
-    icon: <DiscountIcon />,
-  },
-  {
     name: "products",
     displayName: "Товары",
-    icon: <InventoryIcon />,
+    icon: <Inventory2OutlinedIcon />,
   },
   {
     name: "products/categories",
     displayName: "Категории Товара",
-    icon: <CategoryIcon />,
+    icon: <CategoryOutlinedIcon />,
   },
   {
     name: "modifiers",
     displayName: "Модификаторы Товаров",
-    icon: <AnalyticsIcon />,
+    icon: <InsertChartOutlinedSharpIcon />,
   },
   {
     name: "modifiers/categories",
     displayName: "Типы Модификаторов",
-    icon: <BallotIcon />,
+    icon: <BackupTableOutlinedIcon />,
   },
   {
     name: "discounts",
     displayName: "Учёт скидок",
-    icon: <DiscountIcon />,
+    icon: <DiscountOutlinedIcon />,
   },
   {
     name: "delivery",
     displayName: "Расчёт доставки",
-    icon: <LocalShippingIcon />,
+    icon: <LocalShippingOutlinedIcon />,
   },
 ];
 

@@ -80,6 +80,19 @@ export const API_ERRORS: ErrorInfo[] = [
     regex: /^The image not loaded$/,
     code: 1020,
   },
+  /* Authorization  */
+  {
+    type: "Ошибка авторизации",
+    desc: "Неверно указаны имя пользивателя или пароль",
+    regex: /^The authentication fails$/,
+    code: 401,
+  },
+  {
+    type: "Ошибка авторизации",
+    desc: "Сессия завершена. Пройдите повторную аутентификацию",
+    regex: /^The refresh token is expired$/,
+    code: 401,
+  },
 ];
 
 export default API_ERRORS;

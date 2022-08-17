@@ -25,6 +25,7 @@ export const UploadAPI = API.injectEndpoints({
       transformResponse,
     }),
   }),
+  overrideExisting: false,
 });
 
 export const { useUploadImageMutation } = UploadAPI;

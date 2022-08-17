@@ -3,21 +3,15 @@ import { Button, Stack } from "@mui/material";
 import AppPage from "~/common/interfaces/app-page.interface";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import CreateDeliveryModal from "./components/modals/create-delivery.modal";
-import dynamic from "next/dynamic";
-import DeliveryTableSkeleton from "./components/table/skeleton";
-
-const DeliveryTable = dynamic(() => import("./components/table"), {
-  suspense: true,
-  ssr: false,
-});
+import DeliveryTable from "./components/table";
+import { GetServerSideProps } from "next";
+import withAuth from "~/common/helpers/with-auth";
 
 export const DeliveryPage: AppPage = () => {
   return (
     <>
-      <React.Suspense fallback={<DeliveryTableSkeleton />}>
-        <DeliveryTable />
-      </React.Suspense>
-      <Stack direction="row" alignItems="center">
+      <DeliveryTable />
+      <Stack direction="row" alignItems="center" className="ui-px-8">
         <CreateDeliveryModal>
           {({ open }) => (
             <Button variant="outlined" color="secondary" onClick={open}>
@@ -33,5 +27,7 @@ export const DeliveryPage: AppPage = () => {
 DeliveryPage.getLayout = page => {
   return <AdminPanelLayout>{page}</AdminPanelLayout>;
 };
+
+export const getServerSideProps: GetServerSideProps = withAuth;
 
 export default DeliveryPage;

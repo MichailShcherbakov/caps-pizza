@@ -2,7 +2,7 @@ import {
   Fade,
   Modal as MUIModal,
   ModalProps as MUIModalProps,
-  Paper,
+  Stack,
 } from "@mui/material";
 
 import styles from "./index.module.scss";
@@ -28,9 +28,9 @@ export const Modal: React.FC<ModalProps> = ({
       closeAfterTransition
     >
       <Fade in={props.open}>
-        <Paper component={component} className={styles["modal"]}>
+        <Stack component={component} className={styles["modal"]}>
           {children}
-        </Paper>
+        </Stack>
       </Fade>
     </MUIModal>
   );

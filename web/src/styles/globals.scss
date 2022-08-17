@@ -10,79 +10,75 @@
   height: fit-content;
 
   @include cubic-transition;
+
+  &.MuiTypography-h1 {
+    font-size: 38px;
+    font-weight: 700;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-h6 {
+    font-size: 14px;
+    font-weight: 700;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-body1 {
+    font-size: 14px;
+    font-weight: 500;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-body2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: $gray-900;
+  }
+
+  &.MuiTypography-button {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: none;
+  }
+
+  &.MuiTypography-subtitle1 {
+    font-size: 13px;
+    font-weight: 400;
+    color: $gray-400;
+  }
+
+  &.MuiTypography-subtitle2 {
+    font-size: 13px;
+    font-weight: 400;
+    color: gray-900;
+  }
 }
 
-.MuiTypography-h1 {
-  font-size: 38px;
-  font-weight: 700;
-  color: $gray-900;
-}
-
-.MuiTypography-h2 {
-  font-size: 32px;
-  font-weight: 700;
-  color: $gray-900;
-}
-
-.MuiTypography-h3 {
-  font-size: 20px;
-  font-weight: 700;
-  color: $gray-900;
-}
-
-.MuiTypography-h4 {
-  font-size: 18px;
-  font-weight: 700;
-  color: $gray-900;
-}
-
-.MuiTypography-h5 {
-  font-size: 16px;
-  font-weight: 700;
-  color: $gray-900;
-}
-
-.MuiTypography-h6 {
-  font-size: 14px;
-  font-weight: 700;
-  color: $gray-900;
-}
-
-.MuiTypography-body1 {
-  font-size: 14px;
-  font-weight: 500;
-  color: $gray-900;
-}
-
-.MuiTypography-body2 {
-  font-size: 16px;
-  font-weight: 500;
-  color: $gray-900;
-}
-
-.MuiTypography-button {
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: none;
-}
-
-.MuiTypography-subtitle1 {
-  font-size: 13px;
-  font-weight: 400;
-  color: $gray-400;
-}
-
-.MuiTypography-subtitle2 {
-  font-size: 13px;
-  font-weight: 400;
-  color: gray-900;
-}
-
-.MuiButtonBase-root,
-.MuiButton-root {
-  width: fit-content;
-  height: fit-content;
-
+.MuiButtonBase-root.MuiButton-root {
   @include cubic-transition;
 
   @include ui-box-shadow-none;

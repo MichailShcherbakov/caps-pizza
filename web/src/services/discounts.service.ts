@@ -111,6 +111,7 @@ export const DiscountAPI = API.injectEndpoints({
       invalidatesTags: ["Discount"],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

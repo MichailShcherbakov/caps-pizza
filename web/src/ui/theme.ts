@@ -4,12 +4,16 @@ import "external-svg-loader";
 declare module "@mui/material" {
   interface PaletteOptions {
     neutral: Partial<PaletteColor>;
+    light: Partial<PaletteColor>;
+    secondaryLight: Partial<PaletteColor>;
   }
 }
 
 declare module "@mui/material/styles" {
   interface PaletteOptions {
     neutral: Partial<PaletteColor>;
+    light: Partial<PaletteColor>;
+    secondaryLight: Partial<PaletteColor>;
   }
 
   interface BreakpointOverrides {
@@ -25,6 +29,8 @@ declare module "@mui/material/styles" {
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     neutral: true;
+    light: true;
+    secondaryLight: true;
   }
 }
 
@@ -53,6 +59,14 @@ export const theme = createTheme({
     neutral: {
       main: "#95989b",
       contrastText: "#ffffff",
+    },
+    light: {
+      main: "#ffeee2",
+      contrastText: "#ff7010",
+    },
+    secondaryLight: {
+      main: "#dae6ea",
+      contrastText: "#073b4c",
     },
     success: {
       main: "#2a9d8f",

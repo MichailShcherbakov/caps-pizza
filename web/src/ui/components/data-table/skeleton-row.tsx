@@ -12,11 +12,11 @@ export interface DataTableSkeletonRowProps
 
 export const DataTableSkeletonRow: React.FC<DataTableSkeletonRowProps> =
   React.memo(({ head, isHead, collapsible }) => {
-    const matches = useMediaQuery(theme => theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme => theme.breakpoints.down("md"));
 
     const currentRenderCols = matches
-      ? head.cols.filter(col => !col.collapsed)
-      : head.cols.filter(col => col.primary);
+      ? head.cols.filter(col => col.primary)
+      : head.cols.filter(col => !col.collapsed);
 
     return (
       <TableRow>

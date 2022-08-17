@@ -7,9 +7,16 @@
   @include ui-flex-col;
   @include ui-gap(1rem);
   @include ui-overflow-auto;
+  @include ui-box-shadow-none;
+  @include ui-bg-color($white);
+  @include ui-rounded-1;
+
+  & > *:not(& > .modal__control) {
+    @include ui-px-8;
+  }
 
   &:not(& > .modal__control) {
-    @include ui-p-8;
+    @include ui-py-8;
   }
 
   &__overlay {
@@ -27,6 +34,7 @@
     @include ui-w-full;
     @include ui-min-h(fit-content);
     @include ui-overflow-auto;
+    @include ui-py-8;
   }
 }
 

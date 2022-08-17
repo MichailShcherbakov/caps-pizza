@@ -4,6 +4,13 @@ import { SignInDto } from "./auth.dto";
 import AuthService from "./auth.service";
 
 export const REFRESH_TOKEN_COOKIE = "rf-tn";
+export const COOKIE_EXPIRED_AT = 60 * 60 * 1000;
+export const REFRESH_TOKEN_COOKIE_SETTINGS = {
+  httpOnly: true,
+  sameSite: true,
+  secure: false,
+  maxAge: COOKIE_EXPIRED_AT,
+};
 
 @Controller("/auth")
 export default class AuthController {
@@ -18,12 +25,11 @@ export default class AuthController {
   async singIn(@Res() res: Response, @Body() dto: SignInDto): Promise<void> {
     const tokens = await this.authService.signIn(dto);
 
-    res.cookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
-      httpOnly: true,
-      sameSite: true,
-      secure: true,
-      maxAge: 60 * 60 * 1000,
-    });
+    res.cookie(
+      REFRESH_TOKEN_COOKIE,
+      tokens.refreshToken,
+      REFRESH_TOKEN_COOKIE_SETTINGS
+    );
 
     res.status(200).send({
       statusCode: 200,
@@ -39,12 +45,11 @@ export default class AuthController {
       refreshToken: req.cookies[REFRESH_TOKEN_COOKIE],
     });
 
-    res.cookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
-      httpOnly: true,
-      sameSite: true,
-      secure: true,
-      maxAge: 60 * 60 * 1000,
-    });
+    res.cookie(
+      REFRESH_TOKEN_COOKIE,
+      tokens.refreshToken,
+      REFRESH_TOKEN_COOKIE_SETTINGS
+    );
 
     res.status(200).send({
       statusCode: 200,

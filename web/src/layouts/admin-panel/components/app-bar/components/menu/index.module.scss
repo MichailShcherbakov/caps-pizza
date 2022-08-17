@@ -9,6 +9,7 @@
     @include ui-w(320px);
     @include ui-h-screen;
     @include ui-bg-color($white);
+    @include ui-overflow-auto;
 
     & :global(.MuiListItemButton-root) {
       &:global(.Mui-selected) {

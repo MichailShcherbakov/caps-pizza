@@ -84,6 +84,7 @@ export const DeliveryAPI = API.injectEndpoints({
       invalidatesTags: ["Delivery"],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

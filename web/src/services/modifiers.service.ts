@@ -57,6 +57,7 @@ export const ModifiersAPI = API.injectEndpoints({
       invalidatesTags: ["Modifier"],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

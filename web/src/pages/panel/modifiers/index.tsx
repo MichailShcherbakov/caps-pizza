@@ -1,23 +1,17 @@
 import { Button, Stack } from "@mui/material";
-import dynamic from "next/dynamic";
+import { GetServerSideProps } from "next";
 import React from "react";
 import AppPage from "~/common/interfaces/app-page.interface";
+import withAuth from "~/common/helpers/with-auth";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import CreateModifierModal from "./components/modals/create-modifier.modal";
-import ModifiersTableSkeleton from "./components/table/skeleton";
-
-export const ModifiersTable = dynamic(() => import("./components/table"), {
-  suspense: true,
-  ssr: false,
-});
+import ModifiersTable from "./components/table";
 
 export const ModifiersPage: AppPage = () => {
   return (
     <>
-      <React.Suspense fallback={<ModifiersTableSkeleton />}>
-        <ModifiersTable />
-      </React.Suspense>
-      <Stack direction="row" alignItems="center">
+      <ModifiersTable />
+      <Stack direction="row" alignItems="center" className="ui-px-8">
         <CreateModifierModal>
           {({ open }) => (
             <Button variant="outlined" color="secondary" onClick={open}>
@@ -33,5 +27,7 @@ export const ModifiersPage: AppPage = () => {
 ModifiersPage.getLayout = page => {
   return <AdminPanelLayout>{page}</AdminPanelLayout>;
 };
+
+export const getServerSideProps: GetServerSideProps = withAuth;
 
 export default ModifiersPage;

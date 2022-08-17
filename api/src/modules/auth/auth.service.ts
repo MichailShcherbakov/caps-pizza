@@ -49,7 +49,9 @@ export default class AuthService {
   }
 
   async signIn({ username, password }: SignInPayload): Promise<SignInResult> {
-    const user = await this.usersService.findOneOrFail({ name: username });
+    const user = await this.usersService.findOne({ name: username });
+
+    if (!user) throw new UnauthorizedException("The authentication fails");
 
     const passwordHash = await bcrypt.hash(password, user.salt);
 
@@ -93,7 +95,7 @@ export default class AuthService {
         refreshToken: newRefreshToken,
       };
     } catch (e) {
-      throw new UnauthorizedException("The authentication fails");
+      throw new UnauthorizedException("The refresh token is expired");
     }
   }
 

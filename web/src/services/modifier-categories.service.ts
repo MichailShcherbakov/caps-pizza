@@ -57,6 +57,7 @@ export const ModifierCategoryAPI = API.injectEndpoints({
       invalidatesTags: ["ModifierCategory"],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

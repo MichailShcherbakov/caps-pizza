@@ -36,12 +36,12 @@ export const DataTable: React.FC<DataTableProps> = React.memo(
     collapsible = true,
     loading,
   }) => {
-    const matches = useMediaQuery(theme => theme.breakpoints.up("md"));
+    const matches = useMediaQuery(theme => theme.breakpoints.down("md"));
     const currentRenderCols = React.useMemo(
       () =>
         matches
-          ? head.cols.filter(col => !col.collapsed)
-          : head.cols.filter(col => col.primary),
+          ? head.cols.filter(col => col.primary)
+          : head.cols.filter(col => !col.collapsed),
       [matches, head]
     );
 
@@ -51,7 +51,12 @@ export const DataTable: React.FC<DataTableProps> = React.memo(
           {EmptyComponent ? (
             EmptyComponent
           ) : (
-            <Stack direction="row" alignItems="center" spacing={2}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              className="ui-px-8"
+              spacing={2}
+            >
               <SubtitlesOffOutlinedIcon color="secondary" />
               <Stack>
                 <Typography variant="h6" component="p">

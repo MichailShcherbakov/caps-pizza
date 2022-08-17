@@ -11,7 +11,7 @@
     &-inner {
       @include ui-border(1px, solid, $border-color);
       @include ui-rounded-1;
-      @include ui-p-8;
+      @include ui-py-8;
       @include ui-gap(1rem);
     }
   }
