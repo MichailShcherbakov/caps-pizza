@@ -53,10 +53,10 @@ export const CreateDiscountForm: React.FC<CreateDiscountFormProps> = ({
   const formik = useFormik({
     initialValues: {
       name: "",
-      type: "",
-      scope: "",
-      conditionCriteria: "",
-      conditionOp: "",
+      type: "" as DiscountTypeEnum,
+      scope: "" as DiscountScopeEnum,
+      conditionCriteria: "" as DiscountCriteriaEnum,
+      conditionOp: "" as DiscountOperatorEnum,
       conditionValue: "",
       conditionValue2: "",
       value: "",
@@ -116,6 +116,8 @@ export const CreateDiscountForm: React.FC<CreateDiscountFormProps> = ({
           onChange={formik.handleChange}
         />
         <DiscountScopeSelect
+          type={formik.values.type}
+          conditionCriteria={formik.values.conditionCriteria}
           value={formik.values.scope}
           onChange={formik.handleChange}
         />
@@ -125,10 +127,13 @@ export const CreateDiscountForm: React.FC<CreateDiscountFormProps> = ({
           className={styles["discount-condition"]}
         >
           <DiscountCriteriaSelect
+            type={formik.values.type}
+            scope={formik.values.scope}
             value={formik.values.conditionCriteria}
             onChange={formik.handleChange}
           />
           <DiscountOperatorSelect
+            type={formik.values.type}
             value={formik.values.conditionOp}
             onChange={formik.handleChange}
           />
@@ -194,8 +199,28 @@ export const CreateDiscountForm: React.FC<CreateDiscountFormProps> = ({
           ) : undefined}
         </Stack>
         <DiscountTypeSelect
+          scope={formik.values.scope}
+          conditionCriteria={
+            formik.values.conditionCriteria.length
+              ? formik.values.conditionCriteria
+              : undefined
+          }
+          conditionOp={
+            formik.values.conditionOp.length
+              ? formik.values.conditionOp
+              : undefined
+          }
           value={formik.values.type}
-          onChange={formik.handleChange}
+          onChange={e => {
+            if (
+              e.target.value === DiscountTypeEnum.PERCENT &&
+              Number.parseFloat(formik.values.value) > 100
+            ) {
+              formik.setFieldValue("value", "");
+            }
+
+            formik.handleChange(e);
+          }}
         />
         <MemoTextField
           fullWidth
@@ -209,7 +234,16 @@ export const CreateDiscountForm: React.FC<CreateDiscountFormProps> = ({
           helperText={formik.touched.value && formik.errors.value}
           size="small"
           color="secondary"
-          onChange={formik.handleChange}
+          onChange={e => {
+            if (
+              formik.values.type === DiscountTypeEnum.PERCENT &&
+              Number.parseFloat(e.target.value) > 100
+            ) {
+              return;
+            }
+
+            formik.handleChange(e);
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="start">
@@ -218,7 +252,8 @@ export const CreateDiscountForm: React.FC<CreateDiscountFormProps> = ({
             ),
           }}
         />
-        {formik.values.scope === DiscountScopeEnum.PRODUCT_FEATURES ? (
+        {formik.values.scope === DiscountScopeEnum.PRODUCT_FEATURES &&
+        productFeaturies.length ? (
           <ProductFeaturesList
             features={productFeaturies}
             value={formatProductFeatures(
@@ -246,7 +281,8 @@ export const CreateDiscountForm: React.FC<CreateDiscountFormProps> = ({
             }}
           />
         ) : undefined}
-        {formik.values.scope === DiscountScopeEnum.PRODUCTS ? (
+        {formik.values.scope === DiscountScopeEnum.PRODUCTS &&
+        products.length ? (
           <ProductsList
             products={products}
             value={formik.values.products}

@@ -40,9 +40,17 @@ export const validationSchema = yup.object({
       DiscountOperatorEnum.BETWEEN,
     ])
     .required("Это поле является обязательным"),
-  conditionValue: yup.number().required("Это поле является обязательным"),
-  conditionValue2: yup.number(),
-  value: yup.number().required("Это поле является обязательным"),
+  conditionValue: yup
+    .number()
+    .min(0, "Значение скидки должно быть положительным")
+    .required("Это поле является обязательным"),
+  conditionValue2: yup
+    .number()
+    .min(0, "Значение скидки должно быть положительным"),
+  value: yup
+    .number()
+    .min(0, "Значение скидки должно быть положительным")
+    .required("Это поле является обязательным"),
 });
 
 export default validationSchema;

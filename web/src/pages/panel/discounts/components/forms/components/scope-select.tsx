@@ -6,16 +6,43 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import React from "react";
-import { DiscountScopeEnum } from "~/services/discounts.service";
+import {
+  DiscountCriteriaEnum,
+  DiscountScopeEnum,
+  DiscountTypeEnum,
+} from "~/services/discounts.service";
 import locale from "../../helpers/locale";
 
 export interface DiscountScopeSelectProps {
+  type: DiscountTypeEnum;
+  conditionCriteria: DiscountCriteriaEnum;
   value: string;
   onChange: (event: SelectChangeEvent) => void;
 }
 
 export const DiscountScopeSelect: React.FC<DiscountScopeSelectProps> =
-  React.memo(({ value, onChange }) => {
+  React.memo(({ value, type, conditionCriteria, onChange }) => {
+    const items = [
+      {
+        name: locale[DiscountScopeEnum.PRODUCT_FEATURES],
+        value: DiscountScopeEnum.PRODUCT_FEATURES,
+      },
+    ];
+
+    if (conditionCriteria !== DiscountCriteriaEnum.PRICE) {
+      items.push({
+        name: locale[DiscountScopeEnum.PRODUCTS],
+        value: DiscountScopeEnum.PRODUCTS,
+      });
+    }
+
+    if (type !== DiscountTypeEnum.FIXED_PRICE) {
+      items.push({
+        name: locale[DiscountScopeEnum.GLOBAL],
+        value: DiscountScopeEnum.GLOBAL,
+      });
+    }
+
     return (
       <FormControl color="secondary" size="small" fullWidth>
         <InputLabel size="small">Область действия</InputLabel>
@@ -27,15 +54,11 @@ export const DiscountScopeSelect: React.FC<DiscountScopeSelectProps> =
           size="small"
           onChange={onChange}
         >
-          <MenuItem value={DiscountScopeEnum.PRODUCTS}>
-            {locale[DiscountScopeEnum.PRODUCTS]}
-          </MenuItem>
-          <MenuItem value={DiscountScopeEnum.PRODUCT_FEATURES}>
-            {locale[DiscountScopeEnum.PRODUCT_FEATURES]}
-          </MenuItem>
-          <MenuItem value={DiscountScopeEnum.GLOBAL}>
-            {locale[DiscountScopeEnum.GLOBAL]}
-          </MenuItem>
+          {items.map(({ name, value }) => (
+            <MenuItem key={value} value={value}>
+              {name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     );

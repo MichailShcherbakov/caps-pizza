@@ -31,11 +31,16 @@ export const validationSchema = yup.object({
       DeliveryOperatorEnum.BETWEEN,
     ])
     .required("Это поле является обязательным"),
-  conditionValue: yup.number().required("Это поле является обязательным"),
-  conditionValue2: yup.number(),
+  conditionValue: yup
+    .number()
+    .min(0, "Значение скидки должно быть положительным")
+    .required("Это поле является обязательным"),
+  conditionValue2: yup
+    .number()
+    .min(0, "Значение скидки должно быть положительным"),
   value: yup
     .number()
-    .min(0, "Цена доставки должена быть положительной")
+    .min(0, "Значение доставки должена быть положительной")
     .required("Это поле является обязательным"),
 });
 

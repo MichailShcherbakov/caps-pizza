@@ -6,16 +6,46 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import React from "react";
-import { DiscountOperatorEnum } from "~/services/discounts.service";
+import {
+  DiscountOperatorEnum,
+  DiscountTypeEnum,
+} from "~/services/discounts.service";
 import locale from "../../helpers/locale";
 
 export interface DiscountOperatorSelectProps {
+  type: DiscountTypeEnum;
   value: string;
   onChange: (event: SelectChangeEvent) => void;
 }
 
 export const DiscountOperatorSelect: React.FC<DiscountOperatorSelectProps> =
-  React.memo(({ value, onChange }) => {
+  React.memo(({ value, type, onChange }) => {
+    const items = [
+      {
+        name: locale[DiscountOperatorEnum.EQUAL],
+        value: DiscountOperatorEnum.EQUAL,
+      },
+    ];
+
+    if (type !== DiscountTypeEnum.FIXED_PRICE) {
+      items.push(
+        ...[
+          {
+            name: locale[DiscountOperatorEnum.LESS],
+            value: DiscountOperatorEnum.LESS,
+          },
+          {
+            name: locale[DiscountOperatorEnum.GREATER],
+            value: DiscountOperatorEnum.GREATER,
+          },
+          {
+            name: locale[DiscountOperatorEnum.BETWEEN],
+            value: DiscountOperatorEnum.BETWEEN,
+          },
+        ]
+      );
+    }
+
     return (
       <FormControl color="secondary" size="small" fullWidth>
         <InputLabel size="small">Оператор</InputLabel>
@@ -27,18 +57,11 @@ export const DiscountOperatorSelect: React.FC<DiscountOperatorSelectProps> =
           size="small"
           onChange={onChange}
         >
-          <MenuItem value={DiscountOperatorEnum.EQUAL}>
-            {locale[DiscountOperatorEnum.EQUAL]}
-          </MenuItem>
-          <MenuItem value={DiscountOperatorEnum.LESS}>
-            {locale[DiscountOperatorEnum.LESS]}
-          </MenuItem>
-          <MenuItem value={DiscountOperatorEnum.GREATER}>
-            {locale[DiscountOperatorEnum.GREATER]}
-          </MenuItem>
-          <MenuItem value={DiscountOperatorEnum.BETWEEN}>
-            {locale[DiscountOperatorEnum.BETWEEN]}
-          </MenuItem>
+          {items.map(({ name, value }) => (
+            <MenuItem key={value} value={value}>
+              {name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     );
