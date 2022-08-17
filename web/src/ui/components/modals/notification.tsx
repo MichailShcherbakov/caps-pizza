@@ -38,7 +38,7 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
       <ModalControl>
         <ModalHeader title={HEAD_TITLES[variant]} onExit={props.onClose} />
         <ModalContent justifyContent="center" spacing={1}>
-          <Typography variant="h3" textAlign="center">
+          <Typography variant="h4" textAlign="center">
             {title}
           </Typography>
           {desc && <Typography textAlign="center">{desc}</Typography>}
