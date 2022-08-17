@@ -21,6 +21,8 @@ export const ModifierCategoriesTable: React.FC<
       {error && <ModalErrorCatcher />}
       <DataTable
         loading={isLoading}
+        emptyTitle="Список типов модификаторов пуст"
+        emptySubTitle="Чтобы создать тип модификатора, нажмите на кнопку Добавить"
         head={head}
         rows={modifierCategories.map(category => ({
           cols: [

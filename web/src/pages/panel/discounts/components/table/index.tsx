@@ -42,6 +42,8 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
       <ModalErrorCatcher error={error as APIError} />
       <DataTable
         loading={isLoading}
+        emptyTitle="Список скидок пуст"
+        emptySubTitle="Чтобы создать скидку, нажмите на кнопку Добавить"
         head={head}
         rows={discounts.map(discount => ({
           cols: [

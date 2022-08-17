@@ -33,6 +33,7 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
   const [loading, setLoading] = React.useState<boolean>(false);
   const [createProduct] = useCreateProductMutation();
   const [uploadImage] = useUploadImageMutation();
+  // TODO: remove from here
   const { data: productCategories = [] } = useGetProductCategoriesQuery();
   const { data: modifiers = [] } = useGetModifiersQuery();
 

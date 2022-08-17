@@ -20,6 +20,8 @@ export const DeliveryTable: React.FC<DeliveryTableProps> = () => {
       <ModalErrorCatcher error={error as APIError} />
       <DataTable
         loading={isLoading}
+        emptyTitle="Список доставок пуст"
+        emptySubTitle="Чтобы создать доставку, нажмите на кнопку Добавить"
         head={head}
         rows={deliveries.map(delivery => ({
           cols: [
