@@ -13,14 +13,17 @@ import { useRouter } from "next/router";
 export const SinInPage: AppPage = () => {
   const router = useRouter();
   const [error, setError] = React.useState<APIError>();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [signIn] = useSignInMutation();
 
   const handleFormSubmit = async (data: SignInPayload) => {
     try {
+      setLoading(true);
       await signIn(data).unwrap();
       router.push("/panel/products");
     } catch (e) {
       setError(e);
+      setLoading(false);
     }
   };
 
@@ -47,7 +50,7 @@ export const SinInPage: AppPage = () => {
             justifyContent="center"
             className={styles.signin__layout_right_side}
           >
-            <SignInForm onSubmit={handleFormSubmit} />
+            <SignInForm loading={loading} onSubmit={handleFormSubmit} />
           </Stack>
         </Stack>
       </ThemeProvider>

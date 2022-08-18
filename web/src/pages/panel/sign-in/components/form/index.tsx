@@ -1,4 +1,5 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import React from "react";
 import { MemoTextField } from "~/ui";
 import Logo from "../logo";
@@ -9,10 +10,14 @@ import validationSchema from "./validation-schema";
 import { SignInPayload } from "~/services/auth.service";
 
 export interface SignInFormProps {
+  loading?: boolean;
   onSubmit?: (data: SignInPayload) => void;
 }
 
-export const SignInForm: React.FC<SignInFormProps> = ({ onSubmit }) => {
+export const SignInForm: React.FC<SignInFormProps> = ({
+  loading,
+  onSubmit,
+}) => {
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -73,15 +78,16 @@ export const SignInForm: React.FC<SignInFormProps> = ({ onSubmit }) => {
         />
       </Stack>
       <Stack className={styles.signin__footer}>
-        <Button
+        <LoadingButton
           fullWidth
           type="submit"
           variant="contained"
           className={styles.signin__btn}
           color="secondaryLight"
+          loading={loading}
         >
           <Typography variant="button">Войти</Typography>
-        </Button>
+        </LoadingButton>
       </Stack>
     </Stack>
   );
