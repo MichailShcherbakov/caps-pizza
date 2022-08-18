@@ -4,7 +4,7 @@ import transformResponse, {
   APIPayload,
 } from "./helpers/transform-response.helper";
 
-export const IMAGE_FILE_SIZE = 200 * 1024; // 200 kb
+export const IMAGE_FILE_SIZE = 300 * 1024; // 300 kb
 
 export class Image {
   filename: string;

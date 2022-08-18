@@ -54,29 +54,38 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
               value: product,
             },
             {
+              name: "volume",
+              value: product.volume
+                ? `${product.volume.value} ${locale[product.volume.type]}`
+                : "Не указано",
+            },
+            {
               name: "weight",
               value: product.weight
                 ? `${product.weight.value} ${locale[product.weight.type]}`
                 : "Не указано",
             },
             {
-              name: "volume",
-              value: product.volume
-                ? `${product.volume.value} ${locale[product.volume.type]}`
-                : "Не указано",
+              name: "tags",
+              value: product.tags?.length
+                ? product.tags.join("; ")
+                : "Не указаны",
             },
           ],
-          collapsedRowSpace: () => (
-            <>
-              <Typography variant="h6" className="ui-px-8">
-                Модификаторы
-              </Typography>
-              <CollapsedModifiersTable
-                modifiers={product.modifiers}
-                modifierCategories={modifierCategories}
-              />
-            </>
-          ),
+          collapsedRowSpace: () =>
+            product.modifiers.length ? (
+              <>
+                <Typography variant="h6" className="ui-px-8">
+                  Модификаторы
+                </Typography>
+                <CollapsedModifiersTable
+                  modifiers={product.modifiers}
+                  modifierCategories={modifierCategories}
+                />
+              </>
+            ) : (
+              <></>
+            ),
         }))}
       />
     </>

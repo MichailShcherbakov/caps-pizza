@@ -40,16 +40,23 @@ export const useProductsTableHead = () => {
           fullWidth: true,
         },
         {
+          name: "volume",
+          displayName: "Объем",
+          rowColClassName: "ui-truncate",
+          collapsed: true,
+        },
+        {
           name: "weight",
           displayName: "Вес",
           rowColClassName: "ui-truncate",
           collapsed: true,
         },
         {
-          name: "volume",
-          displayName: "Объем",
+          name: "tags",
+          displayName: "Теги",
           rowColClassName: "ui-truncate",
           collapsed: true,
+          fullWidth: true,
         },
         {
           name: "price",

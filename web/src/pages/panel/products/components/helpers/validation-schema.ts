@@ -22,18 +22,12 @@ export const validationSchema = yup.object({
     .min(0, "Цена товара должена быть положительной")
     .required("Это поле является обязательным"),
   categoryUUID: yup.string().required("Это поле является обязательным"),
-  volume: yup
-    .number()
-    .min(0, "Объем товара должен быть положительным")
-    .required("Это поле является обязательным"),
+  volume: yup.number().min(0, "Объем товара должен быть положительным"),
   volumeType: yup
     .string()
     .oneOf([ProductVolumeType.DIAMETER, ProductVolumeType.QUANTITY])
     .required("Это поле является обязательным"),
-  weight: yup
-    .number()
-    .min(0, "Вес товара должен быть положительным")
-    .required("Это поле является обязательным"),
+  weight: yup.number().min(0, "Вес товара должен быть положительным"),
   weightType: yup
     .string()
     .oneOf([ProductWeightType.GRAMS, ProductWeightType.LITERS])

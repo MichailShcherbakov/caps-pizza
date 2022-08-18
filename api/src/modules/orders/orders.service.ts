@@ -94,6 +94,10 @@ export default class OrdersService {
       orderCost += fullProductPrice;
     }
 
+    const discount = await this.discountsService.calculate(dto);
+
+    orderCost -= discount;
+
     const availableDeliveries =
       await this.deliveriesService.getAvailableDeliveries({
         orderedProductsCount,
@@ -120,8 +124,6 @@ export default class OrdersService {
         this.deliveriesService.calculate(delivery, { orderCost })
       );
     }
-
-    const discount = await this.discountsService.calculate(dto);
 
     payload.append("sale_amount", discount);
     payload.append("street", dto.delivery_address.street);
