@@ -1,7 +1,15 @@
 .categories-list {
   @include ui-w-full;
+
+  @include ui-flex;
+  @include ui-flex-row;
+
+  @include ui-ai-center;
   @include ui-jc-btw;
+
   @include ui-overflow-auto;
+
+  @include ui-gap-2;
 
   &--full-width {
     @include ui-w-full;

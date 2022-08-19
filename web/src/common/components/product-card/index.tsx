@@ -21,9 +21,9 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
     );
 
     return (
-      <Stack className={styles["product-card"]}>
-        <ProductImage imageURL={product.image_url} />
-        <Stack className="ui-w-full ui-h-full ui-gap-2">
+      <Stack component="article" className={styles["product-card"]}>
+        <ProductImage productName={product.name} imageURL={product.image_url} />
+        <Stack component="main" className="ui-w-full ui-h-full ui-gap-2">
           <ProductInfo product={product} />
           <ModifierList
             modifiers={modifiers}

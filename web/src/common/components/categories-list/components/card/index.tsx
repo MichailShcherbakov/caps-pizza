@@ -17,28 +17,30 @@ export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
     const { currentActiveSectionName } = useCurrentSection();
 
     return (
-      <Button
-        component={"a"}
-        variant="outlined"
-        color="primary"
-        href={`#${name}`}
-        className={[
-          styles[`category-card--${size}`],
-          currentActiveSectionName === name
-            ? styles[`category-card--${size}--active`]
-            : "",
-        ].join(" ")}
-        onClick={onClick}
-      >
-        <Stack className={styles[`category-card--${size}__icon`]}>
-          <NextImage
-            src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
-            layout="fill"
-            priority
-          />
-        </Stack>
-        <Typography variant="button">{name}</Typography>
-      </Button>
+      <Stack component="li">
+        <Button
+          component={"a"}
+          variant="outlined"
+          color="primary"
+          href={`#${name}`}
+          className={[
+            styles[`category-card--${size}`],
+            currentActiveSectionName === name
+              ? styles[`category-card--${size}--active`]
+              : "",
+          ].join(" ")}
+          onClick={onClick}
+        >
+          <Stack className={styles[`category-card--${size}__icon`]}>
+            <NextImage
+              src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
+              layout="fill"
+              priority
+            />
+          </Stack>
+          <Typography variant="button">{name}</Typography>
+        </Button>
+      </Stack>
     );
   }
 );

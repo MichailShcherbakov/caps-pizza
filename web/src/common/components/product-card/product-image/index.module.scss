@@ -8,6 +8,8 @@
     @include ui-flex-fixed;
     @include ui-flex-center;
 
+    @include ui-fill($gray-100);
+
     & > span img {
       @include ui-rounded-4;
       border-bottom-left-radius: 0;
@@ -19,6 +21,12 @@
 
       & > span img {
         object-fit: cover;
+      }
+    }
+
+    &--loading {
+      & > span img {
+        @include ui-display-none;
       }
     }
   }
