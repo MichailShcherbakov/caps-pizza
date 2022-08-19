@@ -1,111 +1,46 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Image from "next/image";
+import { Stack } from "@mui/material";
 import React from "react";
-import { Product } from "~/store/products.reducer";
-import ToggleButton from "../toggle-button";
+import { Modifier } from "~/services/modifiers.service";
+import { Product } from "~/services/products.service";
+import ModifierList from "./modifier-list";
+import ProductImage from "./product-image";
+import ProductInfo from "./product-info";
+import ProductPrice from "./product-price";
 import styles from "./index.module.scss";
 
-export interface ProductCardProps extends Product {
-  specifics: string;
-  price: number;
-  cover?: boolean;
+export interface ProductCardProps {
+  product: Product;
+  modifiers: Modifier[];
   onSelect?: () => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({
-  name,
-  desc,
-  imageURL,
-  specifics,
-  price,
-  cover,
-  onSelect = () => {},
-}) => {
-  const [value, setValue] = React.useState<string>("Тонкое");
+export const ProductCard: React.FC<ProductCardProps> = React.memo(
+  ({ product, modifiers, onSelect = () => {} }) => {
+    const [currentModifiers, setCurrentModifiers] = React.useState<Modifier[]>(
+      product.modifiers
+    );
 
-  const onChangeToggleValueHandler = (
-    _: React.MouseEvent<HTMLElement>,
-    newValue: string | null
-  ) => {
-    if (!newValue) return;
-
-    setValue(newValue);
-  };
-
-  return (
-    <Stack className={styles["product-card"]}>
-      <Stack
-        className={[
-          styles["product-card__image"],
-          cover ? styles["product-card__image--cover"] : "",
-        ].join(" ")}
-      >
-        <Image src={imageURL} alt="A product image" layout="fill" />
-      </Stack>
-      <Stack className={styles["product-card__info"]}>
-        <Stack direction="row" className={styles["product-card__header"]}>
-          <Typography variant="h4" className={styles["product-card__title"]}>
-            {name}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            className={styles["product-card__add-info"]}
-          >
-            {specifics}
-          </Typography>
-        </Stack>
-        <Typography className={styles["product-card__desc"]}>{desc}</Typography>
-        <ToggleButton
-          elements={[
-            { name: "Тонкое", value: "Тонкое" },
-            { name: "Пышное", value: "Пышное" },
-          ]}
-          value={value}
-          exclusive
-          onChange={onChangeToggleValueHandler}
-        />
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          className={styles["product-card--medium__footer"]}
-        >
-          <Button variant="outlined">
-            <Typography variant="button" onClick={onSelect}>
-              Выбрать
-            </Typography>
-          </Button>
-          <Typography
-            variant="h4"
-            component="p"
-            className={styles["product-card__price"]}
-          >
-            {price} ₽
-          </Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          className={styles["product-card--small__footer"]}
-        >
-          <Typography
-            variant="subtitle1"
-            className={styles["product-card--small__add-info"]}
-          >
-            {specifics}
-          </Typography>
-          <Button
-            variant="contained"
-            className={styles["product-card--small__price"]}
-            onClick={onSelect}
-          >
-            <Typography variant="button">{price} ₽</Typography>
-          </Button>
+    return (
+      <Stack className={styles["product-card"]}>
+        <ProductImage imageURL={product.image_url} />
+        <Stack className="ui-w-full ui-h-full ui-gap-2">
+          <ProductInfo product={product} />
+          <ModifierList
+            modifiers={modifiers}
+            currentModifiers={currentModifiers}
+            onChange={setCurrentModifiers}
+          />
+          <ProductPrice
+            product={product}
+            currentModifiers={currentModifiers}
+            onSelect={onSelect}
+          />
         </Stack>
       </Stack>
-    </Stack>
-  );
-};
+    );
+  }
+);
+
+ProductCard.displayName = "ProductCard";
 
 export default ProductCard;

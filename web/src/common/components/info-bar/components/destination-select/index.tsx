@@ -25,7 +25,7 @@ export const DestinationSelect: React.FC<DestinationSelectProps> = () => {
     <>
       <Button
         variant="text"
-        color="neutral"
+        color="secondary"
         startIcon={<LocationIcon />}
         endIcon={<KeyboardArrowDownIcon />}
         onClick={onButtonClickHandler}

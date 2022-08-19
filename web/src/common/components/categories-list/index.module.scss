@@ -1,9 +1,12 @@
-.categories {
+.categories-list {
   @include ui-w-full;
+  @include ui-jc-btw;
+  @include ui-overflow-auto;
 
-  gap: 12px;
-
-  overflow-x: scroll;
+  &--full-width {
+    @include ui-w-full;
+    @include ui-jc-start;
+  }
 
   &::-webkit-scrollbar {
     display: none;

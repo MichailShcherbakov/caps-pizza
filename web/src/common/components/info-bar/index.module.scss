@@ -1,10 +1,10 @@
 .info-bar {
   @include ui-w-full;
 
-  justify-content: space-between;
+  @include ui-border-bottom(1px, solid, $border-color);
 
   &__destination {
-    gap: 40px;
+    @include ui-gap(40px);
   }
 }
 

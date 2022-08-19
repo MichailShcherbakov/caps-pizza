@@ -1,23 +1,5 @@
 .main-layout {
-    @include ui-w-full;
-  
-    position: relative;
-  
-    background-color: $gray-50;
-  
-    &__container {
-      @include ui-w-full;
-  
-      background-color: $white;
-  
-      border-bottom: 1px solid $gray-100;
-    }
-  
-    &__app-bar {
-      position: sticky;
-      top: 0;
-      left: 0;
-      z-index: 30;
-    }
-  }
-  
+  @include ui-w-full;
+  @include ui-pos-rel;
+  @include ui-bg-color($white);
+}

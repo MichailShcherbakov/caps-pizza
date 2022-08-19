@@ -38,8 +38,8 @@ export const Article: React.FC<ArticleProps> = ({
         <Button
           variant="text"
           color="primary"
+          className={styles["article__btn"]}
           onClick={onClickHandler}
-          className="ui-p-0 ui-my-8"
         >
           <Typography variant="button">Подробнее</Typography>
         </Button>

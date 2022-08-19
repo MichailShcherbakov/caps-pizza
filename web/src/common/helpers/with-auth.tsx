@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { getRunningOperationPromises } from "~/services/api.service";
-import { wrapper } from "~/stores/admin-panel";
-import { setAccessToken } from "~/stores/admin-panel/auth.reducer";
+import { wrapper } from "~/store";
+import { setAccessToken } from "~/store/auth.reducer";
 
 export const withAuth: GetServerSideProps = wrapper.getServerSideProps(
   store =>

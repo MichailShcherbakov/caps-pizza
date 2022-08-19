@@ -3,9 +3,6 @@ import { IconButton, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import styles from "./index.module.scss";
 import CounterButton from "~/ui/components/counter-button";
-import { useAppSelector } from "~/store/hook";
-import { OrderedProduct } from "~/store/order.reducer";
-import { Product } from "~/store/products.reducer";
 
 export interface ProductCardProps extends OrderedProduct, Product {
   specifics: string;
@@ -14,19 +11,19 @@ export interface ProductCardProps extends OrderedProduct, Product {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
-  orderedProductUUID,
+  /*   orderedProductUUID,
   name,
   desc,
   specifics,
   price,
   imageURL,
-  count: initialCount = 1,
+  count: initialCount = 1, */
   onCountChanged = () => {},
   onRemove = () => {},
 }) => {
-  const maxOrdersPerProductAllowedNumber = useAppSelector(
+  /* const maxOrdersPerProductAllowedNumber = useAppSelector(
     (state) => state.config.maxOrdersPerProductAllowedNumber
-  );
+  ); */
 
   return (
     <Stack
@@ -34,7 +31,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       alignItems="center"
       className={styles["product-card"]}
     >
-      <Stack className={styles["product-card__image"]}>
+      {/*   <Stack className={styles["product-card__image"]}>
         <Image
           src={imageURL}
           alt="The product card"
@@ -79,6 +76,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </Typography>
         </Stack>
       </Stack>
+ */}
     </Stack>
   );
 };

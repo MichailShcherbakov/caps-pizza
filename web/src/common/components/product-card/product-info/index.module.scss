@@ -1,0 +1,13 @@
+.product-card {
+  &__specifics {
+    @include ui-ws-nowrap;
+  }
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  .product-card {
+    &__specifics {
+      @include ui-display-none;
+    }
+  }
+}

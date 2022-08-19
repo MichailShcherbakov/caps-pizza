@@ -76,3 +76,31 @@
   @include ui-flex-grow-0;
   @include ui-flex-shrink-0;
 }
+
+.ui-ai-center {
+  @include ui-ai-center;
+}
+
+.ui-ai-start {
+  @include ui-ai-start;
+}
+
+.ui-ai-end {
+  @include ui-ai-end;
+}
+
+.ui-jc-center {
+  @include ui-jc-center;
+}
+
+.ui-jc-btw {
+  @include ui-jc-btw;
+}
+
+.ui-jc-start {
+  @include ui-jc-start;
+}
+
+.ui-jc-end {
+  @include ui-jc-end;
+}

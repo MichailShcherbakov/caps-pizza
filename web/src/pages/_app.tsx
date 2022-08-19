@@ -14,7 +14,7 @@ Object.assign(globalThis, {
   AbortController,
 });
 
-import { wrapper } from "~/stores/admin-panel";
+import { wrapper } from "~/store";
 
 export type AppProps = NextAppProps & {
   Component: AppPage;

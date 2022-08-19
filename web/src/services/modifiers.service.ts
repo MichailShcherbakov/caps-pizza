@@ -67,4 +67,6 @@ export const {
   useDeleteModifierMutation,
 } = ModifiersAPI;
 
+export const { getModifiers } = ModifiersAPI.endpoints;
+
 export default ModifiersAPI;

@@ -67,4 +67,6 @@ export const {
   useDeleteProductCategoryMutation,
 } = ProductCategoryAPI;
 
+export const { getProductCategories } = ProductCategoryAPI.endpoints;
+
 export default ProductCategoryAPI;

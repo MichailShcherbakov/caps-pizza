@@ -5,11 +5,7 @@ export interface TitleProps {
 }
 
 export const Title: React.FC<TitleProps> = ({ text }) => {
-  return (
-    <Typography variant="h1" className="ui-py-8">
-      {text}
-    </Typography>
-  );
+  return <Typography variant="h1">{text}</Typography>;
 };
 
 export default Title;

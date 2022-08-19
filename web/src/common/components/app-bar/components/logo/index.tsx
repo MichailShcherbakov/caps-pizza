@@ -16,13 +16,13 @@ export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
       className={styles["logo"]}
     >
       <LogoIcon className={styles["logo__icon"]} />
-      {!onlyIcon && (
+      {!onlyIcon ? (
         <Fade in={!onlyIcon}>
           <Typography variant="h3" className={styles["logo__text"]}>
             Пицца от КЭПа
           </Typography>
         </Fade>
-      )}
+      ) : undefined}
     </Stack>
   );
 };

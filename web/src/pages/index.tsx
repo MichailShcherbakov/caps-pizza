@@ -1,92 +1,103 @@
-import { Grid } from "@mui/material";
-import { NextPage } from "next";
 import React from "react";
-import Categories from "~/ui/components/categories";
-import ProductCard from "~/ui/components/product-card";
-import Article from "~/common/components/article";
 import MainLayout from "~/layouts/main";
-import Title from "~/ui/components/title";
-import CategorySection from "~/ui/components/category-section";
-import { useAppSelector } from "~/store/hook";
-import { useProductOrderList } from "~/api/order";
+import AppPage from "~/common/interfaces/app-page.interface";
+import CategoriesList from "~/common/components/categories-list";
+import {
+  getProductCategories,
+  ProductCategory,
+  useGetProductCategoriesQuery,
+} from "~/services/product-categories.service";
+import CategorySection from "~/common/components/sections/category.section";
+import { GetServerSideProps } from "next";
+import { wrapper } from "~/store";
+import { getRunningOperationPromises } from "~/services/api.service";
+import { getProducts } from "~/services/products.service";
+import { LoadingBackdrop } from "~/ui";
+import { getModifiers } from "~/services/modifiers.service";
+import ArticleSection from "~/common/components/sections/article.section";
 
-export const HomePage: NextPage = () => {
-  const { addProduct } = useProductOrderList();
+export interface SectionContainerProps {
+  categories: ProductCategory[];
+}
 
-  const products = useAppSelector(state => state.products.value);
-  const categories = useAppSelector(state => state.categories.value);
+export const HomePage: AppPage = () => {
+  const { data: productCategories = [], isLoading } =
+    useGetProductCategoriesQuery();
 
-  let sections: JSX.Element[] = [];
+  return isLoading ? (
+    <LoadingBackdrop open={isLoading} />
+  ) : (
+    <>
+      <CategoriesList
+        categories={productCategories}
+        CategoryCardProps={{ size: "medium" }}
+      />
+      {productCategories.map(category => (
+        <CategorySection key={category.uuid} category={category} />
+      ))}
+      <ArticleSection id="О нас" title="Что мы предлагаем?" collapse>
+        Если хочется вкусного ужина (приготовленного не вами) или вдруг к вам
+        пришли гости – выручит доставка пиццы на дом. А еще можно заказать суши
+        и роллы. Или все сразу. Садишься, вводишь в поисковике: заказать пиццу в
+        Пушкине, заказать пиццу в Пушкине на дом, заказать Wok с доставкой на
+        дом. Пусть твой выбор не будет опрометчивым. Наши роллы, суши, мидии,
+        креветки, пицца на тонком тесте, разные напитки – ваш ужин будет
+        особенным. Наше меню – это вкусная еда, итальянская пицца на дом, мидии,
+        креветки, вкусные суши и роллы. Заказав у нас один раз, люди
+        возвращаются к нам снова и снова. Потому что мы следим за качеством –
+        маленький бизнес обречен быть честным. Многое, что простится гигантской
+        сети доставки, на небольшой территории станет грубейшей ошибкой. Наша
+        пицца приходит горячей, а это, согласитесь, редкость при доставке еды. У
+        нас можно заказать Вок, заказать суши, и, поверьте, наши суши выгодно
+        отличаются от того, что доставляет большинство компаний. Наша зона
+        покрытия невелика – доставка пиццы по Пушкинскому району, Павловск,
+        Славянка, Ленсоветовский, – но мы стали любимцами сотен людей. Ни одного
+        плохого отзыва о нашей продукции за всё время работы, мы следим за своей
+        репутацией. Заглядывайте в наши социальные сети, там часто проводим
+        розыгрыши, конкурсы. На нашем сайте в разделе акции можно выгодно
+        заказать 3 пиццы. Пицца Пушкин, пицца Славянка, а также Детскосельский,
+        Ленсоветовский, Федоровское, Павловск, Коммунар. Доставка бесплатно.
+        Минимальный заказ 700 р.
+      </ArticleSection>
+      <ArticleSection id="О доставке" title="Доставка">
+        {`Доставка пиццы, суши и роллов бесплатна при заказе от 700 рублей.
 
-  for (const category of categories) {
-    const p = products.filter(p => p.categoryUUID === category.categoryUUID);
+              Среднее время доставки 45 минут.
 
-    if (!p.length) continue;
+              Время доставки зависит от погодных условий и дорожной обстановки, в т.ч. ж/д переезда.
 
-    sections.push(
-      <CategorySection key={category.categoryUUID} id={category.name}>
-        <Title text={category.name} />
-        <Grid container spacing={2} className="ui-py-8">
-          {p.map(p => (
-            <Grid key={p.productUUID} item xl={3} lg={3} md={4} sm={6} xs={12}>
-              <ProductCard
-                {...p}
-                specifics={`${"30см"} / ${"760г"}`}
-                price={440}
-                cover={category.name === "Роллы"}
-                onSelect={() =>
-                  addProduct({
-                    productUUID: p.productUUID,
-                    price: 440,
-                  })
-                }
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </CategorySection>
-    );
-  }
+              Доставляем в следующие районы: Пушкин, Фёдоровское, Славянка, Московская Славянка, Павловск, Александровская.
 
-  return (
-    <MainLayout>
-      <Categories className="ui-py-8" />
-      {sections}
-      <CategorySection id="about-us">
-        <Article
-          title="Что мы предлагаем?"
-          text="Если хочется вкусного ужина (приготовленного не вами) или вдруг к вам пришли гости – выручит доставка пиццы на дом. А еще можно заказать суши и роллы. Или все сразу. Садишься, вводишь в поисковике: заказать пиццу в Пушкине, заказать пиццу в Пушкине на дом, заказать Wok с доставкой на дом. Пусть твой выбор не будет опрометчивым. Наши роллы, суши, мидии, креветки, пицца на тонком тесте, разные напитки – ваш ужин будет особенным. Наше меню – это вкусная еда, итальянская пицца на дом, мидии, креветки, вкусные суши и роллы. Заказав у нас один раз, люди возвращаются к нам снова и снова. Потому что мы следим за качеством – маленький бизнес обречен быть честным. Многое, что простится гигантской сети доставки, на небольшой территории станет грубейшей ошибкой. Наша пицца приходит горячей, а это, согласитесь, редкость при доставке еды. У нас можно заказать Вок, заказать суши, и, поверьте, наши суши выгодно отличаются от того, что доставляет большинство компаний. Наша зона покрытия невелика – доставка пиццы по Пушкинскому району, Павловск, Славянка, Ленсоветовский, – но мы стали любимцами сотен людей. Ни одного плохого отзыва о нашей продукции за всё время работы, мы следим за своей репутацией. Заглядывайте в наши социальные сети, там часто проводим розыгрыши, конкурсы. На нашем сайте в разделе акции можно выгодно заказать 3 пиццы. Пицца Пушкин, пицца Славянка, а также Детскосельский, Ленсоветовский, Федоровское, Павловск, Коммунар. Доставка бесплатно. Минимальный заказ 700 р."
-          collapse
-        />
-      </CategorySection>
-      <CategorySection id="delivery">
-        <Article
-          title="Доставка"
-          text={`Доставка пиццы, суши и роллов бесплатна при заказе от 700 рублей.
-
-                Среднее время доставки 45 минут.
-
-                Время доставки зависит от погодных условий и дорожной обстановки, в т.ч. ж/д переезда.
-
-                Доставляем в следующие районы: Пушкин, Фёдоровское, Славянка, Московская Славянка, Павловск, Александровская.
-
-                Продукция выпекается после оформления заказа и доставляется в термосумке.`}
-        />
-      </CategorySection>
-      <CategorySection id="payment">
-        <Article
-          title="Оплата"
-          text={`Оплата:
+              Продукция выпекается после оформления заказа и доставляется в термосумке.`}
+      </ArticleSection>
+      <ArticleSection id="Об оплате" title="Оплата">
+        {`Оплата:
                 - наличными курьеру
                 - банковской картой через терминал
                 `}
-        />
-      </CategorySection>
-      <CategorySection id="accepting-orders">
-        <Article title="Приём заказов" text="Ежедневно 11:00 — 22:30" />
-      </CategorySection>
-    </MainLayout>
+      </ArticleSection>
+      <ArticleSection id="О приёме заказов" title="Приём заказов">
+        Ежедневно 11:00 — 22:30
+      </ArticleSection>
+    </>
   );
 };
+
+HomePage.getLayout = page => {
+  return <MainLayout>{page}</MainLayout>;
+};
+
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps(store => async () => {
+    store.dispatch(getProducts.initiate());
+    store.dispatch(getProductCategories.initiate());
+    store.dispatch(getModifiers.initiate());
+
+    await Promise.all(getRunningOperationPromises());
+
+    return {
+      props: {},
+    };
+  });
 
 export default HomePage;

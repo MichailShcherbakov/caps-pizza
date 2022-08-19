@@ -75,3 +75,31 @@
   @include ui-flex-grow-0;
   @include ui-flex-shrink-0;
 }
+
+@mixin ui-ai-center {
+  align-items: center;
+}
+
+@mixin ui-ai-start {
+  align-items: flex-start;
+}
+
+@mixin ui-ai-end {
+  align-items: flex-end;
+}
+
+@mixin ui-jc-center {
+  justify-content: center;
+}
+
+@mixin ui-jc-btw {
+  justify-content: space-between;
+}
+
+@mixin ui-jc-start {
+  justify-content: flex-start;
+}
+
+@mixin ui-jc-end {
+  justify-content: flex-end;
+}

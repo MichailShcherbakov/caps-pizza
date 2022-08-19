@@ -1,4 +1,5 @@
 .footer {
+  @include ui-w-full;
   @include ui-h(280px);
 
   &__icon {

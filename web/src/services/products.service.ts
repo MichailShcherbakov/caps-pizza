@@ -100,4 +100,6 @@ export const {
   useDeleteProductMutation,
 } = ProductAPI;
 
+export const { getProducts } = ProductAPI.endpoints;
+
 export default ProductAPI;

@@ -4,9 +4,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ProductCard from "../product-card";
 import styles from "./index.module.scss";
 import EmptyStub from "../empty-stub";
-import { useProductOrderList } from "~/api/order";
-import { useAppSelector } from "~/store/hook";
-import { selectTotalOrderPrice } from "~/store/order.reducer";
 
 export interface PopoverProps {
   anchor?: "left" | "top" | "right" | "bottom";
@@ -17,13 +14,13 @@ export const Popover: React.FC<PopoverProps> = ({
   anchor = "right",
   onClose = () => {},
 }) => {
-  const { orderedProducts, addProduct, removeProduct } = useProductOrderList();
+  /*   const { orderedProducts, addProduct, removeProduct } = useProductOrderList();
   const totalPrice = useAppSelector(selectTotalOrderPrice);
 
   const isEmpty = !orderedProducts.length;
 
   const onCountChangedHandler = (uuid: string, newCount: number) => {
-    const product = orderedProducts.find((p) => p.orderedProductUUID === uuid);
+    const product = orderedProducts.find(p => p.orderedProductUUID === uuid);
 
     if (!product) return;
 
@@ -37,17 +34,17 @@ export const Popover: React.FC<PopoverProps> = ({
       price: product.price,
     });
   };
-
-  const onProductRemoveFromOrderHandler = (uuid: string) => {
+ */
+  /*   const onProductRemoveFromOrderHandler = (uuid: string) => {
     removeProduct(uuid, { force: true });
   };
-
+ */
   return (
     <Stack
       justifyContent="space-between"
       className={[
         styles["shopping-cart-drawer"],
-        isEmpty ? styles["shopping-cart-drawer--empty"] : "",
+        /* isEmpty ? styles["shopping-cart-drawer--empty"] : "", */
         anchor === "bottom" ? styles["shopping-cart-drawer--bottom"] : "",
       ].join(" ")}
     >
@@ -57,15 +54,15 @@ export const Popover: React.FC<PopoverProps> = ({
         alignItems="center"
         className={styles["shopping-cart-drawer__header"]}
       >
-        {!isEmpty && <Typography variant="h1">Ваш заказ</Typography>}
-        <IconButton onClick={(e) => onClose(e, "backdropClick")} size="medium">
+        {/* {!isEmpty && <Typography variant="h1">Ваш заказ</Typography>} */}
+        <IconButton onClick={e => onClose(e, "backdropClick")} size="medium">
           <ArrowForwardIosIcon
             className={styles[`shopping-cart-drawer__back-btn--${anchor}`]}
           />
         </IconButton>
       </Stack>
       <Stack className={styles["shopping-cart-drawer__product-list"]}>
-        {orderedProducts.map((p) => (
+        {/* {orderedProducts.map(p => (
           <ProductCard
             {...p}
             key={p.orderedProductUUID}
@@ -74,9 +71,9 @@ export const Popover: React.FC<PopoverProps> = ({
             onRemove={onProductRemoveFromOrderHandler}
           />
         ))}
-        {isEmpty && <EmptyStub />}
+        {isEmpty && <EmptyStub />} */}
       </Stack>
-      {!isEmpty && (
+      {/* {!isEmpty && (
         <Stack
           direction="row"
           alignItems="center"
@@ -94,7 +91,7 @@ export const Popover: React.FC<PopoverProps> = ({
             <Typography variant="button">Оформить заказ</Typography>
           </Button>
         </Stack>
-      )}
+      )} */}
     </Stack>
   );
 };

@@ -1,49 +1,56 @@
-import { StackProps } from "@mui/material";
-import { Fade, Container, Stack, Typography } from "@mui/material";
 import React from "react";
-import Categories from "./components/categories";
+import { StackProps } from "@mui/material";
+import { Fade, Container, Stack } from "@mui/material";
+import CategoriesList from "~/common/components/categories-list";
+import ShoppingCartButton from "~/common/components/shopping-cart-button";
+import useScroll from "~/common/helpers/use-scroll";
 import Logo from "./components/logo";
 import styles from "./index.module.scss";
-import { useAppSelector } from "~/store/hook";
-import { selectTotalOrderPrice } from "~/store/order.reducer";
-import ShoppingCartButton from "../shopping-cart-button";
+import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
+import { useMediaQuery } from "~/ui";
+
+const APP_BAR_SMALL_SCREEN_TOP_OFFSET = 100;
+const APP_BAR_LARGE_SCREEN_TOP_OFFSET = 150;
 
 export interface AppBarProps extends StackProps {}
 
-export const APP_BAR_TOP_OFFSET = 210;
-
 export const AppBar: React.FC<AppBarProps> = props => {
-  const totalOrderPrice = useAppSelector(selectTotalOrderPrice);
+  const breakpoint = useMediaQuery(theme => theme.breakpoints.up("md"));
+  const { data: productCategories = [] } = useGetProductCategoriesQuery();
 
-  const [showCategories, setShowCatefories] = React.useState<boolean>(false);
-  const ref = React.useRef<HTMLElement | null>(null);
+  useScroll({
+    onScrollChange: () => {
+      const offset = breakpoint
+        ? APP_BAR_LARGE_SCREEN_TOP_OFFSET
+        : APP_BAR_SMALL_SCREEN_TOP_OFFSET;
+      setShowCategories(window.scrollY > offset);
+    },
+  });
 
-  React.useEffect(() => {
-    const scroll = () => {
-      setShowCatefories(window?.scrollY > APP_BAR_TOP_OFFSET);
-    };
-
-    window.addEventListener("scroll", scroll);
-
-    return () => {
-      window.removeEventListener("scroll", scroll);
-    };
-  }, []);
+  const totalOrderPrice = 0;
+  const [showCategories, setShowCategories] = React.useState<boolean>(false);
 
   return (
-    <Stack ref={ref} component="header" {...props}>
+    <Stack
+      {...props}
+      component="header"
+      alignItems="center"
+      justifyContent="space-between"
+      className={styles["app-bar"]}
+    >
       <Container>
         <Stack
           direction="row"
           alignItems="center"
-          className={styles["app-bar"]}
+          justifyContent="space-between"
+          spacing={2}
         >
           <Logo onlyIcon={showCategories} />
-          {showCategories && (
-            <Fade in={showCategories}>
-              <Categories />
+          {showCategories ? (
+            <Fade in={showCategories} unmountOnExit>
+              <CategoriesList fullWidth categories={productCategories} />
             </Fade>
-          )}
+          ) : undefined}
           <ShoppingCartButton price={totalOrderPrice} />
         </Stack>
       </Container>

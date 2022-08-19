@@ -17,7 +17,7 @@ export interface ToggleButtonProps<T> {
   elements: ToggleButtonElement<T>[];
 }
 
-export const ToggleButton: React.FC<ToggleButtonProps<any>> = ({
+export const ToggleButton: React.FC<ToggleButtonProps<string>> = ({
   value,
   exclusive,
   elements,
@@ -25,9 +25,11 @@ export const ToggleButton: React.FC<ToggleButtonProps<any>> = ({
 }) => {
   return (
     <ToggleButtonGroup value={value} exclusive={exclusive} onChange={onChange}>
-      {elements.map((e) => (
+      {elements.map(e => (
         <MUIToggleButton key={e.value} value={e.value} color="primary">
-          <Typography variant="button">{e.name}</Typography>
+          <Typography variant="subtitle2" color="primary">
+            {e.name}
+          </Typography>
         </MUIToggleButton>
       ))}
     </ToggleButtonGroup>

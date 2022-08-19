@@ -1,11 +1,13 @@
 .app-bar {
+  @include ui-pos-sticky;
   @include ui-flex-fixed;
   @include ui-w-full;
   @include ui-py-6;
+  @include ui-gap(20px);
+  @include ui-bg-color($white);
+  @include ui-border-bottom(1px, solid, $border-color);
 
-  gap: 20px;
-
-  justify-content: space-between;
-
-  background-color: $white;
+  top: 0;
+  left: 0;
+  z-index: 30;
 }

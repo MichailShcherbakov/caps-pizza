@@ -22,10 +22,6 @@
   @include ui-display-none;
 }
 
-@mixin ui-gap($v) {
-  gap: $v;
-}
-
 @mixin ui-pos-rel {
   position: relative;
 }
@@ -85,12 +81,48 @@
   @include ui-blur();
 }
 
-.ui-gap-1 {
+@mixin ui-gap($v) {
+  gap: $v;
+}
+
+@mixin ui-gap-1 {
   @include ui-gap(0.5rem);
 }
 
-.ui-gap-2 {
+@mixin ui-gap-2 {
   @include ui-gap(1rem);
+}
+
+@mixin ui-gap-3 {
+  @include ui-gap(1.5rem);
+}
+
+@mixin ui-gap-4 {
+  @include ui-gap(2rem);
+}
+
+.ui-gap-1 {
+  @include ui-gap-1;
+}
+
+.ui-gap-2 {
+  @include ui-gap-2;
+}
+
+.ui-gap-3 {
+  @include ui-gap-3;
+}
+
+.ui-gap-4 {
+  @include ui-gap-4;
+}
+
+@mixin ui-ws-nowrap {
+  white-space: nowrap;
+}
+
+.ui-ws-nowrap {
+  @include ui-ws-nowrap;
 }
 
 .ui-w-fit-content {

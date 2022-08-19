@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { HYDRATE } from "next-redux-wrapper";
-import { RootState } from "~/stores/admin-panel";
-import { setAccessToken } from "~/stores/admin-panel/auth.reducer";
+import { RootState } from "~/store";
+import { setAccessToken } from "~/store/auth.reducer";
 import { RefreshTokenResponse } from "./auth.service";
 
 const baseQuery = fetchBaseQuery({

@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { useCookies } from "react-cookie";
 import CookiesNotification from "./cookies-notification";
 import styles from "../index.module.scss";
