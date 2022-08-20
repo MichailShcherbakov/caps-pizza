@@ -1,14 +1,21 @@
 {
-  "name": "@MichailShcherbakov/caps-pizza",
-  "version": "0.0.1",
+  "name": "caps-pizza",
+  "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@nestjs/cli": "^9.0.0"
+  "scripts": {
+    "bootstrap": "yarn install && lerna bootstrap",
+    "build": "lerna run build --parallel",
+    "start": "lerna run start --parallel",
+    "start:dev": "lerna run start:dev --parallel",
+    "start:dev:web": "lerna run --scope @monorepo/web --stream start:dev",
+    "start:dev:api": "lerna run --scope @monorepo/api --stream start:dev",
+    "start:dev:common": "lerna run --scope @monorepo/common --stream start:dev"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "jest": "^28.1.3",
-    "jest-cli": "^28.1.3",
-    "ts-jest": "^28.0.7"
+    "lerna": "^5.4.3"
   },
   "license": "ISC",
   "author": "MichailShcherbakov <50011226+MichailShcherbakov@users.noreply.github.com>",

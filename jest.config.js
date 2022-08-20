@@ -29,14 +29,14 @@ module.exports = {
         '^.+\\.tsx$': 'ts-jest',
       },
       moduleNameMapper: {
-        '^~/(.*)$': '<rootDir>/api/src/$1',
+        '^~/(.*)$': '<rootDir>/web/src/$1',
       },
       coverageDirectory: 'coverage',
       coveragePathIgnorePatterns: ['__tests__'],
       testEnvironment: "node",
       globals: {
         "ts-jest": {
-          tsconfig: "<rootDir>/api/tsconfig.json"
+          tsconfig: "<rootDir>/web/tsconfig.json"
         }
       },
     },
