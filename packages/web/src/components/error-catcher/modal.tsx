@@ -1,12 +1,20 @@
+import React from "react";
 import ErrorCatcher, { ErrorCatcherProps } from ".";
 import { ModalOverview, NotificationModal } from "~/ui";
 import OhNoNotificationModal from "../notifications/modals/oh-no.notification";
+import { APIError } from "~/services/helpers/transform-response.helper";
 
 export const ModalErrorCatcher: React.FC<
   Pick<ErrorCatcherProps, "error">
 > = props => {
+  const [error, setError] = React.useState<APIError>();
+
+  React.useEffect(() => {
+    setError(props.error);
+  }, [props.error]);
+
   return (
-    <ErrorCatcher {...props}>
+    <ErrorCatcher error={error}>
       {({ errorInfo, origin }) => {
         if (!errorInfo) {
           if (__DEV__) {
@@ -17,12 +25,24 @@ export const ModalErrorCatcher: React.FC<
                   title: origin.data?.error ?? "Unknown error",
                   desc: origin.data?.message ?? origin.message,
                   variant: "error",
+                  onAccept: () => {
+                    setError(undefined);
+                  },
                 }}
               />
             );
           }
 
-          return <ModalOverview Modal={OhNoNotificationModal} />;
+          return (
+            <ModalOverview
+              Modal={OhNoNotificationModal}
+              ModalProps={{
+                onAccept: () => {
+                  setError(undefined);
+                },
+              }}
+            />
+          );
         }
 
         return (
@@ -32,6 +52,9 @@ export const ModalErrorCatcher: React.FC<
               title: errorInfo.type,
               desc: errorInfo.desc,
               variant: "error",
+              onAccept: () => {
+                setError(undefined);
+              },
             }}
           />
         );

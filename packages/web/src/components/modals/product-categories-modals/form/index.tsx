@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import NextImage from "next/image";
 import { IconButton, Stack, Tooltip } from "@mui/material";
-import ImageIcon from "@mui/icons-material/Image";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import {
   ExternalSvg,
   FormComponentProps,
@@ -121,7 +121,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = ({
                   />
                 )
               ) : (
-                <ImageIcon />
+                <ImageOutlinedIcon />
               )}
             </IconButton>
           </Tooltip>

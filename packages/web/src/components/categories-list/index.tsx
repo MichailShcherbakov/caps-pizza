@@ -1,6 +1,6 @@
 import React from "react";
 import CategoryCard, { CategoryCardProps } from "./components/card";
-import useScroll from "~/helpers/use-scroll";
+import useScroll from "~/hooks/use-scroll";
 import { ProductCategory } from "~/services/product-categories.service";
 import styles from "./index.module.scss";
 

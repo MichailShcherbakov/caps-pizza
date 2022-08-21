@@ -3,12 +3,12 @@ import { StackProps } from "@mui/material";
 import { Fade, Container, Stack } from "@mui/material";
 import CategoriesList from "~/components/categories-list";
 import ShoppingCartButton from "~/components/shopping-cart-button";
-import useScroll from "~/helpers/use-scroll";
+import useScroll from "~/hooks/use-scroll";
 import Logo from "./components/logo";
 import styles from "./index.module.scss";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useMediaQuery } from "~/ui";
-import { useShoppingCart } from "~/store/shopping-cart.reducer";
+import useShoppingCart from "~/hooks/use-shopping-cart";
 
 const APP_BAR_SMALL_SCREEN_TOP_OFFSET = 100;
 const APP_BAR_LARGE_SCREEN_TOP_OFFSET = 150;

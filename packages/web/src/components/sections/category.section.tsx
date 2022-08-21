@@ -3,7 +3,7 @@ import React from "react";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
 import { ProductCategory } from "~/services/product-categories.service";
 import { useGetProductsQuery } from "~/services/products.service";
-import { useShoppingCart } from "~/store/shopping-cart.reducer";
+import useShoppingCart from "~/hooks/use-shopping-cart";
 import ProductCard from "../product-card";
 import Title from "../title";
 import Section from "./section";
@@ -46,10 +46,8 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
                   onSelect={(product, choisenModifiers) => {
                     addProduct({
                       uuid: product.uuid,
-                      price: product.price,
                       modifiers: choisenModifiers.map(modifier => ({
                         uuid: modifier.uuid,
-                        price: modifier.price,
                       })),
                     });
                   }}

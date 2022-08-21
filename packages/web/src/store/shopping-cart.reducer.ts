@@ -1,26 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useAppDispatch, useAppSelector } from "./hooks";
 
 export interface OrderedModifier {
   uuid: string;
-  price: number;
 }
 
 export interface OrderedProduct {
   uuid: string;
-  price: number;
   count: number;
   modifiers: OrderedModifier[];
 }
 
 export interface ShoppingCartState {
   products: OrderedProduct[];
-  totalCost: number;
 }
 
 export const initialState: ShoppingCartState = {
   products: [],
-  totalCost: 0,
 };
 
 export const compareModifiers = (
@@ -41,13 +36,6 @@ export const shoppingCartSlice = createSlice({
         product => product.uuid === action.payload.uuid
       );
 
-      state.totalCost +=
-        action.payload.price +
-        action.payload.modifiers.reduce(
-          (price, modifier) => price + modifier.price,
-          0
-        );
-
       if (
         foundProduct &&
         compareModifiers(foundProduct.modifiers, action.payload.modifiers)
@@ -65,13 +53,6 @@ export const shoppingCartSlice = createSlice({
 
       if (!foundProduct) return;
 
-      state.totalCost -=
-        foundProduct.price +
-        foundProduct.modifiers.reduce(
-          (price, modifier) => price + modifier.price,
-          0
-        );
-
       if (foundProduct.count - 1 === 0) {
         state.products.filter(product => product.uuid !== action.payload.uuid);
         return;
@@ -83,21 +64,5 @@ export const shoppingCartSlice = createSlice({
 });
 
 export const { addProduct, removeProduct } = shoppingCartSlice.actions;
-
-export const useShoppingCart = () => {
-  const dispatch = useAppDispatch();
-  const { products, totalCost } = useAppSelector(store => ({
-    products: store.shoppingCart.products ?? new Map<string, OrderedProduct>(),
-    totalCost: store.shoppingCart.totalCost,
-  }));
-
-  return {
-    products,
-    totalCost,
-    addProduct: (product: Omit<OrderedProduct, "count">) =>
-      dispatch(addProduct(product)),
-    removeProduct: (uuid: string) => dispatch(removeProduct({ uuid })),
-  };
-};
 
 export default shoppingCartSlice.reducer;

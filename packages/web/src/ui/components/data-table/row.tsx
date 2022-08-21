@@ -16,11 +16,16 @@ export interface DataTableRowProps {
   head: DataTableHead;
   cols: DataTableColumn[];
   collapsible?: boolean;
-  collapsedRowSpace?: () => React.ReactElement | React.ReactElement[];
+  collapsedRowSpace?: () => React.ReactElement | React.ReactElement[] | null;
 }
 
 export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
-  ({ head, cols = [], collapsible, collapsedRowSpace }) => {
+  ({
+    head,
+    cols = [],
+    collapsible,
+    collapsedRowSpace: collapsedRowSpaceFunc,
+  }) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const matches = useMediaQuery(theme => theme.breakpoints.up("md"));
 
@@ -34,6 +39,7 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
       ? head.cols.filter(col => col.collapsed)
       : head.cols.filter(col => !col.primary);
 
+    const collapsedRowSpace = collapsedRowSpaceFunc && collapsedRowSpaceFunc();
     const hasCollapsedSpace = collapsedRowSpace || hiddenCols.length;
 
     return (
@@ -138,7 +144,7 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                   </Stack>
                 </>
               ) : undefined}
-              {collapsedRowSpace && collapsedRowSpace()}
+              {collapsedRowSpace}
             </Stack>
           </CollapsibleTableRow>
         ) : undefined}

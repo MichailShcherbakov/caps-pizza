@@ -89,33 +89,39 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
               value: discount,
             },
           ],
-          collapsedRowSpace: () => (
-            <>
-              {discount.scope === DiscountScopeEnum.PRODUCT_FEATURES ? (
+          collapsedRowSpace: () => {
+            if (discount.scope === DiscountScopeEnum.PRODUCT_FEATURES) {
+              const productFeatures = [
+                ...discount.product_categories.map(category => ({
+                  ...category,
+                  _type: "product_category",
+                })),
+                ...discount.modifiers.map(modifier => ({
+                  ...modifier,
+                  category: modifierCategoriesMap.get(modifier.category_uuid),
+                  _type: "modifier",
+                })),
+              ] as ProductFeature[];
+
+              if (!productFeatures.length) return null;
+
+              return (
                 <>
                   <Typography variant="h6" className="ui-px-8">
                     Элементы товара
                   </Typography>
-                  <ProductFeaturesTable
-                    features={
-                      [
-                        ...discount.product_categories.map(category => ({
-                          ...category,
-                          _type: "product_category",
-                        })),
-                        ...discount.modifiers.map(modifier => ({
-                          ...modifier,
-                          category: modifierCategoriesMap.get(
-                            modifier.category_uuid
-                          ),
-                          _type: "modifier",
-                        })),
-                      ] as ProductFeature[]
-                    }
-                  />
+                  <ProductFeaturesTable features={productFeatures} />
                 </>
-              ) : undefined}
-              {discount.scope === DiscountScopeEnum.PRODUCTS ? (
+              );
+            } else if (discount.scope === DiscountScopeEnum.PRODUCTS) {
+              const products = discount.products.map(product => ({
+                ...product,
+                category: productCategoriesMap.get(product.category_uuid),
+              }));
+
+              if (!products.length) return null;
+
+              return (
                 <>
                   <Typography variant="h6" className="ui-px-8">
                     Товары
@@ -127,9 +133,11 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
                     }))}
                   />
                 </>
-              ) : undefined}
-            </>
-          ),
+              );
+            }
+
+            return null;
+          },
         }))}
       />
     </>

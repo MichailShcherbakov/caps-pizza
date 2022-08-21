@@ -4,7 +4,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 /* import ProductCard from "../product-card"; */
 import styles from "./index.module.scss";
 import EmptyStub from "../empty-stub";
-import { useShoppingCart } from "~/store/shopping-cart.reducer";
+import useShoppingCart from "~/hooks/use-shopping-cart";
 import { useGetProductsQuery } from "~/services/products.service";
 
 export interface PopoverProps {

@@ -83,7 +83,7 @@ export const API_ERRORS: ErrorInfo[] = [
   /* Authorization  */
   {
     type: "Ошибка авторизации",
-    desc: "Неверно указаны имя пользивателя или пароль",
+    desc: "Неверно указаны имя пользователя или пароль",
     regex: /^The authentication fails$/,
     code: 401,
   },

@@ -13,7 +13,10 @@ export const ModalOverview: React.FC<ModalOverviewProps> = React.memo(
       <Modal
         {...ModalProps}
         open={isOpen}
-        onAccept={() => setIsOpen(false)}
+        onAccept={() => {
+          ModalProps?.onAccept && ModalProps?.onAccept();
+          setIsOpen(false);
+        }}
         onClose={() => setIsOpen(false)}
       />
     );
