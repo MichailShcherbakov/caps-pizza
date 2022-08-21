@@ -17,10 +17,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
-    "baseUrl": "./src",
-    "paths": {
-      "~/*": ["./*"],
-    }
+    "baseUrl": "./src"
   },
   "include": ["src"]
 }

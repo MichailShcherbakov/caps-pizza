@@ -180,7 +180,7 @@ describe("[Auth Module] ...", () => {
       expect(refreshTokenResponse.body).toEqual({
         statusCode: 401,
         error: "Unauthorized",
-        message: "The authentication fails",
+        message: "The refresh token is expired",
       });
     });
   });

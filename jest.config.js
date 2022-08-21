@@ -40,5 +40,24 @@ module.exports = {
         }
       },
     },
+    { 
+      displayName: "common",
+      testMatch: ['**/__tests__/**/*.spec.ts', '**/__tests__/**/*.spec.tsx'],
+      transform: {
+        '^.+\\.ts$': 'ts-jest',
+        '^.+\\.tsx$': 'ts-jest',
+      },
+      moduleNameMapper: {
+        '^~/(.*)$': '<rootDir>/common/src/$1',
+      },
+      coverageDirectory: 'coverage',
+      coveragePathIgnorePatterns: ['__tests__'],
+      testEnvironment: "node",
+      globals: {
+        "ts-jest": {
+          tsconfig: "<rootDir>/common/tsconfig.json"
+        }
+      },
+    },
   ],
 }; 

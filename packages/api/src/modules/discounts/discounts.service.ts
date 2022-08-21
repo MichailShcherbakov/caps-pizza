@@ -17,6 +17,12 @@ import { Order } from "../orders/orders.dto";
 import ProductCategoriesService from "../products/modules/categories/categories.service";
 import ProductsService from "../products/products.service";
 import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
+import { orderByProfitable } from "@monorepo/common/modules/discounts/order-by-profitable";
+import {
+  IOrderedProduct,
+  calculateDiscount,
+} from "@monorepo/common/modules/discounts/calculate-discount";
+import ModifierEntity from "~/db/entities/modifier.entity";
 
 export type DiscountProduct = Omit<ProductEntity, "compare"> & {
   full_price: number;
@@ -374,7 +380,70 @@ export default class DiscountsService {
     await this.discountRepository.delete({ uuid });
   }
 
-  orderByScope(discounts: DiscountEntity[]): DiscountEntity[] {
+  async calculate(order: Order): Promise<number> {
+    const [discounts, products, modifiers] = await Promise.all([
+      this.find().then(discounts => orderByProfitable(discounts)),
+      this.productsService
+        .find({
+          uuid: In(order.products.map(p => p.uuid)),
+        })
+        .then(products => new Map(products.map(p => [p.uuid, p]))),
+      this.modifiersService
+        .find({
+          uuid: In(
+            Array.from(
+              order.products.reduce((modifiersUUIDs, product) => {
+                product.modifiers.forEach(
+                  m => !modifiersUUIDs.has(m.uuid) && modifiersUUIDs.add(m.uuid)
+                );
+                return modifiersUUIDs;
+              }, new Set())
+            )
+          ),
+        })
+        .then(modifiers => new Map(modifiers.map(m => [m.uuid, m]))),
+    ]);
+
+    const orderedProducts: IOrderedProduct[] = order.products
+      .map(p => {
+        const product = products.get(p.uuid);
+
+        if (!product)
+          throw new NotFoundException(`The product ${p.uuid} does not exist`);
+
+        return {
+          ...product,
+          count: p.count,
+          fullPrice:
+            product.price +
+            p.modifiers.reduce((totalModifiersCost, orderedProductmodifier) => {
+              const modifier = modifiers.get(orderedProductmodifier.uuid);
+
+              if (!modifier)
+                throw new NotFoundException(
+                  `The modifier ${orderedProductmodifier.uuid} does not exist`
+                );
+
+              return totalModifiersCost + modifier.price;
+            }, 0),
+          modifiers: p.modifiers.map(
+            modifier => modifiers.get(modifier.uuid) as ModifierEntity
+          ),
+        };
+      })
+      .sort((a, b) =>
+        a.fullPrice - b.fullPrice === 0
+          ? a.count - b.count
+          : a.fullPrice - b.fullPrice
+      );
+
+    return calculateDiscount({
+      discounts,
+      products: orderedProducts,
+    });
+  }
+
+  /* orderByScope(discounts: DiscountEntity[]): DiscountEntity[] {
     return discounts.sort((a, b) => {
       switch (a.scope) {
         case DiscountScopeEnum.PRODUCTS: {
@@ -689,5 +758,5 @@ export default class DiscountsService {
     }
 
     return finalDiscount;
-  }
+  } */
 }
