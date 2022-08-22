@@ -2,6 +2,7 @@
   @include ui-w-full;
   @include ui-h-full;
   @include ui-gap-2;
+  @include ui-overflow-auto;
 }
 
 @media (max-width: $breakpoint-sm) {

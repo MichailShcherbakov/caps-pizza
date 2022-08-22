@@ -71,7 +71,7 @@
 @media screen and (max-width: $breakpoint-xxs) {
   .product-card {
     &__image {
-      @include ui-w(130px);
+      @include ui-w(120px);
       @include ui-h-full;
     }
   }

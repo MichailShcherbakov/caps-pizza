@@ -1,0 +1,4 @@
+.notification-manager {
+  @include ui-w-full;
+  @include ui-border-bottom(1px, solid, $border-color);
+}

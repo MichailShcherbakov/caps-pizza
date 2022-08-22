@@ -17,3 +17,9 @@
     border-top-right-radius: 24px;
   }
 }
+
+@media (max-width: $breakpoint-md) {
+  .shopping-cart-drawer {
+    @include ui-p-9;
+  }
+}

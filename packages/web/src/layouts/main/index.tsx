@@ -18,7 +18,7 @@ const ShoppingCartButton = dynamic(
 );
 
 export const NotificationManager = dynamic(
-  () => import("./components/notifiction-manager"),
+  () => import("./components/notification-manager"),
   {
     suspense: true,
     ssr: false,
@@ -35,18 +35,16 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <ThemeProvider theme={theme}>
         <ShoppingCart>
           <Stack alignItems="center" className={styles["main-layout"]}>
-            {/*  <React.Suspense>
             <NotificationManager />
-          </React.Suspense> */}
-            <InfoBar className={styles["main-layout__container"]} />
-            <AppBar className={[styles["main-layout__container"]].join(" ")} />
+            <InfoBar />
+            <AppBar />
             <Container
               component="main"
               className="ui-flex ui-flex-col ui-gap-4 ui-py-10"
             >
               {children}
             </Container>
-            <Footer className={styles["main-layout__container"]} />
+            <Footer />
           </Stack>
           <ShoppingCartButton variant="filled & rounded" />
         </ShoppingCart>

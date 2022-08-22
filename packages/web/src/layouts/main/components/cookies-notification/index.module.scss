@@ -1,10 +1,9 @@
 .cookies-notification {
   @include ui-w-full;
   @include ui-py-2;
-
-  gap: 1rem;
+  @include ui-gap-2;
 
   &__text {
-    width: fit-content;
+    @include ui-w(fit-content);
   }
 }
