@@ -22,6 +22,7 @@ export interface AppBarProps extends StackProps {}
 export const AppBar: React.FC<AppBarProps> = props => {
   const breakpoint = useMediaQuery(theme => theme.breakpoints.up("md"));
   const { data: productCategories = [] } = useGetProductCategoriesQuery();
+  const [showCategories, setShowCategories] = React.useState<boolean>(false);
 
   useScroll({
     onScrollChange: () => {
@@ -31,8 +32,6 @@ export const AppBar: React.FC<AppBarProps> = props => {
       setShowCategories(window.scrollY > offset);
     },
   });
-
-  const [showCategories, setShowCategories] = React.useState<boolean>(false);
 
   return (
     <Stack

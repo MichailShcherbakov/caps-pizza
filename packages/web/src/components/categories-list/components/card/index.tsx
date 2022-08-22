@@ -2,19 +2,25 @@ import React from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import styles from "./index.module.scss";
 import NextImage from "next/image";
-import { useCurrentSection } from "~/helpers/section-provider";
 
 export interface CategoryCardProps {
   name: string;
   imageURL: string;
   active?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   size?: "small" | "medium";
+  onClick?: (name: string) => void;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
-  ({ name, imageURL, size = "small", onClick }) => {
-    const { currentActiveSectionName } = useCurrentSection();
+  ({ name, imageURL, size = "small", active, onClick }) => {
+    const onButtonClick = React.useCallback(
+      (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+
+        onClick && onClick(name);
+      },
+      [name, onClick]
+    );
 
     return (
       <Stack component="li">
@@ -25,11 +31,9 @@ export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
           href={`#${name}`}
           className={[
             styles[`category-card--${size}`],
-            currentActiveSectionName === name
-              ? styles[`category-card--${size}--active`]
-              : "",
+            active ? styles[`category-card--${size}--active`] : "",
           ].join(" ")}
-          onClick={onClick}
+          onClick={onButtonClick}
         >
           <Stack className={styles[`category-card--${size}__icon`]}>
             <NextImage

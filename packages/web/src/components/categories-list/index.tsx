@@ -3,6 +3,7 @@ import CategoryCard, { CategoryCardProps } from "./components/card";
 import useScroll from "~/hooks/use-scroll";
 import { ProductCategory } from "~/services/product-categories.service";
 import styles from "./index.module.scss";
+import { useCurrentSection } from "~/helpers/section-provider";
 
 export interface CategoriesProps
   extends React.HTMLAttributes<HTMLUListElement> {
@@ -16,15 +17,12 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
   CategoriesProps
 >(({ fullWidth, categories, CategoryCardProps, ...props }, ref) => {
   const { scrollToSection } = useScroll();
+  const { currentActiveSectionName } = useCurrentSection();
 
-  const onCategoryCardClick = (
-    e: React.MouseEvent,
-    category: ProductCategory
-  ) => {
-    e.preventDefault();
-
-    scrollToSection(category.name);
-  };
+  const onCategoryCardClick = React.useCallback(
+    (name: string) => scrollToSection(name),
+    [scrollToSection]
+  );
 
   return (
     <ul
@@ -35,13 +33,14 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
         fullWidth ? styles["categories-list--full-width"] : "",
       ].join(" ")}
     >
-      {categories.map(c => (
+      {categories.map(category => (
         <CategoryCard
           {...CategoryCardProps}
-          key={c.uuid}
-          name={c.name}
-          imageURL={c.image_url}
-          onClick={e => onCategoryCardClick(e, c)}
+          key={category.uuid}
+          name={category.name}
+          imageURL={category.image_url}
+          active={currentActiveSectionName === category.name}
+          onClick={onCategoryCardClick}
         />
       ))}
     </ul>
