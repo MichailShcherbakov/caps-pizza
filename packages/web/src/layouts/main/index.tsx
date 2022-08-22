@@ -7,7 +7,15 @@ import theme from "~/ui/theme";
 import Footer from "~/components/footer";
 import styles from "./index.module.scss";
 import { SectionProvider } from "~/helpers/section-provider";
-import ShoppingCartButton from "~/components/shopping-cart-button";
+import ShoppingCart from "~/components/shopping-cart";
+
+const ShoppingCartButton = dynamic(
+  () => import("../../components/shopping-cart-button"),
+  {
+    suspense: true,
+    ssr: false,
+  }
+);
 
 export const NotificationManager = dynamic(
   () => import("./components/notifiction-manager"),
@@ -25,21 +33,23 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <SectionProvider>
       <ThemeProvider theme={theme}>
-        <Stack alignItems="center" className={styles["main-layout"]}>
-          {/*  <React.Suspense>
+        <ShoppingCart>
+          <Stack alignItems="center" className={styles["main-layout"]}>
+            {/*  <React.Suspense>
             <NotificationManager />
           </React.Suspense> */}
-          <InfoBar className={styles["main-layout__container"]} />
-          <AppBar className={[styles["main-layout__container"]].join(" ")} />
-          <Container
-            component="main"
-            className="ui-flex ui-flex-col ui-gap-4 ui-py-10"
-          >
-            {children}
-          </Container>
-          <Footer className={styles["main-layout__container"]} />
-        </Stack>
-        <ShoppingCartButton variant="filled & rounded" />
+            <InfoBar className={styles["main-layout__container"]} />
+            <AppBar className={[styles["main-layout__container"]].join(" ")} />
+            <Container
+              component="main"
+              className="ui-flex ui-flex-col ui-gap-4 ui-py-10"
+            >
+              {children}
+            </Container>
+            <Footer className={styles["main-layout__container"]} />
+          </Stack>
+          <ShoppingCartButton variant="filled & rounded" />
+        </ShoppingCart>
       </ThemeProvider>
     </SectionProvider>
   );

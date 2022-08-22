@@ -6,9 +6,10 @@ export interface ProductCardListFooterProps {}
 export const ProductCardListFooter: React.FC<
   ProductCardListFooterProps
 > = () => {
-  const { products, totalCost, discount, discountValue } = useShoppingCart();
+  const { products, totalCost, discount, discountValue, isLoading } =
+    useShoppingCart();
 
-  if (!products.length) return null;
+  if (isLoading || !products.length) return null;
 
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between">

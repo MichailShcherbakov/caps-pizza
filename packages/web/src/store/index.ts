@@ -3,6 +3,7 @@ import { createWrapper } from "next-redux-wrapper";
 import API from "~/services/api.service";
 import authReducer from "./auth.reducer";
 import shoppingCartReducer from "./shopping-cart.reducer";
+import { listenerMiddleware } from "./middleware";
 
 export const createStore = () =>
   configureStore({
@@ -12,7 +13,9 @@ export const createStore = () =>
       shoppingCart: shoppingCartReducer,
     },
     middleware: getDefaultMiddleware =>
-      getDefaultMiddleware().concat(API.middleware),
+      getDefaultMiddleware()
+        .concat(API.middleware)
+        .prepend(listenerMiddleware.middleware),
   });
 
 export type AppStore = ReturnType<typeof createStore>;

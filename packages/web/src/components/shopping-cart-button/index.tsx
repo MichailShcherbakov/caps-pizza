@@ -1,17 +1,9 @@
 import { Button, IconButton, Stack, Typography } from "@mui/material";
-import dynamic from "next/dynamic";
 import React from "react";
 import ShoppingCartIcon from "~/assets/shopping-cart.svg";
 import useShoppingCart from "~/hooks/use-shopping-cart";
+import ShoppingCartDrawer from "../shopping-cart-drawer";
 import styles from "./index.module.scss";
-
-export const ShoppingCartDrawer = dynamic(
-  () => import("../shopping-cart-drawer"),
-  {
-    suspense: true,
-    ssr: false,
-  }
-);
 
 export type CurrencySymbol = "₽";
 
@@ -27,7 +19,7 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
   variant = "outlined",
   ...props
 }) => {
-  const { totalCost, products } = useShoppingCart();
+  const { totalCost, products, isLoading } = useShoppingCart();
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
 
   const onClickHandler = React.useCallback(() => {
@@ -37,6 +29,8 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
   const onDrawerCloseHandler = React.useCallback(() => {
     setOpenDrawer(false);
   }, []);
+
+  if (isLoading) return null;
 
   if (variant === "outlined")
     return (

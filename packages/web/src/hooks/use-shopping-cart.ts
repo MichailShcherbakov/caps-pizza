@@ -6,17 +6,48 @@ import { OrderedProduct } from "~/store/shopping-cart.reducer";
 import { calculateDiscountValue } from "@monorepo/common/modules/discounts/calculate-discount-value";
 import getSuitableDiscount from "@monorepo/common/modules/discounts/get-suitable-discount";
 import { useAppSelector } from "~/store/hooks";
+import { IDiscount } from "@monorepo/common";
 
 export type ShoppingCartProduct = Pick<OrderedProduct, "count"> &
   Product & { fullPrice: number };
 
-export const useShoppingCart = () => {
-  const { products: choisenProducts } = useAppSelector(store => ({
-    products: store.shoppingCart.products,
-  }));
-  const { data: products = [] } = useGetProductsQuery();
-  const { data: modifiers = [] } = useGetModifiersQuery();
-  const { data: discounts = [] } = useGetDiscountsQuery();
+export type ShoppingCartLoading = {
+  isLoading: true;
+  products: undefined;
+  totalCost: undefined;
+  discount: undefined;
+  discountValue: undefined;
+};
+
+export type ShoppingCartFulfilled = {
+  isLoading: false;
+  products: ShoppingCartProduct[];
+  totalCost: number;
+  discount?: IDiscount;
+  discountValue: number;
+};
+
+export const useShoppingCart = ():
+  | ShoppingCartLoading
+  | ShoppingCartFulfilled => {
+  const { products: choisenProducts, isShoppingCartLoading } = useAppSelector(
+    store => ({
+      products: store.shoppingCart.products,
+      isShoppingCartLoading: store.shoppingCart.meta.step === "pending",
+    })
+  );
+  const { data: products = [], isLoading: isGetProductsLoading } =
+    useGetProductsQuery();
+  const { data: modifiers = [], isLoading: isGetModifiersLoading } =
+    useGetModifiersQuery();
+  const { data: discounts = [], isLoading: isGetDiscountLoading } =
+    useGetDiscountsQuery();
+
+  const isLoading =
+    isShoppingCartLoading ||
+    isGetProductsLoading ||
+    isGetModifiersLoading ||
+    isGetDiscountLoading;
 
   const productMap = React.useMemo(
     () => new Map(products.map(p => [p.uuid, p])),
@@ -75,15 +106,21 @@ export const useShoppingCart = () => {
     [shoppingCartProducts, discountValue]
   );
 
-  return React.useMemo(
-    () => ({
+  return React.useMemo<ShoppingCartLoading | ShoppingCartFulfilled>(() => {
+    if (isLoading) {
+      return {
+        isLoading,
+      };
+    }
+
+    return {
+      isLoading: isLoading,
       products: shoppingCartProducts,
       totalCost: totalCost,
-      discount,
-      discountValue,
-    }),
-    [shoppingCartProducts, totalCost, discount, discountValue]
-  );
+      discount: discount,
+      discountValue: discountValue,
+    };
+  }, [shoppingCartProducts, totalCost, discount, discountValue, isLoading]);
 };
 
 export default useShoppingCart;

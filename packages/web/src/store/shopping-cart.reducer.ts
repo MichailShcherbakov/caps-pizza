@@ -11,10 +11,14 @@ export interface OrderedProduct {
 }
 
 export interface ShoppingCartState {
+  meta: {
+    step?: "pending" | "rejected" | "fulfilled";
+  };
   products: OrderedProduct[];
 }
 
 export const initialState: ShoppingCartState = {
+  meta: {},
   products: [],
 };
 
@@ -31,6 +35,15 @@ export const shoppingCartSlice = createSlice({
   name: "shippingCart",
   initialState,
   reducers: {
+    init(state, action: PayloadAction<Pick<ShoppingCartState, "products">>) {
+      state.products = action.payload.products;
+    },
+    setMetaStep(
+      state,
+      action: PayloadAction<{ step: "pending" | "rejected" | "fulfilled" }>
+    ) {
+      state.meta.step = action.payload.step;
+    },
     addProduct(state, action: PayloadAction<Omit<OrderedProduct, "count">>) {
       const foundProduct = state.products.find(
         product =>
@@ -70,8 +83,21 @@ export const shoppingCartSlice = createSlice({
       foundProduct.count--;
     },
   },
+  /*  extraReducers(builder) {
+    builder.addMatcher(
+      action => {
+        return new RegExp(`^${shoppingCartSlice.name}/(.+)Product$`).test(
+          action.type
+        );
+      },
+      state => {
+        localStorage.setItem("shopping-cart-storage", JSON.stringify(state));
+      }
+    );
+  }, */
 });
 
-export const { addProduct, removeProduct } = shoppingCartSlice.actions;
+export const { addProduct, removeProduct, setMetaStep, init } =
+  shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;

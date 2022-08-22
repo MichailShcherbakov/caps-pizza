@@ -13,9 +13,9 @@ export const ProductCardListHeader: React.FC<ProductCardListHeaderProps> = ({
   anchor = "right",
   onExit,
 }) => {
-  const { products } = useShoppingCart();
+  const { products, isLoading } = useShoppingCart();
 
-  const isEmpty = !products.length;
+  const isEmpty = isLoading || !products.length;
 
   const onExitHandler = React.useCallback(() => {
     onExit && onExit();

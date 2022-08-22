@@ -8,12 +8,11 @@ import styles from "./index.module.scss";
 export interface ProductCardListProps {}
 
 export const ProductCardList = () => {
-  const { products } = useShoppingCart();
-  const isEmpty = !products.length;
+  const { products, isLoading } = useShoppingCart();
 
   return (
     <Stack className={styles["shopping-cart-drawer__product-list"]}>
-      {isEmpty ? (
+      {isLoading || !products.length ? (
         <EmptyStub />
       ) : (
         products.map(product => (
