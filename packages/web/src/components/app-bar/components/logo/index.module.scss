@@ -1,8 +1,7 @@
 .logo {
   @include ui-flex-fixed;
   @include ui-cursor-pointer;
-
-  gap: 10px;
+  @include ui-gap-2;
 
   &__icon {
     @include ui-flex-fixed;

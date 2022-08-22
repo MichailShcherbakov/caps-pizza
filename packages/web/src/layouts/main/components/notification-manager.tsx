@@ -10,8 +10,7 @@ const NotificationManager = () => {
 
   React.useEffect(() => {
     setIsOpen(cookie["allow-cookies"] === undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cookie]);
 
   if (!isOpen) return null;
 

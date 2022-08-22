@@ -35,20 +35,17 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <ThemeProvider theme={theme}>
         <ShoppingCart>
           <Stack alignItems="center" className={styles["main-layout"]}>
-            <React.Suspense fallback={null}>
+            <React.Suspense>
               <NotificationManager />
             </React.Suspense>
             <InfoBar />
             <AppBar />
-            <Container
-              component="main"
-              className="ui-flex ui-flex-col ui-gap-4 ui-py-10"
-            >
+            <Container component="main" className="ui-flex ui-flex-col ui-py-8">
               {children}
             </Container>
             <Footer />
           </Stack>
-          <React.Suspense fallback={null}>
+          <React.Suspense>
             <ShoppingCartButton variant="filled & rounded" />
           </React.Suspense>
         </ShoppingCart>

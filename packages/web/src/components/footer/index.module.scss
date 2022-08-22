@@ -23,7 +23,7 @@
   }
 }
 
-@media screen and (min-width: $breakpoint-lg) {
+@media (min-width: $breakpoint-md) {
   .footer {
     &__copyright {
       @include ui-flex;
@@ -31,7 +31,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-lg) {
+@media screen and (max-width: $breakpoint-md) {
   .footer {
     @include ui-h-auto;
 

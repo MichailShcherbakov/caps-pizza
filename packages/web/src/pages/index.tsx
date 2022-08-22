@@ -39,6 +39,7 @@ export const HomePage: AppPage = () => {
   ) : (
     <>
       <CategoriesList
+        className="ui-py-8"
         categories={productCategories}
         CategoryCardProps={{ size: "medium" }}
       />

@@ -24,6 +24,7 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
       className={[
         styles["categories-list"],
         fullWidth ? styles["categories-list--full-width"] : "",
+        props.className,
       ].join(" ")}
     >
       {categories.map(category => (

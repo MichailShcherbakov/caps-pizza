@@ -21,7 +21,7 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
       [products, category.uuid]
     );
 
-    if (!products.length) return null;
+    if (!categoryProducts.length) return null;
 
     const [tags, tagProducts] = sortByTags(categoryProducts);
 

@@ -26,7 +26,7 @@ export const Section: React.FC<SectionProps> = ({
     <section
       id={id}
       ref={ref}
-      className={["ui-flex ui-flex-col ui-gap-4", className].join(" ")}
+      className={["ui-flex ui-flex-col ui-py-8 ui-gap-4", className].join(" ")}
       style={{ scrollMarginTop: "76px" }}
       data-section
     >
