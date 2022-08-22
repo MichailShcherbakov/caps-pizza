@@ -3,5 +3,9 @@
     @include ui-h-full;
     @include ui-overflow-y-auto;
     @include ui-gap(1rem);
+
+    &--empty {
+      @include ui-flex-center;
+    }
   }
 }

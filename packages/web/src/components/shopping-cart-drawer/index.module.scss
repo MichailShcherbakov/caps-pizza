@@ -8,6 +8,7 @@
   @include ui-gap(1rem);
   @include ui-bg-color($white);
   @include ui-overflow-auto;
+  @include ui-border-none;
 
   &--bottom {
     @include ui-w-full;

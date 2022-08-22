@@ -11,7 +11,14 @@ export const ProductCardList = () => {
   const { products, isLoading } = useShoppingCart();
 
   return (
-    <Stack className={styles["shopping-cart-drawer__product-list"]}>
+    <Stack
+      className={[
+        styles["shopping-cart-drawer__product-list"],
+        isLoading || !products.length
+          ? styles["shopping-cart-drawer__product-list--empty"]
+          : "",
+      ].join(" ")}
+    >
       {isLoading || !products.length ? (
         <EmptyStub />
       ) : (

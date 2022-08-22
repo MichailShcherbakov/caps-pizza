@@ -168,8 +168,6 @@
 
 .MuiPaper-root {
   @include ui-box-shadow-light;
-  @include ui-border(1px, solid, $border-color);
-  @include ui-rounded-1;
 }
 
 .MuiTableCell-root {

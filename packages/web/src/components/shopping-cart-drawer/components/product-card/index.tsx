@@ -55,7 +55,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
                   )
                 }
               >
-                <CloseIcon />
+                <CloseIcon fontSize="small" />
               </IconButton>
             </Stack>
             <Stack>

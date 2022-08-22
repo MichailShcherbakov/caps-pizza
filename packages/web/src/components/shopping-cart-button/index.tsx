@@ -51,6 +51,8 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = React.memo(
         </>
       );
 
+    const count = products.reduce((count, product) => count + product.count, 0);
+
     if (variant === "filled & rounded") {
       return (
         <>
@@ -62,13 +64,15 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = React.memo(
             onClick={onClickHandler}
           >
             <ShoppingCartIcon className={styles["shopping-cart-btn__icon"]} />
-            <Stack
-              alignItems="center"
-              justifyContent="center"
-              className={styles["shopping-cart-btn__badge"]}
-            >
-              {products.length}
-            </Stack>
+            {count ? (
+              <Stack
+                alignItems="center"
+                justifyContent="center"
+                className={styles["shopping-cart-btn__badge"]}
+              >
+                {count}
+              </Stack>
+            ) : undefined}
           </IconButton>
           <ShoppingCartDrawer
             anchor="bottom"
