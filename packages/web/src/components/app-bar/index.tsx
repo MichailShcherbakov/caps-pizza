@@ -54,7 +54,9 @@ export const AppBar: React.FC<AppBarProps> = props => {
               <CategoriesList fullWidth categories={productCategories} />
             </Fade>
           ) : undefined}
-          <ShoppingCartButton />
+          <React.Suspense fallback={null}>
+            <ShoppingCartButton />
+          </React.Suspense>
         </Stack>
       </Container>
     </Stack>

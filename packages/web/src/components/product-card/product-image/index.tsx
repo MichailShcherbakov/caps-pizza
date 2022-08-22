@@ -16,6 +16,14 @@ export const ProductImage: React.FC<ProductCardImageProps> = ({
   const [cover, setCover] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
 
+  const onLoadingComplete = React.useCallback(
+    ({ naturalWidth, naturalHeight }) => {
+      setCover(naturalWidth !== naturalHeight);
+      setLoading(false);
+    },
+    []
+  );
+
   return (
     <Stack
       component="picture"
@@ -30,10 +38,7 @@ export const ProductImage: React.FC<ProductCardImageProps> = ({
         src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
         alt={productName}
         layout="fill"
-        onLoadingComplete={({ naturalWidth, naturalHeight }) => {
-          setCover(naturalWidth !== naturalHeight);
-          setLoading(false);
-        }}
+        onLoadingComplete={onLoadingComplete}
       />
     </Stack>
   );

@@ -1,6 +1,5 @@
 import React from "react";
 import CategoryCard, { CategoryCardProps } from "./components/card";
-import useScroll from "~/hooks/use-scroll";
 import { ProductCategory } from "~/services/product-categories.service";
 import styles from "./index.module.scss";
 import { useCurrentSection } from "~/helpers/section-provider";
@@ -16,13 +15,7 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
   HTMLUListElement,
   CategoriesProps
 >(({ fullWidth, categories, CategoryCardProps, ...props }, ref) => {
-  const { scrollToSection } = useScroll();
   const { currentActiveSectionName } = useCurrentSection();
-
-  const onCategoryCardClick = React.useCallback(
-    (name: string) => scrollToSection(name),
-    [scrollToSection]
-  );
 
   return (
     <ul
@@ -40,7 +33,6 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
           name={category.name}
           imageURL={category.image_url}
           active={currentActiveSectionName === category.name}
-          onClick={onCategoryCardClick}
         />
       ))}
     </ul>

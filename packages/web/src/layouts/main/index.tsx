@@ -35,7 +35,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <ThemeProvider theme={theme}>
         <ShoppingCart>
           <Stack alignItems="center" className={styles["main-layout"]}>
-            <NotificationManager />
+            <React.Suspense fallback={null}>
+              <NotificationManager />
+            </React.Suspense>
             <InfoBar />
             <AppBar />
             <Container
@@ -46,7 +48,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </Container>
             <Footer />
           </Stack>
-          <ShoppingCartButton variant="filled & rounded" />
+          <React.Suspense fallback={null}>
+            <ShoppingCartButton variant="filled & rounded" />
+          </React.Suspense>
         </ShoppingCart>
       </ThemeProvider>
     </SectionProvider>

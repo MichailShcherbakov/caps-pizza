@@ -8,20 +8,10 @@ export interface CategoryCardProps {
   imageURL: string;
   active?: boolean;
   size?: "small" | "medium";
-  onClick?: (name: string) => void;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
-  ({ name, imageURL, size = "small", active, onClick }) => {
-    const onButtonClick = React.useCallback(
-      (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-
-        onClick && onClick(name);
-      },
-      [name, onClick]
-    );
-
+  ({ name, imageURL, size = "small", active }) => {
     return (
       <Stack component="li">
         <Button
@@ -33,7 +23,6 @@ export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
             styles[`category-card--${size}`],
             active ? styles[`category-card--${size}--active`] : "",
           ].join(" ")}
-          onClick={onButtonClick}
         >
           <Stack className={styles[`category-card--${size}__icon`]}>
             <NextImage

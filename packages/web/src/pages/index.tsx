@@ -15,14 +15,24 @@ import { getProducts } from "~/services/products.service";
 import { LoadingBackdrop } from "~/ui";
 import { getModifiers } from "~/services/modifiers.service";
 import ArticleSection from "~/components/sections/article.section";
+import useScroll from "~/hooks/use-scroll";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
 }
 
 export const HomePage: AppPage = () => {
+  const { scrollToSection } = useScroll();
   const { data: productCategories = [], isLoading } =
     useGetProductCategoriesQuery();
+
+  React.useEffect(() => {
+    const hash = decodeURIComponent(document.location.hash);
+
+    if (!hash.length) return;
+
+    scrollToSection(hash.slice(1)); /// #Роллы -> Роллы
+  }, [scrollToSection]);
 
   return isLoading ? (
     <LoadingBackdrop open={isLoading} />
