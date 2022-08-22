@@ -1,11 +1,20 @@
 .product-card {
+  &__info {
+    @include ui-h-full;
+    @include ui-gap-2;
+  }
+
   &__specifics {
     @include ui-ws-nowrap;
   }
 }
 
-@media screen and (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-sm) {
   .product-card {
+    &__info {
+      @include ui-py-8;
+    }
+
     &__specifics {
       @include ui-display-none;
     }

@@ -10,7 +10,7 @@ export const EmptyStub: React.FC<EmptyStubProps> = () => {
       <EmptyShoppingCartIllustration className={styles["empty-stub__image"]} />
       <Stack alignItems="center" spacing={1}>
         <Typography
-          variant="h1"
+          variant="h2"
           component="p"
           className={styles["empty-stub__title"]}
         >

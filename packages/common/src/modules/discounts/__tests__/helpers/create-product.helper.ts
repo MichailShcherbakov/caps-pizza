@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
+import { IOrderedProduct } from "modules/discounts/get-suitable-discount";
 import {
   ProductVolumeTypeEnum,
   ProductWeightTypeEnum,
 } from "../../../../interfaces";
-import { IOrderedProduct } from "../../calculate-discount";
 
 export const createProduct = (
   options: Partial<IOrderedProduct> = {}

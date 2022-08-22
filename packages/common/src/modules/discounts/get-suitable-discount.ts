@@ -5,21 +5,23 @@ import {
   IProduct,
 } from "../../interfaces";
 import getConditionValue from "./get-condition-value";
-import getFinalDiscount from "./get-final-discount";
 import isFulfilledCondition from "./is-fulfilled-condition";
 import orderByProfitable from "./order-by-profitable";
-
-export interface IOrder {}
 
 export interface IOrderedProduct extends IProduct {
   count: number;
   fullPrice: number;
 }
 
-export const calculateDiscount = (options: {
+export const getSuitableDiscount = (options: {
   discounts: IDiscount[];
   products: IOrderedProduct[];
-}): number => {
+}): {
+  discount: IDiscount;
+  products: IOrderedProduct[];
+  conditionValue: number;
+  totalCost: number;
+} | null => {
   const { discounts, products } = options;
 
   const orderedDiscountsByProfitable = orderByProfitable(discounts);
@@ -44,7 +46,6 @@ export const calculateDiscount = (options: {
         validatedProducts = products.filter(p =>
           discountProductsUUIDs.has(p.uuid)
         );
-
         break;
       }
       case DiscountScopeEnum.PRODUCT_FEATURES: {
@@ -67,7 +68,6 @@ export const calculateDiscount = (options: {
             (!discount.product_categories.length || hasCategory) && hasModifier
           );
         });
-
         break;
       }
       case DiscountScopeEnum.GLOBAL: {
@@ -85,17 +85,12 @@ export const calculateDiscount = (options: {
         discount.scope === DiscountScopeEnum.GLOBAL
       )
     )
-      break;
+      continue;
 
-    return getFinalDiscount({
-      products: validatedProducts,
-      discount,
-      conditionValue,
-      totalCost,
-    });
+    return { discount, products: validatedProducts, conditionValue, totalCost };
   }
 
-  return 0;
+  return null;
 };
 
-export default calculateDiscount;
+export default getSuitableDiscount;

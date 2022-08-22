@@ -1,41 +1,48 @@
 import { Button, IconButton, Stack, Typography } from "@mui/material";
+import dynamic from "next/dynamic";
 import React from "react";
 import ShoppingCartIcon from "~/assets/shopping-cart.svg";
-import ShoppingCartDrawer from "../shopping-cart-drawer";
+import useShoppingCart from "~/hooks/use-shopping-cart";
 import styles from "./index.module.scss";
+
+export const ShoppingCartDrawer = dynamic(
+  () => import("../shopping-cart-drawer"),
+  {
+    suspense: true,
+    ssr: false,
+  }
+);
 
 export type CurrencySymbol = "₽";
 
 export type ShoppingCartButtonVariants = "outlined" | "filled & rounded";
 
 export interface ShoppingCartButtonProps {
-  price?: number;
-  count?: number;
   currencySymbol?: CurrencySymbol;
   variant?: ShoppingCartButtonVariants;
 }
 
 export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
-  price = 0,
-  count = 0,
   currencySymbol = "₽",
   variant = "outlined",
   ...props
 }) => {
+  const { totalCost, products } = useShoppingCart();
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
 
-  const onClickHandler = () => {
+  const onClickHandler = React.useCallback(() => {
     setOpenDrawer(true);
-  };
+  }, []);
 
-  const onDrawerCloseHandler = () => {
+  const onDrawerCloseHandler = React.useCallback(() => {
     setOpenDrawer(false);
-  };
+  }, []);
 
   if (variant === "outlined")
     return (
       <>
         <Button
+          {...props}
           variant="outlined"
           color="primary"
           startIcon={
@@ -43,9 +50,8 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
           }
           className={styles["shopping-cart-btn"]}
           onClick={onClickHandler}
-          {...props}
         >
-          <Typography variant="button">{`${price} ${currencySymbol}`}</Typography>
+          <Typography variant="button">{`${totalCost} ${currencySymbol}`}</Typography>
         </Button>
         <ShoppingCartDrawer
           anchor="right"
@@ -59,12 +65,12 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
     return (
       <>
         <IconButton
+          {...props}
           className={[
             styles["shopping-cart-btn"],
             styles["shopping-cart-btn__levitated"],
           ].join(" ")}
           onClick={onClickHandler}
-          {...props}
         >
           <ShoppingCartIcon className={styles["shopping-cart-btn__icon"]} />
           <Stack
@@ -72,7 +78,7 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({
             justifyContent="center"
             className={styles["shopping-cart-btn__badge"]}
           >
-            {count}
+            {products.length}
           </Stack>
         </IconButton>
         <ShoppingCartDrawer

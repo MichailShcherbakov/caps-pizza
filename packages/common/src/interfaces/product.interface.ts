@@ -1,6 +1,6 @@
-import IEntity from './entity.interface';
-import IModifier from './modifier.interface';
-import IProductCategory from './product-category.interface';
+import IEntity from "./entity.interface";
+import IModifier from "./modifier.interface";
+import IProductCategory from "./product-category.interface";
 
 export enum ProductWeightTypeEnum {
   GRAMS = "GRAMS",

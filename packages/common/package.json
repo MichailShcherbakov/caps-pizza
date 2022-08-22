@@ -14,7 +14,9 @@
     "prebuild": "rm -rf dist",
     "build": "yarn prebuild && tsc --project tsconfig.json",
     "start:test": "jest",
-    "coverage": "jest run --coverage"
+    "coverage": "jest run --coverage",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "fmt": "prettier --write \"src/**/*.ts\""
   },
   "publishConfig": {
     "directory": "dist"

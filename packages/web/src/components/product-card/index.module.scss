@@ -4,7 +4,7 @@
   @include ui-gap-2;
 }
 
-@media screen and (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-sm) {
   .product-card {
     @include ui-flex-row;
   }

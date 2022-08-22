@@ -17,9 +17,12 @@ export const useScroll = (options?: { onScrollChange: () => void }) => {
     };
   }, [options]);
 
-  return {
-    scrollToSection,
-  };
+  return React.useMemo(
+    () => ({
+      scrollToSection,
+    }),
+    [scrollToSection]
+  );
 };
 
 export default useScroll;

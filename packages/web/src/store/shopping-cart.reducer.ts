@@ -33,28 +33,37 @@ export const shoppingCartSlice = createSlice({
   reducers: {
     addProduct(state, action: PayloadAction<Omit<OrderedProduct, "count">>) {
       const foundProduct = state.products.find(
-        product => product.uuid === action.payload.uuid
+        product =>
+          product.uuid === action.payload.uuid &&
+          compareModifiers(product.modifiers, action.payload.modifiers)
       );
 
-      if (
-        foundProduct &&
-        compareModifiers(foundProduct.modifiers, action.payload.modifiers)
-      ) {
+      if (foundProduct) {
         foundProduct.count++;
         return;
       }
 
       state.products.push({ ...action.payload, count: 1 });
     },
-    removeProduct(state, action: PayloadAction<{ uuid: string }>) {
-      const foundProduct = state.products.find(
-        product => product.uuid === action.payload.uuid
+    removeProduct(
+      state,
+      action: PayloadAction<{
+        product: Omit<OrderedProduct, "count">;
+        force: boolean;
+      }>
+    ) {
+      const foundProductIndex = state.products.findIndex(
+        product =>
+          product.uuid === action.payload.product.uuid &&
+          compareModifiers(product.modifiers, action.payload.product.modifiers)
       );
 
-      if (!foundProduct) return;
+      if (foundProductIndex === -1) return;
 
-      if (foundProduct.count - 1 === 0) {
-        state.products.filter(product => product.uuid !== action.payload.uuid);
+      const foundProduct = state.products[foundProductIndex];
+
+      if (action.payload.force || foundProduct.count - 1 === 0) {
+        state.products.splice(foundProductIndex, 1);
         return;
       }
 

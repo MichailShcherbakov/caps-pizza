@@ -1,6 +1,6 @@
 .empty-stub {
   &__image {
-    @include ui-size(300px);
+    @include ui-size(280px);
   }
 
   &__title,
@@ -11,10 +11,10 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-md) {
+@media (max-width: $breakpoint-md) {
   .empty-stub {
     &__image {
-      @include ui-size(220px);
+      @include ui-size(240px);
     }
   }
 }

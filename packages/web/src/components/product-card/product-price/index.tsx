@@ -3,24 +3,39 @@ import React from "react";
 import { Modifier } from "~/services/modifiers.service";
 import { Product } from "~/services/products.service";
 import getSpecifics from "../helpers/getSpecifics.helper";
+import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
 import styles from "./index.module.scss";
 
 export interface ProductPriceProps {
   product: Product;
   currentModifiers: Modifier[];
-  onSelect?: (product: Product, currentModifiers: Modifier[]) => void;
 }
 
 export const ProductPrice: React.FC<ProductPriceProps> = ({
   product,
   currentModifiers,
-  onSelect,
 }) => {
+  const { addProduct } = useShoppingCartActions();
   const specifics = React.useMemo(() => getSpecifics(product), [product]);
 
-  const price = currentModifiers.reduce(
-    (price, modifier) => price + modifier.price,
-    product.price
+  const price = React.useMemo(
+    () =>
+      currentModifiers.reduce(
+        (price, modifier) => price + modifier.price,
+        product.price
+      ),
+    [product, currentModifiers]
+  );
+
+  const onProductCardSelect = React.useCallback(
+    () =>
+      addProduct({
+        uuid: product.uuid,
+        modifiers: currentModifiers.map(modifier => ({
+          uuid: modifier.uuid,
+        })),
+      }),
+    [product, currentModifiers, addProduct]
   );
 
   return (
@@ -39,7 +54,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
       <Button
         variant="outlined"
         className={styles["product-card__footer-btn"]}
-        onClick={() => onSelect && onSelect(product, currentModifiers)}
+        onClick={onProductCardSelect}
       >
         <Typography
           variant="button"

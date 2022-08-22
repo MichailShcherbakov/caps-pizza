@@ -1,0 +1,19 @@
+.shopping-cart-drawer {
+  @include ui-pos-rel;
+  @include ui-w(420px);
+  @include ui-h-full;
+  @include ui-flex-fixed;
+  @include ui-py-12;
+  @include ui-px-9;
+  @include ui-gap(1rem);
+  @include ui-bg-color($white);
+  @include ui-overflow-auto;
+
+  &--bottom {
+    @include ui-w-full;
+    @include ui-h(calc(100vh * 4 / 5));
+
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+  }
+}

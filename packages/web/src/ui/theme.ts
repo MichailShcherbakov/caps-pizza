@@ -1,4 +1,9 @@
-import { createTheme, PaletteColor, Theme, useMediaQuery as useMQ } from "@mui/material";
+import {
+  createTheme,
+  PaletteColor,
+  Theme,
+  useMediaQuery as useMQ,
+} from "@mui/material";
 import "external-svg-loader";
 
 declare module "@mui/material" {
@@ -17,12 +22,12 @@ declare module "@mui/material/styles" {
   }
 
   interface BreakpointOverrides {
-    xxs: true,
-    xs: true,
-    sm: true,
-    md: true,
-    lg: true,
-    xl: true,
+    xxs: true;
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
   }
 }
 
@@ -85,7 +90,7 @@ export const theme = createTheme({
       md: 900,
       lg: 1280,
       xl: 1536,
-    } 
+    },
   },
 });
 

@@ -11,11 +11,10 @@ import styles from "./index.module.scss";
 export interface ProductCardProps {
   product: Product;
   modifiers: Modifier[];
-  onSelect?: (product: Product, currentModifiers: Modifier[]) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = React.memo(
-  ({ product, modifiers, onSelect = () => {} }) => {
+  ({ product, modifiers }) => {
     const [currentModifiers, setCurrentModifiers] = React.useState<Modifier[]>(
       product.modifiers
     );
@@ -30,11 +29,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
             currentModifiers={currentModifiers}
             onChange={setCurrentModifiers}
           />
-          <ProductPrice
-            product={product}
-            currentModifiers={currentModifiers}
-            onSelect={onSelect}
-          />
+          <ProductPrice product={product} currentModifiers={currentModifiers} />
         </Stack>
       </Stack>
     );

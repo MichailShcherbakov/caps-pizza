@@ -5,9 +5,9 @@ import {
   DiscountTypeEnum,
   IDiscount,
 } from "../../interfaces";
-import { IOrderedProduct } from "./calculate-discount";
+import { IOrderedProduct } from "./get-suitable-discount";
 
-export const getFinalDiscount = (options: {
+export const getFinalDiscountValue = (options: {
   products: IOrderedProduct[];
   discount: IDiscount;
   conditionValue: number;
@@ -125,4 +125,4 @@ export const getFinalDiscount = (options: {
   return finalDiscount;
 };
 
-export default getFinalDiscount;
+export default getFinalDiscountValue;

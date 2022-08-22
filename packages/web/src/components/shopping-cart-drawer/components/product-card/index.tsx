@@ -1,86 +1,104 @@
-import { Stack } from "@mui/material";
-/* import Image from "next/image";
-import CloseIcon from "@mui/icons-material/Close"; */
+import { IconButton, Stack, Typography } from "@mui/material";
+import NextImage from "next/image";
+import CloseIcon from "@mui/icons-material/Close";
 import styles from "./index.module.scss";
-/* import CounterButton from "~/ui/components/counter-button"; */
+import CounterButton from "~/ui/components/buttons/counter-button";
+import getSpecifics from "~/components/product-card/helpers/getSpecifics.helper";
+import { ShoppingCartProduct } from "~/hooks/use-shopping-cart";
+import React from "react";
+import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
 
-export interface ProductCardProps /* extends OrderedProduct, Product */ {
-  specifics: string;
-  onCountChanged?: (uuid: string, newCount: number) => void;
-  onRemove?: (uuid: string) => void;
+export interface ProductCardProps {
+  product: ShoppingCartProduct;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({
-  specifics,
-  /*   orderedProductUUID,
-  name,
-  desc,
-  specifics,
-  price,
-  imageURL,
-  count: initialCount = 1, */
-  /*  onCountChanged = () => {},
-  onRemove = () => {}, */
-}) => {
-  /* const maxOrdersPerProductAllowedNumber = useAppSelector(
-    (state) => state.config.maxOrdersPerProductAllowedNumber
-  ); */
-  specifics;
+export const ProductCard: React.FC<ProductCardProps> = React.memo(
+  ({ product }) => {
+    const { addProduct, removeProduct } = useShoppingCartActions();
 
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      className={styles["product-card"]}
-    >
-      {/*   <Stack className={styles["product-card__image"]}>
-        <Image
-          src={imageURL}
-          alt="The product card"
-          layout="fill"
-          className={styles["product-card__image-src"]}
-        />
-      </Stack>
-      <Stack spacing={1} className="ui-w-full ui-h-full">
+    const productModifiers = product.modifiers.map(modifier => ({
+      uuid: modifier.uuid,
+    }));
+
+    return (
+      <Stack
+        direction="row"
+        alignItems="center"
+        className={styles["product-card"]}
+      >
+        <Stack className={styles["product-card__image"]}>
+          <NextImage
+            src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${product.image_url}`}
+            alt={product.name}
+            layout="fill"
+            className={styles["product-card__image-src"]}
+          />
+        </Stack>
         <Stack spacing={1} className="ui-w-full ui-h-full">
+          <Stack spacing={1} className="ui-w-full ui-h-full">
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              className="ui-w-full"
+            >
+              <Typography variant="h4">{product.name}</Typography>
+              <IconButton
+                size="small"
+                onClick={() =>
+                  removeProduct(
+                    {
+                      uuid: product.uuid,
+                      modifiers: productModifiers,
+                    },
+                    true
+                  )
+                }
+              >
+                <CloseIcon />
+              </IconButton>
+            </Stack>
+            <Stack>
+              {product.modifiers.map(modifier => (
+                <Typography key={modifier.uuid}>{`${
+                  modifier.category?.name
+                } ${modifier.name.toLowerCase()}`}</Typography>
+              ))}
+            </Stack>
+            <Typography variant="subtitle1">{getSpecifics(product)}</Typography>
+          </Stack>
           <Stack
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            className="ui-w-full ui-h-full"
+            spacing={1}
           >
-            <Typography variant="h4">{name}</Typography>
-            <IconButton
-              size="small"
-              onClick={() => onRemove(orderedProductUUID)}
-            >
-              <CloseIcon />
-            </IconButton>
+            <CounterButton
+              minValue={0}
+              initialCount={product.count}
+              onIncrement={() =>
+                addProduct({
+                  uuid: product.uuid,
+                  modifiers: productModifiers,
+                })
+              }
+              onDecrement={() =>
+                removeProduct({
+                  uuid: product.uuid,
+                  modifiers: productModifiers,
+                })
+              }
+            />
+            <Typography variant="h5" className={styles["product-card__price"]}>
+              {`${product.fullPrice * product.count} ₽`}
+            </Typography>
           </Stack>
-          <Typography>{desc}</Typography>
-          <Typography variant="subtitle1">{specifics}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <CounterButton
-            minValue={0}
-            maxValue={maxOrdersPerProductAllowedNumber}
-            initialCount={initialCount}
-            onValueChanged={(newCount) =>
-              onCountChanged(orderedProductUUID, newCount)
-            }
-          />
-          <Typography variant="h5" className={styles["product-card__price"]}>
-            {`${price * initialCount} ₽`}
-          </Typography>
         </Stack>
       </Stack>
- */}
-    </Stack>
-  );
-};
+    );
+  }
+);
+
+ProductCard.displayName = "ProductCard";
 
 export default ProductCard;

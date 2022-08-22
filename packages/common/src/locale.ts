@@ -1,6 +1,18 @@
-import { ProductVolumeTypeEnum, ProductWeightTypeEnum } from './interfaces/product.interface';
-import { DiscountCriteriaEnum, DiscountOperatorEnum, DiscountScopeEnum, DiscountTypeEnum } from './interfaces/discount.interface';
-import { DeliveryCriteriaEnum, DeliveryOperatorEnum, DeliveryTypeEnum } from './interfaces/delivery.interface'; 
+import {
+  ProductVolumeTypeEnum,
+  ProductWeightTypeEnum,
+} from "./interfaces/product.interface";
+import {
+  DiscountCriteriaEnum,
+  DiscountOperatorEnum,
+  DiscountScopeEnum,
+  DiscountTypeEnum,
+} from "./interfaces/discount.interface";
+import {
+  DeliveryCriteriaEnum,
+  DeliveryOperatorEnum,
+  DeliveryTypeEnum,
+} from "./interfaces/delivery.interface";
 
 export const locale = {
   [ProductWeightTypeEnum.GRAMS]: "гр",

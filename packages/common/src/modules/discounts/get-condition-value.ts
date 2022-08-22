@@ -1,5 +1,5 @@
 import { DiscountCriteriaEnum, IDiscount } from "../../interfaces";
-import { IOrderedProduct } from "./calculate-discount";
+import { IOrderedProduct } from "./get-suitable-discount";
 
 export const getConditionValue = (
   discount: IDiscount,

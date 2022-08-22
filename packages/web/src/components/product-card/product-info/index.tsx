@@ -12,7 +12,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const specifics = React.useMemo(() => getSpecifics(product), [product]);
 
   return (
-    <Stack className="ui-h-full ui-gap-2">
+    <Stack className={styles["product-card__info"]}>
       <Stack
         direction="row"
         justifyContent="space-between"

@@ -1,15 +1,19 @@
 {
-  "name": "caps-pizza",
+  "name": "@MichailShcherbakov/caps-pizza",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "bootstrap": "yarn install && lerna bootstrap",
+    "bootstrap": "yarn install && lerna bootstrap && lerna link",
     "build": "lerna run build --parallel",
     "start": "lerna run start --parallel",
     "start:dev": "lerna run start:dev --parallel",
+    "start:test": "lerna run start:test --parallel",
+    "start:test:e2e": "lerna run start:test:e2e --parallel",
     "start:dev:web": "lerna run --scope @monorepo/web --stream start:dev",
     "start:dev:api": "lerna run --scope @monorepo/api --stream start:dev",
-    "start:dev:common": "lerna run --scope @monorepo/common --stream start:dev"
+    "start:dev:common": "lerna run --scope @monorepo/common --stream start:dev",
+    "start:lint": "lerna run lint --parallel",
+    "start:fmt": "lerna run fmt --parallel"
   },
   "workspaces": [
     "packages/*"

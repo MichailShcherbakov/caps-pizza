@@ -8,7 +8,6 @@ import Logo from "./components/logo";
 import styles from "./index.module.scss";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useMediaQuery } from "~/ui";
-import useShoppingCart from "~/hooks/use-shopping-cart";
 
 const APP_BAR_SMALL_SCREEN_TOP_OFFSET = 100;
 const APP_BAR_LARGE_SCREEN_TOP_OFFSET = 150;
@@ -17,7 +16,6 @@ export interface AppBarProps extends StackProps {}
 
 export const AppBar: React.FC<AppBarProps> = props => {
   const breakpoint = useMediaQuery(theme => theme.breakpoints.up("md"));
-  const { totalCost } = useShoppingCart();
   const { data: productCategories = [] } = useGetProductCategoriesQuery();
 
   useScroll({
@@ -52,7 +50,7 @@ export const AppBar: React.FC<AppBarProps> = props => {
               <CategoriesList fullWidth categories={productCategories} />
             </Fade>
           ) : undefined}
-          <ShoppingCartButton price={totalCost} />
+          <ShoppingCartButton />
         </Stack>
       </Container>
     </Stack>

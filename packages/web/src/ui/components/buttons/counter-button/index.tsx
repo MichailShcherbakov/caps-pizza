@@ -6,17 +6,21 @@ export interface CounterProps {
   initialCount?: number;
   maxValue?: number;
   minValue?: number;
+  onIncrement?: (newValue: number) => void;
+  onDecrement?: (newValue: number) => void;
   onValueChanged?: (newValue: number) => void;
 }
 
 export const INITIAL_MAX_VALUE = 15;
-export const INITIAL_MIN_VALUE = 0;
+export const INITIAL_MIN_VALUE = 1;
 
 export const CounterButton: React.FC<CounterProps> = ({
   initialCount = INITIAL_MIN_VALUE,
   maxValue = INITIAL_MAX_VALUE,
   minValue = INITIAL_MIN_VALUE,
-  onValueChanged = () => {},
+  onIncrement,
+  onDecrement,
+  onValueChanged,
 }) => {
   const [count, setCount] = React.useState<number>(minValue);
 
@@ -31,7 +35,8 @@ export const CounterButton: React.FC<CounterProps> = ({
 
     setCount(count - 1);
 
-    onValueChanged(count - 1);
+    onDecrement && onDecrement(count - 1);
+    onValueChanged && onValueChanged(count - 1);
   };
 
   const add = () => {
@@ -39,12 +44,13 @@ export const CounterButton: React.FC<CounterProps> = ({
 
     setCount(count + 1);
 
-    onValueChanged(count + 1);
+    onIncrement && onIncrement(count + 1);
+    onValueChanged && onValueChanged(count + 1);
   };
 
   return (
     <ButtonGroup variant="contained" className={styles["counter-button"]}>
-      <Button variant="contained" color="secondary" onClick={subtract}>
+      <Button variant="contained" color="light" onClick={subtract}>
         <Typography variant="button">-</Typography>
       </Button>
       <Stack
@@ -54,7 +60,7 @@ export const CounterButton: React.FC<CounterProps> = ({
       >
         <Typography variant="button">{count}</Typography>
       </Stack>
-      <Button variant="contained" color="secondary" onClick={add}>
+      <Button variant="contained" color="light" onClick={add}>
         <Typography variant="button">+</Typography>
       </Button>
     </ButtonGroup>

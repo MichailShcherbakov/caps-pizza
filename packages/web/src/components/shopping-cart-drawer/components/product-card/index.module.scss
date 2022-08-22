@@ -1,7 +1,7 @@
 .product-card {
   @include ui-w-full;
   @include ui-border(1px, solid, $gray-100);
-  @include ui-rounded-5;
+  @include ui-rounded-4;
   @include ui-p-8;
   @include ui-gap(1rem);
   @include ui-bg-color($white);
@@ -20,5 +20,6 @@
 
   &__price {
     @include ui-font-color($orange-400);
+    @include ui-truncate;
   }
 }

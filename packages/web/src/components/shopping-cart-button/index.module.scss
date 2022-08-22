@@ -1,5 +1,5 @@
 .shopping-cart-btn {
-  position: relative;
+  @include ui-pos-rel;
 
   @include ui-px-8;
   @include ui-py-2;
@@ -60,7 +60,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-md) {
+@media (max-width: $breakpoint-md) {
   .shopping-cart-btn:not(.shopping-cart-btn__levitated) {
     @include ui-display-none;
   }

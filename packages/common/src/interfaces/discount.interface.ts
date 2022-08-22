@@ -1,7 +1,7 @@
-import IEntity from './entity.interface';
-import IModifier from './modifier.interface';
-import IProductCategory from './product-category.interface';
-import IProduct from './product.interface'
+import IEntity from "./entity.interface";
+import IModifier from "./modifier.interface";
+import IProductCategory from "./product-category.interface";
+import IProduct from "./product.interface";
 
 export enum DiscountTypeEnum {
   PERCENT = "PERCENT",
