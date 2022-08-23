@@ -8,12 +8,13 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 import DeliveryEntity, {
-  DeliveryCriteriaEnum,
   DeliveryOperatorEnum,
   DeliveryTypeEnum,
 } from "~/db/entities/delivery.entity";
 import SyncService from "../sync/sync.service";
 import { CreateDeliveryDto, UpdateDeliveryDto } from "./deliveries.dto";
+import deliveryModule from "@monorepo/common/modules/delivery";
+import { IDelivery } from "@monorepo/common";
 
 @Injectable()
 export default class DeliveriesService {
@@ -158,77 +159,42 @@ export default class DeliveriesService {
   }: {
     orderedProductsCount: number;
     orderCost: number;
-  }): Promise<DeliveryEntity[]> {
+  }): Promise<IDelivery[]> {
     const deliveries = await this.find();
 
-    const availableDeliveries = deliveries.filter(delivery => {
-      switch (delivery.condition.criteria) {
-        case DeliveryCriteriaEnum.COUNT: {
-          return this.isFulfilledCondition(delivery, orderedProductsCount);
-        }
-        case DeliveryCriteriaEnum.PRICE: {
-          return this.isFulfilledCondition(delivery, orderCost);
-        }
-        default: {
-          return false;
-        }
-      }
+    return deliveryModule.getAvailableDeliveries({
+      deliveries,
+      orderedProductsCount,
+      orderCost,
     });
-
-    return availableDeliveries.sort(
-      (a, b) =>
-        this.calculate(b, { orderCost }) - this.calculate(a, { orderCost })
-    );
-  }
-
-  isFulfilledCondition(delivery: DeliveryEntity, value: number): boolean {
-    switch (delivery.condition.op) {
-      case DeliveryOperatorEnum.EQUAL: {
-        return value === delivery.condition.value;
-      }
-      case DeliveryOperatorEnum.GREATER: {
-        return value > delivery.condition.value;
-      }
-      case DeliveryOperatorEnum.LESS: {
-        return value < delivery.condition.value;
-      }
-      case DeliveryOperatorEnum.BETWEEN: {
-        return (
-          delivery.condition.value2 !== undefined &&
-          value >=
-            Math.min(delivery.condition.value, delivery.condition.value2) &&
-          value <= Math.max(delivery.condition.value, delivery.condition.value2)
-        );
-      }
-      default: {
-        return false;
-      }
-    }
   }
 
   async isAvailableDelivery(
-    delivery: DeliveryEntity,
-    options: {
+    delivery: IDelivery,
+    {
+      orderedProductsCount,
+      orderCost,
+    }: {
       orderedProductsCount: number;
       orderCost: number;
     }
   ): Promise<boolean> {
-    const availableDeliveries = await this.getAvailableDeliveries(options);
-    return availableDeliveries.some(d => d.uuid === delivery.uuid);
+    const deliveries = await this.find();
+
+    return deliveryModule.isAvailableDelivery(delivery, {
+      deliveries,
+      orderedProductsCount,
+      orderCost,
+    });
   }
 
   calculate(
     delivery: DeliveryEntity,
     { orderCost }: { orderCost: number }
   ): number {
-    switch (delivery.type) {
-      case DeliveryTypeEnum.PERCENT: {
-        return (orderCost * delivery.value) / 100;
-      }
-      case DeliveryTypeEnum.IN_CASH:
-      default: {
-        return delivery.value;
-      }
-    }
+    return deliveryModule.calculateDelivery({
+      delivery,
+      orderCost,
+    });
   }
 }
