@@ -11,6 +11,7 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import BackupTableOutlinedIcon from "@mui/icons-material/BackupTableOutlined";
 import InsertChartOutlinedSharpIcon from "@mui/icons-material/InsertChartOutlinedSharp";
+import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
 import { useRouter } from "next/router";
 
 export interface MenuListProps {}
@@ -35,6 +36,11 @@ export const MENU_ITEMS = [
     name: "modifiers/categories",
     displayName: "Типы Модификаторов",
     icon: <BackupTableOutlinedIcon />,
+  },
+  {
+    name: "payments",
+    displayName: "Варианты оплаты",
+    icon: <PaymentOutlinedIcon />,
   },
   {
     name: "discounts",

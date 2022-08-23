@@ -64,7 +64,7 @@ export const CollapsedModifiersTable: React.FC<
           },
           {
             name: "desc",
-            value: modifier.desc ?? "Нет",
+            value: modifier.desc ?? "Без описания",
           },
           {
             name: "price",

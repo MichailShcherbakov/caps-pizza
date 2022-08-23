@@ -10,7 +10,7 @@ import SyncModule from "./modules/sync/sync.module";
 import DeliveryModule from "./modules/delivery/deliveries.module";
 import AuthModule from "./modules/auth/auth.module";
 import UsersModule from "./modules/users/users.module";
-import PaymentService from "./modules/payment/payment.service";
+import PaymentModule from "./modules/payment/payment.module";
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import PaymentService from "./modules/payment/payment.service";
     SyncModule,
     AuthModule,
     UsersModule,
-    PaymentService,
+    PaymentModule,
   ],
 })
 export default class AppModule {}

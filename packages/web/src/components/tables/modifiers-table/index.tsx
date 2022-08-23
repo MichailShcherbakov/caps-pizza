@@ -30,7 +30,7 @@ export const ModifiersTable: React.FC<ModifiersTableProps> = () => {
             },
             {
               name: "desc",
-              value: modifier.desc ?? "Нет",
+              value: modifier.desc ?? "Без описания",
             },
             {
               name: "price",

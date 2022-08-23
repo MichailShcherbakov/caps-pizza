@@ -48,6 +48,7 @@ export const API = createApi({
     "Product",
     "Discount",
     "Delivery",
+    "Payment",
   ],
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),

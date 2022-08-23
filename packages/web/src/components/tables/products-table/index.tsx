@@ -39,7 +39,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
             },
             {
               name: "desc",
-              value: product.desc ?? "Нет",
+              value: product.desc ?? "Без описания",
             },
             {
               name: "price",
