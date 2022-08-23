@@ -11,6 +11,7 @@ import { FrontPadResponse, MakeAnOrderDto } from "./orders.dto";
 import * as FormData from "form-data";
 import DiscountsService from "../discounts/discounts.service";
 import DeliveriesService from "../delivery/deliveries.service";
+import PaymentService from "../payment/payment.service";
 
 export const FIXED_MODIFIER_COUNT = 1;
 export const FIXED_DELIVERY_COUNT = 1;
@@ -22,11 +23,12 @@ export default class OrdersService {
     private readonly productsService: ProductsService,
     private readonly modifiersService: ModifiersService,
     private readonly discountsService: DiscountsService,
-    private readonly deliveriesService: DeliveriesService
+    private readonly deliveriesService: DeliveriesService,
+    private readonly paymentService: PaymentService
   ) {}
 
   async makeAnOrder(dto: MakeAnOrderDto): Promise<FrontPadResponse> {
-    const [products, modifiers, delivery] = await Promise.all([
+    const [products, modifiers, delivery, payment] = await Promise.all([
       this.productsService.find({
         uuid: In(dto.products.map(p => p.uuid)),
       }),
@@ -41,6 +43,7 @@ export default class OrdersService {
       dto.delivery_uuid
         ? await this.deliveriesService.findOne({ uuid: dto.delivery_uuid })
         : null,
+      this.paymentService.findOneOrFail({ uuid: dto.payment_uuid }),
     ]);
 
     let orderCost = 0;
@@ -125,6 +128,8 @@ export default class OrdersService {
       );
     }
 
+    payload.append("tags[0]", payment.code);
+
     payload.append("sale_amount", discount);
     payload.append("street", dto.delivery_address.street);
     payload.append("home", dto.delivery_address.house);
@@ -133,7 +138,7 @@ export default class OrdersService {
     payload.append("apart", dto.delivery_address.apartment);
     payload.append("name", dto.client_info.name);
     payload.append("phone", dto.client_info.phone);
-    payload.append("mail", dto.client_info.mail ?? "");
+    payload.append("mail", dto.client_info.email ?? "");
     payload.append("descr", dto.description ?? "");
 
     return this.sendToFrontPad(payload);

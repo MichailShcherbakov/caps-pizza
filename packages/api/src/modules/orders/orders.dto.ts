@@ -1,7 +1,6 @@
 import {
   IsArray,
   IsEmail,
-  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -12,14 +11,21 @@ import {
   Min,
   ValidateNested,
 } from "class-validator";
+import {
+  IClientInfo,
+  IDeliveryAddress,
+  IOrder,
+  IOrderedModifier,
+  IOrderedProduct,
+} from "@monorepo/common";
 
-export class Modifier {
+export class OrderedModifier implements IOrderedModifier {
   @IsUUID()
   @IsNotEmpty()
   uuid: string;
 }
 
-export class OrderedProduct {
+export class OrderedProduct implements IOrderedProduct {
   @IsUUID()
   @IsNotEmpty()
   uuid: string;
@@ -32,10 +38,10 @@ export class OrderedProduct {
   @IsArray()
   @IsNotEmpty()
   @ValidateNested({ each: true })
-  modifiers: Modifier[];
+  modifiers: OrderedModifier[];
 }
 
-export class DeliveryAddress {
+export class DeliveryAddress implements IDeliveryAddress {
   @IsString()
   @MaxLength(50)
   @IsNotEmpty()
@@ -59,7 +65,7 @@ export class DeliveryAddress {
   apartment: number;
 }
 
-export class ClientInfo {
+export class ClientInfo implements IClientInfo {
   @IsString()
   @MaxLength(50)
   name: string;
@@ -71,21 +77,10 @@ export class ClientInfo {
   @IsEmail()
   @MaxLength(50)
   @IsOptional()
-  mail?: string;
+  email?: string;
 }
 
-export enum PaymentTypeEnum {
-  IN_CASH = "IN_CASH",
-  BY_CARD = "BY_CARD",
-}
-
-export class Payment {
-  @IsEnum(PaymentTypeEnum)
-  @IsNotEmpty()
-  type: PaymentTypeEnum;
-}
-
-export class Order {
+export class Order implements IOrder {
   @IsNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
@@ -94,11 +89,6 @@ export class Order {
   @ValidateNested()
   @IsNotEmpty()
   delivery_address: DeliveryAddress;
-
-  @IsUUID()
-  @IsNotEmpty()
-  @IsOptional()
-  delivery_uuid?: string;
 
   @IsNumber()
   @Min(0)
@@ -120,8 +110,14 @@ export class Order {
   @IsOptional()
   description?: string;
 
+  @IsUUID()
   @IsNotEmpty()
-  payment: Payment;
+  @IsOptional()
+  delivery_uuid?: string;
+
+  @IsUUID()
+  @IsNotEmpty()
+  payment_uuid: string;
 }
 
 export class MakeAnOrderDto extends Order {}

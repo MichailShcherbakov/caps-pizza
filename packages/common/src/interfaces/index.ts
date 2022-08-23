@@ -6,3 +6,5 @@ export * from "./modifier-category.interface";
 export * from "./modifier.interface";
 export * from "./product-category.interface";
 export * from "./product.interface";
+export * from "./payment.interface";
+export * from "./order.interface";

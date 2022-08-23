@@ -3,6 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import DeliveriesService from "~/modules/delivery/deliveries.service";
 import DiscountsService from "~/modules/discounts/discounts.service";
 import ModifiersService from "~/modules/modifiers/modifiers.service";
+import PaymentService from "~/modules/payment/payment.service";
 import ProductsService from "~/modules/products/products.service";
 import { ITestingModule } from "~/utils/testing-module.interface";
 import OrdersService from "../../orders.service";
@@ -17,6 +18,7 @@ export default class UnitTestingModule extends ITestingModule {
         ModifiersService,
         DiscountsService,
         DeliveriesService,
+        PaymentService,
       ],
     })
       .overrideProvider(HttpService)
@@ -32,6 +34,10 @@ export default class UnitTestingModule extends ITestingModule {
         findOne: jest.fn(),
         getAvailableDeliveries: jest.fn(),
         calculate: jest.fn(),
+      })
+      .overrideProvider(PaymentService)
+      .useValue({
+        findOneOrFail: jest.fn(),
       })
       .compile();
   }

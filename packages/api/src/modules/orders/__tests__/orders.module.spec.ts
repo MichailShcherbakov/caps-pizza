@@ -3,12 +3,14 @@ import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductEntity from "~/db/entities/product.entity";
 import { DeliveryFactory } from "~/db/seeds/delivery.seed";
 import { ModifiersFactory } from "~/db/seeds/modifier.seed";
+import { PaymentFactory } from "~/db/seeds/payment.seed";
 import { ProductsFactory } from "~/db/seeds/product.seed";
 import DeliveriesService from "~/modules/delivery/deliveries.service";
 import DiscountsService from "~/modules/discounts/discounts.service";
 import ModifiersService from "~/modules/modifiers/modifiers.service";
+import PaymentService from "~/modules/payment/payment.service";
 import ProductsService from "~/modules/products/products.service";
-import { MakeAnOrderDto, OrderedProduct, PaymentTypeEnum } from "../orders.dto";
+import { MakeAnOrderDto, OrderedProduct } from "../orders.dto";
 import OrdersService, {
   FIXED_DELIVERY_COUNT,
   FIXED_MODIFIER_COUNT,
@@ -29,15 +31,18 @@ describe("[Orders Module] ...", () => {
   let testingModule: UnitTestingModule;
   let orderService: OrdersService;
   let deliveriesService: DeliveriesService;
+  let paymentService: PaymentService;
   const productsFactory: ProductsFactory = new ProductsFactory();
   const modifiersFactory: ModifiersFactory = new ModifiersFactory();
   const deliveriesFactory: DeliveryFactory = new DeliveryFactory();
+  const paymentFactory: PaymentFactory = new PaymentFactory();
   let sendToFrontPadWrapper: jest.SpyInstance;
   let findProductsWrapper: jest.SpyInstance;
   let findModifiersWrapper: jest.SpyInstance;
   let findOneDeliveryWrapper: jest.SpyInstance;
   let getAvailableDeliveriesWrapper: jest.SpyInstance;
   let calculateDiscountWrapper: jest.SpyInstance;
+  let findOneOrFailPaymentWrapper: jest.SpyInstance;
 
   beforeAll(async () => {
     testingModule = new UnitTestingModule();
@@ -66,6 +71,9 @@ describe("[Orders Module] ...", () => {
       deliveriesService,
       "getAvailableDeliveries"
     );
+
+    paymentService = testingModule.get<PaymentService>(PaymentService);
+    findOneOrFailPaymentWrapper = jest.spyOn(paymentService, "findOneOrFail");
   });
 
   afterEach(() => {
@@ -80,6 +88,10 @@ describe("[Orders Module] ...", () => {
     const TEST_DISCOUNT = 100;
     const TEST_DELIVERY = {
       ...deliveriesFactory.create(),
+      uuid: faker.datatype.uuid(),
+    };
+    const TEST_PAYMENT = {
+      ...paymentFactory.create(),
       uuid: faker.datatype.uuid(),
     };
 
@@ -103,6 +115,8 @@ describe("[Orders Module] ...", () => {
 
     findOneDeliveryWrapper.mockResolvedValueOnce(TEST_DELIVERY);
 
+    findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
+
     const dto: MakeAnOrderDto = {
       products: orderedProducts.map<OrderedProduct>(p => ({
         uuid: p.uuid,
@@ -121,9 +135,7 @@ describe("[Orders Module] ...", () => {
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
-      payment: {
-        type: PaymentTypeEnum.IN_CASH,
-      },
+      payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
         name: faker.datatype.string(),
         phone: faker.datatype.string(),
@@ -224,6 +236,9 @@ describe("[Orders Module] ...", () => {
       "street",
       dto.delivery_address.street
     );
+
+    expect(payload.append).toBeCalledWith("tags[0]", TEST_PAYMENT.code);
+
     expect(payload.append).toBeCalledWith("home", dto.delivery_address.house);
     expect(payload.append).toBeCalledWith("pod", dto.delivery_address.entrance);
     expect(payload.append).toBeCalledWith("et", dto.delivery_address.floor);
@@ -233,16 +248,20 @@ describe("[Orders Module] ...", () => {
     );
     expect(payload.append).toBeCalledWith("name", dto.client_info.name);
     expect(payload.append).toBeCalledWith("phone", dto.client_info.phone);
-    expect(payload.append).toBeCalledWith("mail", dto.client_info.mail ?? "");
+    expect(payload.append).toBeCalledWith("mail", dto.client_info.email ?? "");
     expect(payload.append).toBeCalledWith("descr", dto.description ?? "");
 
-    callsCount += 13;
+    callsCount += 14;
 
     expect(payload.append).toBeCalledTimes(callsCount);
   });
 
   it("should throw an error when the product not found", async () => {
     const TEST_FAKE_PRODUCT_UUID = faker.datatype.uuid();
+    const TEST_PAYMENT = {
+      ...paymentFactory.create(),
+      uuid: faker.datatype.uuid(),
+    };
 
     const orderedProducts = (5).map(() =>
       productsFactory.create({
@@ -261,6 +280,8 @@ describe("[Orders Module] ...", () => {
     findModifiersWrapper.mockResolvedValueOnce(usedModifiers);
 
     getAvailableDeliveriesWrapper.mockResolvedValueOnce([]);
+
+    findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
 
     const dto: MakeAnOrderDto = {
       products: [
@@ -282,9 +303,7 @@ describe("[Orders Module] ...", () => {
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
-      payment: {
-        type: PaymentTypeEnum.IN_CASH,
-      },
+      payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
         name: faker.datatype.string(),
         phone: faker.datatype.string(),
@@ -298,6 +317,10 @@ describe("[Orders Module] ...", () => {
 
   it("should throw an error when the modifier not found", async () => {
     const TEST_FAKE_MODIFIER_UUID = faker.datatype.uuid();
+    const TEST_PAYMENT = {
+      ...paymentFactory.create(),
+      uuid: faker.datatype.uuid(),
+    };
 
     const orderedProducts = (5).map(() =>
       productsFactory.create({
@@ -317,6 +340,8 @@ describe("[Orders Module] ...", () => {
 
     getAvailableDeliveriesWrapper.mockResolvedValueOnce([]);
 
+    findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
+
     const dto: MakeAnOrderDto = {
       products: orderedProducts.map<OrderedProduct>(p => ({
         uuid: p.uuid,
@@ -335,9 +360,7 @@ describe("[Orders Module] ...", () => {
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
-      payment: {
-        type: PaymentTypeEnum.IN_CASH,
-      },
+      payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
         name: faker.datatype.string(),
         phone: faker.datatype.string(),
@@ -356,6 +379,10 @@ describe("[Orders Module] ...", () => {
         category_uuid: faker.datatype.uuid(),
       })
     );
+    const TEST_PAYMENT = {
+      ...paymentFactory.create(),
+      uuid: faker.datatype.uuid(),
+    };
 
     findProductsWrapper.mockResolvedValueOnce(orderedProducts);
 
@@ -366,6 +393,8 @@ describe("[Orders Module] ...", () => {
     );
 
     findModifiersWrapper.mockResolvedValueOnce(usedModifiers);
+
+    findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
 
     getAvailableDeliveriesWrapper.mockResolvedValueOnce([
       deliveriesFactory.create(),
@@ -389,9 +418,7 @@ describe("[Orders Module] ...", () => {
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
-      payment: {
-        type: PaymentTypeEnum.IN_CASH,
-      },
+      payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
         name: faker.datatype.string(),
         phone: faker.datatype.string(),
@@ -406,6 +433,10 @@ describe("[Orders Module] ...", () => {
   it("should throw an error when the delivery is not available", async () => {
     const TEST_NOT_AVAILABLE_DELIVERY = {
       ...deliveriesFactory.create(),
+      uuid: faker.datatype.uuid(),
+    };
+    const TEST_PAYMENT = {
+      ...paymentFactory.create(),
       uuid: faker.datatype.uuid(),
     };
 
@@ -431,6 +462,8 @@ describe("[Orders Module] ...", () => {
 
     findOneDeliveryWrapper.mockResolvedValueOnce(TEST_NOT_AVAILABLE_DELIVERY);
 
+    findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
+
     const dto: MakeAnOrderDto = {
       products: orderedProducts.map<OrderedProduct>(p => ({
         uuid: p.uuid,
@@ -449,9 +482,7 @@ describe("[Orders Module] ...", () => {
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
-      payment: {
-        type: PaymentTypeEnum.IN_CASH,
-      },
+      payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
         name: faker.datatype.string(),
         phone: faker.datatype.string(),
