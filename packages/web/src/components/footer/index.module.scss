@@ -1,6 +1,5 @@
 .footer {
   @include ui-w-full;
-  @include ui-h(280px);
 
   &__icon {
     @include ui-size(20px);
@@ -31,7 +30,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-md) {
+@media (max-width: $breakpoint-md) {
   .footer {
     @include ui-h-auto;
 

@@ -128,7 +128,7 @@ export default class OrdersService {
       );
     }
 
-    payload.append("tags[0]", payment.code);
+    payload.append("pay", payment.code);
 
     payload.append("sale_amount", discount);
     payload.append("street", dto.delivery_address.street);

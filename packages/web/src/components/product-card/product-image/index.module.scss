@@ -32,7 +32,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-sm) {
   .product-card {
     &__image {
       @include ui-flex-row;
@@ -59,7 +59,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-xs) {
+@media (max-width: $breakpoint-xs) {
   .product-card {
     &__image {
       @include ui-w(150px);
@@ -68,7 +68,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-xxs) {
+@media (max-width: $breakpoint-xxs) {
   .product-card {
     &__image {
       @include ui-w(120px);

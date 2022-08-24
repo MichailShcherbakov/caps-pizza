@@ -73,3 +73,32 @@
 @mixin ui-rounded {
   border-radius: 50%;
 }
+
+@mixin ui-border-1 {
+  @include ui-border(1px, solid, $border-color);
+}
+
+@mixin ui-border-rounded-1 {
+  @include ui-border-1;
+  @include ui-rounded-1;
+}
+
+@mixin ui-border-rounded-2 {
+  @include ui-border-1;
+  @include ui-rounded-2;
+}
+
+@mixin ui-border-rounded-3 {
+  @include ui-border-1;
+  @include ui-rounded-3;
+}
+
+@mixin ui-border-rounded-4 {
+  @include ui-border-1;
+  @include ui-rounded-4;
+}
+
+@mixin ui-border-rounded-5 {
+  @include ui-border-1;
+  @include ui-rounded-5;
+}

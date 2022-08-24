@@ -1,11 +1,13 @@
 import { Button, Stack, Typography } from "@mui/material";
 import useShoppingCart from "~/hooks/use-shopping-cart";
 
-export interface ProductCardListFooterProps {}
+export interface ProductCardListFooterProps {
+  onOrder?: () => void;
+}
 
-export const ProductCardListFooter: React.FC<
-  ProductCardListFooterProps
-> = () => {
+export const ProductCardListFooter: React.FC<ProductCardListFooterProps> = ({
+  onOrder,
+}) => {
   const { products, totalCost, discount, discountValue, isLoading } =
     useShoppingCart();
 
@@ -23,7 +25,7 @@ export const ProductCardListFooter: React.FC<
           </Typography>
         ) : undefined}
       </Stack>
-      <Button variant="outlined">
+      <Button variant="outlined" onClick={onOrder}>
         <Typography variant="button">Оформить заказ</Typography>
       </Button>
     </Stack>

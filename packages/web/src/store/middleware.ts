@@ -2,6 +2,7 @@ import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import {
   addProduct,
+  clear,
   init,
   removeProduct,
   setMetaStep,
@@ -13,7 +14,7 @@ export const listenerMiddleware = createListenerMiddleware();
 
 listenerMiddleware.startListening({
   matcher: isAnyOf(addProduct, removeProduct),
-  effect: async (_, listenerApi) => {
+  effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
 
     localStorage.setItem(
@@ -27,7 +28,7 @@ listenerMiddleware.startListening({
 
 listenerMiddleware.startListening({
   actionCreator: setMetaStep,
-  effect: async (action, listenerApi) => {
+  effect: (action, listenerApi) => {
     if (action.payload.step === "pending") {
       const data = localStorage.getItem(SHOPPING_CART_STORAGE_KEY);
 
@@ -54,5 +55,12 @@ listenerMiddleware.startListening({
         })
       );
     }
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: clear,
+  effect: () => {
+    localStorage.removeItem(SHOPPING_CART_STORAGE_KEY);
   },
 });

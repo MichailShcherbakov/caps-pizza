@@ -42,3 +42,23 @@
 @mixin ui-fill($color) {
   fill: $color;
 }
+
+@mixin ui-ws-nowrap {
+  white-space: nowrap;
+}
+
+@mixin ui-blur {
+  backdrop-filter: blur(20px);
+}
+
+@mixin ui-opacity($v) {
+  opacity: $v;
+}
+
+@mixin cubic-transition {
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    fill 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}

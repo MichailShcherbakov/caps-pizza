@@ -6,7 +6,6 @@
   @include ui-gap(0.875rem);
   @include ui-rounded-2;
   @include ui-border(1px, solid, $gray-100);
-  @include ui-bg-color($white);
 
   &__icon {
     @include ui-pos-rel;
@@ -41,7 +40,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-md) {
+@media (max-width: $breakpoint-md) {
   .category-card--medium {
     @include ui-flex-row;
     @include ui-px-6;

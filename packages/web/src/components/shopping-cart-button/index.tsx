@@ -16,7 +16,7 @@ export interface ShoppingCartButtonProps {
 
 export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = React.memo(
   ({ currencySymbol = "₽", variant = "outlined" }) => {
-    const { totalCost, products, isLoading } = useShoppingCart();
+    const { totalCost, productsCount, isLoading } = useShoppingCart();
     const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
 
     const onClickHandler = React.useCallback(() => {
@@ -51,8 +51,6 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = React.memo(
         </>
       );
 
-    const count = products.reduce((count, product) => count + product.count, 0);
-
     if (variant === "filled & rounded") {
       return (
         <>
@@ -64,13 +62,13 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = React.memo(
             onClick={onClickHandler}
           >
             <ShoppingCartIcon className={styles["shopping-cart-btn__icon"]} />
-            {count ? (
+            {productsCount ? (
               <Stack
                 alignItems="center"
                 justifyContent="center"
                 className={styles["shopping-cart-btn__badge"]}
               >
-                {count}
+                {productsCount}
               </Stack>
             ) : undefined}
           </IconButton>

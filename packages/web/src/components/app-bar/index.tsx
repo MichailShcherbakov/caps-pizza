@@ -42,9 +42,11 @@ export const AppBarHead = () => {
   );
 };
 
-export interface AppBarProps extends StackProps {}
+export interface AppBarProps extends StackProps {
+  empty?: boolean;
+}
 
-export const AppBar: React.FC<AppBarProps> = props => {
+export const AppBar: React.FC<AppBarProps> = ({ empty, ...props }) => {
   return (
     <Stack
       {...props}
@@ -60,10 +62,15 @@ export const AppBar: React.FC<AppBarProps> = props => {
           justifyContent="space-between"
           spacing={2}
         >
-          <AppBarHead />
-          <React.Suspense>
-            <ShoppingCartButton />
-          </React.Suspense>
+          {empty ? <Logo /> : undefined}
+          {!empty ? (
+            <>
+              <AppBarHead />
+              <React.Suspense>
+                <ShoppingCartButton />
+              </React.Suspense>
+            </>
+          ) : undefined}
         </Stack>
       </Container>
     </Stack>

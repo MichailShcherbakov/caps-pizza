@@ -5,11 +5,26 @@
 @import "utilities/sizing/sizing.classes";
 @import "utilities/spacing/spacing.classes";
 @import "utilities/cursor/cursor.classes";
+@import "utilities/display/display.classes";
+@import "utilities/position/position.classes";
+@import "utilities/gap/gap.classes";
 
-.ui-w-inherit {
-  width: inherit;
+.ui-ws-nowrap {
+  @include ui-ws-nowrap;
 }
 
-.ui-h-inherit {
-  height: inherit;
+.ui-blur {
+  @include ui-blur();
+}
+
+.ui-truncate {
+  @include ui-truncate();
+}
+
+.ui-space-x-between {
+  justify-content: space-between;
+}
+
+.ui-space-y-between {
+  align-content: space-between;
 }

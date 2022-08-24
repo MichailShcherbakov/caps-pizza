@@ -1,12 +1,19 @@
-@mixin ui-font($size: 1rem, $weight: 400, $color, $line-height: 1rem) {
+@mixin ui-font(
+  $size: 1rem,
+  $weight: 400,
+  $color: inherit,
+  $line-height: normal
+) {
   font-size: $size;
   font-weight: $weight;
-
-  color: $color;
-
   line-height: $line-height;
+  color: $color;
 }
 
 @mixin ui-font-color($color) {
   color: $color;
+}
+
+@mixin ui-font-size($size: 1rem) {
+  font-size: $size;
 }

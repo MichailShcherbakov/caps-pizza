@@ -2,4 +2,16 @@
   @include ui-w-full;
   @include ui-pos-rel;
   @include ui-bg-color($white);
+  @include ui-min-h(100vh);
+
+  &__container {
+    @include ui-flex;
+    @include ui-flex-col;
+
+    @include ui-h-full;
+
+    @include ui-py-8;
+
+    flex-grow: 1;
+  }
 }

@@ -8,7 +8,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-md) {
+@media (max-width: $breakpoint-md) {
   .info-bar {
     &__delivery-time {
       @include ui-display-none;

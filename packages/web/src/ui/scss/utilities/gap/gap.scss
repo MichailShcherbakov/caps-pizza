@@ -1,0 +1,19 @@
+@mixin ui-gap($v) {
+  gap: $v;
+}
+
+@mixin ui-gap-1 {
+  @include ui-gap(0.5rem);
+}
+
+@mixin ui-gap-2 {
+  @include ui-gap(1rem);
+}
+
+@mixin ui-gap-3 {
+  @include ui-gap(1.5rem);
+}
+
+@mixin ui-gap-4 {
+  @include ui-gap(2rem);
+}

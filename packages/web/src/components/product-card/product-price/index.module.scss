@@ -17,7 +17,7 @@
   }
 }
 
-@media screen and (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-sm) {
   .product-card {
     &__price {
       @include ui-display-none;

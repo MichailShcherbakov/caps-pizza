@@ -1,0 +1,31 @@
+.empty-stub {
+  @include ui-w-full;
+  @include ui-h-full;
+  @include ui-py-12;
+
+  flex-grow: 1;
+
+  &__image {
+    @include ui-size(320px);
+  }
+
+  &__title,
+  &__subtitle {
+    @include ui-w-full;
+
+    text-align: center;
+  }
+
+  &__link {
+    color: $orange-400 !important;
+    text-align: center;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .empty-stub {
+    &__image {
+      @include ui-size(240px);
+    }
+  }
+}

@@ -143,3 +143,7 @@
 @mixin ui-min-w($scale) {
   min-width: $scale;
 }
+
+@mixin ui-w-inherit {
+  width: inherit;
+}

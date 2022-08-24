@@ -3,15 +3,23 @@ import {
   SkeletonProps as MUISkeletonProps,
 } from "@mui/material";
 
-export interface SkeletonProps extends MUISkeletonProps {}
+export interface SkeletonProps extends MUISkeletonProps {
+  fullWidth?: boolean;
+}
 
-export const Skeleton: React.FC<SkeletonProps> = ({ className, ...props }) => {
+export const Skeleton: React.FC<SkeletonProps> = ({
+  fullWidth,
+  className,
+  ...props
+}) => {
   return (
     <MUISkeleton
       {...props}
       variant="rectangular"
       animation="wave"
-      className={["ui-rounded-1", className].join(" ")}
+      className={["ui-rounded-1", fullWidth ? "ui-w-full" : "", className].join(
+        " "
+      )}
     />
   );
 };

@@ -40,7 +40,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </React.Suspense>
             <InfoBar />
             <AppBar />
-            <Container component="main" className="ui-flex ui-flex-col ui-py-8">
+            <Container
+              component="main"
+              className={styles["main-layout__container"]}
+            >
               {children}
             </Container>
             <Footer />

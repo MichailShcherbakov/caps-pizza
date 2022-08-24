@@ -1,5 +1,4 @@
-@import "../ui/scss/normalize.scss";
-@import "../ui/scss/main.scss";
+@import "../ui/scss/main.classes.scss";
 
 .ui-truncate.MuiTypography-root {
   @include ui-truncate();
@@ -13,68 +12,47 @@
   @include cubic-transition;
 
   &.MuiTypography-h1 {
-    font-size: 38px;
-    font-weight: 700;
-    color: $gray-900;
+    @include ui-font(34px, 700, $gray-900);
   }
 
   &.MuiTypography-h2 {
-    font-size: 32px;
-    font-weight: 700;
-    color: $gray-900;
+    @include ui-font(32px, 700, $gray-900);
   }
 
   &.MuiTypography-h3 {
-    font-size: 24px;
-    font-weight: 700;
-    color: $gray-900;
+    @include ui-font(24px, 700, $gray-900);
   }
 
   &.MuiTypography-h4 {
-    font-size: 18px;
-    font-weight: 700;
-    color: $gray-900;
+    @include ui-font(18px, 700, $gray-900);
   }
 
   &.MuiTypography-h5 {
-    font-size: 16px;
-    font-weight: 700;
-    color: $gray-900;
+    @include ui-font(16px, 700, $gray-900);
   }
 
   &.MuiTypography-h6 {
-    font-size: 14px;
-    font-weight: 700;
-    color: $gray-900;
+    @include ui-font(14px, 700, $gray-900);
   }
 
   &.MuiTypography-body1 {
-    font-size: 14px;
-    font-weight: 500;
-    color: $gray-900;
+    @include ui-font(14px, 500, $gray-900);
   }
 
   &.MuiTypography-body2 {
-    font-size: 16px;
-    font-weight: 500;
-    color: $gray-900;
+    @include ui-font(16px, 500, $gray-900);
   }
 
   &.MuiTypography-button {
-    font-size: 14px;
-    font-weight: 500;
+    @include ui-font(14px, 500);
   }
 
   &.MuiTypography-subtitle1 {
-    font-size: 13px;
-    font-weight: 400;
-    color: $gray-400;
+    @include ui-font(13px, 400, $gray-400);
   }
 
   &.MuiTypography-subtitle2 {
-    font-size: 13px;
-    font-weight: 400;
-    color: $gray-900;
+    @include ui-font(13px, 400, $gray-900);
   }
 }
 
@@ -96,8 +74,20 @@
   @include ui-box-shadow-none;
 }
 
+.MuiButton-sizeSmall {
+  @include ui-min-h(30px);
+}
+
+.MuiButton-sizeMedium {
+  @include ui-min-h(36px);
+}
+
+.MuiButton-sizeLarge {
+  @include ui-min-h(42px);
+}
+
 .MuiGrid-grid-xs-12 {
-  width: 100%;
+  @include ui-w-full;
 }
 
 .MuiToggleButton-root {
@@ -163,7 +153,7 @@
 }
 
 .MuiTextField-root {
-  min-width: 96px;
+  @include ui-min-w(96px);
 }
 
 .MuiPaper-root {
@@ -210,46 +200,46 @@
   @include ui-font-color($orange-400);
 }
 
-@media screen and (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-sm) {
   .MuiTypography-root {
     &.MuiTypography-h1 {
-      font-size: 28px;
+      @include ui-font-size(28px);
     }
 
     &.MuiTypography-h2 {
-      font-size: 24px;
+      @include ui-font-size(24px);
     }
 
     &.MuiTypography-h3 {
-      font-size: 20px;
+      @include ui-font-size(20px);
     }
 
     &.MuiTypography-h4 {
-      font-size: 18px;
+      @include ui-font-size(18px);
     }
 
     &.MuiTypography-h5 {
-      font-size: 14px;
+      @include ui-font-size(14px);
     }
 
     &.MuiTypography-h6 {
-      font-size: 12px;
+      @include ui-font-size(12px);
     }
 
     &.MuiTypography-body1 {
-      font-size: 12px;
+      @include ui-font-size(12px);
     }
 
     &.MuiTypography-body2 {
-      font-size: 14px;
+      @include ui-font-size(14px);
     }
 
     &.MuiTypography-button {
-      font-size: 13px;
+      @include ui-font-size(13px);
     }
 
     &.MuiTypography-subtitle1 {
-      font-size: 12px;
+      @include ui-font-size(12px);
     }
   }
 }

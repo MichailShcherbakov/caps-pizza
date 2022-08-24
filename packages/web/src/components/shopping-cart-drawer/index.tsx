@@ -4,12 +4,15 @@ import ProductCardList from "./components/product-card-list";
 import ProductCardListFooter from "./components/product-card-list-footer";
 import ProductCardListHeader from "./components/product-card-list-header";
 import styles from "./index.module.scss";
+import { useRouter } from "next/router";
 
 export interface ShoppingCartDrawerProps extends Omit<DrawerProps, "onClose"> {
   onClose?: () => void;
 }
 
 export const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = props => {
+  const router = useRouter();
+
   return (
     <Drawer {...props}>
       <Stack
@@ -23,7 +26,7 @@ export const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = props => {
       >
         <ProductCardListHeader anchor={props.anchor} onExit={props.onClose} />
         <ProductCardList />
-        <ProductCardListFooter />
+        <ProductCardListFooter onOrder={() => router.push("/order")} />
       </Stack>
     </Drawer>
   );

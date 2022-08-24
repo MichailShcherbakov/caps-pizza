@@ -10,3 +10,7 @@
 .ui-h-screen {
   @include ui-h($spacing-scale-h-screen);
 }
+
+.ui-h-inherit {
+  @include ui-h-inherit;
+}

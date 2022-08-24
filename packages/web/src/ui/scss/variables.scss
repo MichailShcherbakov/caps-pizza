@@ -1,73 +1,26 @@
-$white: #fff !default;
-$black: #000 !default;
+$white: #fff;
+$black: #000;
 
-$transparent: transparent !default;
+$transparent: transparent;
 
-$gray-50: #fafafa !default;
-$gray-75: #f1f1f1 !default;
-$gray-100: #e8e8e8 !default;
-$gray-150: #d7d7d7 !default;
-$gray-200: #c5c5c5 !default;
-$gray-250: #b4b4b4 !default;
-$gray-300: #a4a4a4 !default;
-$gray-350: #939393 !default;
-$gray-400: #838383 !default;
-$gray-450: #737373 !default;
-$gray-500: #646464 !default;
-$gray-550: #555555 !default;
-$gray-600: #464646 !default;
-$gray-650: #383838 !default;
-$gray-700: #2b2b2b !default;
-$gray-750: #1e1e1e !default;
-$gray-800: #111111 !default;
+$breakpoint-xxs: 390px;
+$breakpoint-xs: 450px;
+$breakpoint-sm: 599px;
+$breakpoint-md: 900px;
+$breakpoint-lg: 1280px;
+$breakpoint-xl: 1536px;
 
-$blue-10: #ebf1fd !default;
-$blue-50: #6a99ff !default;
-$blue-100: #5c8bf9 !default;
-$blue-200: #4f7df3 !default;
-$blue-300: #426fec !default;
-$blue-400: #3674ff !default;
-$blue-500: #2a53dd !default;
-$blue-600: #1e44d4 !default;
-$blue-700: #1335cc !default;
-$blue-800: #0823c2 !default;
-$blue-900: #0009b8 !default;
+$gray-50: #f9f9f9;
+$gray-100: #f0f0f0;
+$gray-400: #a5a5a5;
+$gray-900: #191919;
 
-$green-50: #dff8f4 !default;
-$green-100: #b3e2da !default;
-$green-200: #87cdc0 !default;
-$green-300: #57b7a6 !default;
-$green-400: #04a18c !default;
-$green-500: #038875 !default;
-$green-600: #026f60 !default;
-$green-700: #01584b !default;
-$green-800: #004137 !default;
+$orange-100: #ffeee2;
+$orange-400: #ff7010;
 
-$red-50: #fdecea !default;
-$red-100: #ff2525 !default;
-$red-200: #f31f1e !default;
-$red-300: #e71917 !default;
-$red-400: #db120f !default;
-$red-500: #cf0907 !default;
-$red-600: #c30000 !default;
+$red-400: #e23535;
 
-$orange-50: #fff4e5 !default;
-$orange-100: #ff8536 !default;
-$orange-200: #f7802e !default;
-$orange-300: #ee7b25 !default;
-$orange-400: #e6761b !default;
-$orange-500: #dd7110 !default;
-$orange-600: #d56c00 !default;
+$blue-50: rgba(7, 59, 76, 0.08);
+$blue-400: #264653;
 
-$ui-border-size-1: 1px;
-$ui-border-size-2: 2px;
-$ui-border-size-3: 3px;
-$ui-border-size-4: 4px;
-$ui-border-size-5: 5px;
-$ui-border-size-8: 8px;
-
-$ui-breakpoint-xs: 0;
-$ui-breakpoint-sm: 600px;
-$ui-breakpoint-md: 900px;
-$ui-breakpoint-lg: 1200px;
-$ui-breakpoint-xl: 1536px;
+$border-color: #e7ebf0;

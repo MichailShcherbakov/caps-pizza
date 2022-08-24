@@ -14,6 +14,7 @@ export type ShoppingCartProduct = Pick<OrderedProduct, "count"> &
 export type ShoppingCartLoading = {
   isLoading: true;
   products: undefined;
+  productsCount: undefined;
   totalCost: undefined;
   discount: undefined;
   discountValue: undefined;
@@ -22,6 +23,7 @@ export type ShoppingCartLoading = {
 export type ShoppingCartFulfilled = {
   isLoading: false;
   products: ShoppingCartProduct[];
+  productsCount: number;
   totalCost: number;
   discount?: IDiscount;
   discountValue: number;
@@ -49,18 +51,16 @@ export const useShoppingCart = ():
     isGetModifiersLoading ||
     isGetDiscountLoading;
 
-  const productMap = React.useMemo(
-    () => new Map(products.map(p => [p.uuid, p])),
-    [products]
-  );
-  const modifierMap = React.useMemo(
-    () => new Map(modifiers.map(m => [m.uuid, m])),
-    [modifiers]
-  );
+  return React.useMemo(() => {
+    if (isLoading)
+      return {
+        isLoading,
+      };
 
-  const shoppingCartProducts: ShoppingCartProduct[] = React.useMemo(
-    () =>
-      choisenProducts.map(product => {
+    const productMap = new Map(products.map(p => [p.uuid, p]));
+    const modifierMap = new Map(modifiers.map(m => [m.uuid, m]));
+    const shoppingCartProducts: ShoppingCartProduct[] = choisenProducts.map(
+      product => {
         const foundProduct = productMap.get(product.uuid) as Product;
         const foundModifiers = product.modifiers.map(modifier => ({
           ...modifier,
@@ -75,52 +75,38 @@ export const useShoppingCart = ():
             foundProduct.price +
             foundModifiers.reduce((p, m) => p + m.price, 0),
         };
-      }),
-    [productMap, modifierMap, choisenProducts]
-  );
+      }
+    );
 
-  const discount = React.useMemo(
-    () =>
-      getSuitableDiscount({
-        discounts,
-        products: shoppingCartProducts,
-      })?.discount,
-    [discounts, shoppingCartProducts]
-  );
+    const discount = getSuitableDiscount({
+      discounts,
+      products: shoppingCartProducts,
+    })?.discount;
 
-  const discountValue = React.useMemo(
-    () =>
-      calculateDiscountValue({
-        discounts,
-        products: shoppingCartProducts,
-      }),
-    [discounts, shoppingCartProducts]
-  );
+    const discountValue = calculateDiscountValue({
+      discounts,
+      products: shoppingCartProducts,
+    });
 
-  const totalCost = React.useMemo(
-    () =>
-      shoppingCartProducts.reduce(
-        (cost, product) => cost + product.fullPrice * product.count,
-        -discountValue
-      ),
-    [shoppingCartProducts, discountValue]
-  );
+    const totalCost = shoppingCartProducts.reduce(
+      (cost, product) => cost + product.fullPrice * product.count,
+      -discountValue
+    );
 
-  return React.useMemo<ShoppingCartLoading | ShoppingCartFulfilled>(() => {
-    if (isLoading) {
-      return {
-        isLoading,
-      };
-    }
+    const productsCount = shoppingCartProducts.reduce(
+      (count, product) => count + product.count,
+      0
+    );
 
     return {
       isLoading: isLoading,
       products: shoppingCartProducts,
+      productsCount,
       totalCost: totalCost,
       discount: discount,
       discountValue: discountValue,
     };
-  }, [shoppingCartProducts, totalCost, discount, discountValue, isLoading]);
+  }, [isLoading, products, modifiers, choisenProducts, discounts]);
 };
 
 export default useShoppingCart;

@@ -10,3 +10,11 @@
 .ui-w-screen {
   @include ui-w($spacing-scale-w-screen);
 }
+
+.ui-w-inherit {
+  @include ui-w-inherit;
+}
+
+.ui-w-fit-content {
+  width: fit-content;
+}

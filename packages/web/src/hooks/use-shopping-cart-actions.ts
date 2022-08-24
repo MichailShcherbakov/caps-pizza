@@ -5,6 +5,7 @@ import {
   removeProduct,
   OrderedProduct,
   setMetaStep,
+  clear,
 } from "~/store/shopping-cart.reducer";
 
 export const SHOPPING_CART_STORAGE_KEY = "shopping-cart-storage";
@@ -25,6 +26,9 @@ export const useShoppingCartActions = () => {
         force = false
       ) => {
         dispatch(removeProduct({ product, force }));
+      },
+      clear: () => {
+        dispatch(clear());
       },
     }),
     [dispatch]

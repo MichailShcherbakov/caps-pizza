@@ -82,22 +82,13 @@ export const shoppingCartSlice = createSlice({
 
       foundProduct.count--;
     },
+    clear(state) {
+      state.products = [];
+    },
   },
-  /*  extraReducers(builder) {
-    builder.addMatcher(
-      action => {
-        return new RegExp(`^${shoppingCartSlice.name}/(.+)Product$`).test(
-          action.type
-        );
-      },
-      state => {
-        localStorage.setItem("shopping-cart-storage", JSON.stringify(state));
-      }
-    );
-  }, */
 });
 
-export const { addProduct, removeProduct, setMetaStep, init } =
+export const { addProduct, removeProduct, setMetaStep, init, clear } =
   shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;
