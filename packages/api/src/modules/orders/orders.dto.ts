@@ -18,6 +18,7 @@ import {
   IOrderedModifier,
   IOrderedProduct,
 } from "@monorepo/common";
+import { Type } from "class-transformer";
 
 export class OrderedModifier implements IOrderedModifier {
   @IsUUID()
@@ -86,6 +87,7 @@ export class Order implements IOrder {
   @ValidateNested({ each: true })
   products: OrderedProduct[];
 
+  @Type(() => DeliveryAddress)
   @ValidateNested()
   @IsNotEmpty()
   delivery_address: DeliveryAddress;
@@ -100,6 +102,7 @@ export class Order implements IOrder {
   @IsOptional()
   card?: number;
 
+  @Type(() => ClientInfo)
   @ValidateNested()
   @IsNotEmpty()
   client_info: ClientInfo;

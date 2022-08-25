@@ -5,7 +5,6 @@ import {
 import {
   DiscountCriteriaEnum,
   DiscountOperatorEnum,
-  DiscountScopeEnum,
   DiscountTypeEnum,
 } from "./interfaces/discount.interface";
 import {
@@ -19,9 +18,6 @@ export const locale = {
   [ProductWeightTypeEnum.LITERS]: "л",
   [ProductVolumeTypeEnum.DIAMETER]: "см",
   [ProductVolumeTypeEnum.QUANTITY]: "шт",
-  [DiscountScopeEnum.PRODUCTS]: "Товар/Товары",
-  [DiscountScopeEnum.PRODUCT_FEATURES]: "Элементы товаров",
-  [DiscountScopeEnum.GLOBAL]: "Заказ",
   [DiscountCriteriaEnum.COUNT]: "Количество",
   [DiscountCriteriaEnum.PRICE]: "Цена",
   [DiscountOperatorEnum.EQUAL]: "Равно",

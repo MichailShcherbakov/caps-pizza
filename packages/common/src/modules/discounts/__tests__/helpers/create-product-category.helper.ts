@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { IProductCategory } from "interfaces";
+import { IProductCategory } from "../../../../interfaces";
 
 export const createProductCategory = (
   options: Partial<IProductCategory> = {}

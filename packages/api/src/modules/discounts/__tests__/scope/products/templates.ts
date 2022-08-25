@@ -1,4 +1,5 @@
-import { DiscountScopeEnum } from "~/db/entities/discount.entity";
+import DiscountProductEntity from "~/db/entities/discount-product.entity";
+import ProductEntity from "~/db/entities/product.entity";
 import {
   TEST_FLUFFY_DOUGH_MODIFIER,
   TEST_TRADITIONAL_DOUGH_MODIFIER,
@@ -51,8 +52,14 @@ export const testValidDiscount: TestTemplateFunc = async (
     type: discountOptions.type,
     value: discountOptions.value,
     condition: discountOptions.condition,
-    scope: DiscountScopeEnum.PRODUCTS,
-    products: [products[0], products[2]],
+    products: [products[0], products[2]].map(
+      p =>
+        ({
+          product_uuid: p.uuid,
+          product: p as unknown as ProductEntity,
+          modifiers: p.modifiers,
+        } as DiscountProductEntity)
+    ),
     product_categories: [],
     modifiers: [],
   });
@@ -67,8 +74,8 @@ export const testValidDiscount: TestTemplateFunc = async (
   const availableProducts = products.map((p, idx) => ({
     ...p,
     count: counts[idx],
-    full_price: p.full_price,
-    final_cost: p.full_price * counts[idx],
+    full_price: p.fullPrice,
+    final_cost: p.fullPrice * counts[idx],
   }));
 
   expect(calculatedDiscount).toEqual(
@@ -115,8 +122,14 @@ export const testInvalidDiscount: TestTemplateFunc = async (
     type: discountOptions.type,
     value: discountOptions.value,
     condition: discountOptions.condition,
-    scope: DiscountScopeEnum.PRODUCTS,
-    products: [products[0], products[2]],
+    products: [products[0], products[2]].map(
+      p =>
+        ({
+          product_uuid: p.uuid,
+          product: p as unknown as ProductEntity,
+          modifiers: p.modifiers,
+        } as DiscountProductEntity)
+    ),
     product_categories: [],
     modifiers: [],
   });

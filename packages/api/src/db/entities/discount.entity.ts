@@ -1,23 +1,18 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, Min } from "class-validator";
-import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 import IEntity from "./entity.inteface";
 import ModifierEntity from "./modifier.entity";
-import ProductCategoryEntity from "./product-category.entity";
-import ProductEntity from "./product.entity";
 import {
   DiscountCriteriaEnum,
   DiscountOperatorEnum,
-  DiscountScopeEnum,
   DiscountTypeEnum,
+  IDiscount,
   IDiscountСondition,
 } from "@monorepo/common";
+import DiscountProductEntity from "./discount-product.entity";
+import DiscountProductCategoryEntity from "./discount-product-category.entity";
 
-export {
-  DiscountCriteriaEnum,
-  DiscountOperatorEnum,
-  DiscountScopeEnum,
-  DiscountTypeEnum,
-};
+export { DiscountCriteriaEnum, DiscountOperatorEnum, DiscountTypeEnum };
 
 export class DiscountСondition implements IDiscountСondition {
   @IsEnum(DiscountCriteriaEnum)
@@ -41,15 +36,12 @@ export class DiscountСondition implements IDiscountСondition {
 }
 
 @Entity("discounts")
-export default class DiscountEntity extends IEntity {
+export default class DiscountEntity extends IEntity implements IDiscount {
   @Column({ unique: true })
   name: string;
 
   @Column({ type: "varchar" })
   type: DiscountTypeEnum;
-
-  @Column({ type: "varchar" })
-  scope: DiscountScopeEnum;
 
   @Column({ type: "jsonb" })
   condition: DiscountСondition;
@@ -57,37 +49,11 @@ export default class DiscountEntity extends IEntity {
   @Column({ type: "float4" })
   value: number;
 
-  @ManyToMany(() => ProductEntity)
-  @JoinTable({
-    name: "discount_products",
-    joinColumn: {
-      name: "discount",
-      referencedColumnName: "uuid",
-      foreignKeyConstraintName: "fk_discount_products_discount_uuid",
-    },
-    inverseJoinColumn: {
-      name: "product",
-      referencedColumnName: "uuid",
-      foreignKeyConstraintName: "fk_discount_products_product_uuid",
-    },
-  })
-  products: ProductEntity[];
+  @OneToMany(() => DiscountProductEntity, product => product.discount)
+  products: DiscountProductEntity[];
 
-  @ManyToMany(() => ProductCategoryEntity)
-  @JoinTable({
-    name: "discount_product_categories",
-    joinColumn: {
-      name: "discount",
-      referencedColumnName: "uuid",
-      foreignKeyConstraintName: "fk_discount_products_discount_uuid",
-    },
-    inverseJoinColumn: {
-      name: "product_category",
-      referencedColumnName: "uuid",
-      foreignKeyConstraintName: "fk_discount_products_product_category_uuid",
-    },
-  })
-  product_categories: ProductCategoryEntity[];
+  @OneToMany(() => DiscountProductCategoryEntity, category => category.discount)
+  product_categories: DiscountProductCategoryEntity[];
 
   @ManyToMany(() => ModifierEntity)
   @JoinTable({

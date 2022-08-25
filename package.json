@@ -19,7 +19,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^5.4.3"
+    "lerna": "^5.4.3",
+    "jest-cli": "^28.1.3"
   },
   "license": "ISC",
   "author": "MichailShcherbakov <50011226+MichailShcherbakov@users.noreply.github.com>",

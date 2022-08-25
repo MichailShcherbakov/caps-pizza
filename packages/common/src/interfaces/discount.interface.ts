@@ -14,12 +14,6 @@ export enum DiscountCriteriaEnum {
   COUNT = "COUNT",
 }
 
-export enum DiscountScopeEnum {
-  PRODUCTS = "PRODUCTS",
-  PRODUCT_FEATURES = "PRODUCT_FEATURES",
-  GLOBAL = "GLOBAL",
-}
-
 export enum DiscountOperatorEnum {
   LESS = "LESS",
   GREATER = "GREATER",
@@ -34,15 +28,32 @@ export interface IDiscountСondition {
   value2?: number;
 }
 
+export interface IDiscountModifier extends IModifier {}
+
+export interface IDiscountProduct {
+  product_uuid: string;
+  product?: IProduct;
+  modifiers: IDiscountModifier[];
+}
+
+export interface IDiscountProductCategory {
+  category_uuid: string;
+  category?: IProductCategory;
+  modifiers: IDiscountModifier[];
+}
+
+export interface IProductWithFullPrice extends IProduct {
+  count: number;
+  fullPrice: number;
+}
 export interface IDiscount extends IEntity {
   name: string;
   type: DiscountTypeEnum;
-  scope: DiscountScopeEnum;
   condition: IDiscountСondition;
   value: number;
-  products: IProduct[];
-  product_categories: IProductCategory[];
-  modifiers: IModifier[];
+  products: IDiscountProduct[];
+  product_categories: IDiscountProductCategory[];
+  modifiers: IDiscountModifier[];
 }
 
 export default IDiscount;

@@ -2,13 +2,10 @@ import { DiscountOperatorEnum, IDiscount } from "../../interfaces";
 
 export const isFulfilledCondition = (
   discount: IDiscount,
-  value: number,
-  strict = false
+  value: number
 ): boolean => {
   switch (discount.condition.op) {
     case DiscountOperatorEnum.EQUAL: {
-      if (strict) return value === discount.condition.value;
-
       return Boolean(Math.floor(value / discount.condition.value));
     }
     case DiscountOperatorEnum.GREATER: {

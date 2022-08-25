@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   IsArray,
   IsEnum,
@@ -10,10 +11,37 @@ import {
   ValidateNested,
 } from "class-validator";
 import {
-  DiscountScopeEnum,
   DiscountTypeEnum,
   DiscountСondition,
 } from "~/db/entities/discount.entity";
+
+export class DiscountProductDto {
+  @IsUUID()
+  @IsNotEmpty()
+  product_uuid: string;
+
+  @IsArray()
+  @IsUUID("all", { each: true })
+  @IsNotEmpty()
+  modifiers_uuids: string[];
+}
+
+export class DiscountProductCategoryDto {
+  @IsUUID()
+  @IsNotEmpty()
+  category_uuid: string;
+
+  @IsArray()
+  @IsUUID("all", { each: true })
+  @IsNotEmpty()
+  modifiers_uuids: string[];
+}
+
+export class DiscountModifierDto {
+  @IsUUID()
+  @IsNotEmpty()
+  modifier_uuid: string;
+}
 
 export class CreateDiscountDto {
   @IsString()
@@ -24,10 +52,7 @@ export class CreateDiscountDto {
   @IsNotEmpty()
   type: DiscountTypeEnum;
 
-  @IsEnum(DiscountScopeEnum)
-  @IsNotEmpty()
-  scope: DiscountScopeEnum;
-
+  @Type(() => DiscountСondition)
   @ValidateNested()
   condition: DiscountСondition;
 
@@ -36,20 +61,17 @@ export class CreateDiscountDto {
   @IsNotEmpty()
   value: number;
 
-  @IsArray()
-  @IsUUID(undefined, { each: true })
-  @IsNotEmpty()
-  products_uuids: string[];
+  @Type(() => DiscountProductDto)
+  @ValidateNested({ each: true })
+  products: DiscountProductDto[];
 
-  @IsArray()
-  @IsUUID(undefined, { each: true })
-  @IsNotEmpty()
-  product_categories_uuids: string[];
+  @Type(() => DiscountProductCategoryDto)
+  @ValidateNested({ each: true })
+  product_categories: DiscountProductCategoryDto[];
 
-  @IsArray()
-  @IsUUID(undefined, { each: true })
-  @IsNotEmpty()
-  modifiers_uuids: string[];
+  @Type(() => DiscountModifierDto)
+  @ValidateNested({ each: true })
+  modifiers: DiscountModifierDto[];
 }
 
 export class UpdateDiscountDto {
@@ -63,11 +85,7 @@ export class UpdateDiscountDto {
   @IsOptional()
   type?: DiscountTypeEnum;
 
-  @IsEnum(DiscountScopeEnum)
-  @IsNotEmpty()
-  @IsOptional()
-  scope?: DiscountScopeEnum;
-
+  @Type(() => DiscountСondition)
   @ValidateNested()
   @IsOptional()
   condition?: DiscountСondition;
@@ -78,21 +96,18 @@ export class UpdateDiscountDto {
   @IsOptional()
   value?: number;
 
-  @IsArray()
-  @IsUUID(undefined, { each: true })
-  @IsNotEmpty()
+  @Type(() => DiscountProductDto)
+  @ValidateNested()
   @IsOptional()
-  products_uuids?: string[];
+  products?: DiscountProductDto[];
 
-  @IsArray()
-  @IsUUID(undefined, { each: true })
-  @IsNotEmpty()
+  @Type(() => DiscountProductCategoryDto)
+  @ValidateNested()
   @IsOptional()
-  product_categories_uuids?: string[];
+  product_categories?: DiscountProductCategoryDto[];
 
-  @IsArray()
-  @IsUUID(undefined, { each: true })
-  @IsNotEmpty()
+  @Type(() => DiscountModifierDto)
+  @ValidateNested()
   @IsOptional()
-  modifiers_uuids?: string[];
+  modifiers?: DiscountModifierDto[];
 }

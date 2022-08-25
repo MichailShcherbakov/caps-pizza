@@ -1,6 +1,6 @@
 module.exports = {
   rootDir: "./",
-  roots: ['<rootDir>/api'],
+  roots: ['<rootDir>'],
   projects: [
     { 
       displayName: "api",
@@ -9,15 +9,15 @@ module.exports = {
         '^.+\\.ts$': 'ts-jest',
       },
       moduleNameMapper: {
-        '^~/(.*)$': '<rootDir>/api/src/$1',
+        '^~/(.*)$': '<rootDir>/packages/api/src/$1',
       },
-      setupFilesAfterEnv: ['<rootDir>/api/jest.config.setup.js'],
+      setupFilesAfterEnv: ['<rootDir>/packages/api/jest.config.setup.js'],
       coverageDirectory: 'coverage',
       coveragePathIgnorePatterns: ['__tests__'],
       testEnvironment: "node",
       globals: {
         "ts-jest": {
-          tsconfig: "<rootDir>/api/tsconfig.json"
+          tsconfig: "<rootDir>/packages/api/tsconfig.json"
         }
       },
     },
@@ -29,14 +29,14 @@ module.exports = {
         '^.+\\.tsx$': 'ts-jest',
       },
       moduleNameMapper: {
-        '^~/(.*)$': '<rootDir>/web/src/$1',
+        '^~/(.*)$': '<rootDir>/packages/web/src/$1',
       },
       coverageDirectory: 'coverage',
       coveragePathIgnorePatterns: ['__tests__'],
       testEnvironment: "node",
       globals: {
         "ts-jest": {
-          tsconfig: "<rootDir>/web/tsconfig.json"
+          tsconfig: "<rootDir>/packages/web/tsconfig.json"
         }
       },
     },
@@ -48,14 +48,14 @@ module.exports = {
         '^.+\\.tsx$': 'ts-jest',
       },
       moduleNameMapper: {
-        '^~/(.*)$': '<rootDir>/common/src/$1',
+        '^~/(.*)$': '<rootDir>/packages/common/src/$1',
       },
       coverageDirectory: 'coverage',
       coveragePathIgnorePatterns: ['__tests__'],
       testEnvironment: "node",
       globals: {
         "ts-jest": {
-          tsconfig: "<rootDir>/common/tsconfig.json"
+          tsconfig: "<rootDir>/packages/common/tsconfig.json"
         }
       },
     },

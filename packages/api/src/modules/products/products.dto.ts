@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   IsArray,
   IsNotEmpty,
@@ -28,10 +29,12 @@ export class CreateProductDto {
   @IsNotEmpty()
   image_url: string;
 
+  @Type(() => ProductWeight)
   @ValidateNested()
   @IsOptional()
   weight?: ProductWeight;
 
+  @Type(() => ProductVolume)
   @ValidateNested()
   @IsOptional()
   volume?: ProductVolume;
@@ -78,10 +81,12 @@ export class UpdateProductDto {
   @IsOptional()
   image_url?: string;
 
+  @Type(() => ProductWeight)
   @ValidateNested()
   @IsOptional()
   weight?: ProductWeight;
 
+  @Type(() => ProductVolume)
   @ValidateNested()
   @IsOptional()
   volume?: ProductVolume;

@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   IsEnum,
   IsNotEmpty,
@@ -26,6 +27,7 @@ export class CreateDeliveryDto {
   @IsNotEmpty()
   type: DeliveryTypeEnum;
 
+  @Type(() => DeliveryСondition)
   @ValidateNested()
   condition: DeliveryСondition;
 
@@ -52,6 +54,7 @@ export class UpdateDeliveryDto {
   @IsOptional()
   type?: DeliveryTypeEnum;
 
+  @Type(() => DeliveryСondition)
   @ValidateNested()
   @IsOptional()
   condition?: DeliveryСondition;

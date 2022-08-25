@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { IModifier } from "interfaces";
+import { IModifier } from "../../../../interfaces";
 
 export const createModifier = (options: Partial<IModifier> = {}): IModifier => {
   return {
@@ -13,6 +13,16 @@ export const createModifier = (options: Partial<IModifier> = {}): IModifier => {
     category_uuid: faker.datatype.uuid(),
     ...options,
   };
+};
+
+export const createModifiers = (count = 5) => {
+  const modifiers: IModifier[] = [];
+
+  for (let i = 0; i < count; i++) {
+    modifiers.push(createModifier());
+  }
+
+  return modifiers;
 };
 
 export default createModifier;
