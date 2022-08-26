@@ -21,39 +21,31 @@ export enum DiscountOperatorEnum {
   BETWEEN = "BETWEEN",
 }
 
-export interface IDiscountСondition {
+export interface IDiscountCondition {
   criteria: DiscountCriteriaEnum;
   op: DiscountOperatorEnum;
   value: number;
   value2?: number;
 }
 
-export interface IDiscountModifier extends IModifier {}
-
-export interface IDiscountProduct {
-  product_uuid: string;
-  product?: IProduct;
-  modifiers: IDiscountModifier[];
-}
-
-export interface IDiscountProductCategory {
-  category_uuid: string;
-  category?: IProductCategory;
-  modifiers: IDiscountModifier[];
-}
-
 export interface IProductWithFullPrice extends IProduct {
   count: number;
   fullPrice: number;
 }
+
+export interface IDiscountStrategy {
+  condition: IDiscountCondition;
+  /// scope
+  products: IProduct[];
+  product_categories: IProductCategory[];
+  modifiers: IModifier[];
+}
+
 export interface IDiscount extends IEntity {
   name: string;
   type: DiscountTypeEnum;
-  condition: IDiscountСondition;
+  strategies: IDiscountStrategy[];
   value: number;
-  products: IDiscountProduct[];
-  product_categories: IDiscountProductCategory[];
-  modifiers: IDiscountModifier[];
 }
 
 export default IDiscount;

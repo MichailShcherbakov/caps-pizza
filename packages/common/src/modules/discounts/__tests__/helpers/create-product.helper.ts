@@ -1,13 +1,11 @@
 import { faker } from "@faker-js/faker";
 import {
-  IProductWithFullPrice,
+  IProduct,
   ProductVolumeTypeEnum,
   ProductWeightTypeEnum,
 } from "../../../../interfaces";
 
-export const createProduct = (
-  options: Partial<IProductWithFullPrice> = {}
-): IProductWithFullPrice => {
+export const createProduct = (options: Partial<IProduct> = {}): IProduct => {
   return {
     uuid: faker.datatype.uuid(),
     name: faker.datatype.string(),
@@ -25,15 +23,13 @@ export const createProduct = (
     },
     tags: ["test product"],
     category_uuid: faker.datatype.uuid(),
-    count: 1,
-    fullPrice: faker.datatype.number(),
     modifiers: [],
     ...options,
   };
 };
 
-export const createProducts = (count = 5): IProductWithFullPrice[] => {
-  const products: IProductWithFullPrice[] = [];
+export const createProducts = (count = 5): IProduct[] => {
+  const products: IProduct[] = [];
 
   for (let i = 0; i < count; ++i) {
     products.push(createProduct());

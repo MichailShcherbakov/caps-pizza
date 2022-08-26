@@ -1,4 +1,4 @@
-import { IDiscount, IProduct } from "../../interfaces";
+import { IDiscountStrategy, IProduct } from "../../interfaces";
 
 /// 1 Product + Modifiers
 /// 2 Product (any modifiers)
@@ -12,59 +12,40 @@ export interface GetSuitableProductsOptions {
 }
 
 export function getSuitableProducts<T extends IProduct>(
-  discount: IDiscount,
+  strategy: IDiscountStrategy,
   products: T[],
-  options: GetSuitableProductsOptions = { strict: true }
+  options: GetSuitableProductsOptions = { strict: false }
 ): T[] {
   return products.filter(product => {
-    const modifierSet = new Set(product.modifiers.map(m => m.uuid));
+    if (strategy.modifiers.length) {
+      const modifierSet = new Set(product.modifiers.map(m => m.uuid));
 
-    if (discount.modifiers.length) {
       if (options?.strict) {
-        if (!discount.modifiers.every(m => modifierSet.has(m.uuid)))
-          return false;
+        if (strategy.modifiers.every(m => modifierSet.has(m.uuid))) {
+          return true;
+        }
       } else {
-        if (!discount.modifiers.some(m => modifierSet.has(m.uuid)))
-          return false;
+        if (strategy.modifiers.some(m => modifierSet.has(m.uuid))) {
+          return true;
+        }
       }
     }
 
-    if (discount.product_categories.length) {
-      const passed = discount.product_categories.some(productCategory => {
-        if (productCategory.category_uuid !== product.category_uuid)
-          return false;
-
-        if (options?.strict) {
-          if (!productCategory.modifiers.every(m => modifierSet.has(m.uuid)))
-            return false;
-        } else {
-          if (!productCategory.modifiers.some(m => modifierSet.has(m.uuid)))
-            return false;
-        }
-
+    if (strategy.products.length) {
+      if (strategy.products.find(p => p.uuid === product.uuid)) {
         return true;
-      });
-
-      if (!passed) return false;
+      }
     }
 
-    if (discount.products.length) {
-      const passed = discount.products.some(p => {
-        if (p.product_uuid !== product.uuid) return false;
-
-        if (options?.strict) {
-          if (!p.modifiers.every(m => modifierSet.has(m.uuid))) return false;
-        } else {
-          if (!p.modifiers.some(m => modifierSet.has(m.uuid))) return false;
-        }
-
+    if (strategy.product_categories.length) {
+      if (
+        strategy.product_categories.find(c => c.uuid === product.category_uuid)
+      ) {
         return true;
-      });
-
-      if (!passed) return false;
+      }
     }
 
-    return true;
+    return false;
   });
 }
 
