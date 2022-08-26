@@ -11,7 +11,7 @@ import getSuitableDiscounts from "../../../get-suitable-discounts";
 
 describe("[Discount Module] ...", () => {
   describe("[Scope] [Modifiers] ...", () => {
-    describe("[Discount type] [Fixed Price] ...", () => {
+    describe("[Discount type] [Percent] ...", () => {
       describe("[Discount condition criteria] [Count] ...", () => {
         it("should return a discount (one coincidence)", () => {
           const modifiers = [createModifier()];
@@ -27,8 +27,8 @@ describe("[Discount Module] ...", () => {
             }),
           ];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 800,
+            type: DiscountTypeEnum.PERCENT,
+            value: 200,
             strategies: [
               {
                 condition: {
@@ -66,7 +66,8 @@ describe("[Discount Module] ...", () => {
           ).toEqual([
             {
               discount,
-              discountValue: 440 * 1 + 560 * 1 + 520 * 1 - discount.value,
+              discountValue:
+                ((440 * 1 + 560 * 1 + 520 * 1) * discount.value) / 100,
               products: [
                 {
                   ...products[2],
@@ -102,8 +103,8 @@ describe("[Discount Module] ...", () => {
             }),
           ];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 1250,
+            type: DiscountTypeEnum.PERCENT,
+            value: 200,
             strategies: [
               {
                 condition: {
@@ -141,7 +142,8 @@ describe("[Discount Module] ...", () => {
           ).toEqual([
             {
               discount,
-              discountValue: (440 * 1 + 560 * 1 + 520 * 1 - discount.value) * 3,
+              discountValue:
+                (((440 * 1 + 560 * 1 + 520 * 1) * discount.value) / 100) * 3,
               products: [
                 {
                   ...products[2],
@@ -177,8 +179,8 @@ describe("[Discount Module] ...", () => {
             }),
           ];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 1250,
+            type: DiscountTypeEnum.PERCENT,
+            value: 200,
             strategies: [
               {
                 condition: {
@@ -216,7 +218,8 @@ describe("[Discount Module] ...", () => {
           ).toEqual([
             {
               discount,
-              discountValue: (440 * 1 + 560 * 1 + 520 * 1 - discount.value) * 2,
+              discountValue:
+                (((440 * 1 + 560 * 1 + 520 * 1) * discount.value) / 100) * 2,
               products: [
                 {
                   ...products[2],
@@ -249,8 +252,8 @@ describe("[Discount Module] ...", () => {
             }),
           ];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 1250,
+            type: DiscountTypeEnum.PERCENT,
+            value: 200,
             strategies: [
               {
                 condition: {
@@ -283,7 +286,7 @@ describe("[Discount Module] ...", () => {
           ).toEqual([
             {
               discount,
-              discountValue: 560 * 2 + 440 * 1 - discount.value,
+              discountValue: ((560 * 2 + 440 * 1) * discount.value) / 100,
               products: [
                 {
                   ...products[1],

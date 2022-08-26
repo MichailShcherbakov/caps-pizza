@@ -10,13 +10,13 @@ import getSuitableDiscounts from "../../../get-suitable-discounts";
 
 describe("[Discount Module] ...", () => {
   describe("[Scope] [Products + Modifiers] ...", () => {
-    describe("[Discount type] [Fixed Price] ...", () => {
+    describe("[Discount type] [Percent] ...", () => {
       describe("[Discount condition criteria] [Count] ...", () => {
         it("should return a discount (full coincidence)", () => {
           const products = [createProduct(), createProduct(), createProduct()];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 950,
+            type: DiscountTypeEnum.PERCENT,
+            value: 3,
             strategies: [
               {
                 condition: {
@@ -64,7 +64,8 @@ describe("[Discount Module] ...", () => {
           ).toEqual([
             {
               discount,
-              discountValue: 440 * 1 + 560 * 1 + 120 * 1 - discount.value,
+              discountValue:
+                (440 * 1 + 560 * 1 + 120 * 1) * (discount.value / 100),
               products: [
                 {
                   ...products[1],
@@ -89,8 +90,8 @@ describe("[Discount Module] ...", () => {
         it("should return a discount (more one coincidence)", () => {
           const products = [createProduct(), createProduct(), createProduct()];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 950,
+            type: DiscountTypeEnum.PERCENT,
+            value: 3,
             strategies: [
               {
                 condition: {
@@ -138,7 +139,8 @@ describe("[Discount Module] ...", () => {
           ).toEqual([
             {
               discount,
-              discountValue: 440 * 1 + 560 * 1 + 120 * 1 - discount.value,
+              discountValue:
+                ((440 * 1 + 560 * 1 + 120 * 1) * discount.value) / 100,
               products: [
                 {
                   ...products[1],
@@ -163,8 +165,8 @@ describe("[Discount Module] ...", () => {
         it("should return a discount (cross coincidence)", () => {
           const products = [createProduct(), createProduct(), createProduct()];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 950,
+            type: DiscountTypeEnum.PERCENT,
+            value: 3,
             strategies: [
               {
                 condition: {
@@ -207,7 +209,7 @@ describe("[Discount Module] ...", () => {
           ).toEqual([
             {
               discount,
-              discountValue: 440 * 1 + 560 * 2 - discount.value,
+              discountValue: ((440 * 1 + 560 * 2) * discount.value) / 100,
               products: [
                 {
                   ...products[1],
@@ -227,8 +229,8 @@ describe("[Discount Module] ...", () => {
         it("should not return a discount (one non-coincidence)", () => {
           const products = [createProduct(), createProduct(), createProduct()];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 950,
+            type: DiscountTypeEnum.PERCENT,
+            value: 3,
             strategies: [
               {
                 condition: {
@@ -274,8 +276,8 @@ describe("[Discount Module] ...", () => {
         it("should not return a discount (one non-coincidence)", () => {
           const products = [createProduct(), createProduct(), createProduct()];
           const discount: IDiscount = createDiscount({
-            type: DiscountTypeEnum.FIXED_PRICE,
-            value: 950,
+            type: DiscountTypeEnum.PERCENT,
+            value: 3,
             strategies: [
               {
                 condition: {
@@ -322,8 +324,8 @@ describe("[Discount Module] ...", () => {
       it("should not return a discount (cross coincidence)", () => {
         const products = [createProduct(), createProduct(), createProduct()];
         const discount: IDiscount = createDiscount({
-          type: DiscountTypeEnum.FIXED_PRICE,
-          value: 950,
+          type: DiscountTypeEnum.PERCENT,
+          value: 3,
           strategies: [
             {
               condition: {

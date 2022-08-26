@@ -134,7 +134,7 @@ export function getSuitableDiscounts(
       discountValue = diff * discount.value;
     } else if (discount.type === DiscountTypeEnum.PERCENT) {
       discountValue =
-        (suitableProductsCost / diff) * (1 - discount.value / 100) * diff;
+        (suitableProductsCost / diff) * (discount.value / 100) * diff;
     } else if (discount.type === DiscountTypeEnum.FIXED_PRICE) {
       discountValue = (suitableProductsCost / diff - discount.value) * diff;
     }
