@@ -2,8 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   DiscountCriteriaEnum,
   DiscountOperatorEnum,
-  IDiscountModifier,
-  IDiscountProduct,
+  DiscountTypeEnum,
 } from "../../../interfaces";
 import getSuitableProducts from "../get-suitable-products";
 import createDiscount from "./helpers/create-discount.helper";
@@ -55,27 +54,25 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       const needsProducts = [products[0], products[1]];
 
       const discount = createDiscount({
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 1,
-        },
+        type: DiscountTypeEnum.FIXED_PRICE,
         value: 1250,
-        product_categories: [
+        strategies: [
           {
-            category_uuid: productCategories[0].uuid,
-            category: productCategories[0],
-            modifiers: modifiers.map(
-              m =>
-                ({
-                  uuid: m.uuid,
-                } as IDiscountModifier)
-            ),
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 1,
+            },
+            product_categories: productCategories,
+            products: [],
+            modifiers: modifiers,
           },
         ],
       });
 
-      expect(getSuitableProducts(discount, products)).toEqual(needsProducts);
+      expect(getSuitableProducts(discount.strategies[0], products)).toEqual(
+        needsProducts
+      );
     });
   });
 
@@ -91,20 +88,25 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       );
 
       const discount = createDiscount({
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 1,
-        },
+        type: DiscountTypeEnum.FIXED_PRICE,
         value: 1250,
-        products: needsProducts.map<IDiscountProduct>(p => ({
-          product: p,
-          product_uuid: p.uuid,
-          modifiers: [],
-        })),
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 1,
+            },
+            products: needsProducts,
+            product_categories: [],
+            modifiers: [],
+          },
+        ],
       });
 
-      expect(getSuitableProducts(discount, products)).toEqual(needsProducts);
+      expect(getSuitableProducts(discount.strategies[0], products)).toEqual(
+        needsProducts
+      );
     });
   });
 
@@ -147,22 +149,25 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       const needsProducts = [products[0], products[1]];
 
       const discount = createDiscount({
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 1,
-        },
+        type: DiscountTypeEnum.FIXED_PRICE,
         value: 1250,
-        product_categories: [
+        strategies: [
           {
-            category_uuid: productCategory.uuid,
-            category: productCategory,
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 1,
+            },
+            products: [],
+            product_categories: [productCategory],
             modifiers: [modifier],
           },
         ],
       });
 
-      expect(getSuitableProducts(discount, products)).toEqual(needsProducts);
+      expect(getSuitableProducts(discount.strategies[0], products)).toEqual(
+        needsProducts
+      );
     });
   });
 
@@ -196,22 +201,25 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       const needsProducts = [products[0], products[1]];
 
       const discount = createDiscount({
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 1,
-        },
+        type: DiscountTypeEnum.FIXED_PRICE,
         value: 1250,
-        product_categories: [
+        strategies: [
           {
-            category_uuid: productCategory.uuid,
-            category: productCategory,
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 1,
+            },
+            products: [],
+            product_categories: [productCategory],
             modifiers: [],
           },
         ],
       });
 
-      expect(getSuitableProducts(discount, products)).toEqual(needsProducts);
+      expect(getSuitableProducts(discount.strategies[0], products)).toEqual(
+        needsProducts
+      );
     });
   });
 
@@ -249,16 +257,25 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       const needsProducts = [products[0], products[1], products[3]];
 
       const discount = createDiscount({
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 1,
-        },
+        type: DiscountTypeEnum.FIXED_PRICE,
         value: 1250,
-        modifiers: [modifier],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 1,
+            },
+            products: [],
+            product_categories: [],
+            modifiers: [modifier],
+          },
+        ],
       });
 
-      expect(getSuitableProducts(discount, products)).toEqual(needsProducts);
+      expect(getSuitableProducts(discount.strategies[0], products)).toEqual(
+        needsProducts
+      );
     });
   });
 
@@ -269,15 +286,25 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       const needsProducts = products;
 
       const discount = createDiscount({
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 1,
-        },
+        type: DiscountTypeEnum.FIXED_PRICE,
         value: 1250,
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 1,
+            },
+            products: [],
+            product_categories: [],
+            modifiers: [],
+          },
+        ],
       });
 
-      expect(getSuitableProducts(discount, products)).toEqual(needsProducts);
+      expect(getSuitableProducts(discount.strategies[0], products)).toEqual(
+        needsProducts
+      );
     });
   });
 });

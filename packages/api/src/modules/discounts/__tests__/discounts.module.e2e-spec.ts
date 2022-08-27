@@ -17,12 +17,12 @@ import createProductsHelper from "~/modules/products/__tests__/helpers/create-pr
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
-import { fromJson, toJson } from "~/utils/json.helper";
 import { CreateDiscountDto, UpdateDiscountDto } from "../discounts.dto";
 import DiscountsService from "../discounts.service";
 import Api from "./helpers/api.helper";
 import createDiscountsHelper, {
   createDiscountHelper,
+  createDiscountStrategyHelper,
 } from "./helpers/create-discounts.helper";
 import TestingModule from "./helpers/testing-module.helper";
 
@@ -76,13 +76,15 @@ describe("[Discounts Module] ...", () => {
       expect(getDiscountsResponse.status).toEqual(200);
       expect(getDiscountsResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectsPropsHelper(DiscountsService.sort(discounts), [
+        data: deleteObjectsPropsHelper(
+          DiscountsService.sort(discounts).map(discount => ({
+            ...discount,
+            strategies: deleteObjectsPropsHelper(discount.strategies, [
               "updated_at",
               "created_at",
-            ])
-          )
+            ]),
+          })),
+          ["updated_at", "created_at"]
         ),
       });
     });
@@ -96,10 +98,15 @@ describe("[Discounts Module] ...", () => {
       expect(getDiscountResponse.status).toEqual(200);
       expect(getDiscountResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(discount, ["updated_at", "created_at"])
-          )
+        data: deleteObjectPropsHelper(
+          {
+            ...discount,
+            strategies: deleteObjectsPropsHelper(discount.strategies, [
+              "updated_at",
+              "created_at",
+            ]),
+          },
+          ["updated_at", "created_at"]
         ),
       });
     });
@@ -120,32 +127,28 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Post] /discounts", () => {
     it("should successfully create a discount with products", async () => {
-      const choicedProducts = ProductsService.sort([
+      const chosenProducts = ProductsService.sort([
         products[2],
         products[1],
         products[6],
-      ]).map(p => ({
-        ...p,
-        category:
-          p.category &&
-          deleteObjectPropsHelper(p.category, ["updated_at", "created_at"]),
-      }));
+      ]);
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: choicedProducts.map(p => ({
-          product_uuid: p.uuid,
-          modifiers_uuids: p.modifiers.map(m => m.uuid),
-        })),
-        product_categories: [],
-        modifiers: [],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: chosenProducts.map(p => p.uuid),
+            product_categories_uuids: [],
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -155,17 +158,29 @@ describe("[Discounts Module] ...", () => {
         statusCode: 201,
         data: {
           uuid: createDiscountResponse.body.data.uuid,
-          ...deleteObjectPropsHelper(dto, ["products"]),
-          products: choicedProducts.map(p => ({
-            product_uuid: p.uuid,
-            modifiers: p.modifiers,
-          })),
+          ...dto,
+          strategies: dto.strategies.map((strategy, idx) =>
+            deleteObjectPropsHelper(
+              {
+                ...strategy,
+                uuid: createDiscountResponse.body.data.strategies[idx].uuid,
+                discount_uuid: createDiscountResponse.body.data.uuid,
+                products: deleteObjectsPropsHelper(chosenProducts, [
+                  "category",
+                  "modifiers",
+                ]),
+                product_categories: [],
+                modifiers: [],
+              },
+              ["products_uuids", "product_categories_uuids", "modifiers_uuids"]
+            )
+          ),
         },
       });
     });
 
     it("should successfully create a discount with product categories", async () => {
-      const choicedProductCategories = ProductCategoriesService.sort([
+      const chosenProductCategories = ProductCategoriesService.sort([
         productCategories[2],
         productCategories[1],
         productCategories[6],
@@ -175,17 +190,18 @@ describe("[Discounts Module] ...", () => {
         name: faker.word.adjective(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [],
-        product_categories: choicedProductCategories.map(c => ({
-          category_uuid: c.uuid,
-          modifiers_uuids: [],
-        })),
-        modifiers: [],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: chosenProductCategories.map(c => c.uuid),
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -195,17 +211,26 @@ describe("[Discounts Module] ...", () => {
         statusCode: 201,
         data: {
           uuid: createDiscountResponse.body.data.uuid,
-          ...deleteObjectPropsHelper(dto, ["product_categories"]),
-          product_categories: choicedProductCategories.map(c => ({
-            category_uuid: c.uuid,
-            modifiers: [],
-          })),
+          ...dto,
+          strategies: dto.strategies.map((strategy, idx) =>
+            deleteObjectPropsHelper(
+              {
+                ...strategy,
+                uuid: createDiscountResponse.body.data.strategies[idx].uuid,
+                discount_uuid: createDiscountResponse.body.data.uuid,
+                products: [],
+                product_categories: chosenProductCategories,
+                modifiers: [],
+              },
+              ["products_uuids", "product_categories_uuids", "modifiers_uuids"]
+            )
+          ),
         },
       });
     });
 
     it("should successfully create a discount with modifiers", async () => {
-      const choicedModifiers = ModifiersService.sort([
+      const chosenModifiers = ModifiersService.sort([
         modifiers[2],
         modifiers[1],
         modifiers[6],
@@ -215,16 +240,18 @@ describe("[Discounts Module] ...", () => {
         name: faker.word.adjective(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [],
-        product_categories: [],
-        modifiers: choicedModifiers.map(m => ({
-          modifier_uuid: m.uuid,
-        })),
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: [],
+            modifiers_uuids: chosenModifiers.map(m => m.uuid),
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -234,11 +261,22 @@ describe("[Discounts Module] ...", () => {
         statusCode: 201,
         data: {
           uuid: createDiscountResponse.body.data.uuid,
-          ...deleteObjectPropsHelper(dto, ["modifiers"]),
-          modifiers: deleteObjectsPropsHelper(choicedModifiers, [
-            "updated_at",
-            "created_at",
-          ]),
+          ...dto,
+          strategies: dto.strategies.map((strategy, idx) =>
+            deleteObjectPropsHelper(
+              {
+                ...strategy,
+                uuid: createDiscountResponse.body.data.strategies[idx].uuid,
+                discount_uuid: createDiscountResponse.body.data.uuid,
+                products: [],
+                product_categories: [],
+                modifiers: deleteObjectsPropsHelper(chosenModifiers, [
+                  "category",
+                ]),
+              },
+              ["products_uuids", "product_categories_uuids", "modifiers_uuids"]
+            )
+          ),
         },
       });
     });
@@ -252,21 +290,22 @@ describe("[Discounts Module] ...", () => {
         name: otherDiscount.name,
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [],
-        product_categories: [
-          productCategories[2],
-          productCategories[1],
-          productCategories[6],
-        ].map(c => ({
-          category_uuid: c.uuid,
-          modifiers_uuids: [],
-        })),
-        modifiers: [],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: [
+              productCategories[2],
+              productCategories[1],
+              productCategories[6],
+            ].map(c => c.uuid),
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -284,21 +323,22 @@ describe("[Discounts Module] ...", () => {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.PERCENT,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [],
-        product_categories: [
-          productCategories[2],
-          productCategories[1],
-          productCategories[6],
-        ].map(c => ({
-          category_uuid: c.uuid,
-          modifiers_uuids: [],
-        })),
-        modifiers: [],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: [
+              productCategories[2],
+              productCategories[1],
+              productCategories[6],
+            ].map(c => c.uuid),
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -317,19 +357,22 @@ describe("[Discounts Module] ...", () => {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [products[2], products[6], { uuid: fakeProductUUID }].map(
-          p => ({
-            product_uuid: p.uuid,
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [
+              products[2],
+              products[6],
+              { uuid: fakeProductUUID },
+            ].map(p => p.uuid),
+            product_categories_uuids: [],
             modifiers_uuids: [],
-          })
-        ),
-        product_categories: [],
-        modifiers: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -348,21 +391,22 @@ describe("[Discounts Module] ...", () => {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [],
-        product_categories: [
-          productCategories[2],
-          { uuid: fakeProductCategoryUUID },
-          productCategories[6],
-        ].map(c => ({
-          category_uuid: c.uuid,
-          modifiers_uuids: [],
-        })),
-        modifiers: [],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: [
+              productCategories[2],
+              { uuid: fakeProductCategoryUUID },
+              productCategories[6],
+            ].map(c => c.uuid),
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -381,18 +425,22 @@ describe("[Discounts Module] ...", () => {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [],
-        product_categories: [],
-        modifiers: [modifiers[2], { uuid: fakeModifierUUID }, modifiers[6]].map(
-          m => ({
-            modifier_uuid: m.uuid,
-          })
-        ),
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: [],
+            modifiers_uuids: [
+              modifiers[2],
+              { uuid: fakeModifierUUID },
+              modifiers[6],
+            ].map(m => m.uuid),
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -411,19 +459,22 @@ describe("[Discounts Module] ...", () => {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [products[2], products[6], { uuid: fakeProductUUID }].map(
-          p => ({
-            product_uuid: p.uuid,
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [
+              products[2],
+              products[6],
+              { uuid: fakeProductUUID },
+            ].map(p => p.uuid),
+            product_categories_uuids: [],
             modifiers_uuids: [],
-          })
-        ),
-        product_categories: [],
-        modifiers: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -432,7 +483,7 @@ describe("[Discounts Module] ...", () => {
       expect(createDiscountResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
-        message: ["products.2.product_uuid must be a UUID"],
+        message: ["strategies.0.each value in products_uuids must be a UUID"],
       });
     });
 
@@ -442,21 +493,22 @@ describe("[Discounts Module] ...", () => {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        products: [],
-        product_categories: [
-          productCategories[2],
-          { uuid: fakeProductCategoryUUID },
-          productCategories[6],
-        ].map(c => ({
-          category_uuid: c.uuid,
-          modifiers_uuids: [],
-        })),
-        modifiers: [],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: [
+              productCategories[2],
+              { uuid: fakeProductCategoryUUID },
+              productCategories[6],
+            ].map(c => c.uuid),
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -465,7 +517,9 @@ describe("[Discounts Module] ...", () => {
       expect(createDiscountResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
-        message: ["product_categories.1.category_uuid must be a UUID"],
+        message: [
+          "strategies.0.each value in product_categories_uuids must be a UUID",
+        ],
       });
     });
 
@@ -474,14 +528,18 @@ describe("[Discounts Module] ...", () => {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.BETWEEN,
-          value: 1,
-        },
-        products: [],
-        product_categories: [],
-        modifiers: [],
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.BETWEEN,
+              value: 1,
+            },
+            products_uuids: [],
+            product_categories_uuids: [],
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const createDiscountResponse = await api.createDiscount(dto);
@@ -500,14 +558,18 @@ describe("[Discounts Module] ...", () => {
           name: faker.datatype.string(),
           type: DiscountTypeEnum.FIXED_PRICE,
           value: 1299,
-          condition: {
-            criteria: DiscountCriteriaEnum.COUNT,
-            op: DiscountOperatorEnum.EQUAL,
-            value: 1000,
-          },
-          products: [],
-          product_categories: [],
-          modifiers: [],
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.COUNT,
+                op: DiscountOperatorEnum.EQUAL,
+                value: 1000,
+              },
+              products_uuids: [],
+              product_categories_uuids: [],
+              modifiers_uuids: [],
+            },
+          ],
         };
 
         const createDiscountResponse = await api.createDiscount(dto);
@@ -525,19 +587,21 @@ describe("[Discounts Module] ...", () => {
           name: faker.datatype.string(),
           type: DiscountTypeEnum.FIXED_PRICE,
           value: 1299,
-          condition: {
-            criteria: DiscountCriteriaEnum.PRICE,
-            op: DiscountOperatorEnum.EQUAL,
-            value: 1000,
-          },
-          products: [],
-          product_categories: [productCategories[2], productCategories[6]].map(
-            c => ({
-              category_uuid: c.uuid,
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.PRICE,
+                op: DiscountOperatorEnum.EQUAL,
+                value: 1000,
+              },
+              products_uuids: [],
+              product_categories_uuids: [
+                productCategories[2],
+                productCategories[6],
+              ].map(c => c.uuid),
               modifiers_uuids: [],
-            })
-          ),
-          modifiers: [],
+            },
+          ],
         };
 
         const createDiscountResponse = await api.createDiscount(dto);
@@ -555,19 +619,21 @@ describe("[Discounts Module] ...", () => {
           name: faker.datatype.string(),
           type: DiscountTypeEnum.FIXED_PRICE,
           value: 1299,
-          condition: {
-            criteria: DiscountCriteriaEnum.COUNT,
-            op: DiscountOperatorEnum.GREATER,
-            value: 1000,
-          },
-          products: [],
-          product_categories: [productCategories[2], productCategories[6]].map(
-            c => ({
-              category_uuid: c.uuid,
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.COUNT,
+                op: DiscountOperatorEnum.GREATER,
+                value: 1000,
+              },
+              products_uuids: [],
+              product_categories_uuids: [
+                productCategories[2],
+                productCategories[6],
+              ].map(c => c.uuid),
               modifiers_uuids: [],
-            })
-          ),
-          modifiers: [],
+            },
+          ],
         };
 
         const createDiscountResponse = await api.createDiscount(dto);
@@ -585,25 +651,25 @@ describe("[Discounts Module] ...", () => {
   describe("[Put] /discounts", () => {
     it(`should successfully update a discount`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource);
-      const choisedProductCategories = ProductCategoriesService.sort([
-        productCategories[2],
-        productCategories[6],
-      ]);
+      const choisedProductCategories = [productCategories[2]];
       const choisedModifiers = [modifiers[3]];
 
       const dto: UpdateDiscountDto = {
         name: faker.datatype.string(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
-        condition: {
-          criteria: DiscountCriteriaEnum.COUNT,
-          op: DiscountOperatorEnum.EQUAL,
-          value: 3,
-        },
-        product_categories: choisedProductCategories.map(c => ({
-          category_uuid: c.uuid,
-          modifiers_uuids: choisedModifiers.map(m => m.uuid),
-        })),
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.COUNT,
+              op: DiscountOperatorEnum.EQUAL,
+              value: 3,
+            },
+            products_uuids: [],
+            product_categories_uuids: choisedProductCategories.map(c => c.uuid),
+            modifiers_uuids: choisedModifiers.map(m => m.uuid),
+          },
+        ],
       };
 
       const updateDiscountResponse = await api.updateDiscount(
@@ -614,20 +680,25 @@ describe("[Discounts Module] ...", () => {
       expect(updateDiscountResponse.status).toEqual(200);
       expect(updateDiscountResponse.body).toEqual({
         statusCode: 200,
-        data: deleteObjectPropsHelper(
-          {
-            ...discount,
-            ...dto,
-            product_categories: choisedProductCategories.map(c => ({
-              category_uuid: c.uuid,
-              modifiers: deleteObjectsPropsHelper(choisedModifiers, [
-                "updated_at",
-                "created_at",
-              ]),
-            })),
-          },
-          ["updated_at", "created_at"]
-        ),
+        data: {
+          uuid: updateDiscountResponse.body.data.uuid,
+          ...dto,
+          strategies: dto.strategies?.map((strategy, idx) =>
+            deleteObjectPropsHelper(
+              {
+                ...strategy,
+                uuid: updateDiscountResponse.body.data.strategies[idx].uuid,
+                discount_uuid: updateDiscountResponse.body.data.uuid,
+                products: [],
+                product_categories: choisedProductCategories,
+                modifiers: deleteObjectsPropsHelper(choisedModifiers, [
+                  "category",
+                ]),
+              },
+              ["products_uuids", "product_categories_uuids", "modifiers_uuids"]
+            )
+          ),
+        },
       });
     });
 
@@ -680,17 +751,25 @@ describe("[Discounts Module] ...", () => {
     it(`throw an error when updating a discount with a non-exists product`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource);
       const fakeProductUUID = faker.datatype.uuid();
-      const choicedProducts = [
+      const chosenProducts = [
         products[2],
         { uuid: fakeProductUUID },
         products[6],
       ];
 
       const dto: UpdateDiscountDto = {
-        products: choicedProducts.map(p => ({
-          product_uuid: p.uuid,
-          modifiers_uuids: [],
-        })),
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.PRICE,
+              op: DiscountOperatorEnum.GREATER,
+              value: 1000,
+            },
+            products_uuids: chosenProducts.map(p => p.uuid),
+            product_categories_uuids: [],
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const updateDiscountResponse = await api.updateDiscount(
@@ -709,17 +788,25 @@ describe("[Discounts Module] ...", () => {
     it(`throw an error when updating a discount with a non-exists product category`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource);
       const fakeProductCategoryUUID = faker.datatype.uuid();
-      const choicedProductCategories = [
+      const chosenProductCategories = [
         productCategories[2],
         { uuid: fakeProductCategoryUUID },
         productCategories[6],
       ];
 
       const dto: UpdateDiscountDto = {
-        product_categories: choicedProductCategories.map(c => ({
-          category_uuid: c.uuid,
-          modifiers_uuids: [],
-        })),
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.PRICE,
+              op: DiscountOperatorEnum.GREATER,
+              value: 1000,
+            },
+            products_uuids: [],
+            product_categories_uuids: chosenProductCategories.map(c => c.uuid),
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const updateDiscountResponse = await api.updateDiscount(
@@ -738,16 +825,25 @@ describe("[Discounts Module] ...", () => {
     it(`throw an error when updating a discount with a non-exists modifier`, async () => {
       const discount = await createDiscountHelper(testingModule.dataSource);
       const fakeModifierUUID = faker.datatype.uuid();
-      const choicedModifiers = [
+      const chosenModifiers = [
         modifiers[2],
         { uuid: fakeModifierUUID },
         modifiers[6],
       ];
 
       const dto: UpdateDiscountDto = {
-        modifiers: choicedModifiers.map(m => ({
-          modifier_uuid: m.uuid,
-        })),
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.PRICE,
+              op: DiscountOperatorEnum.GREATER,
+              value: 1000,
+            },
+            products_uuids: [],
+            product_categories_uuids: [],
+            modifiers_uuids: chosenModifiers.map(m => m.uuid),
+          },
+        ],
       };
 
       const updateDiscountResponse = await api.updateDiscount(
@@ -814,11 +910,18 @@ describe("[Discounts Module] ...", () => {
       const discount = await createDiscountHelper(testingModule.dataSource);
 
       const dto: UpdateDiscountDto = {
-        condition: {
-          criteria: DiscountCriteriaEnum.PRICE,
-          op: DiscountOperatorEnum.BETWEEN,
-          value: 1000,
-        },
+        strategies: [
+          {
+            condition: {
+              criteria: DiscountCriteriaEnum.PRICE,
+              op: DiscountOperatorEnum.BETWEEN,
+              value: 1000,
+            },
+            products_uuids: [],
+            product_categories_uuids: [],
+            modifiers_uuids: [],
+          },
+        ],
       };
 
       const updateDiscountResponse = await api.updateDiscount(
@@ -838,11 +941,17 @@ describe("[Discounts Module] ...", () => {
       test("with type update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.PERCENT,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
             op: DiscountOperatorEnum.EQUAL,
             value: 3,
           },
+          products: [],
+          product_categories: [],
+          modifiers: [],
         });
 
         const dto: UpdateDiscountDto = {
@@ -865,16 +974,31 @@ describe("[Discounts Module] ...", () => {
       test("with scope update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.FIXED_PRICE,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
             op: DiscountOperatorEnum.EQUAL,
             value: 3,
           },
+          products: [],
+          product_categories: [],
           modifiers,
         });
-
         const dto: UpdateDiscountDto = {
-          modifiers: [],
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.COUNT,
+                op: DiscountOperatorEnum.EQUAL,
+                value: 3,
+              },
+              products_uuids: [],
+              product_categories_uuids: [],
+              modifiers_uuids: [],
+            },
+          ],
         };
 
         const updateDiscountResponse = await api.updateDiscount(
@@ -895,23 +1019,34 @@ describe("[Discounts Module] ...", () => {
       test("with full update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.PERCENT,
+          value: 3,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
             op: DiscountOperatorEnum.EQUAL,
             value: 3,
           },
+          products: [],
+          product_categories: [],
+          modifiers,
         });
 
         const dto: UpdateDiscountDto = {
           type: DiscountTypeEnum.FIXED_PRICE,
-          condition: {
-            criteria: DiscountCriteriaEnum.PRICE,
-            op: DiscountOperatorEnum.EQUAL,
-            value: 3000,
-          },
-          modifiers: modifiers.map(m => ({
-            modifier_uuid: m.uuid,
-          })),
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.PRICE,
+                op: DiscountOperatorEnum.EQUAL,
+                value: 3000,
+              },
+              products_uuids: [],
+              product_categories_uuids: [],
+              modifiers_uuids: modifiers.map(m => m.uuid),
+            },
+          ],
         };
 
         const updateDiscountResponse = await api.updateDiscount(
@@ -930,20 +1065,32 @@ describe("[Discounts Module] ...", () => {
       test("with criteria update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.FIXED_PRICE,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
             op: DiscountOperatorEnum.EQUAL,
             value: 3,
           },
+          products: [],
+          product_categories: [],
           modifiers,
         });
 
         const dto: UpdateDiscountDto = {
-          condition: {
-            criteria: DiscountCriteriaEnum.PRICE,
-            op: DiscountOperatorEnum.EQUAL,
-            value: 3000,
-          },
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.PRICE,
+                op: DiscountOperatorEnum.EQUAL,
+                value: 3000,
+              },
+              products_uuids: [],
+              product_categories_uuids: [],
+              modifiers_uuids: modifiers.map(m => m.uuid),
+            },
+          ],
         };
 
         const updateDiscountResponse = await api.updateDiscount(
@@ -962,11 +1109,16 @@ describe("[Discounts Module] ...", () => {
       test("with type update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.PERCENT,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.PRICE,
             op: DiscountOperatorEnum.EQUAL,
             value: 3000,
           },
+          products: [],
+          product_categories: [],
           modifiers,
         });
 
@@ -992,23 +1144,33 @@ describe("[Discounts Module] ...", () => {
       test("with full update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.PERCENT,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
             op: DiscountOperatorEnum.EQUAL,
             value: 3,
           },
+          products: [],
+          product_categories: [],
+          modifiers,
         });
 
         const dto: UpdateDiscountDto = {
           type: DiscountTypeEnum.FIXED_PRICE,
-          condition: {
-            criteria: DiscountCriteriaEnum.COUNT,
-            op: DiscountOperatorEnum.GREATER,
-            value: 3,
-          },
-          modifiers: modifiers.map(m => ({
-            modifier_uuid: m.uuid,
-          })),
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.COUNT,
+                op: DiscountOperatorEnum.GREATER,
+                value: 3,
+              },
+              products_uuids: [],
+              product_categories_uuids: [],
+              modifiers_uuids: modifiers.map(m => m.uuid),
+            },
+          ],
         };
 
         const updateDiscountResponse = await api.updateDiscount(
@@ -1027,20 +1189,32 @@ describe("[Discounts Module] ...", () => {
       test("with operator update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.FIXED_PRICE,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
             op: DiscountOperatorEnum.EQUAL,
             value: 3,
           },
+          products: [],
+          product_categories: [],
           modifiers,
         });
 
         const dto: UpdateDiscountDto = {
-          condition: {
-            criteria: DiscountCriteriaEnum.COUNT,
-            op: DiscountOperatorEnum.GREATER,
-            value: 3,
-          },
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.COUNT,
+                op: DiscountOperatorEnum.GREATER,
+                value: 3,
+              },
+              products_uuids: [],
+              product_categories_uuids: [],
+              modifiers_uuids: modifiers.map(m => m.uuid),
+            },
+          ],
         };
 
         const updateDiscountResponse = await api.updateDiscount(
@@ -1059,11 +1233,16 @@ describe("[Discounts Module] ...", () => {
       test("with type update", async () => {
         const discount = await createDiscountHelper(testingModule.dataSource, {
           type: DiscountTypeEnum.PERCENT,
+        });
+        await createDiscountStrategyHelper(testingModule.dataSource, {
+          discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
             op: DiscountOperatorEnum.GREATER,
             value: 3,
           },
+          products: [],
+          product_categories: [],
           modifiers,
         });
 

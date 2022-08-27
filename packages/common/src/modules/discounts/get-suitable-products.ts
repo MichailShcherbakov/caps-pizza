@@ -21,31 +21,31 @@ export function getSuitableProducts<T extends IProduct>(
       const modifierSet = new Set(product.modifiers.map(m => m.uuid));
 
       if (options?.strict) {
-        if (strategy.modifiers.every(m => modifierSet.has(m.uuid))) {
-          return true;
+        if (!strategy.modifiers.every(m => modifierSet.has(m.uuid))) {
+          return false;
         }
       } else {
-        if (strategy.modifiers.some(m => modifierSet.has(m.uuid))) {
-          return true;
+        if (!strategy.modifiers.some(m => modifierSet.has(m.uuid))) {
+          return false;
         }
       }
     }
 
     if (strategy.products.length) {
-      if (strategy.products.find(p => p.uuid === product.uuid)) {
-        return true;
+      if (!strategy.products.find(p => p.uuid === product.uuid)) {
+        return false;
       }
     }
 
     if (strategy.product_categories.length) {
       if (
-        strategy.product_categories.find(c => c.uuid === product.category_uuid)
+        !strategy.product_categories.find(c => c.uuid === product.category_uuid)
       ) {
-        return true;
+        return false;
       }
     }
 
-    return false;
+    return true;
   });
 }
 

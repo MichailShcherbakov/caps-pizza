@@ -18,14 +18,15 @@ import ProductsService from "../products/products.service";
 import { CreateDiscountDto, UpdateDiscountDto } from "./discounts.dto";
 import { getSuitableDiscounts } from "@monorepo/common/modules/discounts";
 import { IProductWithFullPrice } from "@monorepo/common";
-import DiscountProductEntity from "~/db/entities/discount-product.entity";
-import DiscountProductCategoryEntity from "~/db/entities/discount-product-category.entity";
+import DiscountStrategyEntity from "~/db/entities/discount-strategy.entity";
 
 @Injectable()
 export default class DiscountsService {
   constructor(
     @InjectRepository(DiscountEntity)
     private readonly discountRepository: Repository<DiscountEntity>,
+    @InjectRepository(DiscountStrategyEntity)
+    private readonly discountStrategiesRepository: Repository<DiscountStrategyEntity>,
     private readonly productsService: ProductsService,
     private readonly productCategoriesService: ProductCategoriesService,
     private readonly modifiersService: ModifiersService
@@ -36,9 +37,11 @@ export default class DiscountsService {
       .find({
         where: options,
         relations: {
-          products: true,
-          product_categories: true,
-          modifiers: true,
+          strategies: {
+            products: true,
+            product_categories: true,
+            modifiers: true,
+          },
         },
       })
       .then(discounts => DiscountsService.sort(discounts));
@@ -50,15 +53,26 @@ export default class DiscountsService {
     return this.discountRepository.findOne({
       where: options,
       relations: {
-        products: {
+        strategies: {
+          products: true,
+          product_categories: true,
           modifiers: true,
         },
-        product_categories: {
-          modifiers: true,
-        },
-        modifiers: true,
       },
     });
+  }
+
+  async findOneOrFail(
+    options?: FindOptionsWhere<DiscountEntity>
+  ): Promise<DiscountEntity> {
+    const foundDiscount = await this.findOne(options);
+
+    if (!foundDiscount)
+      throw new NotFoundException(
+        `The discount ${options?.uuid} does not exist`
+      );
+
+    return foundDiscount;
   }
 
   static sort(discounts: DiscountEntity[]): DiscountEntity[] {
@@ -78,76 +92,96 @@ export default class DiscountsService {
         `The discount cannot has the value greater then 100 when it has ${DiscountTypeEnum.PERCENT} type`
       );
 
-    if (dto.type === DiscountTypeEnum.FIXED_PRICE) {
-      if (
-        !dto.products.length &&
-        !dto.product_categories.length &&
-        !dto.modifiers.length
-      )
-        throw new BadRequestException(
-          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available in global discount scope`
-        );
-
-      if (dto.condition.criteria !== DiscountCriteriaEnum.COUNT)
-        throw new BadRequestException(
-          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`
-        );
-
-      if (dto.condition.op !== DiscountOperatorEnum.EQUAL)
-        throw new BadRequestException(
-          `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`
-        );
-    }
-
-    if (
-      dto.condition.op === DiscountOperatorEnum.BETWEEN &&
-      !dto.condition.value2
-    )
-      throw new BadRequestException(
-        `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
-      );
-
     const e = new DiscountEntity();
     e.name = dto.name;
     e.value = dto.value;
     e.type = dto.type;
-    e.condition = dto.condition;
-    e.products = [];
-    e.product_categories = [];
-    e.modifiers = [];
+    e.strategies = [];
 
-    const modifiersUUIDs: string[] = dto.modifiers.map(
-      ({ modifier_uuid }) => modifier_uuid
+    const strategies: DiscountStrategyEntity[] = [];
+
+    const productsUUIDs = dto.strategies.reduce<string[]>(
+      (array, { products_uuids }) => {
+        array.push(...products_uuids);
+        return array;
+      },
+      []
+    );
+    const products = new Map(
+      (
+        await this.productsService.find({
+          uuid: In(productsUUIDs),
+        })
+      ).map(p => [p.uuid, p])
     );
 
-    dto.products.forEach(({ modifiers_uuids }) => {
-      modifiersUUIDs.push(...modifiers_uuids);
-    });
+    const productCategoriesUUIDs = dto.strategies.reduce<string[]>(
+      (array, { product_categories_uuids }) => {
+        array.push(...product_categories_uuids);
+        return array;
+      },
+      []
+    );
+    const productCategories = new Map(
+      (
+        await this.productCategoriesService.find({
+          uuid: In(productCategoriesUUIDs),
+        })
+      ).map(c => [c.uuid, c])
+    );
 
-    dto.product_categories.forEach(({ modifiers_uuids }) => {
-      modifiersUUIDs.push(...modifiers_uuids);
-    });
-
+    const modifiersUUIDs = dto.strategies.reduce<string[]>(
+      (array, { modifiers_uuids }) => {
+        array.push(...modifiers_uuids);
+        return array;
+      },
+      []
+    );
     const modifiers = new Map(
       (
         await this.modifiersService.find({
           uuid: In(modifiersUUIDs),
         })
-      ).map(modifier => [modifier.uuid, modifier])
+      ).map(m => [m.uuid, m])
     );
 
-    if (dto.products.length) {
-      const products = new Map(
-        (
-          await this.productsService.find({
-            uuid: In(dto.products.map(({ product_uuid }) => product_uuid)),
-          })
-        ).map(p => [p.uuid, p])
-      );
+    for (const strategy of dto.strategies) {
+      if (dto.type === DiscountTypeEnum.FIXED_PRICE) {
+        if (
+          !strategy.products_uuids.length &&
+          !strategy.product_categories_uuids.length &&
+          !strategy.modifiers_uuids.length
+        )
+          throw new BadRequestException(
+            `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available in global discount scope`
+          );
 
-      const discountProducts: DiscountProductEntity[] = [];
+        if (strategy.condition.criteria !== DiscountCriteriaEnum.COUNT)
+          throw new BadRequestException(
+            `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`
+          );
 
-      for (const { product_uuid, modifiers_uuids } of dto.products) {
+        if (strategy.condition.op !== DiscountOperatorEnum.EQUAL)
+          throw new BadRequestException(
+            `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`
+          );
+      }
+
+      if (
+        strategy.condition.op === DiscountOperatorEnum.BETWEEN &&
+        !strategy.condition.value2
+      )
+        throw new BadRequestException(
+          `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
+        );
+
+      const s = new DiscountStrategyEntity();
+      s.condition = strategy.condition;
+      s.products = [];
+      s.product_categories = [];
+      s.modifiers = [];
+
+      for (const product_uuid of strategy.products_uuids) {
         const product = products.get(product_uuid);
 
         if (!product)
@@ -155,71 +189,21 @@ export default class DiscountsService {
             `The product ${product_uuid} does not exist`
           );
 
-        const productModifiers = modifiers_uuids.map(modifierUUID => {
-          const modifier = modifiers.get(modifierUUID);
-
-          if (!modifier)
-            throw new NotFoundException(
-              `The modifier ${modifierUUID} does not exist`
-            );
-
-          return modifier;
-        });
-
-        const discountProduct = new DiscountProductEntity();
-        discountProduct.product_uuid = product.uuid;
-        discountProduct.modifiers = productModifiers;
-
-        discountProducts.push(discountProduct);
+        s.products.push(product);
       }
 
-      e.products = discountProducts;
-    }
+      for (const product_category_uuid of strategy.product_categories_uuids) {
+        const productCategory = productCategories.get(product_category_uuid);
 
-    if (dto.product_categories.length) {
-      const productCategories = new Map(
-        (
-          await this.productCategoriesService.find({
-            uuid: In(
-              dto.product_categories.map(({ category_uuid }) => category_uuid)
-            ),
-          })
-        ).map(c => [c.uuid, c])
-      );
-
-      const discountProductCategories: DiscountProductCategoryEntity[] = [];
-
-      for (const { category_uuid, modifiers_uuids } of dto.product_categories) {
-        const category = productCategories.get(category_uuid);
-
-        if (!category)
+        if (!productCategory)
           throw new NotFoundException(
-            `The product category ${category_uuid} does not exist`
+            `The product category ${product_category_uuid} does not exist`
           );
 
-        const productModifiers = modifiers_uuids.map(modifierUUID => {
-          const modifier = modifiers.get(modifierUUID);
-
-          if (!modifier)
-            throw new NotFoundException(
-              `The modifier ${modifierUUID} does not exist`
-            );
-
-          return modifier;
-        });
-
-        const discountProductCategory = new DiscountProductCategoryEntity();
-        discountProductCategory.category_uuid = category.uuid;
-        discountProductCategory.modifiers = productModifiers;
-
-        discountProductCategories.push(discountProductCategory);
+        s.product_categories.push(productCategory);
       }
 
-      e.product_categories = discountProductCategories;
-    }
-
-    if (dto.modifiers.length) {
-      e.modifiers = dto.modifiers.map(({ modifier_uuid }) => {
+      for (const modifier_uuid of strategy.modifiers_uuids) {
         const modifier = modifiers.get(modifier_uuid);
 
         if (!modifier)
@@ -227,11 +211,19 @@ export default class DiscountsService {
             `The modifier ${modifier_uuid} does not exist`
           );
 
-        return modifier;
-      });
+        s.modifiers.push(modifier);
+      }
+
+      strategies.push(s);
     }
 
-    return this.discountRepository.save(e);
+    const discount = await this.discountRepository.save(e);
+
+    await this.discountStrategiesRepository.save(
+      strategies.map(s => ({ ...s, discount_uuid: discount.uuid }))
+    );
+
+    return this.findOneOrFail({ uuid: discount.uuid });
   }
 
   async update(uuid: string, dto: UpdateDiscountDto): Promise<DiscountEntity> {
@@ -271,176 +263,179 @@ export default class DiscountsService {
       (!dto.type && foundDiscount.type === DiscountTypeEnum.FIXED_PRICE)
     ) {
       if (
-        (!dto.products?.length &&
-          !dto.product_categories?.length &&
-          !dto.modifiers?.length &&
-          !foundDiscount.products.length &&
-          !foundDiscount.product_categories.length &&
-          !foundDiscount.modifiers.length) ||
-        (dto.products &&
-          !dto.products.length &&
-          foundDiscount.products.length) ||
-        (dto.product_categories &&
-          !dto.product_categories.length &&
-          foundDiscount.product_categories.length) ||
-        (dto.modifiers &&
-          !dto.modifiers.length &&
-          foundDiscount.modifiers.length)
+        foundDiscount.strategies.some(
+          s =>
+            !s.products.length &&
+            !s.product_categories.length &&
+            !s.modifiers.length
+        )
       )
         throw new BadRequestException(
           `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available in global discount scope`
         );
 
       if (
-        (dto.condition?.criteria &&
-          dto.condition.criteria !== DiscountCriteriaEnum.COUNT) ||
-        (dto.condition?.criteria === undefined &&
-          foundDiscount.condition.criteria !== DiscountCriteriaEnum.COUNT)
+        foundDiscount.strategies.some(
+          s => s.condition.criteria !== DiscountCriteriaEnum.COUNT
+        )
       )
         throw new BadRequestException(
           `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`
         );
 
       if (
-        (dto.condition?.op &&
-          dto.condition.op !== DiscountOperatorEnum.EQUAL) ||
-        (dto.condition?.op === undefined &&
-          foundDiscount.condition.op !== DiscountOperatorEnum.EQUAL)
+        foundDiscount.strategies.some(
+          s => s.condition.op !== DiscountOperatorEnum.EQUAL
+        )
       )
         throw new BadRequestException(
           `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`
         );
     }
 
-    if (dto.condition) {
-      if (
-        dto.condition.op === DiscountOperatorEnum.BETWEEN &&
-        !dto.condition.value2
-      )
-        throw new BadRequestException(
-          `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
-        );
-    }
+    foundDiscount.type = dto.type ?? foundDiscount.type;
+    foundDiscount.value = dto.value ?? foundDiscount.value;
 
-    const modifiersUUIDs: string[] =
-      dto.modifiers?.map(({ modifier_uuid }) => modifier_uuid) ?? [];
+    await this.discountRepository.save(foundDiscount);
 
-    dto.products?.forEach(({ modifiers_uuids }) => {
-      modifiersUUIDs.push(...modifiers_uuids);
-    });
-
-    dto.product_categories?.forEach(({ modifiers_uuids }) => {
-      modifiersUUIDs.push(...modifiers_uuids);
-    });
-
-    const modifiers = new Map(
-      (
-        await this.modifiersService.find({
-          uuid: In(modifiersUUIDs),
-        })
-      ).map(modifier => [modifier.uuid, modifier])
-    );
-
-    if (dto.products?.length) {
+    if (dto.strategies) {
+      const productsUUIDs = dto.strategies.reduce<string[]>(
+        (array, { products_uuids }) => {
+          array.push(...products_uuids);
+          return array;
+        },
+        []
+      );
       const products = new Map(
         (
           await this.productsService.find({
-            uuid: In(dto.products.map(({ product_uuid }) => product_uuid)),
+            uuid: In(productsUUIDs),
           })
         ).map(p => [p.uuid, p])
       );
 
-      const discountProducts: DiscountProductEntity[] = [];
-
-      for (const { product_uuid, modifiers_uuids } of dto.products) {
-        const product = products.get(product_uuid);
-
-        if (!product)
-          throw new NotFoundException(
-            `The product ${product_uuid} does not exist`
-          );
-
-        const productModifiers = modifiers_uuids.map(modifierUUID => {
-          const modifier = modifiers.get(modifierUUID);
-
-          if (!modifier)
-            throw new NotFoundException(
-              `The modifier ${modifierUUID} does not exist`
-            );
-
-          return modifier;
-        });
-
-        const discountProduct = new DiscountProductEntity();
-        discountProduct.product_uuid = product.uuid;
-        discountProduct.modifiers = productModifiers;
-
-        discountProducts.push(discountProduct);
-      }
-
-      foundDiscount.products = discountProducts;
-    }
-
-    if (dto.product_categories?.length) {
+      const productCategoriesUUIDs = dto.strategies.reduce<string[]>(
+        (array, { product_categories_uuids }) => {
+          array.push(...product_categories_uuids);
+          return array;
+        },
+        []
+      );
       const productCategories = new Map(
         (
           await this.productCategoriesService.find({
-            uuid: In(
-              dto.product_categories.map(({ category_uuid }) => category_uuid)
-            ),
+            uuid: In(productCategoriesUUIDs),
           })
         ).map(c => [c.uuid, c])
       );
 
-      const discountProductCategories: DiscountProductCategoryEntity[] = [];
+      const modifiersUUIDs = dto.strategies.reduce<string[]>(
+        (array, { modifiers_uuids }) => {
+          array.push(...modifiers_uuids);
+          return array;
+        },
+        []
+      );
+      const modifiers = new Map(
+        (
+          await this.modifiersService.find({
+            uuid: In(modifiersUUIDs),
+          })
+        ).map(m => [m.uuid, m])
+      );
 
-      for (const { category_uuid, modifiers_uuids } of dto.product_categories) {
-        const category = productCategories.get(category_uuid);
+      const strategies: DiscountStrategyEntity[] = [];
 
-        if (!category)
-          throw new NotFoundException(
-            `The product category ${category_uuid} does not exist`
+      for (const strategy of dto.strategies) {
+        if (
+          dto.type === DiscountTypeEnum.FIXED_PRICE ||
+          (!dto.type && foundDiscount.type === DiscountTypeEnum.FIXED_PRICE)
+        ) {
+          if (
+            (!strategy.products_uuids.length &&
+              !strategy.product_categories_uuids.length &&
+              !strategy.modifiers_uuids.length) ||
+            foundDiscount.strategies.some(
+              s =>
+                !s.products.length &&
+                !s.product_categories.length &&
+                !s.modifiers.length
+            )
+          )
+            throw new BadRequestException(
+              `The ${DiscountTypeEnum.FIXED_PRICE} discount type is not available in global discount scope`
+            );
+
+          if (strategy.condition.criteria !== DiscountCriteriaEnum.COUNT)
+            throw new BadRequestException(
+              `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountCriteriaEnum.COUNT} discount criteria`
+            );
+
+          if (strategy.condition.op !== DiscountOperatorEnum.EQUAL)
+            throw new BadRequestException(
+              `The ${DiscountTypeEnum.FIXED_PRICE} discount type is available with only ${DiscountOperatorEnum.EQUAL} discount operator`
+            );
+        }
+
+        if (
+          strategy.condition.op === DiscountOperatorEnum.BETWEEN &&
+          !strategy.condition.value2
+        )
+          throw new BadRequestException(
+            `The discount has the ${DiscountOperatorEnum.BETWEEN} condition operator, but the value2 was not provided`
           );
 
-        const productModifiers = modifiers_uuids.map(modifierUUID => {
-          const modifier = modifiers.get(modifierUUID);
+        const s = new DiscountStrategyEntity();
+        s.discount_uuid = foundDiscount.uuid;
+        s.condition = strategy.condition;
+        s.products = [];
+        s.product_categories = [];
+        s.modifiers = [];
+
+        for (const product_uuid of strategy.products_uuids) {
+          const product = products.get(product_uuid);
+
+          if (!product)
+            throw new NotFoundException(
+              `The product ${product_uuid} does not exist`
+            );
+
+          s.products.push(product);
+        }
+
+        for (const product_category_uuid of strategy.product_categories_uuids) {
+          const productCategory = productCategories.get(product_category_uuid);
+
+          if (!productCategory)
+            throw new NotFoundException(
+              `The product category ${product_category_uuid} does not exist`
+            );
+
+          s.product_categories.push(productCategory);
+        }
+
+        for (const modifier_uuid of strategy.modifiers_uuids) {
+          const modifier = modifiers.get(modifier_uuid);
 
           if (!modifier)
             throw new NotFoundException(
-              `The modifier ${modifierUUID} does not exist`
+              `The modifier ${modifier_uuid} does not exist`
             );
 
-          return modifier;
-        });
+          s.modifiers.push(modifier);
+        }
 
-        const discountProductCategory = new DiscountProductCategoryEntity();
-        discountProductCategory.category_uuid = category.uuid;
-        discountProductCategory.modifiers = productModifiers;
-
-        discountProductCategories.push(discountProductCategory);
+        strategies.push(s);
       }
 
-      foundDiscount.product_categories = discountProductCategories;
-    }
-
-    if (dto.modifiers?.length) {
-      foundDiscount.modifiers = dto.modifiers.map(({ modifier_uuid }) => {
-        const modifier = modifiers.get(modifier_uuid);
-
-        if (!modifier)
-          throw new NotFoundException(
-            `The modifier ${modifier_uuid} does not exist`
-          );
-
-        return modifier;
+      await this.discountStrategiesRepository.delete({
+        discount_uuid: foundDiscount.uuid,
       });
+
+      await this.discountStrategiesRepository.save(strategies);
     }
 
-    foundDiscount.condition = dto.condition ?? foundDiscount.condition;
-    foundDiscount.type = dto.type ?? foundDiscount.type;
-    foundDiscount.value = dto.value ?? foundDiscount.value;
-
-    return this.discountRepository.save(foundDiscount);
+    return this.findOneOrFail({ uuid: foundDiscount.uuid });
   }
 
   async delete(uuid: string): Promise<void> {

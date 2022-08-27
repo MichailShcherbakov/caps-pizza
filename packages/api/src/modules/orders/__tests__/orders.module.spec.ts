@@ -237,7 +237,7 @@ describe("[Orders Module] ...", () => {
       dto.delivery_address.street
     );
 
-    expect(payload.append).toBeCalledWith("tags[0]", TEST_PAYMENT.code);
+    expect(payload.append).toBeCalledWith("pay", TEST_PAYMENT.code);
 
     expect(payload.append).toBeCalledWith("home", dto.delivery_address.house);
     expect(payload.append).toBeCalledWith("pod", dto.delivery_address.entrance);

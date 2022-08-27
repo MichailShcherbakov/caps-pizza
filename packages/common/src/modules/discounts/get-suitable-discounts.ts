@@ -1,4 +1,5 @@
 import {
+  DiscountCriteriaEnum,
   DiscountTypeEnum,
   IDiscount,
   IProductWithFullPrice,
@@ -6,6 +7,7 @@ import {
 import { computeProductsCost } from "./compute-product-cost.helper";
 import getConditionValue from "./get-condition-value";
 import getSuitableProducts from "./get-suitable-products";
+import isFulfilledCondition from "./is-fulfilled-condition";
 import orderDiscountsByProfitable from "./order-discounts-by-profitable";
 import orderProductsByProfitable from "./order-produts-by-profitable";
 
@@ -31,6 +33,43 @@ export function getSuitableDiscounts(
       const suitableProducts = orderProductsByProfitable(
         getSuitableProducts(strategy, providedProducts)
       );
+
+      if (strategy.condition.criteria === DiscountCriteriaEnum.PRICE) {
+        const conditionValue = getConditionValue(
+          strategy.condition,
+          suitableProducts
+        );
+
+        if (!isFulfilledCondition(strategy.condition, conditionValue)) {
+          passed = false;
+          break;
+        }
+
+        for (const suitableProduct of suitableProducts) {
+          const existSuitableProduct = allSuitableProducts.get(
+            suitableProduct.uuid
+          );
+
+          if (existSuitableProduct) {
+            existSuitableProduct.count++;
+          } else {
+            allSuitableProducts.set(suitableProduct.uuid, {
+              ...suitableProduct,
+              count: 1,
+            });
+          }
+
+          --suitableProduct.count;
+
+          if (!suitableProduct.count) {
+            providedProducts = providedProducts.filter(
+              p => p.uuid !== suitableProduct.uuid
+            );
+          }
+        }
+
+        continue;
+      }
 
       if (strategy.products.length) {
         if (suitableProducts.length !== strategy.products.length) {

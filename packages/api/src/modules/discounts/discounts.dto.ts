@@ -10,37 +10,28 @@ import {
   Min,
   ValidateNested,
 } from "class-validator";
-import {
-  DiscountTypeEnum,
-  DiscountСondition,
-} from "~/db/entities/discount.entity";
+import { DiscountСondition } from "~/db/entities/discount-strategy.entity";
+import { DiscountTypeEnum } from "~/db/entities/discount.entity";
 
-export class DiscountProductDto {
-  @IsUUID()
+export class DiscountStrategyDto {
+  @Type(() => DiscountСondition)
+  @ValidateNested()
+  condition: DiscountСondition;
+
+  @IsArray()
+  @IsUUID("all", { each: true })
   @IsNotEmpty()
-  product_uuid: string;
+  products_uuids: string[];
+
+  @IsArray()
+  @IsUUID("all", { each: true })
+  @IsNotEmpty()
+  product_categories_uuids: string[];
 
   @IsArray()
   @IsUUID("all", { each: true })
   @IsNotEmpty()
   modifiers_uuids: string[];
-}
-
-export class DiscountProductCategoryDto {
-  @IsUUID()
-  @IsNotEmpty()
-  category_uuid: string;
-
-  @IsArray()
-  @IsUUID("all", { each: true })
-  @IsNotEmpty()
-  modifiers_uuids: string[];
-}
-
-export class DiscountModifierDto {
-  @IsUUID()
-  @IsNotEmpty()
-  modifier_uuid: string;
 }
 
 export class CreateDiscountDto {
@@ -52,26 +43,16 @@ export class CreateDiscountDto {
   @IsNotEmpty()
   type: DiscountTypeEnum;
 
-  @Type(() => DiscountСondition)
-  @ValidateNested()
-  condition: DiscountСondition;
-
   @IsNumber()
   @Min(0)
   @IsNotEmpty()
   value: number;
 
-  @Type(() => DiscountProductDto)
+  @IsArray()
+  @Type(() => DiscountStrategyDto)
   @ValidateNested({ each: true })
-  products: DiscountProductDto[];
-
-  @Type(() => DiscountProductCategoryDto)
-  @ValidateNested({ each: true })
-  product_categories: DiscountProductCategoryDto[];
-
-  @Type(() => DiscountModifierDto)
-  @ValidateNested({ each: true })
-  modifiers: DiscountModifierDto[];
+  @IsNotEmpty()
+  strategies: DiscountStrategyDto[];
 }
 
 export class UpdateDiscountDto {
@@ -85,29 +66,16 @@ export class UpdateDiscountDto {
   @IsOptional()
   type?: DiscountTypeEnum;
 
-  @Type(() => DiscountСondition)
-  @ValidateNested()
-  @IsOptional()
-  condition?: DiscountСondition;
-
   @IsNumber()
   @Min(0)
   @IsNotEmpty()
   @IsOptional()
   value?: number;
 
-  @Type(() => DiscountProductDto)
-  @ValidateNested()
+  @IsArray()
+  @Type(() => DiscountStrategyDto)
+  @ValidateNested({ each: true })
+  @IsNotEmpty()
   @IsOptional()
-  products?: DiscountProductDto[];
-
-  @Type(() => DiscountProductCategoryDto)
-  @ValidateNested()
-  @IsOptional()
-  product_categories?: DiscountProductCategoryDto[];
-
-  @Type(() => DiscountModifierDto)
-  @ValidateNested()
-  @IsOptional()
-  modifiers?: DiscountModifierDto[];
+  strategies?: DiscountStrategyDto[];
 }
