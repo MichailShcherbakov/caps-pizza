@@ -67,13 +67,13 @@ describe("[Discount Module] ...", () => {
               discountValue: discount.value,
               products: [
                 {
-                  ...products[1],
-                  fullPrice: 560,
+                  ...products[0],
+                  fullPrice: 440,
                   count: 1,
                 },
                 {
-                  ...products[0],
-                  fullPrice: 440,
+                  ...products[1],
+                  fullPrice: 560,
                   count: 1,
                 },
                 {
@@ -141,13 +141,13 @@ describe("[Discount Module] ...", () => {
               discountValue: discount.value,
               products: [
                 {
-                  ...products[1],
-                  fullPrice: 560,
+                  ...products[0],
+                  fullPrice: 440,
                   count: 1,
                 },
                 {
-                  ...products[0],
-                  fullPrice: 440,
+                  ...products[1],
+                  fullPrice: 560,
                   count: 1,
                 },
                 {
@@ -210,14 +210,14 @@ describe("[Discount Module] ...", () => {
               discountValue: discount.value,
               products: [
                 {
-                  ...products[1],
-                  fullPrice: 560,
-                  count: 2,
-                },
-                {
                   ...products[0],
                   fullPrice: 440,
                   count: 1,
+                },
+                {
+                  ...products[1],
+                  fullPrice: 560,
+                  count: 2,
                 },
               ],
             },

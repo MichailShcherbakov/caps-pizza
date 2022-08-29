@@ -68,13 +68,13 @@ describe("[Discount Module] ...", () => {
                 (440 * 1 + 560 * 1 + 120 * 1) * (discount.value / 100),
               products: [
                 {
-                  ...products[1],
-                  fullPrice: 560,
+                  ...products[0],
+                  fullPrice: 440,
                   count: 1,
                 },
                 {
-                  ...products[0],
-                  fullPrice: 440,
+                  ...products[1],
+                  fullPrice: 560,
                   count: 1,
                 },
                 {
@@ -143,13 +143,13 @@ describe("[Discount Module] ...", () => {
                 ((440 * 1 + 560 * 1 + 120 * 1) * discount.value) / 100,
               products: [
                 {
-                  ...products[1],
-                  fullPrice: 560,
+                  ...products[0],
+                  fullPrice: 440,
                   count: 1,
                 },
                 {
-                  ...products[0],
-                  fullPrice: 440,
+                  ...products[1],
+                  fullPrice: 560,
                   count: 1,
                 },
                 {
@@ -212,14 +212,14 @@ describe("[Discount Module] ...", () => {
               discountValue: ((440 * 1 + 560 * 2) * discount.value) / 100,
               products: [
                 {
-                  ...products[1],
-                  fullPrice: 560,
-                  count: 2,
-                },
-                {
                   ...products[0],
                   fullPrice: 440,
                   count: 1,
+                },
+                {
+                  ...products[1],
+                  fullPrice: 560,
+                  count: 2,
                 },
               ],
             },

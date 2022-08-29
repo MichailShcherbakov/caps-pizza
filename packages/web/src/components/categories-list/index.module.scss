@@ -16,6 +16,10 @@
     @include ui-jc-start;
   }
 
+  &--width-auto {
+    @include ui-jc-start;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }

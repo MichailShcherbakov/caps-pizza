@@ -19,16 +19,6 @@ export const useDiscountsTableHead = () => {
           fullWidth: true,
         },
         {
-          name: "scope",
-          displayName: "Область действия",
-          fullWidth: true,
-        },
-        {
-          name: "condition",
-          displayName: "Условие",
-          fullWidth: true,
-        },
-        {
           name: "value",
           displayName: "Значение",
           primary: true,

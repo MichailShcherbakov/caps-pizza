@@ -31,8 +31,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     products,
     productsCount,
     totalCost,
-    discount,
-    discountValue,
+    discounts,
     isLoading: isShoppingCartLoading,
   } = useShoppingCart();
 
@@ -140,11 +139,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
         <Typography variant="h3" component="p">
           {`Итого: ${totalCost} ₽`}
         </Typography>
-        {discount ? (
-          <Typography variant="subtitle1" component="p">
-            {`Скидка: ${discount?.name} ₽ - ${discountValue} ₽`}
+        {discounts.map(({ discount, discountValue }) => (
+          <Typography key={discount.name} variant="subtitle1" component="p">
+            {`Скидка: ${discount.name} - ${discountValue} ₽`}
           </Typography>
-        ) : undefined}
+        ))}
       </Stack>
       <Stack className="ui-gap-4">
         <Title text="О Вас" />
@@ -326,11 +325,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
             <Typography variant="h3" component="p">
               {`Итого: ${totalOrderCost} ₽`}
             </Typography>
-            {discount ? (
-              <Typography variant="subtitle1" component="p">
-                {`Скидка: ${discount?.name} ₽ - ${discountValue} ₽`}
+            {discounts.map(({ discount, discountValue }) => (
+              <Typography key={discount.name} variant="subtitle1" component="p">
+                {`Скидка: ${discount.name} - ${discountValue} ₽`}
               </Typography>
-            ) : undefined}
+            ))}
             {currentDelivery ? (
               <Typography variant="subtitle1" component="p">
                 {`Доставка: ${currentDelivery.name} - ${currentDelivery.value} ₽`}

@@ -3,48 +3,32 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
+  SelectProps,
 } from "@mui/material";
 import React from "react";
-import {
-  DiscountCriteriaEnum,
-  DiscountScopeEnum,
-  DiscountTypeEnum,
-} from "~/services/discounts.service";
+import { DiscountCriteriaEnum } from "~/services/discounts.service";
 import { locale } from "@monorepo/common";
 
-export interface DiscountCriteriaSelectProps {
-  type: DiscountTypeEnum;
-  scope: DiscountScopeEnum;
-  value: string;
-  onChange: (event: SelectChangeEvent) => void;
-}
+export interface DiscountCriteriaSelectProps extends SelectProps {}
 
 export const DiscountCriteriaSelect: React.FC<DiscountCriteriaSelectProps> =
-  React.memo(({ value, type, scope, onChange }) => {
+  React.memo(({ value, onChange, ...props }) => {
     const items = [
       {
         name: locale[DiscountCriteriaEnum.COUNT],
         value: DiscountCriteriaEnum.COUNT,
       },
-    ];
-
-    if (
-      type !== DiscountTypeEnum.FIXED_PRICE &&
-      scope !== DiscountScopeEnum.PRODUCTS
-    ) {
-      items.push({
+      {
         name: locale[DiscountCriteriaEnum.PRICE],
         value: DiscountCriteriaEnum.PRICE,
-      });
-    }
+      },
+    ];
 
     return (
       <FormControl color="secondary" size="small" fullWidth>
         <InputLabel size="small">Критерий</InputLabel>
         <Select
-          id="conditionCriteria"
-          name="conditionCriteria"
+          {...props}
           value={value}
           label="Критерий"
           size="small"

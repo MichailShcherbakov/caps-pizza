@@ -22,7 +22,7 @@ export function getSuitableDiscounts(
   products: IProductWithFullPrice[]
 ): ISuitableDiscount[] {
   let suitableDiscounts: ISuitableDiscount[] = [];
-  let providedProducts = products;
+  let providedProducts = products.map(p => ({ ...p }));
 
   for (const discount of discounts) {
     let passed = true;
@@ -34,17 +34,22 @@ export function getSuitableDiscounts(
         getSuitableProducts(strategy, providedProducts)
       );
 
+      if (!suitableProducts.length) {
+        passed = false;
+        break;
+      }
+
+      const conditionValue = getConditionValue(
+        strategy.condition,
+        suitableProducts
+      );
+
+      if (!isFulfilledCondition(strategy.condition, conditionValue)) {
+        passed = false;
+        break;
+      }
+
       if (strategy.condition.criteria === DiscountCriteriaEnum.PRICE) {
-        const conditionValue = getConditionValue(
-          strategy.condition,
-          suitableProducts
-        );
-
-        if (!isFulfilledCondition(strategy.condition, conditionValue)) {
-          passed = false;
-          break;
-        }
-
         for (const suitableProduct of suitableProducts) {
           const existSuitableProduct = allSuitableProducts.get(
             suitableProduct.uuid
@@ -77,30 +82,61 @@ export function getSuitableDiscounts(
           break;
         }
 
-        let availableProductCount = strategy.condition.value;
-        while (availableProductCount > 0) {
-          for (const suitableProduct of suitableProducts) {
-            const existSuitableProduct = allSuitableProducts.get(
-              suitableProduct.uuid
+        let minCount = -1;
+        let maxCount = -1;
+        for (const suitableProduct of suitableProducts) {
+          if (suitableProduct.count > maxCount) {
+            maxCount = suitableProduct.count;
+
+            if (minCount < 0) {
+              minCount = maxCount;
+            }
+          }
+
+          if (suitableProduct.count < minCount) {
+            minCount = suitableProduct.count;
+          }
+        }
+
+        for (const [, suitableProduct] of allSuitableProducts) {
+          if (suitableProduct.count < minCount) {
+            minCount = suitableProduct.count;
+          }
+        }
+
+        for (const [, suitableProduct] of allSuitableProducts) {
+          if (suitableProduct.count > minCount) {
+            providedProducts.push({
+              ...suitableProduct,
+              count: suitableProduct.count - minCount,
+            });
+
+            suitableProduct.count = minCount;
+          }
+        }
+
+        diff = Math.floor(minCount / strategy.condition.value);
+
+        for (const suitableProduct of suitableProducts) {
+          const existSuitableProduct = allSuitableProducts.get(
+            suitableProduct.uuid
+          );
+
+          if (existSuitableProduct) {
+            existSuitableProduct.count += minCount;
+          } else {
+            allSuitableProducts.set(suitableProduct.uuid, {
+              ...suitableProduct,
+              count: minCount,
+            });
+          }
+
+          suitableProduct.count -= minCount;
+
+          if (!suitableProduct.count) {
+            providedProducts = providedProducts.filter(
+              p => p.uuid !== suitableProduct.uuid
             );
-
-            if (existSuitableProduct) {
-              existSuitableProduct.count++;
-            } else {
-              allSuitableProducts.set(suitableProduct.uuid, {
-                ...suitableProduct,
-                count: 1,
-              });
-            }
-
-            --suitableProduct.count;
-            --availableProductCount;
-
-            if (!suitableProduct.count) {
-              providedProducts = providedProducts.filter(
-                p => p.uuid !== suitableProduct.uuid
-              );
-            }
           }
         }
         continue;
@@ -109,12 +145,15 @@ export function getSuitableDiscounts(
       diff = 0;
 
       let currentProductCount = 0;
-      let currentConditionValue = getConditionValue(
-        strategy.condition,
-        suitableProducts
-      );
+      let currentConditionValue = conditionValue;
       for (const suitableProduct of suitableProducts) {
         let availableProductCount = suitableProduct.count;
+
+        if (
+          currentProductCount === 0 &&
+          currentConditionValue < strategy.condition.value
+        )
+          break;
 
         do {
           const productCount = Math.min(

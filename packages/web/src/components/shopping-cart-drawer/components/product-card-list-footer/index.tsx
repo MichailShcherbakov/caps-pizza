@@ -8,8 +8,7 @@ export interface ProductCardListFooterProps {
 export const ProductCardListFooter: React.FC<ProductCardListFooterProps> = ({
   onOrder,
 }) => {
-  const { products, totalCost, discount, discountValue, isLoading } =
-    useShoppingCart();
+  const { products, totalCost, discounts, isLoading } = useShoppingCart();
 
   if (isLoading || !products.length) return null;
 
@@ -19,11 +18,11 @@ export const ProductCardListFooter: React.FC<ProductCardListFooterProps> = ({
         <Typography variant="h4" component="span">
           {`Итого: ${totalCost} ₽`}
         </Typography>
-        {discount ? (
-          <Typography variant="subtitle1" component="span">
+        {discounts.map(({ discount, discountValue }) => (
+          <Typography key={discount.name} variant="subtitle1" component="span">
             {`Скидка: ${discount.name} - ${discountValue} ₽`}
           </Typography>
-        ) : undefined}
+        ))}
       </Stack>
       <Button variant="outlined" onClick={onOrder}>
         <Typography variant="button">Оформить заказ</Typography>

@@ -1,6 +1,5 @@
 import {
   DiscountCriteriaEnum,
-  DiscountScopeEnum,
   DiscountTypeEnum,
   useGetDiscountsQuery,
 } from "~/services/discounts.service";
@@ -17,9 +16,7 @@ import { DataTable } from "~/ui";
 import ModalErrorCatcher from "~/components/error-catcher/modal";
 import { useDiscountsTableHead } from "./helpers/data-table-head";
 import { locale } from "@monorepo/common";
-import { Typography } from "@mui/material";
-import ProductFeaturesTable, { ProductFeature } from "./product-features-table";
-import ProductsTable from "./products-table";
+import { Stack, Typography } from "@mui/material";
 
 export interface DiscountsTableProps {}
 
@@ -56,29 +53,6 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
               value: locale[discount.type],
             },
             {
-              name: "scope",
-              value: locale[discount.scope],
-            },
-            {
-              name: "condition",
-              value: `${locale[discount.condition.criteria]} ${locale[
-                discount.condition.op
-              ].toLocaleLowerCase()} ${discount.condition.value} ${
-                discount.condition.criteria === DiscountCriteriaEnum.PRICE
-                  ? "₽"
-                  : "шт."
-              }
-            ${
-              discount.condition.value2
-                ? `и ${discount.condition.value2} ${
-                    discount.condition.criteria === DiscountCriteriaEnum.PRICE
-                      ? "₽"
-                      : "шт."
-                  }`
-                : ""
-            }`,
-            },
-            {
               name: "value",
               value: `${discount.value} ${
                 discount.type === DiscountTypeEnum.PERCENT ? "%" : "₽"
@@ -89,54 +63,141 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
               value: discount,
             },
           ],
-          collapsedRowSpace: () => {
-            if (discount.scope === DiscountScopeEnum.PRODUCT_FEATURES) {
-              const productFeatures = [
-                ...discount.product_categories.map(category => ({
-                  ...category,
-                  _type: "product_category",
-                })),
-                ...discount.modifiers.map(modifier => ({
-                  ...modifier,
-                  category: modifierCategoriesMap.get(modifier.category_uuid),
-                  _type: "modifier",
-                })),
-              ] as ProductFeature[];
-
-              if (!productFeatures.length) return null;
-
-              return (
-                <>
-                  <Typography variant="h6" className="ui-px-8">
-                    Элементы товара
-                  </Typography>
-                  <ProductFeaturesTable features={productFeatures} />
-                </>
-              );
-            } else if (discount.scope === DiscountScopeEnum.PRODUCTS) {
-              const products = discount.products.map(product => ({
-                ...product,
-                category: productCategoriesMap.get(product.category_uuid),
-              }));
-
-              if (!products.length) return null;
-
-              return (
-                <>
-                  <Typography variant="h6" className="ui-px-8">
-                    Товары
-                  </Typography>
-                  <ProductsTable
-                    products={discount.products.map(product => ({
-                      ...product,
-                      category: productCategoriesMap.get(product.category_uuid),
-                    }))}
-                  />
-                </>
-              );
-            }
-
-            return null;
+          collapsedRowSpace() {
+            return (
+              <Stack>
+                <Typography variant="h6" className="ui-px-8">
+                  Условия распространения
+                </Typography>
+                <DataTable
+                  head={{
+                    cols: [
+                      {
+                        name: "condition",
+                        displayName: "Условие",
+                        align: "right",
+                      },
+                    ],
+                  }}
+                  rows={discount.strategies.map(strategy => ({
+                    cols: [
+                      {
+                        name: "condition",
+                        value: `${locale[strategy.condition.criteria] ?? ""} ${
+                          locale[strategy.condition.op]?.toLocaleLowerCase() ??
+                          ""
+                        } ${strategy.condition.value} ${
+                          strategy.condition.criteria ===
+                          DiscountCriteriaEnum.PRICE
+                            ? "₽"
+                            : strategy.condition.criteria ===
+                              DiscountCriteriaEnum.COUNT
+                            ? "шт."
+                            : ""
+                        }
+                      ${
+                        strategy.condition.value2
+                          ? `и ${strategy.condition.value2} ${
+                              strategy.condition.criteria ===
+                              DiscountCriteriaEnum.PRICE
+                                ? "₽"
+                                : strategy.condition.criteria ===
+                                  DiscountCriteriaEnum.COUNT
+                                ? "шт."
+                                : ""
+                            }`
+                          : ""
+                      }`,
+                      },
+                    ],
+                    collapsedRowSpace() {
+                      return (
+                        <>
+                          <Typography variant="h6" className="ui-px-8">
+                            Распространение
+                          </Typography>
+                          <DataTable
+                            collapsible={false}
+                            head={{
+                              cols: [
+                                {
+                                  name: "name",
+                                  displayName: "Название",
+                                },
+                                {
+                                  name: "category",
+                                  displayName: "Категория",
+                                },
+                                {
+                                  name: "type",
+                                  displayName: "Тип",
+                                },
+                              ],
+                            }}
+                            rows={[
+                              ...strategy.products.map(product => ({
+                                cols: [
+                                  {
+                                    name: "name",
+                                    value: product.name,
+                                  },
+                                  {
+                                    name: "type",
+                                    value: "Товар",
+                                  },
+                                  {
+                                    name: "category",
+                                    value: productCategoriesMap.get(
+                                      product.category_uuid
+                                    )?.name,
+                                    defaultValue: "-",
+                                  },
+                                ],
+                              })),
+                              ...strategy.modifiers.map(modifier => ({
+                                cols: [
+                                  {
+                                    name: "name",
+                                    value: modifier.name,
+                                  },
+                                  {
+                                    name: "type",
+                                    value: "Модификатор",
+                                  },
+                                  {
+                                    name: "category",
+                                    value: modifierCategoriesMap.get(
+                                      modifier.category_uuid
+                                    )?.name,
+                                    defaultValue: "-",
+                                  },
+                                ],
+                              })),
+                              ...strategy.product_categories.map(category => ({
+                                cols: [
+                                  {
+                                    name: "name",
+                                    value: category.name,
+                                  },
+                                  {
+                                    name: "type",
+                                    value: "Категория товара",
+                                  },
+                                  {
+                                    name: "category",
+                                    value: "-",
+                                  },
+                                ],
+                              })),
+                            ]}
+                          />
+                        </>
+                      );
+                    },
+                  }))}
+                />
+              </Stack>
+            );
           },
         }))}
       />

@@ -1,6 +1,7 @@
-export interface DataTableColumn<T = any> {
+export interface DataTableColumn<T = unknown> extends Record<string, unknown> {
   name: string;
   value?: string | boolean | number | T;
+  defaultValue?: string | boolean | number | T;
 }
 
 export interface DataTableHeadColumn {
@@ -21,6 +22,7 @@ export interface DataTableHeadColumn {
       height?: number;
     };
   };
+  align?: "left" | "right";
 }
 
 export interface DataTableTextHeadColumn extends DataTableHeadColumn {
@@ -33,7 +35,11 @@ export interface DataTableImageHeadColumn extends DataTableHeadColumn {
   imageHeight: number;
 }
 
-export interface DataTableComponentHeadColumn<T = any>
+export interface DataTableCheckboxHeadColumn extends DataTableHeadColumn {
+  type: "checkbox";
+}
+
+export interface DataTableComponentHeadColumn<T = unknown>
   extends DataTableHeadColumn {
   type: "component";
   component?: (value?: T) => React.ReactElement;
@@ -42,6 +48,7 @@ export interface DataTableComponentHeadColumn<T = any>
 export type DataTableHeadColumnTypes =
   | DataTableTextHeadColumn
   | DataTableImageHeadColumn
+  | DataTableCheckboxHeadColumn
   | DataTableComponentHeadColumn;
 
 export interface DataTableHead {

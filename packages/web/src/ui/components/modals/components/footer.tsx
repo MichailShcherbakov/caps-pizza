@@ -12,6 +12,7 @@ export interface ModalFooterProps extends StackProps {
 
 export const ModalFooter: React.FC<ModalFooterProps> = React.memo(
   ({
+    children,
     variant = "dialog",
     AcceptButtonProps,
     CancelButtonProps,
@@ -22,31 +23,40 @@ export const ModalFooter: React.FC<ModalFooterProps> = React.memo(
     return (
       <Stack
         {...props}
-        spacing={2}
         direction="row"
         alignItems="center"
-        justifyContent="flex-end"
+        spacing={2}
         className={styles["modal__footer"]}
       >
-        {variant === "dialog" && (
-          <Button
-            variant="text"
-            color="neutral"
-            {...CancelButtonProps}
-            onClick={onCancel}
-          >
-            {CancelButtonProps?.children ?? "Отмена"}
-          </Button>
-        )}
-        <Button
-          type="submit"
-          variant="text"
-          color="secondary"
-          {...AcceptButtonProps}
-          onClick={onAccept}
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          className="ui-w-full"
         >
-          {AcceptButtonProps?.children ?? "Ок"}
-        </Button>
+          {children}
+        </Stack>
+        <Stack direction="row" alignItems="center" justifyContent="flex-end">
+          {variant === "dialog" && (
+            <Button
+              variant="text"
+              color="neutral"
+              {...CancelButtonProps}
+              onClick={onCancel}
+            >
+              {CancelButtonProps?.children ?? "Отмена"}
+            </Button>
+          )}
+          <Button
+            type="submit"
+            variant="text"
+            color="secondary"
+            {...AcceptButtonProps}
+            onClick={onAccept}
+          >
+            {AcceptButtonProps?.children ?? "Ок"}
+          </Button>
+        </Stack>
       </Stack>
     );
   }

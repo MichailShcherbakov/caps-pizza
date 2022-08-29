@@ -38,9 +38,9 @@
   }
 }
 
-@media (min-width: $breakpoint-xs) {
+@media (min-width: $breakpoint-sm) {
   .modal {
-    @include ui-min-w(480px);
+    @include ui-min-w($breakpoint-sm);
 
     &__inner {
       @include ui-min-h(72px);
@@ -48,7 +48,7 @@
   }
 }
 
-@media (max-width: $breakpoint-xs) {
+@media (max-width: $breakpoint-sm) {
   .modal,
   .modal__control {
     @include ui-w(100%);

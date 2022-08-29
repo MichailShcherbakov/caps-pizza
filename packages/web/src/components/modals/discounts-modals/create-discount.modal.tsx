@@ -7,10 +7,10 @@ import {
   ModalProps,
 } from "~/ui";
 import { useCreateDiscountMutation } from "~/services/discounts.service";
-import CreateDiscountForm, {
-  CreateDiscountFormProps,
-  CreateDiscountFormSubmitData,
-} from "./forms/create-discount.form";
+import DiscountForm, {
+  DiscountFormProps,
+  DiscountFormSubmitData,
+} from "./forms";
 import { APIError } from "~/services/helpers/transform-response.helper";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
@@ -37,10 +37,10 @@ export const CreateDiscountModal: React.FC<CreateDiscountModalProps> = ({
       <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={FormModal<CreateDiscountFormProps, CreateDiscountFormSubmitData>}
+        Modal={FormModal<DiscountFormProps, DiscountFormSubmitData>}
         ModalProps={{
           onClose,
-          Form: CreateDiscountForm,
+          Form: DiscountForm,
           FormProps: {
             products,
             productCategories,

@@ -23,7 +23,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
     return (
       <Stack
         direction="row"
-        alignItems="center"
+        alignItems="stretch"
         className={styles["product-card"]}
       >
         <Stack className={styles["product-card__image"]}>
@@ -34,7 +34,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
             className={styles["product-card__image-src"]}
           />
         </Stack>
-        <Stack spacing={1} className="ui-w-full ui-h-full">
+        <Stack spacing={1} className="ui-w-full">
           <Stack spacing={1} className="ui-w-full ui-h-full">
             <Stack
               direction="row"

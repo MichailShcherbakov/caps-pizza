@@ -10,10 +10,10 @@ import {
   Discount,
   useUpdateDiscountMutation,
 } from "~/services/discounts.service";
-import UpdateDiscountForm, {
-  UpdateDiscountFormProps,
-  UpdateDiscountFormSubmitData,
-} from "./forms/update-discount.form";
+import DiscountForm, {
+  DiscountFormProps,
+  DiscountFormSubmitData,
+} from "./forms";
 import { APIError } from "~/services/helpers/transform-response.helper";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
@@ -43,10 +43,10 @@ export const UpdateDiscountModal: React.FC<UpdateDiscountModalProps> = ({
       <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={FormModal<UpdateDiscountFormProps, UpdateDiscountFormSubmitData>}
+        Modal={FormModal<DiscountFormProps, DiscountFormSubmitData>}
         ModalProps={{
           onClose,
-          Form: UpdateDiscountForm,
+          Form: DiscountForm,
           FormProps: {
             discount,
             products,
@@ -56,7 +56,10 @@ export const UpdateDiscountModal: React.FC<UpdateDiscountModalProps> = ({
               try {
                 setLoading(true);
 
-                await updateDiscount(value).unwrap();
+                await updateDiscount({
+                  ...value,
+                  uuid: discount.uuid,
+                }).unwrap();
               } catch (e) {
                 setError(e);
               } finally {

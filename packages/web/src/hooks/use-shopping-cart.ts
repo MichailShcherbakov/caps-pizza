@@ -3,10 +3,11 @@ import { useGetDiscountsQuery } from "~/services/discounts.service";
 import { Modifier, useGetModifiersQuery } from "~/services/modifiers.service";
 import { Product, useGetProductsQuery } from "~/services/products.service";
 import { OrderedProduct } from "~/store/shopping-cart.reducer";
-import { calculateDiscountValue } from "@monorepo/common/modules/discounts/calculate-discount-value";
-import getSuitableDiscount from "@monorepo/common/modules/discounts/get-suitable-discount";
+import getSuitableDiscounts, {
+  ISuitableDiscount,
+} from "@monorepo/common/modules/discounts/get-suitable-discounts";
 import { useAppSelector } from "~/store/hooks";
-import { IDiscount } from "@monorepo/common";
+import useShoppingCartActions from "./use-shopping-cart-actions";
 
 export type ShoppingCartProduct = Pick<OrderedProduct, "count"> &
   Product & { fullPrice: number };
@@ -16,8 +17,7 @@ export type ShoppingCartLoading = {
   products: undefined;
   productsCount: undefined;
   totalCost: undefined;
-  discount: undefined;
-  discountValue: undefined;
+  discounts: [];
 };
 
 export type ShoppingCartFulfilled = {
@@ -25,14 +25,14 @@ export type ShoppingCartFulfilled = {
   products: ShoppingCartProduct[];
   productsCount: number;
   totalCost: number;
-  discount?: IDiscount;
-  discountValue: number;
+  discounts: ISuitableDiscount[];
 };
 
 export const useShoppingCart = ():
   | ShoppingCartLoading
   | ShoppingCartFulfilled => {
-  const { products: choisenProducts, isShoppingCartLoading } = useAppSelector(
+  const { clear } = useShoppingCartActions();
+  const { products: chosenProducts, isShoppingCartLoading } = useAppSelector(
     store => ({
       products: store.shoppingCart.products,
       isShoppingCartLoading: store.shoppingCart.meta.step === "pending",
@@ -55,38 +55,67 @@ export const useShoppingCart = ():
     if (isLoading)
       return {
         isLoading,
+        discounts: [],
       };
 
     const productMap = new Map(products.map(p => [p.uuid, p]));
     const modifierMap = new Map(modifiers.map(m => [m.uuid, m]));
-    const shoppingCartProducts: ShoppingCartProduct[] = choisenProducts.map(
-      product => {
-        const foundProduct = productMap.get(product.uuid) as Product;
-        const foundModifiers = product.modifiers.map(modifier => ({
-          ...modifier,
-          ...(modifierMap.get(modifier.uuid) as Modifier),
-        }));
+    const shoppingCartProducts: ShoppingCartProduct[] = [];
 
+    for (const chosenProduct of chosenProducts) {
+      const foundProduct = productMap.get(chosenProduct.uuid);
+
+      if (!foundProduct) {
+        clear();
         return {
-          ...product,
-          ...foundProduct,
-          modifiers: foundModifiers,
-          fullPrice:
-            foundProduct.price +
-            foundModifiers.reduce((p, m) => p + m.price, 0),
+          isLoading,
+          products: [],
+          productsCount: 0,
+          totalCost: 0,
+          discounts: [],
         };
       }
+
+      const foundModifiers: Modifier[] = [];
+
+      for (const chosenModifier of chosenProduct.modifiers) {
+        const foundModifier = modifierMap.get(chosenModifier.uuid);
+
+        if (!foundModifier) {
+          clear();
+          return {
+            isLoading,
+            products: [],
+            productsCount: 0,
+            totalCost: 0,
+            discounts: [],
+          };
+        }
+
+        foundModifiers.push({
+          ...chosenModifier,
+          ...foundModifier,
+        });
+      }
+
+      shoppingCartProducts.push({
+        ...chosenProduct,
+        ...foundProduct,
+        modifiers: foundModifiers,
+        fullPrice:
+          foundProduct.price + foundModifiers.reduce((p, m) => p + m.price, 0),
+      });
+    }
+
+    const suitableDiscounts = getSuitableDiscounts(
+      discounts,
+      shoppingCartProducts
     );
 
-    const discount = getSuitableDiscount({
-      discounts,
-      products: shoppingCartProducts,
-    })?.discount;
-
-    const discountValue = calculateDiscountValue({
-      discounts,
-      products: shoppingCartProducts,
-    });
+    const discountValue = suitableDiscounts.reduce(
+      (amount, { discountValue }) => amount + discountValue,
+      0
+    );
 
     const totalCost = shoppingCartProducts.reduce(
       (cost, product) => cost + product.fullPrice * product.count,
@@ -103,10 +132,9 @@ export const useShoppingCart = ():
       products: shoppingCartProducts,
       productsCount,
       totalCost: totalCost,
-      discount: discount,
-      discountValue: discountValue,
+      discounts: suitableDiscounts,
     };
-  }, [isLoading, products, modifiers, choisenProducts, discounts]);
+  }, [isLoading, products, modifiers, discounts, chosenProducts, clear]);
 };
 
 export default useShoppingCart;

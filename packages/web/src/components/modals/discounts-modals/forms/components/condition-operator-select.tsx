@@ -4,6 +4,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  SelectProps,
 } from "@mui/material";
 import React from "react";
 import {
@@ -12,14 +13,14 @@ import {
 } from "~/services/discounts.service";
 import { locale } from "@monorepo/common";
 
-export interface DiscountOperatorSelectProps {
-  type: DiscountTypeEnum;
-  value: string;
-  onChange: (event: SelectChangeEvent) => void;
+export interface DiscountOperatorSelectProps extends SelectProps {
+  /*   type: DiscountTypeEnum; */
+  /*  value: string;
+  onChange: (event: SelectChangeEvent) => void; */
 }
 
 export const DiscountOperatorSelect: React.FC<DiscountOperatorSelectProps> =
-  React.memo(({ value, type, onChange }) => {
+  React.memo(({ value, type, onChange, ...props }) => {
     const items = [
       {
         name: locale[DiscountOperatorEnum.EQUAL],
@@ -50,8 +51,7 @@ export const DiscountOperatorSelect: React.FC<DiscountOperatorSelectProps> =
       <FormControl color="secondary" size="small" fullWidth>
         <InputLabel size="small">Оператор</InputLabel>
         <Select
-          id="conditionOp"
-          name="conditionOp"
+          {...props}
           value={value}
           label="Оператор"
           size="small"

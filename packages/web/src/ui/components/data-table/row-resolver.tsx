@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Checkbox, Stack } from "@mui/material";
 import { TableCell, TableTextCell } from "../table";
 import { DataTableHeadColumnTypes } from "./types";
 import NextImage from "next/image";
@@ -8,7 +8,7 @@ export interface DataTableRowResolverProps {
   value?: string;
   options?: {
     align?: "left" | "right";
-  };
+  } & Record<string, unknown>;
 }
 
 export const DataTableRowResolver: React.FC<DataTableRowResolverProps> = ({
@@ -51,6 +51,27 @@ export const DataTableRowResolver: React.FC<DataTableRowResolverProps> = ({
             className={col.rowColClassName}
           >
             {col.component && col.component(value)}
+          </Stack>
+        </TableCell>
+      );
+    }
+    case "checkbox": {
+      return (
+        <TableCell>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent={
+              options?.align === "left" ? "flex-start" : "flex-end"
+            }
+            className={col.rowColClassName}
+          >
+            <Checkbox
+              checked={Boolean(value)}
+              onChange={options?.onChange as any}
+              size="small"
+              color="secondary"
+            />
           </Stack>
         </TableCell>
       );

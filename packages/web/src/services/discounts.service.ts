@@ -2,9 +2,9 @@ import {
   IDiscount,
   DiscountCriteriaEnum,
   DiscountOperatorEnum,
-  DiscountScopeEnum,
   DiscountTypeEnum,
-  IDiscountСondition,
+  IDiscountCondition,
+  IDiscountStrategy,
 } from "@monorepo/common";
 import API from "./api.service";
 import transformResponse, {
@@ -15,48 +15,41 @@ import { Modifier } from "./modifiers.service";
 import { ProductCategory } from "./product-categories.service";
 import { Product } from "./products.service";
 
-export {
-  DiscountCriteriaEnum,
-  DiscountOperatorEnum,
-  DiscountScopeEnum,
-  DiscountTypeEnum,
-};
+export { DiscountCriteriaEnum, DiscountOperatorEnum, DiscountTypeEnum };
 
-export class DiscountСondition implements IDiscountСondition {
+export class DiscountCondition implements IDiscountCondition {
   criteria: DiscountCriteriaEnum;
   op: DiscountOperatorEnum;
   value: number;
   value2?: number;
 }
 
-export class Discount implements IDiscount {
-  uuid: string;
-  name: string;
-  type: DiscountTypeEnum;
-  scope: DiscountScopeEnum;
-  condition: DiscountСondition;
-  value: number;
+export class DiscountStrategy implements IDiscountStrategy {
+  condition: DiscountCondition;
   products: Product[];
   product_categories: ProductCategory[];
   modifiers: Modifier[];
 }
 
-export type CreateDiscountPayload = Omit<
-  Discount,
-  "uuid" | "products" | "product_categories" | "modifiers"
-> & {
-  products_uuids: string[];
-  product_categories_uuids: string[];
-  modifiers_uuids: string[];
+export class Discount implements IDiscount {
+  uuid: string;
+  name: string;
+  type: DiscountTypeEnum;
+  value: number;
+  strategies: DiscountStrategy[];
+}
+
+export type CreateDiscountPayload = Omit<Discount, "uuid" | "strategies"> & {
+  strategies: {
+    condition: DiscountCondition;
+    products_uuids: string[];
+    product_categories_uuids: string[];
+    modifiers_uuids: string[];
+  }[];
 };
 
-export type UpdateDiscountPayload = Omit<
-  Discount,
-  "products" | "product_categories" | "modifiers"
-> & {
-  products_uuids: string[];
-  product_categories_uuids: string[];
-  modifiers_uuids: string[];
+export type UpdateDiscountPayload = CreateDiscountPayload & {
+  uuid: string;
 };
 
 export const DiscountAPI = API.injectEndpoints({

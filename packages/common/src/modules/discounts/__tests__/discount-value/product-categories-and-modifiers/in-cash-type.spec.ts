@@ -8,6 +8,7 @@ import createDiscount from "../../helpers/create-discount.helper";
 import createProduct from "../../helpers/create-product.helper";
 import { createProductCategory } from "../../helpers/create-product-category.helper";
 import getSuitableDiscounts from "../../../get-suitable-discounts";
+import orderProductsByProfitable from "../../../order-produts-by-profitable";
 
 describe("[Discount Module] ...", () => {
   describe("[Scope] [Product Categories + Modifiers] ...", () => {
@@ -111,7 +112,7 @@ describe("[Discount Module] ...", () => {
             {
               discount,
               discountValue: discount.value,
-              products: [
+              products: orderProductsByProfitable([
                 {
                   ...products[1],
                   fullPrice: 520,
@@ -122,7 +123,7 @@ describe("[Discount Module] ...", () => {
                   fullPrice: 440,
                   count: 2,
                 },
-              ],
+              ]),
             },
           ]);
         });
@@ -184,7 +185,7 @@ describe("[Discount Module] ...", () => {
             {
               discount,
               discountValue: discount.value,
-              products: [
+              products: orderProductsByProfitable([
                 {
                   ...products[2],
                   fullPrice: 560,
@@ -200,7 +201,7 @@ describe("[Discount Module] ...", () => {
                   fullPrice: 440,
                   count: 1,
                 },
-              ],
+              ]),
             },
           ]);
         });
@@ -303,7 +304,7 @@ describe("[Discount Module] ...", () => {
             {
               discount,
               discountValue: discount.value * 2,
-              products: [
+              products: orderProductsByProfitable([
                 {
                   ...products[1],
                   fullPrice: 520,
@@ -314,7 +315,7 @@ describe("[Discount Module] ...", () => {
                   fullPrice: 440,
                   count: 2,
                 },
-              ],
+              ]),
             },
           ]);
         });
@@ -376,7 +377,7 @@ describe("[Discount Module] ...", () => {
             {
               discount,
               discountValue: discount.value * 3,
-              products: [
+              products: orderProductsByProfitable([
                 {
                   ...products[2],
                   fullPrice: 560,
@@ -392,7 +393,7 @@ describe("[Discount Module] ...", () => {
                   fullPrice: 440,
                   count: 2,
                 },
-              ],
+              ]),
             },
           ]);
         });
@@ -445,18 +446,18 @@ describe("[Discount Module] ...", () => {
             {
               discount,
               discountValue: discount.value,
-              products: [
+              products: orderProductsByProfitable([
                 {
                   ...products[1],
                   fullPrice: 520,
-                  count: 2,
+                  count: 1,
                 },
                 {
                   ...products[0],
                   fullPrice: 440,
-                  count: 1,
+                  count: 2,
                 },
-              ],
+              ]),
             },
           ]);
         });
@@ -509,18 +510,18 @@ describe("[Discount Module] ...", () => {
             {
               discount,
               discountValue: discount.value * 2,
-              products: [
+              products: orderProductsByProfitable([
                 {
                   ...products[1],
                   fullPrice: 520,
-                  count: 4,
+                  count: 3,
                 },
                 {
                   ...products[0],
                   fullPrice: 440,
-                  count: 2,
+                  count: 3,
                 },
-              ],
+              ]),
             },
           ]);
         });

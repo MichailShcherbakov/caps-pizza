@@ -89,7 +89,7 @@ export const DataTable: React.FC<DataTableProps> = React.memo(
                 <TableTextCell
                   key={col.name}
                   className={col.headColClassName}
-                  align={!idx ? "left" : "right"}
+                  align={col.align ?? (!idx ? "left" : "right")}
                 >
                   {col.displayName}
                 </TableTextCell>

@@ -58,14 +58,22 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
               ) : undefined}
             </TableCell>
           ) : undefined}
-          {currentRenderCols.map((col, idx) => (
-            <DataTableRowResolver
-              key={col.name}
-              col={col}
-              value={colsMap.get(col.name)?.value}
-              options={{ align: !idx ? "left" : "right" }}
-            />
-          ))}
+          {currentRenderCols.map((col, idx) => {
+            const { name, value, defaultValue, ...options } = colsMap.get(
+              col.name
+            ) as DataTableColumn;
+            return (
+              <DataTableRowResolver
+                key={name}
+                col={col}
+                value={(value ?? defaultValue) as string}
+                options={{
+                  align: col.align ?? (!idx ? "left" : "right"),
+                  ...options,
+                }}
+              />
+            );
+          })}
         </TableRow>
         {hasCollapsedSpace ? (
           <CollapsibleTableRow
@@ -135,7 +143,7 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                                 {col.displayName}
                               </Typography>
                               <Typography>
-                                {colsMap.get(col.name)?.value}
+                                {colsMap.get(col.name)?.value as string}
                               </Typography>
                             </Stack>
                           </Grid>

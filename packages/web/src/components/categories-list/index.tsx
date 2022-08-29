@@ -23,7 +23,11 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
       ref={ref}
       className={[
         styles["categories-list"],
-        fullWidth ? styles["categories-list--full-width"] : "",
+        fullWidth
+          ? styles["categories-list--full-width"]
+          : categories.length < 6
+          ? styles["categories-list--width-auto"]
+          : "",
         props.className,
       ].join(" ")}
     >

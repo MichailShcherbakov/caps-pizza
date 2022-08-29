@@ -7,7 +7,7 @@ export type NumberTextFieldProps = TextFieldProps & {
 };
 
 export const NumberTextField: React.FC<NumberTextFieldProps> = React.memo(
-  ({ min, max, ...props }) => {
+  ({ min = 0, max, ...props }) => {
     return (
       <MaskedTextField
         {...props}
