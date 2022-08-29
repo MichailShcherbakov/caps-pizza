@@ -1,6 +1,6 @@
 import React from "react";
 
-export const useScroll = (options?: { onScrollChange: () => void }) => {
+export const useScroll = (options?: { onScrollChange: (e: Event) => void }) => {
   const scrollToSection = React.useCallback((id: string) => {
     document.querySelector(`#${id}`)?.scrollIntoView({
       behavior: "smooth",

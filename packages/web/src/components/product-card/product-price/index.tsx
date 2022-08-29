@@ -5,6 +5,7 @@ import { Product } from "~/services/products.service";
 import getSpecifics from "../helpers/getSpecifics.helper";
 import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
 import styles from "./index.module.scss";
+import { Snackbar } from "~/ui";
 
 export interface ProductPriceProps {
   product: Product;
@@ -15,6 +16,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
   product,
   currentModifiers,
 }) => {
+  const [open, setOpen] = React.useState<boolean>(false);
   const { addProduct } = useShoppingCartActions();
   const specifics = React.useMemo(() => getSpecifics(product), [product]);
 
@@ -27,56 +29,67 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
     [product, currentModifiers]
   );
 
-  const onProductCardSelect = React.useCallback(
-    () =>
-      addProduct({
-        uuid: product.uuid,
-        modifiers: currentModifiers.map(modifier => ({
-          uuid: modifier.uuid,
-        })),
-      }),
-    [product, currentModifiers, addProduct]
-  );
+  const onProductCardSelect = React.useCallback(() => {
+    addProduct({
+      uuid: product.uuid,
+      modifiers: currentModifiers.map(modifier => ({
+        uuid: modifier.uuid,
+      })),
+    });
+
+    setOpen(true);
+  }, [product, currentModifiers, addProduct]);
+
+  const handleClose = React.useCallback(() => {
+    setOpen(false);
+  }, []);
 
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      className={styles["product-card__footer"]}
-    >
-      <Typography
-        variant="subtitle1"
-        className={styles["product-card__footer-specifics"]}
-      >
-        {specifics}
-      </Typography>
-      <Button
-        variant="outlined"
-        className={styles["product-card__footer-btn"]}
-        onClick={onProductCardSelect}
+    <>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        className={styles["product-card__footer"]}
       >
         <Typography
-          variant="button"
-          className={styles["product-card__footer-btn-text"]}
+          variant="subtitle1"
+          className={styles["product-card__footer-specifics"]}
         >
-          Выбрать
+          {specifics}
         </Typography>
+        <Button
+          variant="outlined"
+          className={styles["product-card__footer-btn"]}
+          onClick={onProductCardSelect}
+        >
+          <Typography
+            variant="button"
+            className={styles["product-card__footer-btn-text"]}
+          >
+            Выбрать
+          </Typography>
+          <Typography
+            variant="button"
+            className={styles["product-card__footer-btn-price"]}
+          >
+            {price} ₽
+          </Typography>
+        </Button>
         <Typography
-          variant="button"
-          className={styles["product-card__footer-btn-price"]}
+          variant="h4"
+          component="p"
+          className={styles["product-card__price"]}
         >
           {price} ₽
         </Typography>
-      </Button>
-      <Typography
-        variant="h4"
-        component="p"
-        className={styles["product-card__price"]}
-      >
-        {price} ₽
-      </Typography>
-    </Stack>
+      </Stack>
+      <Snackbar
+        open={open}
+        onClose={handleClose}
+        label="Товар добавлен в корзину"
+      />
+    </>
   );
 };
 

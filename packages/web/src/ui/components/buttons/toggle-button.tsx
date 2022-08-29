@@ -27,7 +27,7 @@ export const ToggleButton: React.FC<ToggleButtonProps<string>> = ({
     <ToggleButtonGroup value={value} exclusive={exclusive} onChange={onChange}>
       {elements.map(e => (
         <MUIToggleButton key={e.value} value={e.value} color="primary">
-          <Typography variant="subtitle2" color="primary">
+          <Typography variant="subtitle2" color="primary" className="ui-py-1">
             {e.name}
           </Typography>
         </MUIToggleButton>

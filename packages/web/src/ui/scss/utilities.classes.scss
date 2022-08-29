@@ -28,3 +28,19 @@
 .ui-space-y-between {
   align-content: space-between;
 }
+
+.ui-bg-1 {
+  @include ui-bg-color($white);
+}
+
+.ui-bg-2 {
+  @include ui-bg-color($orange-100);
+}
+
+.ui-color-1 {
+  @include ui-font-color($orange-400);
+}
+
+.ui-color-1\! {
+  color: $orange-400 !important;
+}
