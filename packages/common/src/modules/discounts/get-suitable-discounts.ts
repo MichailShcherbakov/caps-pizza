@@ -219,7 +219,7 @@ export function getSuitableDiscounts(
 
     suitableDiscounts.push({
       discount,
-      discountValue,
+      discountValue: Number.parseFloat(discountValue.toFixed(2)),
       products: finalSuitableProducts,
     });
   }
