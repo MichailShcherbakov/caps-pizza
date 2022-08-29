@@ -76,6 +76,7 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
                         name: "condition",
                         displayName: "Условие",
                         align: "right",
+                        primary: true,
                       },
                     ],
                   }}
@@ -123,14 +124,17 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
                                 {
                                   name: "name",
                                   displayName: "Название",
+                                  primary: true,
                                 },
                                 {
                                   name: "category",
                                   displayName: "Категория",
+                                  primary: true,
                                 },
                                 {
                                   name: "type",
                                   displayName: "Тип",
+                                  primary: true,
                                 },
                               ],
                             }}

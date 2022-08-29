@@ -117,11 +117,13 @@ const Form: React.FC<
           name: "condition",
           displayName: "Условия предоставления",
           align: "right",
+          primary: true,
         },
         {
           type: "component",
           name: "controls",
           displayName: "",
+          primary: true,
           component: strategy => {
             return (
               <IconButton
@@ -177,7 +179,7 @@ ${
           const strategyErrors = errors.strategies && errors.strategies[idx];
 
           return (
-            <Stack className="ui-gap-2">
+            <Stack className="ui-gap-2 ui-w-full ui-overflow-auto">
               <DiscountCriteriaSelect
                 id={`strategies[${idx}].condition.criteria`}
                 name={`strategies[${idx}].condition.criteria`}

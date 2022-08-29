@@ -200,6 +200,12 @@
   @include ui-font-color($orange-400);
 }
 
+@media (max-width: $breakpoint-xs) {
+  .MuiTabs-root {
+    @include ui-w(320px);
+  }
+}
+
 @media (max-width: $breakpoint-sm) {
   .MuiTypography-root {
     &.MuiTypography-h1 {

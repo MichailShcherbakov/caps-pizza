@@ -20,11 +20,12 @@ function TabPanel(props: TabPanelProps) {
 
   return (
     <div
+      {...other}
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
+      className="ui-w-full"
     >
       {value === index && children}
     </div>
@@ -50,26 +51,6 @@ export const TabsProps: React.FC<TabsProps> = React.memo(
 
     const { values, setFieldValue } = useFormikContext<DiscountFormData>();
     const strategy = values.strategies[idx];
-
-    /* value={{
-      products_uuids: strategy.products_uuids,
-      product_categories_uuids: strategy.product_categories_uuids,
-      modifiers_uuids: strategy.modifiers_uuids,
-    }}
-    onChange={value => {
-      setFieldValue(
-        `strategies[${idx}].products_uuids`,
-        value.products_uuids
-      );
-      setFieldValue(
-        `strategies[${idx}].product_categories_uuids`,
-        value.product_categories_uuids
-      );
-      setFieldValue(
-        `strategies[${idx}].modifiers_uuids`,
-        value.modifiers_uuids
-      );
-    }} */
 
     const handleChange = React.useCallback(
       (_: React.SyntheticEvent, newValue: number) => {
@@ -151,8 +132,8 @@ export const TabsProps: React.FC<TabsProps> = React.memo(
           value={currentTab}
           textColor="secondary"
           indicatorColor="secondary"
+          variant="scrollable"
           onChange={handleChange}
-          aria-label="basic tabs example"
         >
           <Tab label="Товары" />
           <Tab label="Модификаторы" />
