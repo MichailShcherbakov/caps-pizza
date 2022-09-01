@@ -31,15 +31,15 @@ export const useProductCategoriesTableHead = () =>
           displayName: "",
           primary: true,
           headColClassName: "ui-flex-center",
-          component: (category: ProductCategory) => (
+          component: category => (
             <DataTableControlCell
               UpdateModal={UpdateProductCategoryModal}
               UpdateModalProps={{
-                category,
+                category: category as ProductCategory,
               }}
               DeleteModal={DeleteProductCategoryModal}
               DeleteModalProps={{
-                category,
+                category: category as ProductCategory,
               }}
             />
           ),

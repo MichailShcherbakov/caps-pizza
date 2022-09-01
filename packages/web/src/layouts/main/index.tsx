@@ -1,6 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { Container, Stack, ThemeProvider } from "@mui/material";
+import { Container, CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import AppBar from "~/components/app-bar";
 import InfoBar from "~/components/info-bar";
 import theme from "~/ui/theme";
@@ -33,6 +33,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <SectionProvider>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <ShoppingCart>
           <Stack alignItems="center" className={styles["main-layout"]}>
             <React.Suspense>

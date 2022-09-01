@@ -41,7 +41,7 @@ export const Article: React.FC<ArticleProps> = ({
           className={styles["article__btn"]}
           onClick={onClickHandler}
         >
-          <Typography variant="button">Подробнее</Typography>
+          Подробнее
         </Button>
       )}
     </Stack>

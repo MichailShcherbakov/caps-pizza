@@ -25,7 +25,7 @@ export const ProductCardListFooter: React.FC<ProductCardListFooterProps> = ({
         ))}
       </Stack>
       <Button variant="outlined" onClick={onOrder}>
-        <Typography variant="button">Оформить заказ</Typography>
+        Оформить заказ
       </Button>
     </Stack>
   );

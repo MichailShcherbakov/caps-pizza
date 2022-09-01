@@ -24,15 +24,15 @@ export const usePaymentsTableHead = () => {
           displayName: "",
           primary: true,
           headColClassName: "ui-flex-center",
-          component: (payment: Payment) => (
+          component: payment => (
             <DataTableControlCell
               UpdateModal={UpdatePaymentModal}
               UpdateModalProps={{
-                payment,
+                payment: payment as Payment,
               }}
               DeleteModal={DeletePaymentModal}
               DeleteModalProps={{
-                payment,
+                payment: payment as Payment,
               }}
             />
           ),

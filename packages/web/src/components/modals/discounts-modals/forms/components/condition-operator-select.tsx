@@ -3,7 +3,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   SelectProps,
 } from "@mui/material";
 import React from "react";
@@ -13,11 +12,7 @@ import {
 } from "~/services/discounts.service";
 import { locale } from "@monorepo/common";
 
-export interface DiscountOperatorSelectProps extends SelectProps {
-  /*   type: DiscountTypeEnum; */
-  /*  value: string;
-  onChange: (event: SelectChangeEvent) => void; */
-}
+export interface DiscountOperatorSelectProps extends SelectProps {}
 
 export const DiscountOperatorSelect: React.FC<DiscountOperatorSelectProps> =
   React.memo(({ value, type, onChange, ...props }) => {

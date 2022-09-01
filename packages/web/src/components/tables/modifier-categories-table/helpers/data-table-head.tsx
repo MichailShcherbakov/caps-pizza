@@ -24,15 +24,15 @@ export const useModifierCategoriesTableHead = () => {
           displayName: "",
           primary: true,
           headColClassName: "ui-flex-center",
-          component: (category: ModifierCategory) => (
+          component: category => (
             <DataTableControlCell
               UpdateModal={UpdateModifierCategoryModal}
               UpdateModalProps={{
-                category,
+                category: category as ModifierCategory,
               }}
               DeleteModal={DeleteModifierCategoryModal}
               DeleteModalProps={{
-                category,
+                category: category as ModifierCategory,
               }}
             />
           ),

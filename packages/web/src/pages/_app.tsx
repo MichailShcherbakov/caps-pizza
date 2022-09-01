@@ -15,15 +15,31 @@ Object.assign(globalThis, {
 });
 
 import { wrapper } from "~/store";
+import createEmotionCache from "~/helpers/create-emotion-cache";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import Head from "next/head";
+
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
 
 export type AppProps = NextAppProps & {
   Component: AppPage;
+  emotionCache?: EmotionCache;
 };
 
-function App({ Component, pageProps }: AppProps) {
+function App(props: AppProps) {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
   const getLayout = Component.getLayout ?? (page => page);
 
-  return getLayout(<Component {...pageProps} />);
+  return (
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      {getLayout(<Component {...pageProps} />)}
+    </CacheProvider>
+  );
 }
 
 export default wrapper.withRedux(App);

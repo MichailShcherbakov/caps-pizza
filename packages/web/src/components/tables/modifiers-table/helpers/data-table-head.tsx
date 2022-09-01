@@ -44,15 +44,15 @@ export const useModifiersTableHead = () => {
           displayName: "",
           primary: true,
           headColClassName: "ui-flex-center",
-          component: (modifier: Modifier) => (
+          component: modifier => (
             <DataTableControlCell
               UpdateModal={UpdateModifierModal}
               UpdateModalProps={{
-                modifier,
+                modifier: modifier as Modifier,
               }}
               DeleteModal={DeleteModifierModal}
               DeleteModalProps={{
-                modifier,
+                modifier: modifier as Modifier,
               }}
             />
           ),

@@ -51,7 +51,7 @@ export const CounterButton: React.FC<CounterProps> = ({
   return (
     <ButtonGroup variant="contained" className={styles["counter-button"]}>
       <Button variant="contained" color="light" onClick={subtract}>
-        <Typography variant="button">-</Typography>
+        -
       </Button>
       <Stack
         alignItems="center"
@@ -61,7 +61,7 @@ export const CounterButton: React.FC<CounterProps> = ({
         <Typography variant="button">{count}</Typography>
       </Stack>
       <Button variant="contained" color="light" onClick={add}>
-        <Typography variant="button">+</Typography>
+        +
       </Button>
     </ButtonGroup>
   );

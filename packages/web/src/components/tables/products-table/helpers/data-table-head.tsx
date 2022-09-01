@@ -75,15 +75,15 @@ export const useProductsTableHead = () => {
           displayName: "",
           primary: true,
           headColClassName: "ui-flex-center",
-          component: (product: Product) => (
+          component: product => (
             <DataTableControlCell
               UpdateModal={UpdateProductModal}
               UpdateModalProps={{
-                product,
+                product: product as Product,
               }}
               DeleteModal={DeleteProductModal}
               DeleteModalProps={{
-                product,
+                product: product as Product,
               }}
             />
           ),

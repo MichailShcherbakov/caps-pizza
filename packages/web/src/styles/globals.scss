@@ -1,62 +1,13 @@
 @import "../ui/scss/main.classes.scss";
 
-.ui-truncate.MuiTypography-root {
-  @include ui-truncate();
-}
-
-.MuiTypography-root {
-  font-family: "Inter", sans-serif;
+/*.MuiTypography-root {
   height: fit-content;
   text-transform: none;
 
-  @include cubic-transition;
+  @include cubic-transition; 
+}*/
 
-  &.MuiTypography-h1 {
-    @include ui-font(34px, 700, $gray-900);
-  }
-
-  &.MuiTypography-h2 {
-    @include ui-font(32px, 700, $gray-900);
-  }
-
-  &.MuiTypography-h3 {
-    @include ui-font(24px, 700, $gray-900);
-  }
-
-  &.MuiTypography-h4 {
-    @include ui-font(18px, 700, $gray-900);
-  }
-
-  &.MuiTypography-h5 {
-    @include ui-font(16px, 700, $gray-900);
-  }
-
-  &.MuiTypography-h6 {
-    @include ui-font(14px, 700, $gray-900);
-  }
-
-  &.MuiTypography-body1 {
-    @include ui-font(14px, 500, $gray-900);
-  }
-
-  &.MuiTypography-body2 {
-    @include ui-font(16px, 500, $gray-900);
-  }
-
-  &.MuiTypography-button {
-    @include ui-font(14px, 500);
-  }
-
-  &.MuiTypography-subtitle1 {
-    @include ui-font(12px, 500, $gray-400);
-  }
-
-  &.MuiTypography-subtitle2 {
-    @include ui-font(12px, 500, $gray-900);
-  }
-}
-
-.MuiButtonBase-root.MuiButton-root {
+/* .MuiButtonBase-root.MuiButton-root {
   @include cubic-transition;
 
   @include ui-box-shadow-none;
@@ -68,24 +19,9 @@
   &:active {
     @include ui-box-shadow-none;
   }
-}
+} */
 
-.MuiButtonGroup-root {
-  @include ui-box-shadow-none;
-}
-
-.MuiButton-sizeSmall {
-  @include ui-min-h(30px);
-}
-
-.MuiButton-sizeMedium {
-  @include ui-min-h(36px);
-}
-
-.MuiButton-sizeLarge {
-  @include ui-min-h(42px);
-}
-
+/* 
 .MuiGrid-grid-xs-12 {
   @include ui-w-full;
 }
@@ -105,11 +41,6 @@
   &.Mui-selected {
     @include ui-border-color($transparent);
   }
-}
-
-.MuiDrawer-paper {
-  @include ui-box-shadow-none;
-  @include ui-bg-color($transparent);
 }
 
 .MuiInputLabel-root {
@@ -154,10 +85,6 @@
 
 .MuiTextField-root {
   @include ui-min-w(96px);
-}
-
-.MuiPaper-root {
-  @include ui-box-shadow-light;
 }
 
 .MuiTableCell-root {
@@ -205,47 +132,4 @@
     @include ui-w(320px);
   }
 }
-
-@media (max-width: $breakpoint-sm) {
-  .MuiTypography-root {
-    &.MuiTypography-h1 {
-      @include ui-font-size(28px);
-    }
-
-    &.MuiTypography-h2 {
-      @include ui-font-size(24px);
-    }
-
-    &.MuiTypography-h3 {
-      @include ui-font-size(20px);
-    }
-
-    &.MuiTypography-h4 {
-      @include ui-font-size(18px);
-    }
-
-    &.MuiTypography-h5 {
-      @include ui-font-size(14px);
-    }
-
-    &.MuiTypography-h6 {
-      @include ui-font-size(12px);
-    }
-
-    &.MuiTypography-body1 {
-      @include ui-font-size(12px);
-    }
-
-    &.MuiTypography-body2 {
-      @include ui-font-size(14px);
-    }
-
-    &.MuiTypography-button {
-      @include ui-font-size(13px);
-    }
-
-    &.MuiTypography-subtitle1 {
-      @include ui-font-size(12px);
-    }
-  }
-}
+ */

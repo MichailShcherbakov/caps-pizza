@@ -1,12 +1,16 @@
 import React from "react";
-import { StackProps } from "@mui/material";
-import { Fade, Container, Stack } from "@mui/material";
+import {
+  AppBar as MUIAppBar,
+  AppBarProps as MUIAppBarProps,
+} from "@mui/material";
+import { Fade, Stack } from "@mui/material";
 import CategoriesList from "~/components/categories-list";
 import useScroll from "~/hooks/use-scroll";
 import Logo from "./components/logo";
-import styles from "./index.module.scss";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import dynamic from "next/dynamic";
+import { Container } from "@mui/system";
+import { useStyle } from "./index.style";
 
 const ShoppingCartButton = dynamic(() => import("../shopping-cart-button"), {
   suspense: true,
@@ -42,18 +46,16 @@ export const AppBarHead = () => {
   );
 };
 
-export interface AppBarProps extends StackProps {
-  empty?: boolean;
-}
+export interface AppBarProps extends MUIAppBarProps {}
 
-export const AppBar: React.FC<AppBarProps> = ({ empty, ...props }) => {
+export const AppBar: React.FC<AppBarProps> = ({ className, ...props }) => {
+  const { classes, cx } = useStyle();
+
   return (
-    <Stack
+    <MUIAppBar
       {...props}
-      component="header"
-      alignItems="center"
-      justifyContent="space-between"
-      className={styles["app-bar"]}
+      position="sticky"
+      className={cx(classes.root, className)}
     >
       <Container>
         <Stack
@@ -61,19 +63,15 @@ export const AppBar: React.FC<AppBarProps> = ({ empty, ...props }) => {
           alignItems="center"
           justifyContent="space-between"
           spacing={2}
+          className={classes.container}
         >
-          {empty ? <Logo /> : undefined}
-          {!empty ? (
-            <>
-              <AppBarHead />
-              <React.Suspense>
-                <ShoppingCartButton />
-              </React.Suspense>
-            </>
-          ) : undefined}
+          <AppBarHead />
+          <React.Suspense>
+            <ShoppingCartButton />
+          </React.Suspense>
         </Stack>
       </Container>
-    </Stack>
+    </MUIAppBar>
   );
 };
 

@@ -1,38 +1,35 @@
 import React from "react";
-import { Button, Stack, Typography } from "@mui/material";
-import styles from "./index.module.scss";
+import { Button, Stack } from "@mui/material";
 import NextImage from "next/image";
 import Link from "next/link";
+import { StyleProps, useStyle } from "./index.style";
 
-export interface CategoryCardProps {
+export interface CategoryCardProps extends StyleProps {
   name: string;
   imageURL: string;
-  active?: boolean;
-  size?: "small" | "medium";
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
   ({ name, imageURL, size = "small", active }) => {
+    const { classes } = useStyle({ size, active });
+
     return (
       <Stack component="li">
         <Link href={`#${name}`}>
           <Button
-            component={"a"}
+            component="a"
             variant="outlined"
             color="primary"
-            className={[
-              styles[`category-card--${size}`],
-              active ? styles[`category-card--${size}--active`] : "",
-            ].join(" ")}
+            className={classes.root}
           >
-            <Stack className={styles[`category-card--${size}__icon`]}>
+            <Stack className={classes.image}>
               <NextImage
                 src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
                 layout="fill"
                 priority
               />
             </Stack>
-            <Typography variant="button">{name}</Typography>
+            {name}
           </Button>
         </Link>
       </Stack>

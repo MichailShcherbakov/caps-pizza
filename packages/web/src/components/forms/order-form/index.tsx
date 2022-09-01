@@ -337,7 +337,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
             ) : undefined}
           </Stack>
           <Button type="submit" variant="contained">
-            <Typography variant="button">Оформить заказ</Typography>
+            Оформить заказ
           </Button>
         </Stack>
       </Stack>

@@ -19,15 +19,15 @@ export const useDeliveryTableHead = () => {
           displayName: "",
           primary: true,
           headColClassName: "ui-flex-center",
-          component: (delivery: Delivery) => (
+          component: delivery => (
             <DataTableControlCell
               UpdateModal={UpdateDeliveryModal}
               UpdateModalProps={{
-                delivery,
+                delivery: delivery as Delivery,
               }}
               DeleteModal={DeleteDeliveryModal}
               DeleteModalProps={{
-                delivery,
+                delivery: delivery as Delivery,
               }}
             />
           ),

@@ -1,4 +1,4 @@
-import { Button, IconButton, Stack, Typography } from "@mui/material";
+import { Button, IconButton, Stack } from "@mui/material";
 import React from "react";
 import ShoppingCartIcon from "~/assets/shopping-cart.svg";
 import useShoppingCart from "~/hooks/use-shopping-cart";
@@ -41,7 +41,7 @@ export const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = React.memo(
             className={styles["shopping-cart-btn"]}
             onClick={onClickHandler}
           >
-            <Typography variant="button">{`${totalCost} ${currencySymbol}`}</Typography>
+            {`${totalCost} ${currencySymbol}`}
           </Button>
           <ShoppingCartDrawer
             anchor="right"

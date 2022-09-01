@@ -86,7 +86,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({
           color="secondaryLight"
           loading={loading}
         >
-          <Typography variant="button">Войти</Typography>
+          Войти
         </LoadingButton>
       </Stack>
     </Stack>

@@ -51,7 +51,7 @@
     right: $offset;
     top: $offset;
 
-    @include ui-size(20px);
+    @include ui-size(24px);
     @include ui-rounded;
 
     @include ui-font(12px, 400, $orange-400);
