@@ -8182,10 +8182,10 @@ nestjs@^0.0.1:
   resolved "https://registry.yarnpkg.com/nestjs/-/nestjs-0.0.1.tgz#e4b3b82fbbd0bbf993a7c7a137b3ad59ccecf6b6"
   integrity sha512-LJTf2zDRtWE69B6R2DUW6/LCftgVOq3kp3aqxPsB0eei8OX+lW2RFjzREZWRL1GUD/jGdBSMhM3Q5YWLC2uHNg==
 
-next-redux-wrapper@^7.0.5:
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-7.0.5.tgz#109cd3fe02183b18fbd094924cfcbd21262039dc"
-  integrity sha512-UFXdAWG5i+GFT8+Hoqpx3GArkPh34fVWF9YoA2VSHlBzsrPtnRd7NWM6FNSYUennpommTpWJ09mu+r/1UxyIkg==
+next-redux-wrapper@^8.0.0-rc.1:
+  version "8.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-8.0.0-rc.1.tgz#d953fa953c785a82b7c0626779e0d76060f3fbf4"
+  integrity sha512-UJfKG5lfieU4kAzi4mDNrDrmWbgO9XfgcXcvnvixL1EyK31hr2m0X5x1YTNOvDg6CK9iPXWwl8izX9JjC79vLg==
 
 next@12.2.2:
   version "12.2.2"

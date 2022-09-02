@@ -28,19 +28,28 @@ export type AppProps = NextAppProps & {
   emotionCache?: EmotionCache;
 };
 
+import { Provider } from "react-redux";
+
 function App(props: AppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const { Component, emotionCache = clientSideEmotionCache, ...rest } = props;
+
+  const {
+    store,
+    props: { pageProps },
+  } = wrapper.useWrappedStore(rest);
 
   const getLayout = Component.getLayout ?? (page => page);
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      {getLayout(<Component {...pageProps} />)}
-    </CacheProvider>
+    <Provider store={store}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        {getLayout(<Component {...pageProps} />)}
+      </CacheProvider>
+    </Provider>
   );
 }
 
-export default wrapper.withRedux(App);
+export default App;
