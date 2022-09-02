@@ -1,31 +1,25 @@
 import { StackProps } from "@mui/material";
 import { Container, Stack, Typography } from "@mui/material";
 import DestinationButton from "./components/destination-button";
-import styles from "./index.module.scss";
+import { useStyle } from "./index.style";
 
 export interface InfoBarProps extends StackProps {}
 
 export const InfoBar: React.FC<InfoBarProps> = props => {
+  const { classes } = useStyle();
   const deliveryTime = "00:24:19";
 
   return (
-    <Stack {...props} className={styles["info-bar"]} alignItems="center">
+    <Stack {...props} className={classes.root} alignItems="center">
       <Container>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Stack
-            direction="row"
-            alignItems="center"
-            className={styles["info-bar__destination"]}
-          >
+          <Stack direction="row" alignItems="center" spacing={2}>
             <DestinationButton />
-            <Typography
-              variant="subtitle2"
-              className={styles["info-bar__delivery-time"]}
-            >
+            <Typography variant="subtitle2" className={classes.deliveryTime}>
               Среднее время доставки*: {deliveryTime}
             </Typography>
           </Stack>

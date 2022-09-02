@@ -1,22 +1,19 @@
 import { Stack, Typography } from "@mui/material";
 import EmptyShoppingCartIllustration from "~/assets/empty-shopping-cart.svg";
-import styles from "./index.module.scss";
+import { useStyle } from "./index.style";
 
 export interface EmptyStubProps {}
 
 export const EmptyStub: React.FC<EmptyStubProps> = () => {
+  const { classes } = useStyle();
   return (
-    <Stack alignItems="center" className={styles["empty-stub"]}>
-      <EmptyShoppingCartIllustration className={styles["empty-stub__image"]} />
+    <Stack alignItems="center">
+      <EmptyShoppingCartIllustration className={classes.image} />
       <Stack alignItems="center" spacing={1}>
-        <Typography
-          variant="h2"
-          component="p"
-          className={styles["empty-stub__title"]}
-        >
+        <Typography variant="h2" component="p" className={classes.text}>
           Ваша корзина пуста
         </Typography>
-        <Typography className={styles["empty-stub__subtitle"]}>
+        <Typography className={classes.text}>
           Выберите понравившийся товар и он здесь будет отражен.
         </Typography>
       </Stack>

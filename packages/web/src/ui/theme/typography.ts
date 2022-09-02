@@ -1,13 +1,12 @@
 import { Theme } from "@mui/material";
 import { TypographyOptions } from "@mui/material/styles/createTypography";
-import { gray } from "./colors";
 
 export const makeTypography = (theme: Theme): TypographyOptions => ({
   fontFamily: "Inter",
   h1: {
     fontSize: 34,
     fontWeight: 700,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 28,
     },
@@ -15,7 +14,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   h2: {
     fontSize: 32,
     fontWeight: 700,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 24,
     },
@@ -23,7 +22,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   h3: {
     fontSize: 24,
     fontWeight: 700,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 20,
     },
@@ -31,7 +30,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   h4: {
     fontSize: 18,
     fontWeight: 700,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 18,
     },
@@ -39,7 +38,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   h5: {
     fontSize: 16,
     fontWeight: 700,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 14,
     },
@@ -47,7 +46,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   h6: {
     fontSize: 14,
     fontWeight: 700,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
@@ -55,7 +54,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   body1: {
     fontSize: 14,
     fontWeight: 500,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
@@ -63,7 +62,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   body2: {
     fontSize: 16,
     fontWeight: 500,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 14,
     },
@@ -72,6 +71,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
     fontSize: 14,
     fontWeight: 500,
     textTransform: "none",
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 13,
     },
@@ -79,7 +79,8 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   subtitle1: {
     fontSize: 12,
     fontWeight: 500,
-    color: gray[400],
+    color: theme.palette.text.secondary,
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
@@ -87,7 +88,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
   subtitle2: {
     fontSize: 12,
     fontWeight: 500,
-    color: gray[900],
+
     [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },

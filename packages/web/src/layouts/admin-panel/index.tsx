@@ -1,21 +1,27 @@
-import { Container, Stack, StackProps, ThemeProvider } from "@mui/material";
+import {
+  Container,
+  CssBaseline,
+  Stack,
+  StackProps,
+  ThemeProvider,
+} from "@mui/material";
 import { theme } from "~/ui";
 import Appbar from "./components/app-bar";
-import styles from "./index.module.scss";
+import { useStyle } from "./index.style";
 
 export interface AdminPanelLayoutProps extends StackProps {}
 
 export const AdminPanelLayout: React.FC<AdminPanelLayoutProps> = ({
   children,
 }) => {
+  const { classes } = useStyle();
   return (
     <ThemeProvider theme={theme}>
-      <Stack className={styles["admin-panel-layout"]}>
+      <CssBaseline />
+      <Stack className={classes.root}>
         <Appbar />
-        <Container className={styles["admin-panel-layout__container"]}>
-          <Stack className={styles["admin-panel-layout__container-inner"]}>
-            {children}
-          </Stack>
+        <Container className={classes.container}>
+          <Stack className={classes.inner}>{children}</Stack>
         </Container>
       </Stack>
     </ThemeProvider>

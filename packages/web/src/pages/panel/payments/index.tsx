@@ -11,7 +11,7 @@ export const PaymentsPage: AppPage = () => {
   return (
     <>
       <PaymentsTable />
-      <Stack direction="row" alignItems="center" className="ui-px-8">
+      <Stack direction="row" alignItems="center" px={2}>
         <CreatePaymentModal>
           {({ open }) => (
             <Button variant="outlined" color="secondary" onClick={open}>

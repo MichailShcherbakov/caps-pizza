@@ -83,13 +83,14 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
             <Stack spacing={2}>
               {hiddenCols.length ? (
                 <>
-                  <Typography variant="h6" className="ui-px-8">
+                  <Typography variant="h6" px={2}>
                     Информация
                   </Typography>
                   <Stack
                     direction="row"
                     alignItems="flex-start"
-                    className="ui-px-8 ui-gap-2"
+                    px={2}
+                    spacing={2}
                   >
                     {hiddenCols.filter(col => col.type === "image").length ? (
                       <Stack>
@@ -131,11 +132,11 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                             container
                             item
                             key={col.name}
-                            className={!col.fullWidth ? "ui-w-fit-content" : ""}
-                            style={{
+                            sx={{
                               padding: 0,
                               paddingRight: "1rem",
                               paddingBottom: "1rem",
+                              width: col.fullWidth ? undefined : "fit-content",
                             }}
                           >
                             <Stack>

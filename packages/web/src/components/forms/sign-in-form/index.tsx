@@ -4,10 +4,10 @@ import React from "react";
 import { MemoTextField } from "~/ui";
 import Logo from "./logo";
 import SushiMakerIllustration from "~/assets/sushi-maker.svg";
-import styles from "./index.module.scss";
 import { useFormik } from "formik";
 import validationSchema from "./validation-schema";
 import { SignInPayload } from "~/services/auth.service";
+import { useStyle } from "./index.style";
 
 export interface SignInFormProps {
   loading?: boolean;
@@ -18,6 +18,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({
   loading,
   onSubmit,
 }) => {
+  const { classes } = useStyle();
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -32,25 +33,19 @@ export const SignInForm: React.FC<SignInFormProps> = ({
   return (
     <Stack
       component="form"
-      className={styles.signin__container}
+      className={classes.root}
       onSubmit={formik.handleSubmit}
     >
-      <Stack
-        alignItems="center"
-        justifyContent="center"
-        className={styles.signin__header}
-      >
+      <Stack alignItems="center" justifyContent="center">
         <Logo />
         <Stack alignItems="center" justifyContent="center">
           <Typography>Вход в админ панель</Typography>
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="center">
-        <SushiMakerIllustration
-          className={styles.signin__illustration_hidden}
-        />
+        <SushiMakerIllustration className={classes.illustration} />
       </Stack>
-      <Stack className={styles.signin__inner}>
+      <Stack spacing={2}>
         <MemoTextField
           fullWidth
           id="username"
@@ -77,12 +72,11 @@ export const SignInForm: React.FC<SignInFormProps> = ({
           onChange={formik.handleChange}
         />
       </Stack>
-      <Stack className={styles.signin__footer}>
+      <Stack>
         <LoadingButton
           fullWidth
           type="submit"
           variant="contained"
-          className={styles.signin__btn}
           color="secondaryLight"
           loading={loading}
         >

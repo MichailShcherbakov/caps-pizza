@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mui/material";
+import { Stack, Tab, Tabs } from "@mui/material";
 import { useFormikContext } from "formik";
 import React from "react";
 import { Modifier } from "~/services/modifiers.service";
@@ -19,16 +19,18 @@ function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Stack
       {...other}
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      className="ui-w-full"
+      sx={{
+        width: "100%",
+      }}
     >
       {value === index && children}
-    </div>
+    </Stack>
   );
 }
 

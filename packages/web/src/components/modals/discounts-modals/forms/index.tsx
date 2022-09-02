@@ -157,17 +157,18 @@ const Form: React.FC<
                 ? "шт."
                 : ""
             }
-${
-  strategy.condition.value2
-    ? `и ${strategy.condition.value2} ${
-        strategy.condition.criteria === DiscountCriteriaEnum.PRICE
-          ? "₽"
-          : strategy.condition.criteria === DiscountCriteriaEnum.COUNT
-          ? "шт."
-          : ""
-      }`
-    : ""
-}`,
+            ${
+              strategy.condition.value2
+                ? `и ${strategy.condition.value2} ${
+                    strategy.condition.criteria === DiscountCriteriaEnum.PRICE
+                      ? "₽"
+                      : strategy.condition.criteria ===
+                        DiscountCriteriaEnum.COUNT
+                      ? "шт."
+                      : ""
+                  }`
+                : ""
+            }`,
           },
           {
             name: "controls",
@@ -179,7 +180,13 @@ ${
           const strategyErrors = errors.strategies && errors.strategies[idx];
 
           return (
-            <Stack className="ui-gap-2 ui-w-full ui-overflow-auto">
+            <Stack
+              spacing={2}
+              sx={{
+                width: "100%",
+                overflow: "auto",
+              }}
+            >
               <DiscountCriteriaSelect
                 id={`strategies[${idx}].condition.criteria`}
                 name={`strategies[${idx}].condition.criteria`}

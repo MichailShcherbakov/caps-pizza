@@ -7,19 +7,16 @@ export interface SkeletonProps extends MUISkeletonProps {
   fullWidth?: boolean;
 }
 
-export const Skeleton: React.FC<SkeletonProps> = ({
-  fullWidth,
-  className,
-  ...props
-}) => {
+export const Skeleton: React.FC<SkeletonProps> = ({ fullWidth, ...props }) => {
   return (
     <MUISkeleton
       {...props}
       variant="rectangular"
       animation="wave"
-      className={["ui-rounded-1", fullWidth ? "ui-w-full" : "", className].join(
-        " "
-      )}
+      sx={{
+        borderRadius: theme => theme.spacing(0.5),
+        width: fullWidth ? "100%" : undefined,
+      }}
     />
   );
 };

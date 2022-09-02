@@ -28,7 +28,6 @@ export const useDiscountsTableHead = () => {
           type: "component",
           displayName: "",
           primary: true,
-          headColClassName: "ui-flex-center",
           component: discount => (
             <DataTableControlCell
               UpdateModal={UpdateDiscountModal}

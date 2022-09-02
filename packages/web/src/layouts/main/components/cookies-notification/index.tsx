@@ -1,6 +1,5 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import styles from "./index.module.scss";
 
 export interface CookiesNotificationProps {
   onClose?: () => void;
@@ -13,19 +12,18 @@ export const CookiesNotification: React.FC<CookiesNotificationProps> = ({
     <Stack
       direction="row"
       alignItems="center"
-      className={styles["cookies-notification"]}
+      spacing={2}
+      sx={{
+        paddingY: 0.5,
+      }}
     >
       <IconButton size="small" onClick={onClose}>
         <CloseIcon />
       </IconButton>
-      <Typography className={styles["cookies-notification__text"]}>
+      <Typography>
         Мы используем cookies для быстрой и удобной работы сайта. Продолжая
         пользоваться сайтом, вы принимаете{" "}
-        <Typography
-          color="primary"
-          className={styles["cookies-notification__text"]}
-          component="span"
-        >
+        <Typography component="a" href="/" color="primary">
           условия обработки персональных данных
         </Typography>
       </Typography>

@@ -117,7 +117,10 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = ({
                 ) : (
                   <ExternalSvg
                     src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${formik.values.image_url}`}
-                    className="ui-w-12 ui-h-12"
+                    sx={{
+                      width: 4,
+                      height: 4,
+                    }}
                   />
                 )
               ) : (

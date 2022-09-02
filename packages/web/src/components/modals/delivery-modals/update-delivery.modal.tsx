@@ -10,10 +10,10 @@ import {
   Delivery,
   useUpdateDeliveryMutation,
 } from "~/services/delivery.service";
-import UpdateDeliveryForm, {
-  UpdateDeliveryFormProps,
-  UpdateDeliveryFormSubmitData,
-} from "./forms/update-delivery.form";
+import DeliveryForm, {
+  DeliveryFormProps,
+  DeliveryFormSubmitData,
+} from "./forms";
 import { APIError } from "~/services/helpers/transform-response.helper";
 import ModalErrorCatcher from "~/components/error-catcher/modal";
 
@@ -37,17 +37,21 @@ export const UpdateDeliveryModal: React.FC<UpdateDeliveryModalProps> = ({
       <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={FormModal<UpdateDeliveryFormProps, UpdateDeliveryFormSubmitData>}
+        Modal={FormModal<DeliveryFormProps, DeliveryFormSubmitData>}
         ModalProps={{
           onClose,
-          Form: UpdateDeliveryForm,
+          Form: DeliveryForm,
           FormProps: {
             delivery,
+            variant: "update",
             onSubmit: async value => {
               try {
                 setLoading(true);
 
-                await createDelivery(value).unwrap();
+                await createDelivery({
+                  ...delivery,
+                  ...value,
+                }).unwrap();
               } catch (e) {
                 setError(e);
               } finally {

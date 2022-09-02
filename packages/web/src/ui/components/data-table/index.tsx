@@ -51,12 +51,7 @@ export const DataTable: React.FC<DataTableProps> = React.memo(
           {EmptyComponent ? (
             EmptyComponent
           ) : (
-            <Stack
-              direction="row"
-              alignItems="center"
-              className="ui-px-8"
-              spacing={2}
-            >
+            <Stack direction="row" alignItems="center" px={2} spacing={2}>
               <SubtitlesOffOutlinedIcon color="secondary" />
               <Stack>
                 <Typography variant="h6" component="p">

@@ -1,6 +1,0 @@
-.app-bar {
-  @include ui-box-shadow-none;
-  @include ui-border-bottom(1px, solid, $border-color);
-  @include ui-bg-color(rgba(255, 255, 255, 0.7));
-  @include ui-blur;
-}

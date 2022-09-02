@@ -16,6 +16,7 @@ import { LoadingBackdrop } from "~/ui";
 import { getModifiers } from "~/services/modifiers.service";
 import ArticleSection from "~/components/sections/article.section";
 import useScroll from "~/hooks/use-scroll";
+import { Stack } from "@mui/material";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -35,14 +36,15 @@ export const HomePage: AppPage = () => {
   }, [scrollToSection]);
 
   return isLoading ? (
-    <LoadingBackdrop open={isLoading} />
+    <LoadingBackdrop open />
   ) : (
     <>
-      <CategoriesList
-        className="ui-py-8"
-        categories={productCategories}
-        CategoryCardProps={{ size: "medium" }}
-      />
+      <Stack py={2}>
+        <CategoriesList
+          categories={productCategories}
+          CategoryCardProps={{ size: "medium" }}
+        />
+      </Stack>
       {productCategories.map(category => (
         <CategorySection key={category.uuid} category={category} />
       ))}

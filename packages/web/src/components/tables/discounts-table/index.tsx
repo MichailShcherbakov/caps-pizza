@@ -66,7 +66,7 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
           collapsedRowSpace() {
             return (
               <Stack>
-                <Typography variant="h6" className="ui-px-8">
+                <Typography variant="h6" px={2}>
                   Условия распространения
                 </Typography>
                 <DataTable
@@ -114,7 +114,7 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
                     collapsedRowSpace() {
                       return (
                         <>
-                          <Typography variant="h6" className="ui-px-8">
+                          <Typography variant="h6" px={2}>
                             Распространение
                           </Typography>
                           <DataTable

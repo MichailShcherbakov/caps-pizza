@@ -49,8 +49,10 @@ export const TagsTextField: React.FC<TagsTextFieldProps> = React.memo(
         <Stack
           direction="row"
           alignItems="center"
-          className={tags.length ? "ui-pt-8" : ""}
           spacing={1}
+          sx={{
+            paddingTop: tags.length ? 1 : undefined,
+          }}
         >
           {tags.map(tag => (
             <Chip

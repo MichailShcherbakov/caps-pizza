@@ -23,7 +23,6 @@ export const usePaymentsTableHead = () => {
           type: "component",
           displayName: "",
           primary: true,
-          headColClassName: "ui-flex-center",
           component: payment => (
             <DataTableControlCell
               UpdateModal={UpdatePaymentModal}

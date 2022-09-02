@@ -17,7 +17,7 @@ export const ModifiersPage: AppPage = () => {
   return (
     <>
       <ModifiersTable />
-      <Stack direction="row" alignItems="center" className="ui-px-8">
+      <Stack direction="row" alignItems="center" px={2}>
         <CreateModifierModal>
           {({ open: openCreateModifierModal }) => (
             <CreateAnotherObjectModal

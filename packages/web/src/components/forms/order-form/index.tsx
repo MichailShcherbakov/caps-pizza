@@ -13,16 +13,17 @@ import PaymentSelect from "./components/payment-select";
 import PhoneNumberField from "./components/phone-number-field";
 import validationSchema from "./helpers/validation-schema";
 import { getAvailableDeliveries } from "@monorepo/common/modules/delivery/get-available-deliveries";
-import styles from "./index.module.scss";
 import EmptyShoppingCartStub from "./components/empty-shopping-cart-stub";
 import NameField from "./components/name-field";
 import OrderFormSkeleton from "./components/skeleton";
+import { useStyle } from "./index.style";
 
 export interface OrderFormProps {
   onSubmit?: (order: Order) => void;
 }
 
 export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
+  const { classes } = useStyle();
   const { data: payments = [], isLoading: isGetPaymentsLoading } =
     useGetPaymentsQuery();
   const { data: deliveries = [], isLoading: isGetDeliveriesLoading } =
@@ -119,9 +120,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   if (!products.length) return <EmptyShoppingCartStub />;
 
   return (
-    <form className={styles["order-form"]} onSubmit={formik.handleSubmit}>
+    <form className={classes.root} onSubmit={formik.handleSubmit}>
       <Title text="Ваш заказ" />
-      <Stack component="ul" className="ui-gap-2">
+      <Stack component="ul" spacing={2}>
         {products.map(product => (
           <ProductCard
             key={
@@ -145,121 +146,128 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
           </Typography>
         ))}
       </Stack>
-      <Stack className="ui-gap-4">
+      <Stack spacing={4}>
         <Title text="О Вас" />
-        <Grid spacing={2} rowSpacing={2} container>
-          <Grid item xl={4} lg={4} sm={4} xs={12}>
-            <NameField
-              value={formik.values.name}
-              error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name && formik.errors.name}
-              onChange={formik.handleChange}
-            />
+        <Stack>
+          <Grid spacing={2} rowSpacing={2} container>
+            <Grid item xl={4} lg={4} sm={4} xs={12}>
+              <NameField
+                value={formik.values.name}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xl={4} lg={4} sm={4} xs={12}>
+              <PhoneNumberField
+                id="phoneNumber"
+                name="phoneNumber"
+                error={
+                  formik.touched.phoneNumber &&
+                  Boolean(formik.errors.phoneNumber)
+                }
+                helperText={
+                  formik.touched.phoneNumber && formik.errors.phoneNumber
+                }
+                value={formik.values.phoneNumber}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xl={4} lg={4} sm={4} xs={12}>
+              <MemoTextField
+                fullWidth
+                id="email"
+                name="email"
+                label="Почта"
+                placeholder="mail-address@mail.ru"
+                value={formik.values.email}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                onChange={formik.handleChange}
+              />
+            </Grid>
           </Grid>
-          <Grid item xl={4} lg={4} sm={4} xs={12}>
-            <PhoneNumberField
-              id="phoneNumber"
-              name="phoneNumber"
-              error={
-                formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
-              }
-              helperText={
-                formik.touched.phoneNumber && formik.errors.phoneNumber
-              }
-              value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-          <Grid item xl={4} lg={4} sm={4} xs={12}>
-            <MemoTextField
-              fullWidth
-              id="email"
-              name="email"
-              label="Почта"
-              placeholder="mail-address@mail.ru"
-              value={formik.values.email}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-        </Grid>
+        </Stack>
         <Title text="Адрес доставки" />
-        <Grid spacing={2} rowSpacing={2} container>
-          <Grid item xl={12} lg={12} sm={12} xs={12}>
-            <MemoTextField
-              fullWidth
-              id="address"
-              name="address"
-              label="Адрес"
-              placeholder="Пушкин"
-              value={formik.values.address}
-              error={formik.touched.address && Boolean(formik.errors.address)}
-              helperText={formik.touched.address && formik.errors.address}
-              onChange={formik.handleChange}
-            />
+        <Stack>
+          <Grid spacing={2} rowSpacing={2} container>
+            <Grid item xl={12} lg={12} sm={12} xs={12}>
+              <MemoTextField
+                fullWidth
+                id="address"
+                name="address"
+                label="Адрес"
+                placeholder="Пушкин"
+                value={formik.values.address}
+                error={formik.touched.address && Boolean(formik.errors.address)}
+                helperText={formik.touched.address && formik.errors.address}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xl={3} lg={3} sm={6} xs={12}>
+              <MemoTextField
+                fullWidth
+                id="house"
+                name="house"
+                label="Дом"
+                placeholder="1а"
+                value={formik.values.house}
+                error={formik.touched.house && Boolean(formik.errors.house)}
+                helperText={formik.touched.house && formik.errors.house}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xl={3} lg={3} sm={6} xs={12}>
+              <NumberTextField
+                fullWidth
+                id="entrance"
+                name="entrance"
+                label="Парадная"
+                placeholder="1"
+                min={1}
+                max={99}
+                value={formik.values.entrance}
+                error={
+                  formik.touched.entrance && Boolean(formik.errors.entrance)
+                }
+                helperText={formik.touched.entrance && formik.errors.entrance}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xl={3} lg={3} sm={6} xs={12}>
+              <NumberTextField
+                fullWidth
+                id="floor"
+                name="floor"
+                label="Этаж"
+                placeholder="2"
+                min={1}
+                max={99}
+                value={formik.values.floor}
+                error={formik.touched.floor && Boolean(formik.errors.floor)}
+                helperText={formik.touched.floor && formik.errors.floor}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xl={3} lg={3} sm={6} xs={12}>
+              <NumberTextField
+                fullWidth
+                id="apartment"
+                name="apartment"
+                label="Квартира"
+                placeholder="15"
+                min={1}
+                max={999}
+                value={formik.values.apartment}
+                error={
+                  formik.touched.apartment && Boolean(formik.errors.apartment)
+                }
+                helperText={formik.touched.apartment && formik.errors.apartment}
+                onChange={formik.handleChange}
+              />
+            </Grid>
           </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <MemoTextField
-              fullWidth
-              id="house"
-              name="house"
-              label="Дом"
-              placeholder="1а"
-              value={formik.values.house}
-              error={formik.touched.house && Boolean(formik.errors.house)}
-              helperText={formik.touched.house && formik.errors.house}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <NumberTextField
-              fullWidth
-              id="entrance"
-              name="entrance"
-              label="Парадная"
-              placeholder="1"
-              min={1}
-              max={99}
-              value={formik.values.entrance}
-              error={formik.touched.entrance && Boolean(formik.errors.entrance)}
-              helperText={formik.touched.entrance && formik.errors.entrance}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <NumberTextField
-              fullWidth
-              id="floor"
-              name="floor"
-              label="Этаж"
-              placeholder="2"
-              min={1}
-              max={99}
-              value={formik.values.floor}
-              error={formik.touched.floor && Boolean(formik.errors.floor)}
-              helperText={formik.touched.floor && formik.errors.floor}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <NumberTextField
-              fullWidth
-              id="apartment"
-              name="apartment"
-              label="Квартира"
-              placeholder="15"
-              min={1}
-              max={999}
-              value={formik.values.apartment}
-              error={
-                formik.touched.apartment && Boolean(formik.errors.apartment)
-              }
-              helperText={formik.touched.apartment && formik.errors.apartment}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-        </Grid>
+        </Stack>
         {payments.length ? (
           <>
             <Title text="Оплата" />

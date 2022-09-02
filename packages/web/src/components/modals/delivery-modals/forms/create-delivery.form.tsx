@@ -18,8 +18,8 @@ import validationSchema from "../helpers/validation-schema";
 import DeliveryCriteriaSelect from "./components/condition-criteria-select";
 import DeliveryOperatorSelect from "./components/condition-operator-select";
 import DeliveryTypeSelect from "./components/type-select";
-import styles from "./index.module.scss";
 import { DiscountTypeEnum } from "~/services/discounts.service";
+import { useStyle } from "./index.style";
 
 export type CreateDeliveryFormSubmitData = CreateDeliveryPayload;
 
@@ -32,6 +32,7 @@ export const CreateDeliveryForm: React.FC<CreateDeliveryFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
+  const { classes } = useStyle();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -103,7 +104,7 @@ export const CreateDeliveryForm: React.FC<CreateDeliveryFormProps> = ({
         <Stack
           direction="row"
           alignItems="center"
-          className={styles["delivery-condition"]}
+          className={classes.deliveryCondition}
         >
           <DeliveryCriteriaSelect
             value={formik.values.conditionCriteria}

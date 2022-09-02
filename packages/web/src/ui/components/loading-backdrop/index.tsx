@@ -1,21 +1,20 @@
 import { Backdrop, BackdropProps } from "@mui/material";
 import LoadingIcon from "~/assets/pizza-loading.svg";
-import styles from "./index.module.scss";
+import { StyleProps, useStyle } from "./index.style";
 
-export interface LoadingProps extends BackdropProps {}
+export interface LoadingProps
+  extends Omit<BackdropProps, "color">,
+    StyleProps {}
 
 export const LoadingBackdrop: React.FC<LoadingProps> = ({
   color = "primary",
   ...props
 }) => {
+  const { classes } = useStyle({ color });
+
   return (
-    <Backdrop {...props} sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
-      <LoadingIcon
-        className={[
-          styles["ui-loading__icon"],
-          styles[`ui-loading__icon--${color}`],
-        ].join(" ")}
-      />
+    <Backdrop {...props} className={classes.root}>
+      <LoadingIcon className={classes.icon} />
     </Backdrop>
   );
 };

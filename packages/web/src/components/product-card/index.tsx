@@ -6,7 +6,7 @@ import ModifierList from "./modifier-list";
 import ProductImage from "./product-image";
 import ProductInfo from "./product-info";
 import ProductPrice from "./product-price";
-import styles from "./index.module.scss";
+import { useStyle } from "./index.style";
 
 export interface ProductCardProps {
   product: Product;
@@ -15,14 +15,15 @@ export interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = React.memo(
   ({ product, modifiers }) => {
+    const { classes } = useStyle();
     const [currentModifiers, setCurrentModifiers] = React.useState<Modifier[]>(
       product.modifiers
     );
 
     return (
-      <Stack component="article" className={styles["product-card"]}>
+      <Stack component="article" className={classes.root}>
         <ProductImage productName={product.name} imageURL={product.image_url} />
-        <Stack component="main" className="ui-w-full ui-h-full ui-gap-2">
+        <Stack component="main" className={classes.inner}>
           <ProductInfo product={product} />
           <ModifierList
             modifiers={modifiers}

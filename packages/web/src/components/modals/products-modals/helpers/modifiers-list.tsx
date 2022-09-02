@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Modifier } from "~/services/modifiers.service";
-import styles from "../index.module.scss";
+import { useStyle } from "../index.style";
 
 export interface ModifierListProps {
   modifiers: Modifier[];
@@ -18,6 +18,7 @@ export interface ModifierListProps {
 
 export const ModifierList: React.FC<ModifierListProps> = React.memo(
   ({ value, modifiers, onChange }) => {
+    const { classes } = useStyle();
     const checked = new Set<string>(value.map(m => m.uuid));
 
     const isAvailable = (m: Modifier) => {
@@ -44,7 +45,7 @@ export const ModifierList: React.FC<ModifierListProps> = React.memo(
     };
 
     return (
-      <List className={styles["modifier-list"]}>
+      <List className={classes.modifierList}>
         {modifiers.map(m => (
           <ListItem key={m.uuid} disablePadding>
             <ListItemButton

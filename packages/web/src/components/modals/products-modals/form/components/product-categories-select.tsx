@@ -10,7 +10,6 @@ import {
 import React from "react";
 import { ProductCategory } from "~/services/product-categories.service";
 import { ExternalSvg } from "~/ui";
-import styles from "../../index.module.scss";
 
 export interface ProductCategoriesSelectProps {
   productCategories: ProductCategory[];
@@ -38,15 +37,23 @@ export const ProductCategoriesSelect: React.FC<ProductCategoriesSelectProps> =
           label="Категория"
           onChange={onChange}
           color="secondary"
-          className={styles["category-select"]}
         >
           {Array.isArray(productCategories) &&
             productCategories.map(c => (
               <MenuItem key={c.uuid} value={c.uuid}>
-                <Stack direction="row" alignItems="center" className="ui-mr-8">
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  sx={{
+                    marginRight: 2,
+                  }}
+                >
                   <ExternalSvg
                     src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${c.image_url}`}
-                    className="ui-w-10 ui-h-10"
+                    sx={{
+                      width: 3,
+                      height: 3,
+                    }}
                   />
                 </Stack>
                 <ListItemText>{c.name}</ListItemText>

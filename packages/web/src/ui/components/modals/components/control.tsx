@@ -1,10 +1,12 @@
 import { Stack, StackProps } from "@mui/material";
-import styles from "../index.module.scss";
+import { useStyle } from "../index.style";
 
 export interface ModalControlProps extends StackProps<any> {}
 
 export const ModalControl: React.FC<ModalControlProps> = props => {
-  return <Stack {...props} className={styles["modal__control"]} />;
+  const { classes } = useStyle({});
+
+  return <Stack {...props} className={classes.modal} />;
 };
 
 export default ModalControl;

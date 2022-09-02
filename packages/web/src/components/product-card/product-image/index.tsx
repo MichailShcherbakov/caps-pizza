@@ -1,8 +1,8 @@
 import NextImage from "next/image";
 import { Stack } from "@mui/material";
 import React from "react";
-import styles from "./index.module.scss";
 import LoadingIcon from "~/assets/pizza-loading-2.svg";
+import { useStyle } from "./index.style";
 
 export interface ProductCardImageProps {
   productName: string;
@@ -15,6 +15,10 @@ export const ProductImage: React.FC<ProductCardImageProps> = ({
 }) => {
   const [cover, setCover] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const { classes } = useStyle({
+    cover,
+    loading,
+  });
 
   const onLoadingComplete = React.useCallback(
     ({ naturalWidth, naturalHeight }) => {
@@ -25,14 +29,7 @@ export const ProductImage: React.FC<ProductCardImageProps> = ({
   );
 
   return (
-    <Stack
-      component="picture"
-      className={[
-        styles["product-card__image"],
-        cover ? styles["product-card__image--cover"] : "",
-        loading ? styles["product-card__image--loading"] : "",
-      ].join(" ")}
-    >
+    <Stack component="picture" className={classes.root}>
       {loading ? <LoadingIcon /> : undefined}
       <NextImage
         src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}

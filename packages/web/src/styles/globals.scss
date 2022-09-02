@@ -1,135 +1,33 @@
-@import "../ui/scss/main.classes.scss";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 
-/*.MuiTypography-root {
-  height: fit-content;
-  text-transform: none;
-
-  @include cubic-transition; 
-}*/
-
-/* .MuiButtonBase-root.MuiButton-root {
-  @include cubic-transition;
-
-  @include ui-box-shadow-none;
-
-  &:hover {
-    @include ui-box-shadow-none;
-  }
-
-  &:active {
-    @include ui-box-shadow-none;
-  }
-} */
-
-/* 
-.MuiGrid-grid-xs-12 {
-  @include ui-w-full;
-}
-
-.MuiToggleButton-root {
-  @include ui-py-2;
-  @include ui-px-4;
-
-  @include ui-w-full;
-
-  @include ui-border-color($gray-100);
-
-  & > .MuiTypography-button:not(&.Mui-selected > .MuiTypography-button) {
-    @include ui-font-color($gray-900);
-  }
-
-  &.Mui-selected {
-    @include ui-border-color($transparent);
+  &:focus {
+    outline-style: none;
   }
 }
 
-.MuiInputLabel-root {
-  @include ui-font-color($gray-400);
+html {
+  scroll-behavior: smooth;
+  min-width: 360px;
 }
 
-.MuiInputBase-root {
-  @include ui-font-color($gray-900);
+body {
+  overflow-x: auto;
 }
 
-.MuiOutlinedInput-root {
-  &:hover:not(.Mui-focused):not(.Mui-disabled):not(.Mui-error) {
-    .MuiOutlinedInput-notchedOutline {
-      @include ui-border-color($gray-400);
-    }
-  }
+a {
+  text-decoration: none;
+}
 
-  &:disabled {
-    .MuiOutlinedInput-notchedOutline {
-      @include ui-border-color($gray-100);
-    }
-  }
+table {
+  border-collapse: collapse;
+}
 
-  &.Mui-disabled {
-    .MuiOutlinedInput-notchedOutline {
-      @include ui-border-color($gray-100);
-    }
-  }
-
-  & .MuiInputAdornment-root > .MuiTypography-root {
-    @include ui-font(1rem, 500, $gray-400);
+button {
+  &:focus {
+    outline-style: none;
   }
 }
-
-.MuiOutlinedInput-notchedOutline {
-  @include ui-border-color($gray-100);
-}
-
-.MuiMenuItem-root {
-  @include ui-w-full;
-}
-
-.MuiTextField-root {
-  @include ui-min-w(96px);
-}
-
-.MuiTableCell-root {
-  @include ui-border-color($border-color);
-}
-
-.MuiToggleButtonGroup-root {
-  @include ui-p-2;
-  @include ui-border(1px, solid, $border-color);
-  @include ui-flex;
-  @include ui-flex-row;
-  @include ui-flex-fixed;
-
-  & > .MuiToggleButton-root {
-    @include ui-border-none;
-
-    &:hover,
-    &:active {
-      @include ui-border-none;
-    }
-  }
-
-  & > .MuiToggleButtonGroup-grouped {
-    &:hover,
-    &:active {
-      @include ui-border-none;
-    }
-  }
-
-  & > .MuiToggleButtonGroup-grouped:not(:last-of-type) {
-    @include ui-rounded-1;
-  }
-
-  & > .MuiToggleButtonGroup-grouped:not(:first-of-type) {
-    @include ui-rounded-1;
-  }
-}
-
-.MuiButtonBase-root.MuiToggleButton-root.Mui-selected > .MuiTypography-root {
-  @include ui-font-color($orange-400);
-}
-
-@media (max-width: $breakpoint-xs) {
-  .MuiTabs-root {
-    @include ui-w(320px);
-  }
-}
- */

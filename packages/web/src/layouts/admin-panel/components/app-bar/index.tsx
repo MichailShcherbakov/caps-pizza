@@ -1,20 +1,23 @@
-import { AppBar, AppBarProps, Toolbar } from "@mui/material";
+import { AppBar, AppBarProps, Stack, Toolbar } from "@mui/material";
+import { useStyle } from "./index.style";
 import Logo from "./components/logo";
 import DrawerMenuButton from "./components/menu";
-import styles from "./index.module.scss";
 
 export interface AppbarProps extends AppBarProps {}
 
 export const Appbar: React.FC<AppbarProps> = ({ className, ...props }) => {
+  const { classes, cx } = useStyle();
   return (
     <AppBar
       {...props}
       position="sticky"
-      className={[styles["app-bar"], className].join(" ")}
+      className={cx(classes.root, className)}
     >
       <Toolbar>
-        <DrawerMenuButton />
-        <Logo />
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <DrawerMenuButton />
+          <Logo />
+        </Stack>
       </Toolbar>
     </AppBar>
   );

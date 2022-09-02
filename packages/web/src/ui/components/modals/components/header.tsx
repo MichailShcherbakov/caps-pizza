@@ -1,7 +1,7 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import styles from "../index.module.scss";
 import React from "react";
+import { useStyle } from "../index.style";
 
 export interface ModalHeaderProps {
   title: string;
@@ -11,18 +11,16 @@ export interface ModalHeaderProps {
 
 export const ModalHeader: React.FC<ModalHeaderProps> = React.memo(
   ({ title, exit, onExit = () => {} }) => {
+    const { classes } = useStyle({});
+
     return (
       <Stack
-        spacing={2}
         direction="row"
         alignItems="center"
-        className={styles["modal__header"]}
+        spacing={2}
+        className={classes.header}
       >
-        <Typography
-          variant="h4"
-          component="p"
-          className="ui-w-full ui-truncate"
-        >
+        <Typography variant="h4" component="p" className={classes.headerTitle}>
           {title}
         </Typography>
         {exit && (

@@ -7,7 +7,8 @@ export const gray = {
 };
 
 export const orange = {
-  100: "#ff701042",
+  // 100: "#ff701042",
+  100: "#ffeee2",
   400: "#ff7010",
 };
 

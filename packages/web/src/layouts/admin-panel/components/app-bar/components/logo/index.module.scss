@@ -1,7 +1,0 @@
-.logo {
-  @include ui-gap(10px);
-
-  &__title {
-    @include ui-font-color($blue-400);
-  }
-}

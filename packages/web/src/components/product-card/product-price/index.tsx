@@ -4,8 +4,8 @@ import { Modifier } from "~/services/modifiers.service";
 import { Product } from "~/services/products.service";
 import getSpecifics from "../helpers/getSpecifics.helper";
 import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
-import styles from "./index.module.scss";
 import { Snackbar } from "~/ui";
+import { useStyle } from "./index.style";
 
 export interface ProductPriceProps {
   product: Product;
@@ -16,6 +16,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
   product,
   currentModifiers,
 }) => {
+  const { classes } = useStyle();
   const [open, setOpen] = React.useState<boolean>(false);
   const { addProduct } = useShoppingCartActions();
   const specifics = React.useMemo(() => getSpecifics(product), [product]);
@@ -46,41 +47,23 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        className={styles["product-card__footer"]}
-      >
-        <Typography
-          variant="subtitle1"
-          className={styles["product-card__footer-specifics"]}
-        >
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Typography variant="subtitle1" className={classes.specifics}>
           {specifics}
         </Typography>
         <Button
           variant="outlined"
-          className={styles["product-card__footer-btn"]}
+          className={classes.btn}
           onClick={onProductCardSelect}
         >
-          <Typography
-            variant="button"
-            className={styles["product-card__footer-btn-text"]}
-          >
+          <Typography variant="button" className={classes.btnText}>
             Выбрать
           </Typography>
-          <Typography
-            variant="button"
-            className={styles["product-card__footer-btn-price"]}
-          >
+          <Typography variant="button" className={classes.btnPrice}>
             {price} ₽
           </Typography>
         </Button>
-        <Typography
-          variant="h4"
-          component="p"
-          className={styles["product-card__price"]}
-        >
+        <Typography variant="h4" component="p" className={classes.price}>
           {price} ₽
         </Typography>
       </Stack>

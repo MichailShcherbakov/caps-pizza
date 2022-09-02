@@ -75,7 +75,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
           collapsedRowSpace: () =>
             product.modifiers.length ? (
               <>
-                <Typography variant="h6" className="ui-px-8">
+                <Typography variant="h6" px={2}>
                   Модификаторы
                 </Typography>
                 <CollapsedModifiersTable

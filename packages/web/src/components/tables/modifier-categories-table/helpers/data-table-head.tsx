@@ -23,7 +23,6 @@ export const useModifierCategoriesTableHead = () => {
           type: "component",
           displayName: "",
           primary: true,
-          headColClassName: "ui-flex-center",
           component: category => (
             <DataTableControlCell
               UpdateModal={UpdateModifierCategoryModal}

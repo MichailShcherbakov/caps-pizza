@@ -1,6 +1,8 @@
-import { experimental_sx as sx } from "@mui/material/styles";
+import { Components, experimental_sx as sx, Theme } from "@mui/material/styles";
 
-export const components = {
+export const makeComponents = (
+  theme: Theme
+): Components<Omit<Theme, "components">> => ({
   MuiPaper: {
     styleOverrides: {
       root: {
@@ -30,12 +32,21 @@ export const components = {
       root: sx({
         padding: 0.5,
         border: "1px solid",
-        borderColor: "neutral.light",
+        borderColor: "divider",
       }),
     },
   },
   MuiButton: {
     styleOverrides: {
+      root: {
+        boxShadow: "none",
+        "&:hover": {
+          boxShadow: "none",
+        },
+        "&:active": {
+          boxShadow: "none",
+        },
+      },
       sizeSmall: {
         minHeight: "30px",
       },
@@ -47,4 +58,42 @@ export const components = {
       },
     },
   },
-};
+  MuiTableCell: {
+    styleOverrides: {
+      root: {
+        borderColor: theme.palette.divider,
+      },
+    },
+  },
+  MuiOutlinedInput: {
+    styleOverrides: {
+      notchedOutline: {
+        borderColor: theme.palette.divider,
+      },
+    },
+  },
+  MuiInputBase: {
+    styleOverrides: {
+      input: {
+        display: "flex",
+        flexDirection: "row",
+      },
+    },
+  },
+  MuiTextField: {
+    styleOverrides: {
+      root: {
+        minWidth: "96px",
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      root: {
+        [theme.breakpoints.down("xs")]: {
+          width: "320px",
+        },
+      },
+    },
+  },
+});

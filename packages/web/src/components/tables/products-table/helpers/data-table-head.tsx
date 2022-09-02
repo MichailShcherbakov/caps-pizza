@@ -42,26 +42,26 @@ export const useProductsTableHead = () => {
         {
           name: "volume",
           displayName: "Объем",
-          rowColClassName: "ui-truncate",
+          // rowColClassName: "ui-truncate",
           collapsed: true,
         },
         {
           name: "weight",
           displayName: "Вес",
-          rowColClassName: "ui-truncate",
+          // rowColClassName: "ui-truncate",
           collapsed: true,
         },
         {
           name: "tags",
           displayName: "Теги",
-          rowColClassName: "ui-truncate",
+          // rowColClassName: "ui-truncate",
           collapsed: true,
           fullWidth: true,
         },
         {
           name: "price",
           displayName: "Цена",
-          rowColClassName: "ui-truncate",
+          // rowColClassName: "ui-truncate",
           fullWidth: true,
         },
         {
@@ -74,7 +74,6 @@ export const useProductsTableHead = () => {
           type: "component",
           displayName: "",
           primary: true,
-          headColClassName: "ui-flex-center",
           component: product => (
             <DataTableControlCell
               UpdateModal={UpdateProductModal}

@@ -7,10 +7,10 @@ import {
   ModalProps,
 } from "~/ui";
 import { useCreateDeliveryMutation } from "~/services/delivery.service";
-import CreateDeliveryForm, {
-  CreateDeliveryFormProps,
-  CreateDeliveryFormSubmitData,
-} from "./forms/create-delivery.form";
+import DeliveryForm, {
+  DeliveryFormProps,
+  DeliveryFormSubmitData,
+} from "./forms";
 import { APIError } from "~/services/helpers/transform-response.helper";
 import ModalErrorCatcher from "~/components/error-catcher/modal";
 
@@ -31,11 +31,12 @@ export const CreateDeliveryModal: React.FC<CreateDeliveryModalProps> = ({
       <LoadingBackdrop color="secondary" open={loading} />
       <ModalErrorCatcher error={error} />
       <ModalController
-        Modal={FormModal<CreateDeliveryFormProps, CreateDeliveryFormSubmitData>}
+        Modal={FormModal<DeliveryFormProps, DeliveryFormSubmitData>}
         ModalProps={{
           onClose,
-          Form: CreateDeliveryForm,
+          Form: DeliveryForm,
           FormProps: {
+            variant: "create",
             onSubmit: async value => {
               try {
                 setLoading(true);

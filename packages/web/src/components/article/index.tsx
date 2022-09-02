@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import Title from "../title";
-import styles from "./index.module.scss";
+import { useStyle } from "./index.style";
 
 export interface ArticleProps {
   title: string;
@@ -15,6 +15,9 @@ export const Article: React.FC<ArticleProps> = ({
   collapse: defaultCollapsed = false,
 }) => {
   const [collapse, setCollapse] = React.useState<boolean>(false);
+  const { classes } = useStyle({
+    collapse,
+  });
 
   React.useEffect(() => {
     setCollapse(defaultCollapsed);
@@ -23,22 +26,21 @@ export const Article: React.FC<ArticleProps> = ({
   const onClickHandler = () => setCollapse(!collapse);
 
   return (
-    <Stack className="ui-w-full">
+    <Stack
+      sx={{
+        width: "100%",
+      }}
+    >
       <Title text={title} />
-      <Stack
-        className={[
-          styles["article"],
-          collapse ? styles["article--collapsed"] : "",
-        ].join(" ")}
-      >
-        {collapse && <Stack className={styles["article__curtain"]}></Stack>}
-        <Typography className={styles["article__text"]}>{text}</Typography>
+      <Stack className={classes.root}>
+        {collapse && <Stack className={classes.curtain}></Stack>}
+        <Typography className={classes.text}>{text}</Typography>
       </Stack>
       {collapse && (
         <Button
           variant="text"
           color="primary"
-          className={styles["article__btn"]}
+          className={classes.btn}
           onClick={onClickHandler}
         >
           Подробнее

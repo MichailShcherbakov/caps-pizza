@@ -1,8 +1,8 @@
 import React from "react";
 import CategoryCard, { CategoryCardProps } from "./components/card";
 import { ProductCategory } from "~/services/product-categories.service";
-import styles from "./index.module.scss";
 import { useCurrentSection } from "~/helpers/section-provider";
+import { useStyle } from "./index.style";
 
 export interface CategoriesProps
   extends React.HTMLAttributes<HTMLUListElement> {
@@ -14,23 +14,14 @@ export interface CategoriesProps
 export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
   HTMLUListElement,
   CategoriesProps
->(({ fullWidth, categories, CategoryCardProps, ...props }, ref) => {
+>(({ fullWidth, categories, CategoryCardProps, className, ...props }, ref) => {
+  const { classes, cx } = useStyle({
+    width: fullWidth ? "full" : categories.length < 6 ? "auto" : undefined,
+  });
   const { currentActiveSectionName } = useCurrentSection();
 
   return (
-    <ul
-      {...props}
-      ref={ref}
-      className={[
-        styles["categories-list"],
-        fullWidth
-          ? styles["categories-list--full-width"]
-          : categories.length < 6
-          ? styles["categories-list--width-auto"]
-          : "",
-        props.className,
-      ].join(" ")}
-    >
+    <ul {...props} ref={ref} className={cx(classes.root, className)}>
       {categories.map(category => (
         <CategoryCard
           {...CategoryCardProps}

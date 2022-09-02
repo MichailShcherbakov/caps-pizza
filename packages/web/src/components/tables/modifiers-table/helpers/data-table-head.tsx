@@ -43,7 +43,6 @@ export const useModifiersTableHead = () => {
           type: "component",
           displayName: "",
           primary: true,
-          headColClassName: "ui-flex-center",
           component: modifier => (
             <DataTableControlCell
               UpdateModal={UpdateModifierModal}

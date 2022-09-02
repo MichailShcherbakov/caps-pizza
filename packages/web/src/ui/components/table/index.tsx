@@ -14,6 +14,7 @@ import {
   Stack,
 } from "@mui/material";
 import React from "react";
+import { useStyle } from "./index.style";
 
 export interface TableHeadProps extends MUITableHeadProps {}
 
@@ -71,15 +72,16 @@ export const CollapsibleTableRow: React.FC<CollapsibleTableRowProps> = ({
   colSpan,
   children,
 }) => {
+  const { classes } = useStyle();
   return (
     <TableRow>
       <TableCell
         colSpan={colSpan}
-        className="ui-p-0 ui-w-full ui-overflow-auto"
+        className={classes.tableCell}
         style={{ borderWidth: isOpen ? 1 : 0 }}
       >
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <Stack className="ui-py-8" spacing={2}>
+          <Stack spacing={2} py={2}>
             {children}
           </Stack>
         </Collapse>

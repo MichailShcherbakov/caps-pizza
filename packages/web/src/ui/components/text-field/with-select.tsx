@@ -10,7 +10,6 @@ import {
   TextFieldProps,
 } from "@mui/material";
 import React from "react";
-import styles from "./index.module.scss";
 
 export interface TextFieldWithSelectProps {
   TextFieldProps?: TextFieldProps;
@@ -24,7 +23,9 @@ export const TextFieldWithSelect: React.FC<TextFieldWithSelectProps> =
       <Stack
         direction="row"
         alignItems="center"
-        className="ui-w-full"
+        sx={{
+          width: "100%",
+        }}
         spacing={2}
       >
         <TextField
@@ -32,11 +33,8 @@ export const TextFieldWithSelect: React.FC<TextFieldWithSelectProps> =
           fullWidth
           size="small"
           color="secondary"
-          className={[styles["text-field"], TextFieldProps?.className].join(
-            " "
-          )}
         />
-        <FormControl size="small" className={styles["text-field__select"]}>
+        <FormControl size="small" sx={{ minWidth: "72px" }}>
           <InputLabel id="input-select-label" color="secondary" size="small">
             {SelectProps?.label}
           </InputLabel>

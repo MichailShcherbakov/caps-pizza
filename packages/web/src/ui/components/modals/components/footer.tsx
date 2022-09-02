@@ -1,6 +1,6 @@
 import { Button, ButtonProps, Stack, StackProps } from "@mui/material";
 import React from "react";
-import styles from "../index.module.scss";
+import { useStyle } from "../index.style";
 
 export interface ModalFooterProps extends StackProps {
   variant?: "dialog" | "accept";
@@ -20,23 +20,29 @@ export const ModalFooter: React.FC<ModalFooterProps> = React.memo(
     onCancel = () => {},
     ...props
   }) => {
+    const { classes } = useStyle({});
+
     return (
       <Stack
         {...props}
         direction="row"
         alignItems="center"
-        spacing={2}
-        className={styles["modal__footer"]}
+        className={classes.footer}
       >
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="flex-start"
-          className="ui-w-full"
+          sx={{ width: "100%" }}
         >
           {children}
         </Stack>
-        <Stack direction="row" alignItems="center" justifyContent="flex-end">
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-end"
+          className={classes.footerControls}
+        >
           {variant === "dialog" && (
             <Button
               variant="text"

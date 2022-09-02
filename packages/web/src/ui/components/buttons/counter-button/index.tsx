@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import React from "react";
-import styles from "./index.module.scss";
+import { useStyle } from "./index.style";
 
 export interface CounterProps {
   initialCount?: number;
@@ -22,6 +22,7 @@ export const CounterButton: React.FC<CounterProps> = ({
   onDecrement,
   onValueChanged,
 }) => {
+  const { classes } = useStyle();
   const [count, setCount] = React.useState<number>(minValue);
 
   React.useEffect(() => {
@@ -49,18 +50,30 @@ export const CounterButton: React.FC<CounterProps> = ({
   };
 
   return (
-    <ButtonGroup variant="contained" className={styles["counter-button"]}>
-      <Button variant="contained" color="light" onClick={subtract}>
+    <ButtonGroup variant="contained" className={classes.root}>
+      <Button
+        variant="contained"
+        color="primaryLight"
+        size="small"
+        onClick={subtract}
+      >
         -
       </Button>
       <Stack
         alignItems="center"
         justifyContent="center"
-        className={styles["counter-button__label"]}
+        className={classes.label}
       >
-        <Typography variant="button">{count}</Typography>
+        <Typography variant="subtitle2" component="span" color="primary">
+          {count}
+        </Typography>
       </Stack>
-      <Button variant="contained" color="light" onClick={add}>
+      <Button
+        variant="contained"
+        color="primaryLight"
+        size="small"
+        onClick={add}
+      >
         +
       </Button>
     </ButtonGroup>

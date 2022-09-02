@@ -1,11 +1,11 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { Container, Stack, ThemeProvider } from "@mui/material";
+import { Container, CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import theme from "~/ui/theme";
 import Footer from "~/components/footer";
-import styles from "./index.module.scss";
 import ShoppingCart from "~/components/shopping-cart";
 import EmptyAppBar from "~/components/app-bar/empty";
+import { useStyle } from "../main/index.style";
 
 export const NotificationManager = dynamic(
   () => import("../main/components/notification-manager"),
@@ -20,18 +20,17 @@ export interface OrderLayoutProps {
 }
 
 export const OrderLayout: React.FC<OrderLayoutProps> = ({ children }) => {
+  const { classes } = useStyle();
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ShoppingCart>
-        <Stack alignItems="center" className={styles["order-layout"]}>
+        <Stack alignItems="center" className={classes.root}>
           <React.Suspense>
             <NotificationManager />
           </React.Suspense>
           <EmptyAppBar />
-          <Container
-            component="main"
-            className={styles["order-layout__container"]}
-          >
+          <Container component="main" className={classes.container}>
             {children}
           </Container>
           <Footer />

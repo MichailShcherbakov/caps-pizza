@@ -1,12 +1,12 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import NextImage from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
-import styles from "./index.module.scss";
 import CounterButton from "~/ui/components/buttons/counter-button";
 import getSpecifics from "~/components/product-card/helpers/getSpecifics.helper";
 import { ShoppingCartProduct } from "~/hooks/use-shopping-cart";
 import React from "react";
 import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
+import { useStyle } from "./index.style";
 
 export interface ProductCardProps {
   product: ShoppingCartProduct;
@@ -14,6 +14,7 @@ export interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = React.memo(
   ({ product }) => {
+    const { classes } = useStyle();
     const { addProduct, removeProduct } = useShoppingCartActions();
 
     const productModifiers = product.modifiers.map(modifier => ({
@@ -21,26 +22,21 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
     }));
 
     return (
-      <Stack
-        direction="row"
-        alignItems="stretch"
-        className={styles["product-card"]}
-      >
-        <Stack className={styles["product-card__image"]}>
+      <Stack direction="row" alignItems="stretch" className={classes.root}>
+        <Stack className={classes.image}>
           <NextImage
             src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${product.image_url}`}
             alt={product.name}
             layout="fill"
-            className={styles["product-card__image-src"]}
           />
         </Stack>
-        <Stack spacing={1} className="ui-w-full">
-          <Stack spacing={1} className="ui-w-full ui-h-full">
+        <Stack width="100%" spacing={1}>
+          <Stack width="100%" height="100%" spacing={1}>
             <Stack
+              width="100%"
               direction="row"
               alignItems="center"
               justifyContent="space-between"
-              className="ui-w-full"
             >
               <Typography variant="h4">{product.name}</Typography>
               <IconButton
@@ -89,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
                 })
               }
             />
-            <Typography variant="h5" className={styles["product-card__price"]}>
+            <Typography variant="h5" className={classes.price}>
               {`${product.fullPrice * product.count} ₽`}
             </Typography>
           </Stack>

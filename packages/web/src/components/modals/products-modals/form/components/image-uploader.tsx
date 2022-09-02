@@ -1,8 +1,8 @@
 import { Button, Stack, Tooltip } from "@mui/material";
 import React from "react";
-import styles from "../../index.module.scss";
 import NextImage from "next/image";
 import ImageIcon from "@mui/icons-material/Image";
+import { useStyle } from "../../index.style";
 
 export interface ImageUploaderProps {
   image?: File;
@@ -14,6 +14,7 @@ export interface ImageUploaderProps {
 
 export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
   ({ image, imageURL, touched, errors, onChange }) => {
+    const { classes } = useStyle();
     return (
       <Tooltip
         title="Загрузите изображение"
@@ -25,7 +26,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
         <Button
           aria-label="upload picture"
           component="label"
-          className={styles["upload-image-btn"]}
+          className={classes.uploadImageBtn}
           variant={imageURL ? "text" : "outlined"}
           color="neutral"
         >

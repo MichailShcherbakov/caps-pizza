@@ -2,7 +2,6 @@ import React from "react";
 import TextField, { TextFieldProps } from ".";
 import IMask from "imask";
 import { useIMask } from "react-imask";
-import styles from "./index.module.scss";
 
 export type MaskedTextFieldProps = TextFieldProps & {
   options: IMask.AnyMaskedOptions;
@@ -29,12 +28,7 @@ export const MaskedTextField: React.FC<MaskedTextFieldProps> = React.memo(
     });
 
     return (
-      <TextField
-        {...props}
-        value={value}
-        InputProps={{ inputRef: ref }}
-        className={styles["text-field"]}
-      />
+      <TextField {...props} value={value} InputProps={{ inputRef: ref }} />
     );
   }
 );

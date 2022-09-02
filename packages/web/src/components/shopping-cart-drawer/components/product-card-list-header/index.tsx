@@ -2,7 +2,6 @@ import React from "react";
 import { IconButton, Stack, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import useShoppingCart from "~/hooks/use-shopping-cart";
-import styles from "./index.module.scss";
 
 export interface ProductCardListHeaderProps {
   anchor?: "left" | "right" | "bottom" | "top";
@@ -26,7 +25,9 @@ export const ProductCardListHeader: React.FC<ProductCardListHeaderProps> = ({
       {!isEmpty && <Typography variant="h1">Ваш заказ</Typography>}
       <IconButton onClick={onExitHandler} size="medium">
         <ArrowForwardIosIcon
-          className={styles[`shopping-cart-drawer__back-btn--${anchor}`]}
+          sx={{
+            transform: anchor === "bottom" ? "rotate(90deg)" : undefined,
+          }}
         />
       </IconButton>
     </Stack>

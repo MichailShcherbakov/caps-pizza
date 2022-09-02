@@ -1,3 +1,4 @@
+import NextLink from "next/link";
 import LogoIcon from "~/assets/logo.svg";
 import { Fade, Stack, Typography } from "@mui/material";
 
@@ -7,28 +8,31 @@ export interface LogoProps {
 
 export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
   return (
-    <Stack
-      component="a"
-      href="/"
-      direction="row"
-      alignItems="center"
-      spacing={2}
-      sx={{
-        cursor: "pointer",
-      }}
-    >
-      <LogoIcon
+    <NextLink href="/" passHref>
+      <Stack
+        component="a"
+        direction="row"
+        alignItems="center"
+        spacing={2}
         sx={{
-          width: "1.5rem",
-          height: "1.5rem",
+          cursor: "pointer",
         }}
-      />
-      {!onlyIcon ? (
-        <Fade in={!onlyIcon}>
-          <Typography variant="h3">Пицца от КЭПа</Typography>
-        </Fade>
-      ) : undefined}
-    </Stack>
+      >
+        <LogoIcon
+          sx={{
+            width: "1.5rem",
+            height: "1.5rem",
+          }}
+        />
+        {!onlyIcon ? (
+          <Fade in={!onlyIcon}>
+            <Typography variant="h3" component="span" color="text.primary">
+              Пицца от КЭПа
+            </Typography>
+          </Fade>
+        ) : undefined}
+      </Stack>
+    </NextLink>
   );
 };
 

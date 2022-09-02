@@ -23,7 +23,7 @@ import {
 } from "~/ui";
 import VolumeTextField from "./components/volume-text-field";
 import WeightTextField from "./components/weight-text-field";
-import styles from "../index.module.scss";
+import { useStyle } from "../index.style";
 
 export type ProductFormSubmitData = Omit<Product, "uuid"> & {
   image?: File;
@@ -45,6 +45,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
+  const { classes } = useStyle();
   const formik = useFormik({
     initialValues: {
       name: product?.name ?? "",
@@ -155,7 +156,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           <Stack
             direction="row"
             alignItems="center"
-            className={styles["product-form__features"]}
+            className={classes.productFeatures}
           >
             <VolumeTextField
               volume={formik.values.volume}
@@ -223,7 +224,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         </Stack>
         {modifiers.length ? (
           <Stack>
-            <Typography variant="h6" className={styles["modifier-list__title"]}>
+            <Typography variant="h6" className={classes.modifierListTitle}>
               Модификаторы
             </Typography>
             <ModifierList

@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  sassOptions: {
-    prependData: '@import "src/ui/scss/main.scss";',
-  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

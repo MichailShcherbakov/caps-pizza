@@ -5,9 +5,9 @@ import AppBar from "~/components/app-bar";
 import InfoBar from "~/components/info-bar";
 import theme from "~/ui/theme";
 import Footer from "~/components/footer";
-import styles from "./index.module.scss";
 import { SectionProvider } from "~/helpers/section-provider";
 import ShoppingCart from "~/components/shopping-cart";
+import { useStyle } from "./index.style";
 
 const ShoppingCartButton = dynamic(
   () => import("../../components/shopping-cart-button"),
@@ -30,21 +30,19 @@ export interface MainLayoutProps {
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const { classes } = useStyle();
   return (
     <SectionProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ShoppingCart>
-          <Stack alignItems="center" className={styles["main-layout"]}>
+          <Stack alignItems="center" className={classes.root}>
             <React.Suspense>
               <NotificationManager />
             </React.Suspense>
             <InfoBar />
             <AppBar />
-            <Container
-              component="main"
-              className={styles["main-layout__container"]}
-            >
+            <Container component="main" className={classes.container}>
               {children}
             </Container>
             <Footer />

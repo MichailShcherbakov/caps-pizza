@@ -33,6 +33,7 @@ export function DataTableControlCell<
 
   return (
     <Stack
+      width="100%"
       direction="row"
       alignItems="center"
       justifyContent="center"

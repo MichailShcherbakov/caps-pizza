@@ -1,4 +1,4 @@
-import { ButtonProps, Typography } from "@mui/material";
+import { ButtonProps, Stack, Typography } from "@mui/material";
 import React from "react";
 import Modal, { ModalProps } from ".";
 import ModalHeader from "./components/header";
@@ -37,11 +37,13 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
     <Modal {...props} onClose={props.onClose}>
       <ModalControl>
         <ModalHeader title={HEAD_TITLES[variant]} onExit={props.onClose} />
-        <ModalContent justifyContent="center" spacing={1}>
-          <Typography variant="h4" textAlign="center">
-            {title}
-          </Typography>
-          {desc && <Typography textAlign="center">{desc}</Typography>}
+        <ModalContent>
+          <Stack spacing={1}>
+            <Typography variant="h4" textAlign="center">
+              {title}
+            </Typography>
+            {desc && <Typography textAlign="center">{desc}</Typography>}
+          </Stack>
         </ModalContent>
         <ModalFooter
           variant="accept"

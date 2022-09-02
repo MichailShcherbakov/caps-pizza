@@ -17,7 +17,7 @@ export const ProductsPage: AppPage = () => {
   return (
     <>
       <ProductsTable />
-      <Stack direction="row" alignItems="center" className="ui-px-8">
+      <Stack direction="row" alignItems="center" px={2}>
         <CreateProductModal>
           {({ open: openCreateModifierModal }) => (
             <CreateAnotherObjectModal

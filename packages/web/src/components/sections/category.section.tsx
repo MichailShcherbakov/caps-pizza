@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import React from "react";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
 import { ProductCategory } from "~/services/product-categories.service";
@@ -32,38 +32,38 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
           const name = tagName.length === 2 ? tagName[0].toLowerCase() : "";
 
           return (
-            <div
-              key={`${category.name} ${name}`}
-              className="ui-flex ui-flex-col ui-gap-4"
-            >
+            <Stack key={`${category.name} ${name}`} spacing={4}>
               <Title text={`${category.name} ${name}`} />
-              <Grid container spacing={3}>
-                {tagProducts[tag].map(product => {
-                  const availableModifierCategories = new Set(
-                    product.modifiers.map(modifier => modifier.category_uuid)
-                  );
-                  const availableProductModifiers = modifiers.filter(modifier =>
-                    availableModifierCategories.has(modifier.category_uuid)
-                  );
-                  return (
-                    <Grid
-                      key={product.uuid}
-                      item
-                      xl={3}
-                      lg={3}
-                      md={4}
-                      sm={6}
-                      xs={12}
-                    >
-                      <ProductCard
-                        product={product}
-                        modifiers={availableProductModifiers}
-                      />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </div>
+              <Stack>
+                <Grid container spacing={3}>
+                  {tagProducts[tag].map(product => {
+                    const availableModifierCategories = new Set(
+                      product.modifiers.map(modifier => modifier.category_uuid)
+                    );
+                    const availableProductModifiers = modifiers.filter(
+                      modifier =>
+                        availableModifierCategories.has(modifier.category_uuid)
+                    );
+                    return (
+                      <Grid
+                        key={product.uuid}
+                        item
+                        xl={3}
+                        lg={3}
+                        md={4}
+                        sm={6}
+                        xs={12}
+                      >
+                        <ProductCard
+                          product={product}
+                          modifiers={availableProductModifiers}
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </Stack>
+            </Stack>
           );
         })}
       </Section>

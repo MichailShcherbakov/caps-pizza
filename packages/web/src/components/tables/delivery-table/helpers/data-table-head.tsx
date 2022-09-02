@@ -1,7 +1,7 @@
 import React from "react";
 import { Delivery } from "~/services/delivery.service";
 import { DataTableControlCell, DataTableHead } from "~/ui";
-import DeleteDeliveryModal from "~/components/modals/delivery-modals/deletet-delivery.modal";
+import DeleteDeliveryModal from "~/components/modals/delivery-modals/delete-delivery.modal";
 import UpdateDeliveryModal from "~/components/modals/delivery-modals/update-delivery.modal";
 
 export const useDeliveryTableHead = () => {
@@ -18,7 +18,6 @@ export const useDeliveryTableHead = () => {
           type: "component",
           displayName: "",
           primary: true,
-          headColClassName: "ui-flex-center",
           component: delivery => (
             <DataTableControlCell
               UpdateModal={UpdateDeliveryModal}
