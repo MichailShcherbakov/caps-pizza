@@ -19,5 +19,14 @@
     "resolveJsonModule": true,
     "baseUrl": "./src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "**/__tests__",
+    "dist",
+    "**/*spec.ts",
+    "**/*test.ts",
+    "./wallaby*",
+    "./jest*"
+  ]
 }

@@ -96,4 +96,11 @@ export const makeComponents = (
       },
     },
   },
+  MuiGrid: {
+    styleOverrides: {
+      "grid-xs-12": {
+        width: "100%",
+      },
+    },
+  },
 });

@@ -58,12 +58,12 @@ export const useStyle = makeStyles<StyleProps>()(
       },
 
       [theme.breakpoints.down("xs")]: {
-        width: "150px",
+        width: "132px",
         height: "100%",
       },
 
       [theme.breakpoints.down("xxs")]: {
-        width: "120px",
+        width: "100px",
         height: "100%",
       },
     },

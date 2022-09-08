@@ -3,11 +3,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "DOM"
-    ],
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "alwaysStrict": true,
@@ -27,30 +23,15 @@
     "experimentalDecorators": true,
     "baseUrl": "./src",
     "paths": {
-      "~/*": [
-        "./*"
-      ]
+      "~/*": ["./*"]
     },
-    "types": [
-      "@types/node",
-      "@types/jest"
-    ],
+    "types": ["@types/node", "@types/jest"],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "exclude": [
-    "node_modules",
-    ".next",
-    "dist",
-    "static",
-    ".github"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules", ".next", "dist"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

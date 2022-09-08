@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+
+const withPlugins = require("next-compose-plugins");
+const withTM = require("next-transpile-modules")(["tss-react"]);
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -10,8 +14,8 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: [process.env.HOST],
+    domains: [process.env.HOST, process.env.IMAGE_HOST],
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPlugins([withTM], nextConfig);

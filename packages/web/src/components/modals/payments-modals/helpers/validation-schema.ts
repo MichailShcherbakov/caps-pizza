@@ -8,6 +8,7 @@ export const validationSchema = yup.object({
   code: yup
     .number()
     .min(1, "Позиция не должна быть меньше 1")
+    .max(99999, "Значение позиции невалидно")
     .required("Это поле является обязательным"),
 });
 

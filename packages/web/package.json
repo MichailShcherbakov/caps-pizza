@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "next start",
+    "start:prod": "node_modules/.bin/next start",
     "start:dev": "next dev",
     "start:test": "jest --config ./jest.config.js --runInBand",
     "start:test:cov": "jest --config ./jest.config.js --runInBand --coverage",
@@ -26,7 +27,9 @@
     "external-svg-loader": "^1.6.0",
     "formik": "^2.2.9",
     "next": "12.2.2",
+    "next-compose-plugins": "^2.2.1",
     "next-redux-wrapper": "^8.0.0-rc.1",
+    "next-transpile-modules": "^9.0.0",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",

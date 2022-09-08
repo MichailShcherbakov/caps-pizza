@@ -1,6 +1,7 @@
 /* eslint-disable no-var */
 declare namespace globalThis {
   var __PORT__: number;
+  var __HOST__: string;
   var __FRONTEND_URL__: string;
   var __DEV__: boolean;
   var __SECRET__: string;

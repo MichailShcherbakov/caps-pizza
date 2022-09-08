@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { faker } from "@faker-js/faker";
 import { JwtService } from "@nestjs/jwt";
 import UserEntity from "~/db/entities/user.entity";

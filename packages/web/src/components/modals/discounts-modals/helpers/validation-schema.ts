@@ -21,6 +21,7 @@ export const validationSchema = yup.object({
   value: yup
     .number()
     .min(0, "Значение скидки должно быть положительным")
+    .max(99999, "Значение скидки невалидно")
     .required("Это поле является обязательным"),
   strategies: yup
     .array()

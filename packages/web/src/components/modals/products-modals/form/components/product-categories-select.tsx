@@ -51,8 +51,8 @@ export const ProductCategoriesSelect: React.FC<ProductCategoriesSelectProps> =
                   <ExternalSvg
                     src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${c.image_url}`}
                     sx={{
-                      width: 3,
-                      height: 3,
+                      width: theme => theme.spacing(3),
+                      height: theme => theme.spacing(3),
                     }}
                   />
                 </Stack>
