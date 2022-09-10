@@ -50,11 +50,17 @@ export const useStyle = makeStyles<StyleProps>()(
 
         "& > span img": {
           objectFit: "scale-down",
-
-          borderRadius: theme.spacing(2),
-          borderBottomLeftRadius: 0,
-          borderBottomRightRadius: 0,
         },
+
+        ...(cover && {
+          "& > span img": {
+            objectFit: "cover",
+
+            borderRadius: theme.spacing(2),
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+        }),
       },
 
       [theme.breakpoints.down("xs")]: {

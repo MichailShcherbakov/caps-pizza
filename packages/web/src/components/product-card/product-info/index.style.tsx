@@ -7,5 +7,9 @@ export const useStyle = makeStyles()(theme => ({
   },
   specifics: {
     whiteSpace: "nowrap",
+
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }));
