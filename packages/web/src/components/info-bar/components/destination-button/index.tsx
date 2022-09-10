@@ -1,14 +1,15 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import LocationIcon from "~/assets/location.svg";
 
 export interface DestinationSelectProps {}
 
 export const DestinationButton: React.FC<DestinationSelectProps> = () => {
   return (
-    <Button variant="text" color="secondary" startIcon={<LocationIcon />}>
-      Пушкин
-    </Button>
+    <Stack direction="row" alignItems="center" spacing={1} py={1}>
+      <LocationIcon />
+      <Typography>Пушкин</Typography>
+    </Stack>
   );
 };
 

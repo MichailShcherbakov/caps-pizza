@@ -5,7 +5,6 @@ import CategoriesList from "~/components/categories-list";
 import {
   getProductCategories,
   ProductCategory,
-  useGetProductCategoriesQuery,
 } from "~/services/product-categories.service";
 import CategorySection from "~/components/sections/category.section";
 import { GetServerSideProps } from "next";
@@ -16,7 +15,9 @@ import { LoadingBackdrop } from "~/ui";
 import { getModifiers } from "~/services/modifiers.service";
 import ArticleSection from "~/components/sections/article.section";
 import useScroll from "~/hooks/use-scroll";
-import { Stack } from "@mui/material";
+import useProductCategories from "~/hooks/use-product-categories";
+import PromotionSlider from "~/components/promotion-slider";
+import { Stack } from "@mui/system";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -24,8 +25,7 @@ export interface SectionContainerProps {
 
 export const HomePage: AppPage = () => {
   const { scrollToSection } = useScroll();
-  const { data: productCategories = [], isLoading } =
-    useGetProductCategoriesQuery();
+  const { productCategories, isLoading } = useProductCategories();
 
   React.useEffect(() => {
     const hash = decodeURIComponent(document.location.hash);
@@ -39,12 +39,17 @@ export const HomePage: AppPage = () => {
     <LoadingBackdrop open />
   ) : (
     <>
-      <Stack py={2}>
+      <Stack
+        sx={{
+          paddingY: 2,
+        }}
+      >
         <CategoriesList
           categories={productCategories}
           CategoryCardProps={{ size: "medium" }}
         />
       </Stack>
+      <PromotionSlider />
       {productCategories.map(category => (
         <CategorySection key={category.uuid} category={category} />
       ))}

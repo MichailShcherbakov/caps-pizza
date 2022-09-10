@@ -1,9 +1,9 @@
 import makeStyles from "~/ui/theme/makesStyles";
 
-export const useStyle = makeStyles()(theme => ({
+export const useStyle = makeStyles()(() => ({
   root: {
-    borderBottom: "1px solid",
-    borderBottomColor: theme.palette.divider,
+    borderLeft: "0",
+    borderRight: "0",
     backgroundColor: "rgba(255, 255, 255, 0.7)",
     backdropFilter: "blur(20px)",
   },

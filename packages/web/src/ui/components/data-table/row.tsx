@@ -118,38 +118,36 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                         })}
                       </Stack>
                     ) : undefined}
-                    <Grid
-                      container
-                      spacing={2}
-                      style={{
-                        margin: 0,
-                      }}
-                    >
-                      {hiddenCols
-                        .filter(col => !col.type || col.type === "text")
-                        .map(col => (
-                          <Grid
-                            container
-                            item
-                            key={col.name}
-                            sx={{
-                              padding: 0,
-                              paddingRight: "1rem",
-                              paddingBottom: "1rem",
-                              width: col.fullWidth ? undefined : "fit-content",
-                            }}
-                          >
-                            <Stack>
-                              <Typography variant="subtitle1">
-                                {col.displayName}
-                              </Typography>
-                              <Typography>
-                                {colsMap.get(col.name)?.value as string}
-                              </Typography>
-                            </Stack>
-                          </Grid>
-                        ))}
-                    </Grid>
+                    <Stack>
+                      <Grid container spacing={2}>
+                        {hiddenCols
+                          .filter(col => !col.type || col.type === "text")
+                          .map(col => (
+                            <Grid
+                              container
+                              item
+                              key={col.name}
+                              sx={{
+                                padding: 0,
+                                paddingRight: "1rem",
+                                paddingBottom: "1rem",
+                                width: col.fullWidth
+                                  ? undefined
+                                  : "fit-content",
+                              }}
+                            >
+                              <Stack>
+                                <Typography variant="subtitle1">
+                                  {col.displayName}
+                                </Typography>
+                                <Typography>
+                                  {colsMap.get(col.name)?.value as string}
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                          ))}
+                      </Grid>
+                    </Stack>
                   </Stack>
                 </>
               ) : undefined}

@@ -5,8 +5,14 @@ import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import BackupTableOutlinedIcon from "@mui/icons-material/BackupTableOutlined";
 import InsertChartOutlinedSharpIcon from "@mui/icons-material/InsertChartOutlinedSharp";
 import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
+import NewReleasesOutlinedIcon from "@mui/icons-material/NewReleasesOutlined";
 
 export const MENU_ITEMS = [
+  {
+    name: "promotions",
+    displayName: "Акции",
+    icon: <NewReleasesOutlinedIcon />,
+  },
   {
     name: "products",
     displayName: "Товары",

@@ -7,6 +7,8 @@ export const makeComponents = (
     styleOverrides: {
       root: {
         boxShadow: "none",
+        border: "1px solid",
+        borderColor: theme.palette.divider,
       },
     },
   },

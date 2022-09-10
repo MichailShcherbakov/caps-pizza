@@ -23,7 +23,7 @@ export const DeletePaymentModal: React.FC<DeletePaymentModalProps> = ({
   return (
     <WarnDeletingNotificationModal
       title="Удаление варианта оплаты необратимо"
-      desc="Вы точно хотите удалить вариант оплаты"
+      desc="Вы точно хотите удалить вариант оплаты?"
       onAccept={async () => {
         await deletePayment({ uuid: payment.uuid }).unwrap();
 

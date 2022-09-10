@@ -26,7 +26,7 @@ export const DeleteDeliveryModal: React.FC<DeleteDeliveryModalProps> = ({
   return (
     <WarnDeletingNotificationModal
       title="Удаление доставки необратимо"
-      desc="Вы точно хотите удалить доставку"
+      desc="Вы точно хотите удалить доставку?"
       onAccept={async () => {
         await deleteDelivery({ uuid: delivery.uuid });
         onAccept && onAccept();

@@ -8,9 +8,21 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
     borderRadius: theme.spacing(1),
     background: theme.palette.background.paper,
 
+    maxWidth: "680px",
+    maxHeight: "560px",
+
     [theme.breakpoints.down("sm")]: {
       borderBottomLeftRadius: 0,
       borderBottomRightRadius: 0,
+    },
+
+    [theme.breakpoints.up("sm")]: {
+      width: theme.breakpoints.values.sm,
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      maxHeight: "80vh",
     },
   },
   overlay: {
@@ -25,17 +37,7 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
   modal: {
     display: "flex",
     flexDirection: "column",
-    maxWidth: "680px",
-    maxHeight: "480px",
     gap: theme.spacing(2),
-
-    [theme.breakpoints.up("sm")]: {
-      minWidth: theme.breakpoints.values.sm,
-    },
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      maxHeight: "80vh",
-    },
   },
   header: {
     width: "100%",

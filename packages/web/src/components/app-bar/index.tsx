@@ -7,10 +7,10 @@ import { Fade, Stack } from "@mui/material";
 import CategoriesList from "~/components/categories-list";
 import useScroll from "~/hooks/use-scroll";
 import Logo from "./components/logo";
-import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
 import dynamic from "next/dynamic";
 import { Container } from "@mui/system";
 import { useStyle } from "./index.style";
+import useProductCategories from "~/hooks/use-product-categories";
 
 const ShoppingCartButton = dynamic(() => import("../shopping-cart-button"), {
   suspense: true,
@@ -21,7 +21,7 @@ const APP_BAR_SMALL_SCREEN_TOP_OFFSET = 100;
 const APP_BAR_LARGE_SCREEN_TOP_OFFSET = 150;
 
 export const AppBarHead = () => {
-  const { data: productCategories = [] } = useGetProductCategoriesQuery();
+  const { productCategories } = useProductCategories();
   const [showCategories, setShowCategories] = React.useState<boolean>(false);
 
   useScroll({

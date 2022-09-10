@@ -23,7 +23,7 @@ export const DeleteProductModal: React.FC<DeleteProductModalProps> = ({
   return (
     <WarnDeletingNotificationModal
       title="Удаление товара необратимо"
-      desc="Вы точно хотите удалить товар"
+      desc="Вы точно хотите удалить товар?"
       onAccept={async () => {
         await deleteProduct({ uuid: product.uuid });
         onAccept && onAccept();

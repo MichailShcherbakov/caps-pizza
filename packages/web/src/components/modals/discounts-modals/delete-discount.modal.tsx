@@ -25,7 +25,7 @@ export const DeleteDiscountModal: React.FC<DeleteDiscountModalProps> = ({
   return (
     <WarnDeletingNotificationModal
       title="Удаление скидки необратимо"
-      desc="Вы точно хотите удалить скидку"
+      desc="Вы точно хотите удалить скидку?"
       onAccept={async () => {
         await deleteDiscount({ uuid: discount.uuid }).unwrap();
         onAccept && onAccept();

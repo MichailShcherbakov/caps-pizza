@@ -14,14 +14,10 @@ export const Article: React.FC<ArticleProps> = ({
   text,
   collapse: defaultCollapsed = false,
 }) => {
-  const [collapse, setCollapse] = React.useState<boolean>(false);
+  const [collapse, setCollapse] = React.useState<boolean>(defaultCollapsed);
   const { classes } = useStyle({
     collapse,
   });
-
-  React.useEffect(() => {
-    setCollapse(defaultCollapsed);
-  }, [defaultCollapsed]);
 
   const onClickHandler = () => setCollapse(!collapse);
 

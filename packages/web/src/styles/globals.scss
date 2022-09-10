@@ -26,6 +26,10 @@ table {
   border-collapse: collapse;
 }
 
+img {
+  user-select: none;
+}
+
 button {
   &:focus {
     outline-style: none;
