@@ -107,8 +107,8 @@ describe("[Product Module] ...", () => {
       const choisedModifiers = [modifiers[2], modifiers[6]];
 
       const dto: CreateProductDto = {
-        name: faker.word.noun(),
-        desc: faker.word.noun(),
+        name: faker.datatype.string(),
+        desc: faker.datatype.string(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
@@ -147,7 +147,7 @@ describe("[Product Module] ...", () => {
 
     it("should throw an error when creating a product without a category", async () => {
       const dto: Omit<CreateProductDto, "category_uuid"> = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
@@ -172,7 +172,7 @@ describe("[Product Module] ...", () => {
 
     it("should throw an error when creating a product with non-exists a category", async () => {
       const dto: CreateProductDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         category_uuid: faker.datatype.uuid(),
@@ -195,7 +195,7 @@ describe("[Product Module] ...", () => {
       const modifierFakerUUID = faker.datatype.uuid();
 
       const dto: CreateProductDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         category_uuid: category.uuid,
@@ -225,7 +225,7 @@ describe("[Product Module] ...", () => {
       const modifiers_uuids = [modifier.uuid, sameModifier.uuid];
 
       const dto: CreateProductDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         category_uuid: category.uuid,
@@ -252,7 +252,7 @@ describe("[Product Module] ...", () => {
       );
 
       const dto: CreateProductDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: otherProduct.article_number,
         image_url: faker.image.imageUrl(),
         category_uuid: category.uuid,
@@ -275,7 +275,7 @@ describe("[Product Module] ...", () => {
       const modifier = modifiers[2];
 
       const dto: CreateProductDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: modifier.article_number,
         image_url: faker.image.imageUrl(),
         category_uuid: category.uuid,
@@ -305,7 +305,7 @@ describe("[Product Module] ...", () => {
       const newModifiers = [modifiers[1], modifiers[3]];
 
       const dto: UpdateProductDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         article_number: faker.datatype.number(),

@@ -103,7 +103,7 @@ describe("[Modifier Module] ...", () => {
     it("should successfully create a modifier", async () => {
       const category = categories[5];
       const dto: CreateModifierDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
         desc: faker.datatype.string(),
@@ -130,7 +130,7 @@ describe("[Modifier Module] ...", () => {
 
     it("should throw an error when creating a modifier without a category", async () => {
       const dto: Partial<CreateModifierDto> = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
         desc: faker.datatype.string(),
@@ -156,7 +156,7 @@ describe("[Modifier Module] ...", () => {
 
     it("should throw an error when creating a modifier with non-exists a category", async () => {
       const dto: CreateModifierDto = {
-        name: faker.word.noun(),
+        name: faker.datatype.string(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
         desc: faker.datatype.string(),

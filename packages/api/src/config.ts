@@ -6,7 +6,8 @@ config();
 
 global.__PORT__ = Number.parseInt(process.env.PORT ?? "8080");
 global.__HOST__ = process.env.HOST ?? "127.0.0.1";
-global.__DEV__ = process.env.NODE_ENV === "development";
+global.__DEV__ =
+  process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test";
 global.__SECRET__ = process.env.SECRET ?? "";
 global.__JWT_ACCESS_TOKEN_SECRET__ = process.env.JWT_ACCESS_TOKEN_SECRET ?? "";
 global.__JWT_REFRESH_TOKEN_SECRET__ =

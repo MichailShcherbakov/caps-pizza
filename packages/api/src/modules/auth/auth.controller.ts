@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Req, Res } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  NotFoundException,
+  Post,
+  Req,
+  Res,
+} from "@nestjs/common";
 import { Request, Response } from "express";
 import { SignInDto } from "./auth.dto";
 import AuthService from "./auth.service";
@@ -18,6 +25,8 @@ export default class AuthController {
 
   @Post("/sign-up")
   async signUp(@Body() dto: SignInDto): Promise<void> {
+    if (!__DEV__) throw new NotFoundException();
+
     await this.authService.signUp(dto);
   }
 

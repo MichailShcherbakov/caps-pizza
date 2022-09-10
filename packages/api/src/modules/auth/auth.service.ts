@@ -1,9 +1,5 @@
 import * as bcrypt from "bcryptjs";
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import UsersService from "../users/users.service";
 
@@ -42,8 +38,6 @@ export default class AuthService {
   ) {}
 
   async signUp({ username, password }: SignUpPayload): Promise<void> {
-    if (!__DEV__) throw new NotFoundException();
-
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const passwordHash = await bcrypt.hash(password, salt);
 

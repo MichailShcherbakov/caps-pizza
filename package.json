@@ -15,8 +15,8 @@
     "build:web": "lerna run build --scope @monorepo/web",
     "build:api": "lerna run build --scope @monorepo/api",
     "build:common": "lerna run build --scope @monorepo/common",
-    "start:lint": "lerna run lint --parallel",
-    "start:fmt": "lerna run fmt --parallel"
+    "lint": "lerna run lint --parallel",
+    "fmt": "lerna run fmt --parallel"
   },
   "workspaces": [
     "packages/*"
