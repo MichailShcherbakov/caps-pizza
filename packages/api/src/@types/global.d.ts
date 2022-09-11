@@ -13,5 +13,5 @@ declare namespace globalThis {
   var __APP_IMAGES_LOCATION_PATH__: string;
   var __APP_IMAGES_LOCATION_URL__: string;
   var __APP_IMAGES_LOCATION_FULL_URL__: string;
-  var __TYPEORM_CONFIG__: TypeOrmModule;
+  var __TYPEORM_CONFIG__: TypeOrmModuleOptions;
 }

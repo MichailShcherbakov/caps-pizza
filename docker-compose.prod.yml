@@ -18,9 +18,9 @@ services:
   db:
     image: postgres:14
     environment:
-      POSTGRES_DB: caps_pizza_db
-      POSTGRES_USER: ${TYPEORM_USERNAME}
-      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data 
     container_name: caps_pizza_db
@@ -39,12 +39,11 @@ services:
       - FRONTEND_URL=http://${HOST}
       - JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}
       - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
-      - TYPEORM_HOST=caps_pizza_db
-      - TYPEORM_DATABASE=caps_pizza_db
-      - TYPEORM_USERNAME=${TYPEORM_USERNAME}
-      - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
-      - TYPEORM_PORT=5432
-      - TYPEORM_SYNCHRONIZE=0
+      - DATABASE_HOST=caps_pizza_db
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_PORT=5432
       - SYNC_ON=1
     depends_on:
       - db

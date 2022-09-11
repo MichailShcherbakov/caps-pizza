@@ -8,6 +8,9 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "migration:run": "typeorm migration:run -d ./dist/db/data-source.js",
+    "migration:create": "typeorm migration:create",
+    "migration:generate": "yarn build && typeorm migration:generate -d ./dist/db/data-source.js",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
