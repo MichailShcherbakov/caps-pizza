@@ -1500,7 +1500,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         image_url: "/images/dop-nabor.jpg",
         price: 50,
         category_uuid: rolls.uuid,
-        tags: ["Дополнительно:4"],
+        tags: ["#Дополнительно:4"],
       },
       // SNACKS
       {

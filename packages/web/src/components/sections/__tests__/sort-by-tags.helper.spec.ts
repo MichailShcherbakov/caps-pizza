@@ -43,10 +43,14 @@ describe("[Helper] sort-by-tags", () => {
         uuid: "10",
         tags: [],
       },
+      {
+        uuid: "11",
+        tags: ["#replace:4"],
+      },
     ] as Product[];
 
     expect(sortByTags(products)).toEqual([
-      ["first:1", "first:2", "second:2", ""],
+      ["first:1", "first:2", "second:2", "#replace:4", ""],
       {
         "first:1": [
           {
@@ -76,6 +80,12 @@ describe("[Helper] sort-by-tags", () => {
           {
             uuid: "3",
             tags: ["second:2", "first:1"],
+          },
+        ],
+        "#replace:4": [
+          {
+            uuid: "11",
+            tags: ["#replace:4"],
           },
         ],
         "": [

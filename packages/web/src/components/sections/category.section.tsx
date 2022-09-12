@@ -8,6 +8,10 @@ import Title from "../title";
 import { sortByTags } from "./helpers/sort-by-tags.helper";
 import Section from "./section";
 
+export function withUpperLetter(str: string) {
+  return str[0].toUpperCase() + str.slice(1, str.length);
+}
+
 export interface CategorySectionProps {
   category: ProductCategory;
 }
@@ -28,12 +32,19 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
     return (
       <Section id={category.name}>
         {tags.map(tag => {
-          const tagName = tag.split(":");
-          const name = tagName.length === 2 ? tagName[0].toLowerCase() : "";
+          const tagElements = tag.split(":");
+          let tagName = tagElements.length === 2 ? tagElements[0] : "";
+          const replace = tagName[0] === "#";
+
+          if (replace) tagName = tagName.slice(1, tagName.length);
+
+          const categoryName = replace
+            ? `${withUpperLetter(tagName)}`
+            : `${withUpperLetter(category.name)} ${tagName.toLowerCase()}`;
 
           return (
-            <Stack key={`${category.name} ${name}`} spacing={4}>
-              <Title text={`${category.name} ${name}`} />
+            <Stack key={categoryName} spacing={4}>
+              <Title text={categoryName} />
               <Stack>
                 <Grid container spacing={3}>
                   {tagProducts[tag].map(product => {
