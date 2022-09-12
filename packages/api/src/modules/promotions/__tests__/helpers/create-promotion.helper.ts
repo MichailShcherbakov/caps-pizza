@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import PromotionEntity from "~/db/entities/promotion.entity";
-import PromotionSeeder from "~/db/seeds/promotion.seed";
+import PromotionSeeder from "~/db/seeders/promotion.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
@@ -8,7 +8,7 @@ import deleteObjectPropsHelper, {
 export default function createPromotionsHelper(
   dataSource: DataSource
 ): Promise<PromotionEntity[]> {
-  const seeder = new PromotionSeeder(dataSource);
+  const seeder = new PromotionSeeder(dataSource.createQueryRunner());
   return seeder
     .run(10)
     .then(
@@ -23,9 +23,9 @@ export default function createPromotionsHelper(
 export function createPromotionHelper(
   dataSource: DataSource
 ): Promise<PromotionEntity> {
-  const seeder = new PromotionSeeder(dataSource);
+  const seeder = new PromotionSeeder(dataSource.createQueryRunner());
   return seeder
-    .seed()
+    .seed({})
     .then(
       promotion =>
         deleteObjectPropsHelper(promotion, [

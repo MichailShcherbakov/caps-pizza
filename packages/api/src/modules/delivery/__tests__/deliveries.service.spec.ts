@@ -5,7 +5,7 @@ import DeliveryEntity, {
   DeliveryOperatorEnum,
   DeliveryTypeEnum,
 } from "~/db/entities/delivery.entity";
-import { DeliveryFactory } from "~/db/seeds/delivery.seed";
+import { DeliveryFactory } from "~/db/seeders/delivery.seeder";
 import DeliveriesService from "../deliveries.service";
 import UnitTestingModule from "./helpers/testing-module.unit.helper";
 

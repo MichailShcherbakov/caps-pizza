@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
 import ProductEntity from "~/db/entities/product.entity";
-import ProductsSeeder from "~/db/seeds/product.seed";
+import ProductsSeeder from "~/db/seeders/product.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
@@ -10,7 +10,7 @@ export default function createProductsHelper(
   dataSource: DataSource,
   categories: ProductCategoryEntity[]
 ): Promise<ProductEntity[]> {
-  const seeder = new ProductsSeeder(dataSource);
+  const seeder = new ProductsSeeder(dataSource.createQueryRunner());
   return seeder
     .run(
       categories.length,
@@ -29,7 +29,7 @@ export function createProductHelper(
   dataSource: DataSource,
   category: ProductCategoryEntity
 ): Promise<ProductEntity> {
-  const seeder = new ProductsSeeder(dataSource);
+  const seeder = new ProductsSeeder(dataSource.createQueryRunner());
   return seeder
     .seed({ category_uuid: category.uuid, category })
     .then(

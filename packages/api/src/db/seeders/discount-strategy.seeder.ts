@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { QueryRunner } from "typeorm";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import {
   DiscountCriteriaEnum,
@@ -27,7 +27,7 @@ export class DiscountStrategiesFactory extends IFactory<DiscountStrategyEntity> 
 }
 
 export default class DiscountStrategiesSeeder extends ISeeder<DiscountStrategyEntity> {
-  constructor(dataSource: DataSource) {
-    super(dataSource, new DiscountStrategiesFactory());
+  constructor(q: QueryRunner) {
+    super(q, new DiscountStrategiesFactory());
   }
 }

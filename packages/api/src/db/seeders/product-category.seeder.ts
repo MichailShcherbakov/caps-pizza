@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { QueryRunner } from "typeorm";
 import { faker } from "@faker-js/faker";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import ProductCategoryEntity from "../entities/product-category.entity";
@@ -15,7 +15,7 @@ export class ProductCategoriesFactory extends IFactory<ProductCategoryEntity> {
 }
 
 export default class ProductCategoriesSeeder extends ISeeder<ProductCategoryEntity> {
-  constructor(dataSource: DataSource) {
-    super(dataSource, new ProductCategoriesFactory());
+  constructor(q: QueryRunner) {
+    super(q, new ProductCategoriesFactory());
   }
 }

@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/a11y";
 import "swiper/css/navigation";
 import Section from "../sections/section";
+import Title from "../title";
 
 export interface PromotionSliderProps {}
 
@@ -20,6 +21,7 @@ export const PromotionSlider: React.FC<PromotionSliderProps> = () => {
 
   return (
     <Section id="Акции" className={classes.section}>
+      <Title text="Акции" />
       <Swiper
         slidesPerView={match ? "auto" : 3}
         spaceBetween={32}

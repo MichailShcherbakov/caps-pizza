@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataSource } from "typeorm";
+import { QueryRunner } from "typeorm";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import PromotionEntity from "../entities/promotion.entity";
 
@@ -16,7 +16,7 @@ export class PromotionFactory extends IFactory<PromotionEntity> {
 }
 
 export default class PromotionSeeder extends ISeeder<PromotionEntity> {
-  constructor(dataSource: DataSource) {
-    super(dataSource, new PromotionFactory());
+  constructor(q: QueryRunner) {
+    super(q, new PromotionFactory());
   }
 }

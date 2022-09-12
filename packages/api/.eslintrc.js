@@ -20,7 +20,10 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { argsIgnorePattern: "^_", destructuredArrayIgnorePattern: "^_" },
+    ],
     "no-console": ["error", { allow: ["warn", "error"] }],
     "prettier/prettier": [
       "error",

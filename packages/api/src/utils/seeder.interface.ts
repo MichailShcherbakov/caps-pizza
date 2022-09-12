@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { QueryRunner } from "typeorm";
 
 export abstract class IFactory<T> {
   abstract create(options?: Partial<T>): T;
@@ -6,7 +6,7 @@ export abstract class IFactory<T> {
 
 export abstract class ISeeder<TEntity> {
   constructor(
-    protected _dataSource: DataSource,
+    protected _queryRunner: QueryRunner,
     protected _factory: IFactory<TEntity>
   ) {}
 
@@ -14,10 +14,8 @@ export abstract class ISeeder<TEntity> {
     count: number,
     options?: Partial<TEntity> | Partial<TEntity>[]
   ): Promise<TEntity[]> {
-    const queryRunner = this._dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    await this._queryRunner.connect();
+    await this._queryRunner.startTransaction();
 
     try {
       const entities: TEntity[] = [];
@@ -26,26 +24,32 @@ export abstract class ISeeder<TEntity> {
 
       for (let i = 0; i < len; ++i) {
         entities.push(
-          await this._dataSource.manager.save(
+          await this._queryRunner.manager.save(
             this._factory.create(options && query[i])
           )
         );
       }
 
-      await queryRunner.commitTransaction();
+      await this._queryRunner.commitTransaction();
 
       return entities;
     } catch (e) {
-      await queryRunner.rollbackTransaction();
+      await this._queryRunner.rollbackTransaction();
       throw e;
     } finally {
-      await queryRunner.release();
+      await this._queryRunner.release();
     }
   }
 
-  async seed(options?: Partial<TEntity>): Promise<TEntity> {
-    const [e] = await this.run(1, options);
+  async seed(options: Partial<TEntity>): Promise<TEntity> {
+    const [e] = await this.seeds([options]);
     return e;
+  }
+
+  async seeds(options: Partial<TEntity>[] = []): Promise<TEntity[]> {
+    return await this._queryRunner.manager.save(
+      options.map(o => this._factory.create(o))
+    );
   }
 }
 

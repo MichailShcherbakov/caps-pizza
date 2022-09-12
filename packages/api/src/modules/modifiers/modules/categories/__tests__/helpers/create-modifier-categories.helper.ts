@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
-import ModifierCategoriesSeeder from "~/db/seeds/modifier-categories.seed";
+import ModifierCategoriesSeeder from "~/db/seeders/modifier-categories.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
@@ -8,7 +8,7 @@ import deleteObjectPropsHelper, {
 export default function createModifierCategoriesHelper(
   dataSource: DataSource
 ): Promise<ModifierCategoryEntity[]> {
-  const seeder = new ModifierCategoriesSeeder(dataSource);
+  const seeder = new ModifierCategoriesSeeder(dataSource.createQueryRunner());
   return seeder
     .run(10)
     .then(
@@ -23,9 +23,9 @@ export default function createModifierCategoriesHelper(
 export function createModifierCategoryHelper(
   dataSource: DataSource
 ): Promise<ModifierCategoryEntity> {
-  const seeder = new ModifierCategoriesSeeder(dataSource);
+  const seeder = new ModifierCategoriesSeeder(dataSource.createQueryRunner());
   return seeder
-    .seed()
+    .seed({})
     .then(
       category =>
         deleteObjectPropsHelper(category, [

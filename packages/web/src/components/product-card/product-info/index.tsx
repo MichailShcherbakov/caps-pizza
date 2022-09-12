@@ -22,7 +22,9 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           {specifics}
         </Typography>
       </Stack>
-      <Typography>{product.desc ?? "Без описания"}</Typography>
+      {product.desc?.length !== 0 ? (
+        <Typography>{product.desc ?? "Без описания"}</Typography>
+      ) : undefined}
     </Stack>
   );
 };

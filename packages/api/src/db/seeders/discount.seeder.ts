@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { QueryRunner } from "typeorm";
 import { faker } from "@faker-js/faker";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import DiscountEntity, { DiscountTypeEnum } from "../entities/discount.entity";
@@ -15,7 +15,7 @@ export class DiscountsFactory extends IFactory<DiscountEntity> {
 }
 
 export default class DiscountsSeeder extends ISeeder<DiscountEntity> {
-  constructor(dataSource: DataSource) {
-    super(dataSource, new DiscountsFactory());
+  constructor(q: QueryRunner) {
+    super(q, new DiscountsFactory());
   }
 }

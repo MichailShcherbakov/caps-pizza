@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductEntity from "~/db/entities/product.entity";
-import { DeliveryFactory } from "~/db/seeds/delivery.seed";
-import { ModifiersFactory } from "~/db/seeds/modifier.seed";
-import { PaymentFactory } from "~/db/seeds/payment.seed";
-import { ProductsFactory } from "~/db/seeds/product.seed";
+import { DeliveryFactory } from "~/db/seeders/delivery.seeder";
+import { ModifiersFactory } from "~/db/seeders/modifier.seeder";
+import { PaymentFactory } from "~/db/seeders/payment.seeder";
+import { ProductsFactory } from "~/db/seeders/product.seeder";
 import DeliveriesService from "~/modules/delivery/deliveries.service";
 import DiscountsService from "~/modules/discounts/discounts.service";
 import ModifiersService from "~/modules/modifiers/modifiers.service";

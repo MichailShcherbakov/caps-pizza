@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataSource } from "typeorm";
+import { QueryRunner } from "typeorm";
 import deleteObjectPropsHelper from "~/utils/delete-object-props.helper";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import ModifierEntity from "../entities/modifier.entity";
@@ -19,7 +19,7 @@ export class ModifiersFactory extends IFactory<ModifierEntity> {
     newModifier.price =
       options.price ?? faker.datatype.number({ max: 1000, min: 150 });
     newModifier.display_position =
-      options.price ?? faker.datatype.number({ max: 5, min: 1 });
+      options.display_position ?? faker.datatype.number({ max: 5, min: 1 });
     newModifier.category_uuid = options.category_uuid;
     newModifier.category =
       options.category &&
@@ -32,7 +32,7 @@ export class ModifiersFactory extends IFactory<ModifierEntity> {
 }
 
 export default class ModifiersSeeder extends ISeeder<ModifierEntity> {
-  constructor(dataSource: DataSource) {
-    super(dataSource, new ModifiersFactory());
+  constructor(q: QueryRunner) {
+    super(q, new ModifiersFactory());
   }
 }

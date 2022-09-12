@@ -15,5 +15,11 @@ export const useStyle = makeStyles()(theme => ({
     width: "100%",
     height: "100%",
     gap: theme.spacing(2),
+    justifyContent: "center",
+
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
+    },
   },
 }));

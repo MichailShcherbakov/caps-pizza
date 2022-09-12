@@ -29,7 +29,7 @@ global.__TYPEORM_CONFIG__ = {
   entities: [__dirname + "/db/entities/*{.js,.ts}"],
   migrations: [__dirname + "/db/migrations/*{.js,.ts}"],
   subscribers: [__dirname + "/db/subscribers/*{.js,.ts}"],
-  migrationsRun: true,
+  migrationsRun: false,
   synchronize: false,
   logging: true,
 };

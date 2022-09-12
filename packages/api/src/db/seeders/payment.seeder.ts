@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataSource } from "typeorm";
+import { QueryRunner } from "typeorm";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import PaymentEntity from "../entities/payment.entity";
 
@@ -14,7 +14,7 @@ export class PaymentFactory extends IFactory<PaymentEntity> {
 }
 
 export default class PaymentSeeder extends ISeeder<PaymentEntity> {
-  constructor(dataSource: DataSource) {
-    super(dataSource, new PaymentFactory());
+  constructor(q: QueryRunner) {
+    super(q, new PaymentFactory());
   }
 }

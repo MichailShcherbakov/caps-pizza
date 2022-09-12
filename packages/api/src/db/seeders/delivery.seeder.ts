@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataSource } from "typeorm";
+import { DataSource, QueryRunner } from "typeorm";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import DeliveryEntity, {
   DeliveryCriteriaEnum,
@@ -25,7 +25,7 @@ export class DeliveryFactory extends IFactory<DeliveryEntity> {
 }
 
 export default class DeliverySeeder extends ISeeder<DeliveryEntity> {
-  constructor(dataSource: DataSource) {
-    super(dataSource, new DeliveryFactory());
+  constructor(q: QueryRunner) {
+    super(q, new DeliveryFactory());
   }
 }
