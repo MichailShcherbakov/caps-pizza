@@ -32,7 +32,7 @@ export const makeTypography = (theme: Theme): TypographyOptions => ({
     fontWeight: 700,
 
     [theme.breakpoints.down("sm")]: {
-      fontSize: 18,
+      fontSize: 16,
     },
   },
   h5: {
