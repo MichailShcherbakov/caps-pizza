@@ -1,7 +1,7 @@
 import { Checkbox, Stack } from "@mui/material";
 import { TableCell, TableTextCell } from "../table";
 import { DataTableHeadColumnTypes } from "./types";
-import NextImage from "next/image";
+import ImageColumn from "./columns/image";
 
 export interface DataTableRowResolverProps {
   col: DataTableHeadColumnTypes;
@@ -19,24 +19,13 @@ export const DataTableRowResolver: React.FC<DataTableRowResolverProps> = ({
   switch (col.type) {
     case "image": {
       return (
-        <TableCell align={options?.align ?? "right"}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={
-              options?.align === "left" ? "flex-start" : "flex-end"
-            }
-            className={col.rowColClassName}
-          >
-            <NextImage
-              src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${value}`}
-              width={col.imageWidth}
-              height={col.imageHeight}
-              layout="fixed"
-              alt="data table image cell"
-            />
-          </Stack>
-        </TableCell>
+        <ImageColumn
+          imageWidth={col.imageWidth}
+          imageHeight={col.imageHeight}
+          imageURL={value}
+          align={options?.align}
+          className={col.rowColClassName}
+        />
       );
     }
     case "component": {

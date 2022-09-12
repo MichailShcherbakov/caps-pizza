@@ -3,6 +3,7 @@ import React from "react";
 import NextImage from "next/image";
 import ImageIcon from "@mui/icons-material/Image";
 import { useStyle } from "../../index.style";
+import LoadingIcon from "~/assets/pizza-loading-2.svg";
 
 export interface ImageUploaderProps {
   image?: File;
@@ -14,7 +15,15 @@ export interface ImageUploaderProps {
 
 export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
   ({ image, imageURL, touched, errors, onChange }) => {
-    const { classes } = useStyle();
+    const [loading, setLoading] = React.useState<boolean>(true);
+    const { classes } = useStyle({
+      imageLoading: loading,
+    });
+
+    const onLoadingComplete = React.useCallback(() => {
+      setLoading(false);
+    }, []);
+
     return (
       <Tooltip
         title="Загрузите изображение"
@@ -26,7 +35,6 @@ export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
         <Button
           aria-label="upload picture"
           component="label"
-          className={classes.uploadImageBtn}
           variant={imageURL ? "text" : "outlined"}
           color="neutral"
         >
@@ -48,17 +56,21 @@ export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
                 });
             }}
           />
-          <Stack>
+          <Stack className={classes.image}>
             {imageURL ? (
-              image ? (
-                <NextImage src={imageURL} alt="loaded image" layout="fill" />
-              ) : (
+              <>
+                {loading ? <LoadingIcon /> : undefined}
                 <NextImage
-                  src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
+                  src={
+                    image
+                      ? imageURL
+                      : `${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`
+                  }
                   alt="loaded image"
                   layout="fill"
+                  onLoadingComplete={onLoadingComplete}
                 />
-              )
+              </>
             ) : (
               <ImageIcon />
             )}

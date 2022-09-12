@@ -1,9 +1,22 @@
 import makeStyles from "~/ui/theme/makesStyles";
 
-export const useStyle = makeStyles()(theme => ({
-  uploadImageBtn: {
+export interface StyleProps {
+  imageLoading?: boolean;
+}
+
+export const useStyle = makeStyles<StyleProps>()((theme, { imageLoading }) => ({
+  image: {
+    position: "relative",
     width: "200px",
     height: "200px",
+    flexShrink: 0,
+    fill: theme.palette.neutral.light,
+
+    ...(imageLoading && {
+      "& > span img": {
+        visibility: "hidden",
+      },
+    }),
   },
   modifierList: {
     padding: 0,

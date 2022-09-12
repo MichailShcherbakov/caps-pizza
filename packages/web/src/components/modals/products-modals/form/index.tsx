@@ -45,7 +45,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const { classes } = useStyle();
+  const { classes } = useStyle({});
   const formik = useFormik({
     initialValues: {
       name: product?.name ?? "",
