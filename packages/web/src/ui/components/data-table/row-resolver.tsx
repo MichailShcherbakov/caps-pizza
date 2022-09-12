@@ -82,6 +82,7 @@ export const DataTableRowResolver: React.FC<DataTableRowResolverProps> = ({
         <TableTextCell
           className={col.rowColClassName}
           align={options?.align ?? "right"}
+          truncate={col.truncate}
         >
           {value}
         </TableTextCell>

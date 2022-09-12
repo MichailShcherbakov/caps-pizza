@@ -42,26 +42,26 @@ export const useProductsTableHead = () => {
         {
           name: "volume",
           displayName: "Объем",
-          // rowColClassName: "ui-truncate",
+          truncate: true,
           collapsed: true,
         },
         {
           name: "weight",
           displayName: "Вес",
-          // rowColClassName: "ui-truncate",
+          truncate: true,
           collapsed: true,
         },
         {
           name: "tags",
           displayName: "Теги",
-          // rowColClassName: "ui-truncate",
+          truncate: true,
           collapsed: true,
           fullWidth: true,
         },
         {
           name: "price",
           displayName: "Цена",
-          // rowColClassName: "ui-truncate",
+          truncate: true,
           fullWidth: true,
         },
         {

@@ -17,7 +17,6 @@ export const usePromotionsTableHead = () => {
           type: "image",
           name: "image",
           displayName: "Изображение",
-
           imageWidth: 120,
           imageHeight: 120,
         },

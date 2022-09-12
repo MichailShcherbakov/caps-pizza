@@ -42,16 +42,30 @@ export const TableCell: React.FC<TableCellProps> = props => {
 
 export interface TableTextCellProps extends TableCellProps {
   children?: string | boolean | number | null;
+  truncate?: boolean;
 }
 
 export const TableTextCell: React.FC<TableTextCellProps> = ({
   children,
   className,
+  truncate,
   ...props
 }) => {
   return (
     <TableCell {...props}>
-      <Typography className={className} textAlign={props.align}>
+      <Typography
+        className={className}
+        textAlign={props.align}
+        sx={
+          truncate
+            ? {
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }
+            : undefined
+        }
+      >
         {children}
       </Typography>
     </TableCell>

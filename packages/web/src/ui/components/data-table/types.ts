@@ -27,6 +27,7 @@ export interface DataTableHeadColumn {
 
 export interface DataTableTextHeadColumn extends DataTableHeadColumn {
   type?: "text";
+  truncate?: boolean;
 }
 
 export interface DataTableImageHeadColumn extends DataTableHeadColumn {
