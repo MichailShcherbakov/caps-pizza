@@ -7,6 +7,7 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
     padding: theme.spacing(2),
     borderRadius: theme.spacing(1),
     background: theme.palette.background.paper,
+    overflow: "hidden",
 
     maxWidth: "680px",
     maxHeight: "560px",
@@ -38,6 +39,7 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(2),
+    overflow: "hidden",
   },
   header: {
     width: "100%",
@@ -50,8 +52,9 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
   },
   inner: {
     width: "100%",
-    minHeight: "fit-centent",
-    overflow: "auto",
+    height: "100%",
+    overflowY: "auto",
+    overflowX: "hidden",
     padding: `${theme.spacing(2)} 0`,
     gap: theme.spacing(2),
   },
