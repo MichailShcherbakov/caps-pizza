@@ -7,7 +7,7 @@ export interface StyleProps {
 export const useStyle = makeStyles<StyleProps>()((theme, { collapse }) => ({
   root: {
     position: "relative",
-    padding: `${theme.spacing(2)} 0`,
+    marginTop: theme.spacing(2),
 
     ...(collapse && {
       width: "100%",

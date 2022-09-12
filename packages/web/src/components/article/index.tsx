@@ -22,11 +22,7 @@ export const Article: React.FC<ArticleProps> = ({
   const onClickHandler = () => setCollapse(!collapse);
 
   return (
-    <Stack
-      sx={{
-        width: "100%",
-      }}
-    >
+    <Stack width="100%">
       <Title text={title} />
       <Stack className={classes.root}>
         {collapse && <Stack className={classes.curtain}></Stack>}
