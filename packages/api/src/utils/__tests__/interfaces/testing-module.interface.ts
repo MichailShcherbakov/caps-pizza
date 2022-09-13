@@ -7,7 +7,7 @@ import {
 import { Test, TestingModule } from "@nestjs/testing";
 import { getDataSourceToken, TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource, QueryRunner } from "typeorm";
-import initApp from "./init-app";
+import initApp from "../../init-app";
 
 export type Module =
   | Type<unknown>

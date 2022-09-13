@@ -4,8 +4,8 @@ import DiscountStrategiesSeeder from "~/db/seeders/discount-strategy.seeder";
 import DiscountsSeeder from "~/db/seeders/discount.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
-import { ITestingModule } from "~/utils/testing-module.interface";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 
 export async function createDiscountStrategyHelper(
   testingModule: ITestingModule,
@@ -14,7 +14,7 @@ export async function createDiscountStrategyHelper(
   const discountStrategiesSeeder = new DiscountStrategiesSeeder(
     testingModule.queryRunner
   );
-  return discountStrategiesSeeder.seed(options);
+  return discountStrategiesSeeder.create(options);
 }
 
 export async function createDiscountHelper(
@@ -22,7 +22,7 @@ export async function createDiscountHelper(
   options: Partial<DiscountEntity> = {}
 ): Promise<DiscountEntity> {
   const discountsSeeder = new DiscountsSeeder(testingModule.queryRunner);
-  return discountsSeeder.seed(options);
+  return discountsSeeder.create(options);
 }
 
 export default async function createDiscountsHelper(
@@ -35,12 +35,12 @@ export default async function createDiscountsHelper(
   const discounts = deleteObjectsPropsHelper<
     "updated_at" | "created_at",
     DiscountEntity
-  >(await discountsSeeder.run(10), ["updated_at", "created_at"]);
+  >(await discountsSeeder.createMany(10), ["updated_at", "created_at"]);
 
   for (const discount of discounts) {
     discount.strategies.push(
       deleteObjectPropsHelper(
-        await strategiesSeeder.seed({
+        await strategiesSeeder.create({
           discount_uuid: discount.uuid,
         }),
         ["updated_at", "created_at"]

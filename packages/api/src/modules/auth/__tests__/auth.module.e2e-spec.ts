@@ -7,6 +7,7 @@ import { SignUpDto } from "../auth.dto";
 import { SALT_ROUNDS } from "../auth.service";
 import Api from "./helpers/api.helper";
 import TestingModule from "./helpers/testing-module.helper";
+import { JWT_ACCESS_TOKEN_SECRET, JWT_REFRESH_TOKEN_SECRET } from "~/config";
 
 describe("[Auth Module] ...", () => {
   let testingModule: TestingModule;
@@ -109,7 +110,7 @@ describe("[Auth Module] ...", () => {
         REFRESH_TOKEN_REGEX.test(signInResponse.header["set-cookie"])
       ).toBeTruthy();
       expect(
-        jwtService.verify(access_token, { secret: __JWT_ACCESS_TOKEN_SECRET__ })
+        jwtService.verify(access_token, { secret: JWT_ACCESS_TOKEN_SECRET })
       ).toBeTruthy();
       expect(jwtService.decode(access_token)).toHaveProperty("uuid", user.uuid);
     });
@@ -146,7 +147,7 @@ describe("[Auth Module] ...", () => {
 
       const access_token = refreshTokenResponse.body.data.access_token;
       expect(
-        jwtService.verify(access_token, { secret: __JWT_ACCESS_TOKEN_SECRET__ })
+        jwtService.verify(access_token, { secret: JWT_ACCESS_TOKEN_SECRET })
       ).toBeTruthy();
       expect(jwtService.decode(access_token)).toHaveProperty("uuid", user.uuid);
 
@@ -169,7 +170,7 @@ describe("[Auth Module] ...", () => {
             await bcrypt.genSalt(SALT_ROUNDS)
           ),
         },
-        { secret: __JWT_REFRESH_TOKEN_SECRET__, expiresIn: "0" }
+        { secret: JWT_REFRESH_TOKEN_SECRET, expiresIn: "0" }
       );
 
       const refreshTokenResponse = await api.refreshToken(

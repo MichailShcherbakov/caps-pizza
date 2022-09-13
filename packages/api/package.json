@@ -9,8 +9,9 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "migration:run": "typeorm migration:run -d ./dist/db/data-source.js",
+    "migration:revert": "typeorm migration:revert -d ./dist/db/data-source.js",
+    "migration:generate": "typeorm migration:generate -d ./dist/db/data-source.js",
     "migration:create": "typeorm migration:create",
-    "migration:generate": "yarn build && typeorm migration:generate -d ./dist/db/data-source.js",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -27,6 +28,7 @@
     "fmt": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
+    "@faker-js/faker": "^7.3.0",
     "@monorepo/common": "0.1.0",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
@@ -53,7 +55,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.3.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

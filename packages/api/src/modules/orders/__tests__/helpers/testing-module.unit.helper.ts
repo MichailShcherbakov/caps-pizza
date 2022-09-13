@@ -5,7 +5,7 @@ import DiscountsService from "~/modules/discounts/discounts.service";
 import ModifiersService from "~/modules/modifiers/modifiers.service";
 import PaymentService from "~/modules/payment/payment.service";
 import ProductsService from "~/modules/products/products.service";
-import { ITestingModule } from "~/utils/testing-module.interface";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 import OrdersService from "../../orders.service";
 
 export default class UnitTestingModule extends ITestingModule {

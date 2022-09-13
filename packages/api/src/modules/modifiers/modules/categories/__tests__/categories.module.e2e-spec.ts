@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
-import { fromJson, toJson } from "~/utils/json.helper";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
+import { fromJson, toJson } from "~/utils/__tests__/helpers/json.helper";
 import {
   CreateModifierCategoryDto,
   UpdateModifierCategoryDto,

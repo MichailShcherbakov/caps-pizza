@@ -12,6 +12,7 @@ import * as FormData from "form-data";
 import DiscountsService from "../discounts/discounts.service";
 import DeliveriesService from "../delivery/deliveries.service";
 import PaymentService from "../payment/payment.service";
+import { SECRET } from "~/config";
 
 export const FIXED_MODIFIER_COUNT = 1;
 export const FIXED_DELIVERY_COUNT = 1;
@@ -145,7 +146,7 @@ export default class OrdersService {
   }
 
   async sendToFrontPad(payload: FormData): Promise<FrontPadResponse> {
-    payload.append("secret", __SECRET__);
+    payload.append("secret", SECRET);
 
     const response = await this.httpService.axiosRef.request({
       method: "post",

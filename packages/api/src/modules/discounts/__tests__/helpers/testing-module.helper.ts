@@ -1,5 +1,5 @@
 import AuthModule from "~/modules/auth/auth.module";
-import { ITestingModule } from "~/utils/testing-module.interface";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 import DiscountsModule from "../../discounts.module";
 
 export default class TestingModule extends ITestingModule {

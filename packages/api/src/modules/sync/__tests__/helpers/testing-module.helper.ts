@@ -11,7 +11,10 @@ import ModifiersModule from "~/modules/modifiers/modifiers.module";
 import ModifiersService from "~/modules/modifiers/modifiers.service";
 import ProductsModule from "~/modules/products/products.module";
 import ProductsService from "~/modules/products/products.service";
-import { ITestingModule, Module } from "~/utils/testing-module.interface";
+import {
+  ITestingModule,
+  Module,
+} from "~/utils/__tests__/interfaces/testing-module.interface";
 import SyncModule from "../../sync.module";
 
 export default class UnitTestingModule extends ITestingModule {

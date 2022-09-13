@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import { QueryRunner } from "typeorm";
-import deleteObjectPropsHelper from "~/utils/delete-object-props.helper";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import ModifierEntity from "../entities/modifier.entity";
 
@@ -21,12 +20,7 @@ export class ModifiersFactory extends IFactory<ModifierEntity> {
     newModifier.display_position =
       options.display_position ?? faker.datatype.number({ max: 5, min: 1 });
     newModifier.category_uuid = options.category_uuid;
-    newModifier.category =
-      options.category &&
-      (deleteObjectPropsHelper(options.category, [
-        "updated_at",
-        "created_at",
-      ]) as ModifierEntity);
+    newModifier.category = options.category;
     return newModifier;
   }
 }

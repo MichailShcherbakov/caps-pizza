@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { fromJson, toJson } from "~/utils/json.helper";
+import { fromJson, toJson } from "~/utils/__tests__/helpers/json.helper";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
 import createProductCategoriesHelper, {
   createProductCategoryHelper,
@@ -8,7 +8,7 @@ import Api from "./helpers/api.helper";
 import TestingModule from "./helpers/testing-module.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
 import {
   CreateProductCategoryDto,
   UpdateProductCategoryDto,

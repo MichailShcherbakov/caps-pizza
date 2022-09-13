@@ -1,4 +1,4 @@
-import { ITestingModule } from "~/utils/testing-module.interface";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 import AuthModule from "../../auth.module";
 
 export default class TestingModule extends ITestingModule {

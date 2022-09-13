@@ -3,8 +3,8 @@ import ModifierEntity from "~/db/entities/modifier.entity";
 import ModifiersSeeder from "~/db/seeders/modifier.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
-import { ITestingModule } from "~/utils/testing-module.interface";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 
 export function createModifierHelper(
   testingModule: ITestingModule,
@@ -12,7 +12,7 @@ export function createModifierHelper(
 ): Promise<ModifierEntity> {
   const seeder = new ModifiersSeeder(testingModule.queryRunner);
   return seeder
-    .seed({ category_uuid: category.uuid, category })
+    .create({ category_uuid: category.uuid, category })
     .then(
       modifier =>
         deleteObjectPropsHelper(modifier, [
@@ -28,9 +28,10 @@ export default function createModifiersHelper(
 ) {
   const seeder = new ModifiersSeeder(testingModule.queryRunner);
   return seeder
-    .run(
-      categories.length,
-      categories.map(category => ({ category_uuid: category.uuid, category }))
+    .createManyFrom(
+      categories.map(c => ({
+        category_uuid: c.uuid,
+      }))
     )
     .then(
       modifiers =>

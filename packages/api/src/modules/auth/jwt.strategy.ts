@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 import { PassportStrategy } from "@nestjs/passport";
 import { Global, Injectable } from "@nestjs/common";
 import { JwtPayload } from "./auth.service";
+import { JWT_ACCESS_TOKEN_SECRET } from "~/config";
 
 @Global()
 @Injectable()
@@ -10,7 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: __JWT_ACCESS_TOKEN_SECRET__,
+      secretOrKey: JWT_ACCESS_TOKEN_SECRET,
     });
   }
 

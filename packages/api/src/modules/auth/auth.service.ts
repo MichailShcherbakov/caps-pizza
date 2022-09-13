@@ -2,6 +2,7 @@ import * as bcrypt from "bcryptjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import UsersService from "../users/users.service";
+import { JWT_ACCESS_TOKEN_SECRET, JWT_REFRESH_TOKEN_SECRET } from "~/config";
 
 export const SALT_ROUNDS = 10;
 
@@ -60,7 +61,7 @@ export default class AuthService {
 
     const accessToken = this.jwtService.sign(
       { uuid: user.uuid },
-      { secret: __JWT_ACCESS_TOKEN_SECRET__, expiresIn: "10m" }
+      { secret: JWT_ACCESS_TOKEN_SECRET, expiresIn: "10m" }
     );
 
     const refreshToken = await this.generateRefreshToken(user.uuid);
@@ -76,7 +77,7 @@ export default class AuthService {
   }: RefreshTokenPayload): Promise<SignInResult> {
     try {
       const payload = this.jwtService.verify<JwtPayload>(refreshToken, {
-        secret: __JWT_REFRESH_TOKEN_SECRET__,
+        secret: JWT_REFRESH_TOKEN_SECRET,
       });
 
       const user = await this.usersService.findOneOrFail({
@@ -85,7 +86,7 @@ export default class AuthService {
 
       const newAccessToken = this.jwtService.sign(
         { uuid: user.uuid },
-        { secret: __JWT_ACCESS_TOKEN_SECRET__, expiresIn: "10m" }
+        { secret: JWT_ACCESS_TOKEN_SECRET, expiresIn: "10m" }
       );
 
       const newRefreshToken = await this.generateRefreshToken(user.uuid);
@@ -108,7 +109,7 @@ export default class AuthService {
           await bcrypt.genSalt(SALT_ROUNDS)
         ),
       },
-      { secret: __JWT_REFRESH_TOKEN_SECRET__, expiresIn: "1h" }
+      { secret: JWT_REFRESH_TOKEN_SECRET, expiresIn: "1h" }
     );
   }
 }

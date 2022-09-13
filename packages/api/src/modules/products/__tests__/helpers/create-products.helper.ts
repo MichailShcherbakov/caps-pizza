@@ -3,8 +3,8 @@ import ProductEntity from "~/db/entities/product.entity";
 import ProductsSeeder from "~/db/seeders/product.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
-import { ITestingModule } from "~/utils/testing-module.interface";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 
 export default function createProductsHelper(
   testingModule: ITestingModule,
@@ -12,9 +12,10 @@ export default function createProductsHelper(
 ): Promise<ProductEntity[]> {
   const seeder = new ProductsSeeder(testingModule.queryRunner);
   return seeder
-    .run(
-      categories.length,
-      categories.map(category => ({ category_uuid: category.uuid, category }))
+    .createManyFrom(
+      categories.map(c => ({
+        category_uuid: c.uuid,
+      }))
     )
     .then(
       products =>
@@ -31,7 +32,7 @@ export function createProductHelper(
 ): Promise<ProductEntity> {
   const seeder = new ProductsSeeder(testingModule.queryRunner);
   return seeder
-    .seed({ category_uuid: category.uuid, category })
+    .create({ category_uuid: category.uuid, category })
     .then(
       product =>
         deleteObjectPropsHelper(product, [

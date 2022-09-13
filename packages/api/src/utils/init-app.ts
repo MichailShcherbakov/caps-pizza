@@ -7,6 +7,7 @@ import {
 } from "@nestjs/common";
 import ResponseFormatInterceptor from "./response-format.interceptor";
 import { Reflector } from "@nestjs/core";
+import { FRONTEND_URL } from "~/config";
 
 export interface InitAppOptions {
   usePrefix?: boolean;
@@ -21,7 +22,7 @@ export const initApp = (
     appInstance.enableCors({
       methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
       credentials: true,
-      origin: __FRONTEND_URL__,
+      origin: FRONTEND_URL,
     });
 
   if (usePrefix) appInstance.setGlobalPrefix("/v1/api");

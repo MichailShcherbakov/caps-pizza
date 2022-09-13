@@ -37,14 +37,14 @@ export class initialSeed1662919340693 implements MigrationInterface {
     const discounts = new DiscountsSeeder(queryRunner);
     const discountStrategies = new DiscountStrategiesSeeder(queryRunner);
 
-    await users.seed({
+    await users.create({
       name: "admin",
       salt: "$2a$10$eDXmKeQFddc2fbRidQ8KOO",
       password_hash:
         "$2a$10$eDXmKeQFddc2fbRidQ8KOOEoWlwr9LLKJvkqb15Vja89mrqoS8.Ii",
     });
 
-    const [pizzasBy1299] = await discounts.seeds([
+    const [pizzasBy1299] = await discounts.createManyFrom([
       {
         name: "3 за 1299",
         type: DiscountTypeEnum.FIXED_PRICE,
@@ -52,7 +52,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       },
     ]);
 
-    deliveries.seeds([
+    await deliveries.createManyFrom([
       {
         name: "Доставка пиццы от Кэпа",
         //article_number: 0,
@@ -78,7 +78,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       },
     ]);
 
-    await promotions.seeds([
+    await promotions.createManyFrom([
       {
         name: "Три любые пиццы на традиционном тесте за 1299 рублей",
         image_url: "/images/promo1.svg",
@@ -93,7 +93,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       },
     ]);
 
-    const [dough, sauce, kit] = await modifierCategories.seeds([
+    const [dough, sauce, kit] = await modifierCategories.createManyFrom([
       {
         name: "Тесто",
         image_url: "",
@@ -112,7 +112,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
     ]);
 
     const [traditionalDough, _, yakiSauce, __, weekdayCombo] =
-      await modifiers.seeds([
+      await modifiers.createManyFrom([
         {
           name: "Традиционное",
           display_position: 1,
@@ -151,35 +151,36 @@ export class initialSeed1662919340693 implements MigrationInterface {
         },
       ]);
 
-    const [pizza, combo, rolls, snacks, drink] = await productCategories.seeds([
-      {
-        name: "Пиццы",
-        image_url: "/images/pizza.svg",
-        display_position: 1,
-      },
-      {
-        name: "Наборы",
-        image_url: "/images/combo.svg",
-        display_position: 2,
-      },
-      {
-        name: "Роллы",
-        image_url: "/images/rolls.svg",
-        display_position: 3,
-      },
-      {
-        name: "Закуски",
-        image_url: "/images/snacks.svg",
-        display_position: 4,
-      },
-      {
-        name: "Напитки",
-        image_url: "/images/drink.svg",
-        display_position: 5,
-      },
-    ]);
+    const [pizza, combo, rolls, snacks, drink] =
+      await productCategories.createManyFrom([
+        {
+          name: "Пиццы",
+          image_url: "/images/pizza.svg",
+          display_position: 1,
+        },
+        {
+          name: "Наборы",
+          image_url: "/images/combo.svg",
+          display_position: 2,
+        },
+        {
+          name: "Роллы",
+          image_url: "/images/rolls.svg",
+          display_position: 3,
+        },
+        {
+          name: "Закуски",
+          image_url: "/images/snacks.svg",
+          display_position: 4,
+        },
+        {
+          name: "Напитки",
+          image_url: "/images/drink.svg",
+          display_position: 5,
+        },
+      ]);
 
-    await discountStrategies.seed({
+    await discountStrategies.create({
       discount_uuid: pizzasBy1299.uuid,
       condition: {
         criteria: DiscountCriteriaEnum.COUNT,
@@ -190,7 +191,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       product_categories: [pizza],
     });
 
-    await products.seeds([
+    await products.createManyFrom([
       {
         name: "Пицца Маргарита",
         desc: "Томатный соус, сыр моцарелла, базилик",

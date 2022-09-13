@@ -26,7 +26,3 @@ packages/**/.dockerignore*
 
 wallaby.js
 
-packages/**/__tests__/
-
-packages/**/static/
-packages/**/seeds/

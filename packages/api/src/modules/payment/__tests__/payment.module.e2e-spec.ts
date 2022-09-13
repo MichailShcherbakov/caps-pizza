@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
 import { CreatePaymentDto, UpdatePaymentDto } from "../orders.dto";
 import PaymentService from "../payment.service";
 import Api from "./helpers/api.helper";

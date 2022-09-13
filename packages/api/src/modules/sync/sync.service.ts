@@ -6,6 +6,7 @@ import {
   Injectable,
 } from "@nestjs/common";
 import * as FormData from "form-data";
+import { SECRET, SYNC_ON } from "~/config";
 import DeliveryService from "../delivery/deliveries.service";
 import ModifiersService from "../modifiers/modifiers.service";
 import ProductsService from "../products/products.service";
@@ -59,7 +60,7 @@ export default class SyncService {
       return false;
     }
 
-    if (__DEV__ && !__SYNC_ON__) return true;
+    if (__DEV__ && !SYNC_ON) return true;
 
     const syncResult = await this.syncWithFrontPad(articleNumber);
 
@@ -71,7 +72,7 @@ export default class SyncService {
 
   async syncWithFrontPad(articleNumber: number): Promise<boolean> {
     const payload = new FormData();
-    payload.append("secret", __SECRET__ ?? "");
+    payload.append("secret", SECRET ?? "");
 
     const response = await this.httpService.axiosRef.request({
       method: "post",

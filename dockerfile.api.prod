@@ -8,8 +8,6 @@ ENV NODE_ENV=development
 
 WORKDIR ${WORKDIR}
 
-RUN yarn global add @nestjs/cli
-
 COPY lerna.json .
 
 COPY package.json .
@@ -19,6 +17,7 @@ COPY packages/common/package.json ./packages/common/package.json
 
 COPY packages/api/package.json ./packages/api/package.json
 
+# Install dev deps
 RUN yarn install
 RUN npx lerna bootstrap
 
@@ -32,6 +31,7 @@ RUN npx lerna link
 
 RUN npx lerna run build --scope @monorepo/api
 
+# Install production deps
 RUN yarn install --production --frozen-lockfile --ignore-scripts --prefer-offline
 
 # Runner 
@@ -64,12 +64,11 @@ COPY --from=builder ${WORKDIR}/packages/common/node_modules ./packages/common/no
 COPY --from=builder ${WORKDIR}/packages/api/dist ./packages/api/dist
 COPY --from=builder ${WORKDIR}/packages/api/package.json ./packages/api/package.json
 COPY --from=builder ${WORKDIR}/packages/api/node_modules ./packages/api/node_modules
-
-RUN mkdir packages/api/static && mkdir packages/api/static/images
+COPY --from=builder ${WORKDIR}/packages/api/static/images ./packages/api/static/images 
 
 # USER nestjs
 
 EXPOSE ${PORT}
 
 # Run
-CMD npx lerna link && npx lerna run start:prod --scope @monorepo/api
+CMD npx lerna link && yarn run migration:up && yarn start:prod:api

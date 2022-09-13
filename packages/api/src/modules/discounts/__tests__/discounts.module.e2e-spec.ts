@@ -16,7 +16,7 @@ import ProductsService from "~/modules/products/products.service";
 import createProductsHelper from "~/modules/products/__tests__/helpers/create-products.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
 import { CreateDiscountDto, UpdateDiscountDto } from "../discounts.dto";
 import DiscountsService from "../discounts.service";
 import Api from "./helpers/api.helper";

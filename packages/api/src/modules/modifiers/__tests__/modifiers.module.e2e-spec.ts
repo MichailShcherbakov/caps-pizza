@@ -4,8 +4,8 @@ import { createProductCategoryHelper } from "~/modules/products/modules/categori
 import { createProductHelper } from "~/modules/products/__tests__/helpers/create-products.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
-import { fromJson, toJson } from "~/utils/json.helper";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
+import { fromJson, toJson } from "~/utils/__tests__/helpers/json.helper";
 import { CreateModifierDto, UpdateModifierDto } from "../modifiers.dto";
 import ModifiersService from "../modifiers.service";
 import createModifierCategoriesHelper from "../modules/categories/__tests__/helpers/create-modifier-categories.helper";

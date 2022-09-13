@@ -1,11 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { QueryRunner } from "typeorm";
-import deleteObjectPropsHelper, {
-  deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
-import ModifierEntity from "../entities/modifier.entity";
-import ProductCategoryEntity from "../entities/product-category.entity";
 import ProductEntity from "../entities/product.entity";
 
 export class ProductsFactory extends IFactory<ProductEntity> {
@@ -25,19 +20,8 @@ export class ProductsFactory extends IFactory<ProductEntity> {
     e.volume = options.volume;
     e.weight = options.weight;
     e.tags = options.tags ?? ["first:2", "second:4"];
-    e.category =
-      options.category &&
-      (deleteObjectPropsHelper(options.category, [
-        "updated_at",
-        "created_at",
-      ]) as ProductCategoryEntity);
-    e.modifiers =
-      (options.modifiers &&
-        (deleteObjectsPropsHelper(options.modifiers, [
-          "updated_at",
-          "created_at",
-        ]) as ModifierEntity[])) ??
-      [];
+    e.category = options.category;
+    e.modifiers = options.modifiers ?? [];
     return e;
   }
 }

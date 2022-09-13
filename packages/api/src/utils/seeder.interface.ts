@@ -10,26 +10,36 @@ export abstract class ISeeder<TEntity> {
     protected _factory: IFactory<TEntity>
   ) {}
 
-  async run(
+  make(options: Partial<TEntity> = {}): TEntity {
+    return this._factory.create(options);
+  }
+
+  makeMany(count: number, options: Partial<TEntity> = {}): TEntity[] {
+    return count.map<TEntity>(() => this.make(options));
+  }
+
+  makeManyFrom(options: Partial<TEntity>[]): TEntity[] {
+    return options.length.map<TEntity>(idx => this.make(options[idx]));
+  }
+
+  async create(options: Partial<TEntity> = {}): Promise<TEntity> {
+    const [e] = await this.createMany(1, options);
+    return e;
+  }
+
+  async createMany(
     count: number,
-    options?: Partial<TEntity> | Partial<TEntity>[]
+    options: Partial<TEntity> = {}
   ): Promise<TEntity[]> {
     try {
       await this._queryRunner.connect();
       await this._queryRunner.startTransaction();
 
-      const entities: TEntity[] = [];
+      let entities: TEntity[] = count.map<TEntity>(() =>
+        this._factory.create(options)
+      );
 
-      const query = Array.isArray(options) ? options : options ? [options] : [];
-      const len = options ? Math.min(query.length, count) : count;
-
-      for (let i = 0; i < len; ++i) {
-        entities.push(
-          await this._queryRunner.manager.save(
-            this._factory.create(options && query[i])
-          )
-        );
-      }
+      entities = await this._queryRunner.manager.save(entities);
 
       await this._queryRunner.commitTransaction();
 
@@ -40,19 +50,16 @@ export abstract class ISeeder<TEntity> {
     }
   }
 
-  async seed(options: Partial<TEntity>): Promise<TEntity> {
-    const [e] = await this.seeds([options]);
-    return e;
-  }
-
-  async seeds(options: Partial<TEntity>[] = []): Promise<TEntity[]> {
+  async createManyFrom(options: Partial<TEntity>[]): Promise<TEntity[]> {
     try {
       await this._queryRunner.connect();
       await this._queryRunner.startTransaction();
 
-      const entities = await this._queryRunner.manager.save(
-        options.map(o => this._factory.create(o))
+      let entities: TEntity[] = options.length.map<TEntity>(idx =>
+        this._factory.create(options[idx])
       );
+
+      entities = await this._queryRunner.manager.save(entities);
 
       await this._queryRunner.commitTransaction();
 

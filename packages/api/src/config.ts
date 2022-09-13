@@ -1,25 +1,35 @@
 import { resolve } from "path";
-import { config } from "dotenv";
-import "~/utils/number";
 
-config();
-
-global.__PORT__ = Number.parseInt(process.env.PORT ?? "8080");
-global.__HOST__ = process.env.HOST ?? "127.0.0.1";
-global.__DEV__ =
+export const PORT = Number.parseInt(process.env.PORT ?? "8080");
+export const HOST = process.env.HOST ?? "127.0.0.1";
+export const DEV =
   process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test";
-global.__SECRET__ = process.env.SECRET ?? "";
-global.__JWT_ACCESS_TOKEN_SECRET__ = process.env.JWT_ACCESS_TOKEN_SECRET ?? "";
-global.__JWT_REFRESH_TOKEN_SECRET__ =
+export const SECRET = process.env.SECRET ?? "";
+export const JWT_ACCESS_TOKEN_SECRET =
+  process.env.JWT_ACCESS_TOKEN_SECRET ?? "";
+export const JWT_REFRESH_TOKEN_SECRET =
   process.env.JWT_REFRESH_TOKEN_SECRET ?? "";
-global.__SYNC_ON__ = Boolean(process.env.SYNC_ON);
-global.__FRONTEND_URL__ = process.env.FRONTEND_URL ?? "*";
-global.__APP_ROOT_PATH__ = resolve(__dirname, "../");
-global.__APP_ROOT_URL__ = `http://${__HOST__}:${__PORT__}`;
-global.__APP_IMAGES_LOCATION_PATH__ = `${__APP_ROOT_PATH__}/static/images`;
-global.__APP_IMAGES_LOCATION_FULL_URL__ = `${__APP_ROOT_URL__}/images`;
-global.__APP_IMAGES_LOCATION_URL__ = `/images`;
-global.__TYPEORM_CONFIG__ = {
+export const SYNC_ON = Boolean(process.env.SYNC_ON);
+export const FRONTEND_URL = process.env.FRONTEND_URL ?? "*";
+export const APP_ROOT_PATH = resolve(__dirname, "../");
+export const APP_ROOT_URL = `http://${HOST}:${PORT}`;
+export const APP_IMAGES_LOCATION_PATH = `${APP_ROOT_PATH}/static/images`;
+export const APP_IMAGES_LOCATION_FULL_URL = `${APP_ROOT_URL}/images`;
+export const APP_IMAGES_LOCATION_URL = `/images`;
+export const TYPEORM_CONFIG: {
+  type: "postgres";
+  host?: string;
+  username?: string;
+  password?: string;
+  database?: string;
+  port: number;
+  entities: string[];
+  migrations: string[];
+  subscribers: string[];
+  migrationsRun: boolean;
+  synchronize: boolean;
+  logging: boolean;
+} = {
   type: "postgres",
   host: process.env.DATABASE_HOST,
   username: process.env.DATABASE_USERNAME,

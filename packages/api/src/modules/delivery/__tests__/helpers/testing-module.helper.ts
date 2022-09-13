@@ -1,6 +1,6 @@
 import AuthModule from "~/modules/auth/auth.module";
 import SyncService from "~/modules/sync/sync.service";
-import { ITestingModule } from "~/utils/testing-module.interface";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 import DeliveryModule from "../../deliveries.module";
 
 export default class TestingModule extends ITestingModule {

@@ -9,7 +9,7 @@ import Api from "./helpers/api.helper";
 import { CreateProductDto, UpdateProductDto } from "../products.dto";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
 import ModifierEntity from "~/db/entities/modifier.entity";
 import createModifiersHelper, {
   createModifierHelper,

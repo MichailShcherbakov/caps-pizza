@@ -1,7 +1,7 @@
 import AuthModule from "~/modules/auth/auth.module";
 import ModifiersModule from "~/modules/modifiers/modifiers.module";
 import SyncService from "~/modules/sync/sync.service";
-import { ITestingModule } from "~/utils/testing-module.interface";
+import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 import PromotionsModule from "../../promotions.module";
 
 export default class TestingModule extends ITestingModule {

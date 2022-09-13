@@ -34,7 +34,6 @@ describe("[Unit] [Sync Module] ... ", () => {
     findOneDeliveryWrapper = jest.spyOn(deliveriesService, "findOne");
 
     __DEV__ = false;
-    __SYNC_ON__ = true;
   });
 
   afterEach(() => {

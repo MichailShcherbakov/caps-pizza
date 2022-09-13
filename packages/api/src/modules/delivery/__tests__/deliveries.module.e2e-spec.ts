@@ -8,7 +8,7 @@ import { createModifierCategoryHelper } from "~/modules/modifiers/modules/catego
 import { createModifierHelper } from "~/modules/modifiers/__tests__/helpers/create-modifiers.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
-} from "~/utils/delete-object-props.helper";
+} from "~/utils/__tests__/helpers/delete-object-props.helper";
 import { CreateDeliveryDto, UpdateDeliveryDto } from "../deliveries.dto";
 import DeliveriesService from "../deliveries.service";
 import Api from "./helpers/api.helper";

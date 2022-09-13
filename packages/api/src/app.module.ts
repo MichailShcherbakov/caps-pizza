@@ -1,3 +1,4 @@
+import { TYPEORM_CONFIG } from "~/config";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { MulterModule } from "@nestjs/platform-express";
@@ -15,7 +16,7 @@ import PromotionsModule from "./modules/promotions/promotions.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(__TYPEORM_CONFIG__),
+    TypeOrmModule.forRoot(TYPEORM_CONFIG),
     MulterModule.register(),
     ProductsModule,
     ModifiersModule,
