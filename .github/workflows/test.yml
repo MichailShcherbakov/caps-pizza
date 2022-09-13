@@ -14,7 +14,7 @@ env:
   DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
 jobs:
   test:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
