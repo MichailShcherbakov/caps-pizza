@@ -49,3 +49,4 @@ services:
       - api
     container_name: caps_pizza_test_web
     restart: "no"
+    

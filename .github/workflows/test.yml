@@ -30,3 +30,4 @@ jobs:
 
       - name: Run Web tests
       - run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit web
+      

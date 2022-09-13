@@ -71,3 +71,4 @@ services:
 volumes:
   postgres:
   static_images:
+  

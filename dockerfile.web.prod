@@ -96,4 +96,3 @@ EXPOSE ${PORT}
 
 # Run
 CMD npx lerna link && npx lerna run start:prod --scope @monorepo/web
-
