@@ -1,0 +1,19 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=2.10.2 TRAVIS_JOB_ID=${TRAVIS_JOB_ID} TRAVIS_BRANCH=${TRAVIS_BRANCH} TRAVIS=${TRAVIS} DOCKER_PASSWORD=${DOCKER_HUB_ACCESS_TOKEN} DOCKER_USERNAME=${DOCKER_HUB_USERNAME}
+
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+script:
+  - docker-compose --file docker-compose.test.yml up --build --abort-on-container-exit api
+  - docker-compose --file docker-compose.test.yml up --build --abort-on-container-exit web
+  # - bash <(curl -s https://codecov.io/bash)
