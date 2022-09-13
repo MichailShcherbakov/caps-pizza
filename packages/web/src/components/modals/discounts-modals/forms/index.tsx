@@ -191,12 +191,14 @@ const Form: React.FC<
                 id={`strategies[${idx}].condition.criteria`}
                 name={`strategies[${idx}].condition.criteria`}
                 value={strategy.condition.criteria}
+                discountType={values.type}
                 onChange={handleChange}
               />
               <DiscountOperatorSelect
                 id={`strategies[${idx}].condition.op`}
                 name={`strategies[${idx}].condition.op`}
                 value={strategy.condition.op}
+                discountType={values.type}
                 onChange={handleChange}
               />
               <DiscountConditionValueField
@@ -225,13 +227,14 @@ const Form: React.FC<
         },
       })),
     [
+      values.strategies,
+      values.type,
+      touched.strategies,
       errors.strategies,
       handleChange,
-      modifiers,
-      productCategories,
       products,
-      values.strategies,
-      touched.strategies,
+      productCategories,
+      modifiers,
     ]
   );
 
@@ -254,6 +257,7 @@ const Form: React.FC<
         />
         <DiscountTypeSelect
           value={values.type}
+          discountStrategies={values.strategies}
           onChange={onDiscountTypeChange}
         />
         <ValueField

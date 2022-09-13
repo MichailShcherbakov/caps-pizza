@@ -12,10 +12,12 @@ import {
 } from "~/services/discounts.service";
 import { locale } from "@monorepo/common";
 
-export interface DiscountOperatorSelectProps extends SelectProps {}
+export interface DiscountOperatorSelectProps extends SelectProps {
+  discountType: DiscountTypeEnum;
+}
 
 export const DiscountOperatorSelect: React.FC<DiscountOperatorSelectProps> =
-  React.memo(({ value, type, onChange, ...props }) => {
+  React.memo(({ discountType, value, onChange, ...props }) => {
     const items = [
       {
         name: locale[DiscountOperatorEnum.EQUAL],
@@ -23,7 +25,7 @@ export const DiscountOperatorSelect: React.FC<DiscountOperatorSelectProps> =
       },
     ];
 
-    if (type !== DiscountTypeEnum.FIXED_PRICE) {
+    if (discountType !== DiscountTypeEnum.FIXED_PRICE) {
       items.push(
         ...[
           {

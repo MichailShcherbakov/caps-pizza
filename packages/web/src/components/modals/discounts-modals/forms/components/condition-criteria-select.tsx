@@ -7,22 +7,27 @@ import {
 } from "@mui/material";
 import React from "react";
 import { DiscountCriteriaEnum } from "~/services/discounts.service";
-import { locale } from "@monorepo/common";
+import { DiscountTypeEnum, locale } from "@monorepo/common";
 
-export interface DiscountCriteriaSelectProps extends SelectProps {}
+export interface DiscountCriteriaSelectProps extends SelectProps {
+  discountType: DiscountTypeEnum;
+}
 
 export const DiscountCriteriaSelect: React.FC<DiscountCriteriaSelectProps> =
-  React.memo(({ value, onChange, ...props }) => {
+  React.memo(({ discountType, value, onChange, ...props }) => {
     const items = [
       {
         name: locale[DiscountCriteriaEnum.COUNT],
         value: DiscountCriteriaEnum.COUNT,
       },
-      {
+    ];
+
+    if (discountType !== DiscountTypeEnum.FIXED_PRICE) {
+      items.push({
         name: locale[DiscountCriteriaEnum.PRICE],
         value: DiscountCriteriaEnum.PRICE,
-      },
-    ];
+      });
+    }
 
     return (
       <FormControl color="secondary" size="small" fullWidth>
