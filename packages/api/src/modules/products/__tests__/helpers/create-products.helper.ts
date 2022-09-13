@@ -15,6 +15,7 @@ export default function createProductsHelper(
     .createManyFrom(
       categories.map(c => ({
         category_uuid: c.uuid,
+        category: c,
       }))
     )
     .then(

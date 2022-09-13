@@ -1,0 +1,30 @@
+FROM node:18.8-alpine3.15 as builder
+
+# Args
+ARG WORKDIR
+
+# Env
+ENV NODE_ENV=test
+
+WORKDIR ${WORKDIR}
+
+COPY lerna.json .
+
+COPY package.json .
+COPY yarn.lock .
+
+COPY packages/common/package.json ./packages/common/package.json
+
+COPY packages/api/package.json ./packages/api/package.json
+
+# Install dev deps
+RUN yarn install
+RUN npx lerna bootstrap
+
+# Copy project
+COPY . .
+
+# Build common package
+RUN npx lerna run build --scope @monorepo/common
+
+CMD npx lerna link && npx lerna run start:test --scope @monorepo/api

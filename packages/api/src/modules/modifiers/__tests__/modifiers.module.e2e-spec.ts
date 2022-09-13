@@ -2,10 +2,7 @@ import { faker } from "@faker-js/faker";
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
 import { createProductCategoryHelper } from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
 import { createProductHelper } from "~/modules/products/__tests__/helpers/create-products.helper";
-import deleteObjectPropsHelper, {
-  deleteObjectsPropsHelper,
-} from "~/utils/__tests__/helpers/delete-object-props.helper";
-import { fromJson, toJson } from "~/utils/__tests__/helpers/json.helper";
+import deleteObjectPropsHelper from "~/utils/__tests__/helpers/delete-object-props.helper";
 import { CreateModifierDto, UpdateModifierDto } from "../modifiers.dto";
 import ModifiersService from "../modifiers.service";
 import createModifierCategoriesHelper from "../modules/categories/__tests__/helpers/create-modifier-categories.helper";
@@ -51,14 +48,7 @@ describe("[Modifier Module] ...", () => {
       expect(getModifiersResponse.status).toEqual(200);
       expect(getModifiersResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectsPropsHelper(ModifiersService.sort(modifiers), [
-              "updated_at",
-              "created_at",
-            ])
-          )
-        ),
+        data: ModifiersService.sort(modifiers),
       });
     });
 
@@ -71,11 +61,7 @@ describe("[Modifier Module] ...", () => {
       expect(getModifierResponse.status).toEqual(200);
       expect(getModifierResponse.body).toEqual({
         statusCode: 200,
-        data: fromJson(
-          toJson(
-            deleteObjectPropsHelper(modifier, ["updated_at", "created_at"])
-          )
-        ),
+        data: modifier,
       });
     });
 

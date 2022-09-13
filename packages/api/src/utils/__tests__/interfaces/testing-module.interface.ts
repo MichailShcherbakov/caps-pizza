@@ -1,3 +1,4 @@
+import { TYPEORM_CONFIG } from "~/config";
 import {
   DynamicModule,
   ForwardReference,
@@ -25,7 +26,7 @@ export abstract class ITestingModule {
     return Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
-          ...__TYPEORM_CONFIG__,
+          ...TYPEORM_CONFIG,
           synchronize: true,
           logging: false,
         }),
