@@ -1,18 +1,18 @@
-import { DataSource } from "typeorm";
 import DeliveryEntity from "~/db/entities/delivery.entity";
 import DeliverySeeder from "~/db/seeders/delivery.seeder";
+import { ITestingModule } from "~/utils/testing-module.interface";
 
 export const createDeliveriesHelper = (
-  dataSource: DataSource
+  testingModule: ITestingModule
 ): Promise<DeliveryEntity[]> => {
-  const seeder = new DeliverySeeder(dataSource.createQueryRunner());
+  const seeder = new DeliverySeeder(testingModule.queryRunner);
   return seeder.run(10);
 };
 
 export const createDeliveryHelper = (
-  dataSource: DataSource,
-  options: Partial<DeliveryEntity>
+  testingModule: ITestingModule,
+  options: Partial<DeliveryEntity> = {}
 ): Promise<DeliveryEntity> => {
-  const seeder = new DeliverySeeder(dataSource.createQueryRunner());
+  const seeder = new DeliverySeeder(testingModule.queryRunner);
   return seeder.seed(options);
 };

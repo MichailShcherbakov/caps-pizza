@@ -1,43 +1,52 @@
-import { DataSource } from "typeorm";
 import DiscountStrategyEntity from "~/db/entities/discount-strategy.entity";
 import DiscountEntity from "~/db/entities/discount.entity";
 import DiscountStrategiesSeeder from "~/db/seeders/discount-strategy.seeder";
 import DiscountsSeeder from "~/db/seeders/discount.seeder";
+import deleteObjectPropsHelper, {
+  deleteObjectsPropsHelper,
+} from "~/utils/delete-object-props.helper";
+import { ITestingModule } from "~/utils/testing-module.interface";
 
 export async function createDiscountStrategyHelper(
-  dataSource: DataSource,
-  options: Partial<DiscountStrategyEntity>
+  testingModule: ITestingModule,
+  options: Partial<DiscountStrategyEntity> = {}
 ): Promise<DiscountStrategyEntity> {
   const discountStrategiesSeeder = new DiscountStrategiesSeeder(
-    dataSource.createQueryRunner()
+    testingModule.queryRunner
   );
   return discountStrategiesSeeder.seed(options);
 }
 
 export async function createDiscountHelper(
-  dataSource: DataSource,
-  options: Partial<DiscountEntity>
+  testingModule: ITestingModule,
+  options: Partial<DiscountEntity> = {}
 ): Promise<DiscountEntity> {
-  const discountsSeeder = new DiscountsSeeder(dataSource.createQueryRunner());
+  const discountsSeeder = new DiscountsSeeder(testingModule.queryRunner);
   return discountsSeeder.seed(options);
 }
 
 export default async function createDiscountsHelper(
-  dataSource: DataSource
+  testingModule: ITestingModule
 ): Promise<DiscountEntity[]> {
-  const discountsSeeder = new DiscountsSeeder(dataSource.createQueryRunner());
+  const discountsSeeder = new DiscountsSeeder(testingModule.queryRunner);
   const strategiesSeeder = new DiscountStrategiesSeeder(
-    dataSource.createQueryRunner()
+    testingModule.queryRunner
   );
-  const discounts = await discountsSeeder.run(10);
+  const discounts = deleteObjectsPropsHelper<
+    "updated_at" | "created_at",
+    DiscountEntity
+  >(await discountsSeeder.run(10), ["updated_at", "created_at"]);
 
   for (const discount of discounts) {
     discount.strategies.push(
-      await strategiesSeeder.seed({
-        discount_uuid: discount.uuid,
-      })
+      deleteObjectPropsHelper(
+        await strategiesSeeder.seed({
+          discount_uuid: discount.uuid,
+        }),
+        ["updated_at", "created_at"]
+      ) as DiscountStrategyEntity
     );
   }
 
-  return discounts;
+  return discounts as DiscountEntity[];
 }

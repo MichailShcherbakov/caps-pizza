@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getDataSourceToken, TypeOrmModule } from "@nestjs/typeorm";
-import { DataSource } from "typeorm";
+import { DataSource, QueryRunner } from "typeorm";
 import initApp from "./init-app";
 
 export type Module =
@@ -18,11 +18,19 @@ export type Module =
 export abstract class ITestingModule {
   protected _app: INestApplication | null;
   protected _dataSource: DataSource | null;
+  protected _queryRunner: QueryRunner | null;
   protected _handle: TestingModule | null;
 
   protected compile(modules: Module[]): Promise<TestingModule> {
     return Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(__TYPEORM_CONFIG__), ...modules],
+      imports: [
+        TypeOrmModule.forRoot({
+          ...__TYPEORM_CONFIG__,
+          synchronize: true,
+          logging: false,
+        }),
+        ...modules,
+      ],
     }).compile();
   }
 
@@ -33,6 +41,8 @@ export abstract class ITestingModule {
     await this._app.init();
 
     this._dataSource = this._app.get<DataSource>(getDataSourceToken());
+    this._queryRunner = this._queryRunner =
+      this._dataSource.createQueryRunner();
 
     await this.dataSource.synchronize(true);
   }
@@ -52,6 +62,13 @@ export abstract class ITestingModule {
       throw new Error("The test module was not initialized");
 
     return this._dataSource;
+  }
+
+  get queryRunner(): QueryRunner {
+    if (!this._queryRunner)
+      throw new Error("The test module was not initialized");
+
+    return this._queryRunner;
   }
 
   async drop(): Promise<void> {

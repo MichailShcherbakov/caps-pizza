@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataSource, QueryRunner } from "typeorm";
+import { QueryRunner } from "typeorm";
 import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import DeliveryEntity, {
   DeliveryCriteriaEnum,

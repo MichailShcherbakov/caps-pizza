@@ -8,7 +8,7 @@ export class TestingModule extends ITestingModule {
   }
 
   async clearDataSource(): Promise<void> {
-    await this.dataSource.query("TRUNCATE product_categories CASCADE");
+    await this.queryRunner.query("TRUNCATE product_categories CASCADE");
   }
 }
 

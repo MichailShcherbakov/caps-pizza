@@ -31,7 +31,7 @@ describe("[Modifier Module] ...", () => {
   });
 
   beforeEach(async () => {
-    categories = await createModifierCategoriesHelper(testingModule.dataSource);
+    categories = await createModifierCategoriesHelper(testingModule);
   });
 
   afterEach(async () => {
@@ -44,10 +44,7 @@ describe("[Modifier Module] ...", () => {
 
   describe("[Get] /modifiers", () => {
     it("should return all exists modifiers", async () => {
-      const modifiers = await createModifiersHelper(
-        testingModule.dataSource,
-        categories
-      );
+      const modifiers = await createModifiersHelper(testingModule, categories);
 
       const getModifiersResponse = await api.getModifiers();
 
@@ -66,10 +63,7 @@ describe("[Modifier Module] ...", () => {
     });
 
     it("should return a special modifier", async () => {
-      const modifiers = await createModifiersHelper(
-        testingModule.dataSource,
-        categories
-      );
+      const modifiers = await createModifiersHelper(testingModule, categories);
       const modifier = modifiers[4];
 
       const getModifierResponse = await api.getModifier(modifier.uuid);
@@ -178,7 +172,7 @@ describe("[Modifier Module] ...", () => {
     it("should throw an error when creating a modifier with exists name and category", async () => {
       const initialCategory = categories[2];
       const initialModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         initialCategory
       );
 
@@ -203,13 +197,8 @@ describe("[Modifier Module] ...", () => {
     });
 
     it("should throw an error when creating a modifier with exists product article number", async () => {
-      const productCategory = await createProductCategoryHelper(
-        testingModule.dataSource
-      );
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        productCategory
-      );
+      const productCategory = await createProductCategoryHelper(testingModule);
+      const product = await createProductHelper(testingModule, productCategory);
       const modifierCategory = categories[5];
 
       const dto: CreateModifierDto = {
@@ -235,7 +224,7 @@ describe("[Modifier Module] ...", () => {
     it("should throw an error when creating a modifier with exists modifier article number", async () => {
       const otherCategory = categories[1];
       const otherModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         otherCategory
       );
       const category = categories[5];
@@ -265,7 +254,7 @@ describe("[Modifier Module] ...", () => {
     it("should successfully updating a modifier", async () => {
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         initialCategory
       );
 
@@ -302,7 +291,7 @@ describe("[Modifier Module] ...", () => {
     it("should successfully updating the modifier with the same unique props", async () => {
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         initialCategory
       );
 
@@ -338,7 +327,7 @@ describe("[Modifier Module] ...", () => {
     it("should throw an error when updating a non-exists modifier category", async () => {
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         initialCategory
       );
 
@@ -368,13 +357,13 @@ describe("[Modifier Module] ...", () => {
     it("should throw an error when updating exists name and category", async () => {
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         initialCategory
       );
 
       const otherCategory = categories[3];
       const otherModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         otherCategory
       );
 
@@ -427,16 +416,11 @@ describe("[Modifier Module] ...", () => {
     });
 
     it("should throw an error when updating a modifier with exists product article number", async () => {
-      const productCategory = await createProductCategoryHelper(
-        testingModule.dataSource
-      );
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        productCategory
-      );
+      const productCategory = await createProductCategoryHelper(testingModule);
+      const product = await createProductHelper(testingModule, productCategory);
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         initialCategory
       );
 
@@ -460,12 +444,12 @@ describe("[Modifier Module] ...", () => {
     it("should throw an error when updating a modifier with exists modifier article number", async () => {
       const otherCategory = categories[1];
       const otherModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         otherCategory
       );
       const initialCategory = categories[1];
       const initialModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         initialCategory
       );
 
@@ -489,10 +473,7 @@ describe("[Modifier Module] ...", () => {
 
   describe("[Delete] /modifiers/categories", () => {
     it("should successfully delete a category that already has a modifiers", async () => {
-      const modifiers = await createModifiersHelper(
-        testingModule.dataSource,
-        categories
-      );
+      const modifiers = await createModifiersHelper(testingModule, categories);
       const modifier = modifiers[3];
       const category = categories[3];
 
@@ -520,10 +501,7 @@ describe("[Modifier Module] ...", () => {
 
   describe("[Delete] /modifiers", () => {
     it("should successfully delete a modifier", async () => {
-      const modifiers = await createModifiersHelper(
-        testingModule.dataSource,
-        categories
-      );
+      const modifiers = await createModifiersHelper(testingModule, categories);
       const modifier = modifiers[3];
 
       const deleteModifierResponse = await api.deleteModifier(modifier.uuid);

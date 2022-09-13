@@ -39,10 +39,10 @@ describe("[Product Module] ...", () => {
     await api.init();
 
     modifiers = await createModifiersHelper(
-      testingModule.dataSource,
-      await createModifierCategoriesHelper(testingModule.dataSource)
+      testingModule,
+      await createModifierCategoriesHelper(testingModule)
     );
-    categories = await createProductCategoriesHelper(testingModule.dataSource);
+    categories = await createProductCategoriesHelper(testingModule);
   });
 
   afterEach(async () => {
@@ -55,10 +55,7 @@ describe("[Product Module] ...", () => {
 
   describe("[Get] /products", () => {
     it("should return all exists products", async () => {
-      const products = await createProductsHelper(
-        testingModule.dataSource,
-        categories
-      );
+      const products = await createProductsHelper(testingModule, categories);
 
       const getProductsResponse = await api.getProducts();
 
@@ -73,10 +70,7 @@ describe("[Product Module] ...", () => {
     });
 
     it("should return a special product", async () => {
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        categories[2]
-      );
+      const product = await createProductHelper(testingModule, categories[2]);
 
       const getProductResponse = await api.getProduct(product.uuid);
 
@@ -218,7 +212,7 @@ describe("[Product Module] ...", () => {
 
       const modifier = modifiers[0];
       const sameModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         modifier.category as ModifierCategoryEntity
       );
 
@@ -247,7 +241,7 @@ describe("[Product Module] ...", () => {
       const category = categories[2];
       const otherCategory = categories[4];
       const otherProduct = await createProductHelper(
-        testingModule.dataSource,
+        testingModule,
         otherCategory
       );
 
@@ -298,10 +292,7 @@ describe("[Product Module] ...", () => {
     it("should successfully update a product", async () => {
       const category = categories[1];
       const otherCategory = categories[1];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
       const newModifiers = [modifiers[1], modifiers[3]];
 
       const dto: UpdateProductDto = {
@@ -344,10 +335,7 @@ describe("[Product Module] ...", () => {
 
     it("should successfully updating the product with the same unique props", async () => {
       const category = categories[1];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       const dto: UpdateProductDto = {
         name: product.name,
@@ -376,10 +364,7 @@ describe("[Product Module] ...", () => {
     it("should successfully update a category of the product", async () => {
       const category = categories[0];
       const otherCategory = categories[2];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       const dto: UpdateProductDto = {
         category_uuid: otherCategory.uuid,
@@ -422,10 +407,7 @@ describe("[Product Module] ...", () => {
 
     it("should throw an error when update a non-exists category of the product", async () => {
       const category = categories[3];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
       const fakeCategoryUUID = faker.datatype.uuid();
 
       const dto: UpdateProductDto = {
@@ -445,10 +427,7 @@ describe("[Product Module] ...", () => {
 
     it("should throw an error when updating product with non-exists modifier", async () => {
       const category = categories[1];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
       const modifierFakerUUID = faker.datatype.uuid();
 
       const dto: UpdateProductDto = {
@@ -467,14 +446,11 @@ describe("[Product Module] ...", () => {
 
     it("should throw an error when creating product with modifier with equal type", async () => {
       const category = categories[1];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       const modifier = modifiers[0];
       const sameModifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         modifier.category as ModifierCategoryEntity
       );
 
@@ -497,15 +473,12 @@ describe("[Product Module] ...", () => {
     it("should throw an error when creating product with already exists product article number", async () => {
       const otherCategory = categories[4];
       const otherProduct = await createProductHelper(
-        testingModule.dataSource,
+        testingModule,
         otherCategory
       );
 
       const category = categories[2];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       const dto: UpdateProductDto = {
         article_number: otherProduct.article_number,
@@ -525,10 +498,7 @@ describe("[Product Module] ...", () => {
       const modifier = modifiers[2];
 
       const category = categories[2];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       const dto: UpdateProductDto = {
         article_number: modifier.article_number,
@@ -548,10 +518,7 @@ describe("[Product Module] ...", () => {
   describe("[Delete] /products/categories", () => {
     it("should successfully delete a category that already has a products", async () => {
       const category = categories[3];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       const deleteCategoryResponse = await api.deleteProductCategory(
         category.uuid
@@ -578,10 +545,7 @@ describe("[Product Module] ...", () => {
   describe("[Delete] /products", () => {
     it("should successfully delete a product", async () => {
       const category = categories[3];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       const deleteProductResponse = await api.deleteProduct(product.uuid);
 
@@ -602,10 +566,7 @@ describe("[Product Module] ...", () => {
 
     it("should don't delete a category after product deleting", async () => {
       const category = categories[3];
-      const product = await createProductHelper(
-        testingModule.dataSource,
-        category
-      );
+      const product = await createProductHelper(testingModule, category);
 
       await api.deleteProduct(product.uuid);
 

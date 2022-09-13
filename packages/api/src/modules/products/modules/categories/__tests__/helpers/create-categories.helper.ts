@@ -1,14 +1,14 @@
-import { DataSource } from "typeorm";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
 import ProductCategoriesSeeder from "~/db/seeders/product-category.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
+import { ITestingModule } from "~/utils/testing-module.interface";
 
 export default function createProductCategoriesHelper(
-  dataSource: DataSource
+  testingModule: ITestingModule
 ): Promise<ProductCategoryEntity[]> {
-  const seeder = new ProductCategoriesSeeder(dataSource.createQueryRunner());
+  const seeder = new ProductCategoriesSeeder(testingModule.queryRunner);
   return seeder
     .run(10)
     .then(
@@ -21,9 +21,9 @@ export default function createProductCategoriesHelper(
 }
 
 export const createProductCategoryHelper = (
-  dataSource: DataSource
+  testingModule: ITestingModule
 ): Promise<ProductCategoryEntity> => {
-  const seeder = new ProductCategoriesSeeder(dataSource.createQueryRunner());
+  const seeder = new ProductCategoriesSeeder(testingModule.queryRunner);
   return seeder
     .seed({})
     .then(

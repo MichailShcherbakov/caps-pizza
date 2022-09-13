@@ -5,6 +5,8 @@ import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
 import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
 import ProductEntity from "~/db/entities/product.entity";
+import DeliveriesModule from "~/modules/delivery/deliveries.module";
+import DeliveriesService from "~/modules/delivery/deliveries.service";
 import ModifiersModule from "~/modules/modifiers/modifiers.module";
 import ModifiersService from "~/modules/modifiers/modifiers.service";
 import ProductsModule from "~/modules/products/products.module";
@@ -40,11 +42,18 @@ export default class UnitTestingModule extends ITestingModule {
       .useValue({ findOne: jest.fn() })
       .overrideProvider(ModifiersService)
       .useValue({ findOne: jest.fn() })
+      .overrideProvider(DeliveriesService)
+      .useValue({ findOne: jest.fn() })
       .compile();
   }
 
   init(): Promise<void> {
-    return super.initMock([SyncModule, ProductsModule, ModifiersModule]);
+    return super.initMock([
+      SyncModule,
+      ProductsModule,
+      ModifiersModule,
+      DeliveriesModule,
+    ]);
   }
 
   async clearDataSource(): Promise<void> {}

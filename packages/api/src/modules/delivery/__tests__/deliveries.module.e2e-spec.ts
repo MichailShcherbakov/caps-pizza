@@ -41,7 +41,7 @@ describe("[Delivery Module] ...", () => {
 
   describe("[Get] /deliveries", () => {
     it("should return all exists deliveries", async () => {
-      const deliveries = await createDeliveriesHelper(testingModule.dataSource);
+      const deliveries = await createDeliveriesHelper(testingModule);
 
       const getDeliveriesResponse = await api.getDeliveries();
 
@@ -56,7 +56,7 @@ describe("[Delivery Module] ...", () => {
     });
 
     it("should return a special delivery", async () => {
-      const delivery = await createDeliveryHelper(testingModule.dataSource);
+      const delivery = await createDeliveryHelper(testingModule);
 
       const getDeliveryResponse = await api.getDelivery(delivery.uuid);
 
@@ -108,9 +108,7 @@ describe("[Delivery Module] ...", () => {
     });
 
     it("should throw an error when creating a delivery with existing name", async () => {
-      const existsDelivery = await createDeliveryHelper(
-        testingModule.dataSource
-      );
+      const existsDelivery = await createDeliveryHelper(testingModule);
 
       const dto: CreateDeliveryDto = {
         name: existsDelivery.name,
@@ -182,10 +180,10 @@ describe("[Delivery Module] ...", () => {
 
     it(`should throw an error when creating a delivery with existing article number`, async () => {
       const modifierCategory = await createModifierCategoryHelper(
-        testingModule.dataSource
+        testingModule
       );
       const modifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         modifierCategory
       );
 
@@ -214,7 +212,7 @@ describe("[Delivery Module] ...", () => {
 
   describe("[Put] /deliveries", () => {
     it("should successfully update a delivery", async () => {
-      const delivery = await createDeliveryHelper(testingModule.dataSource);
+      const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
         name: faker.datatype.string(),
@@ -244,7 +242,7 @@ describe("[Delivery Module] ...", () => {
     });
 
     it(`should successfully update a delivery with unique props`, async () => {
-      const delivery = await createDeliveryHelper(testingModule.dataSource);
+      const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
         name: delivery.name,
@@ -302,10 +300,8 @@ describe("[Delivery Module] ...", () => {
     });
 
     it("should throw an error when updating a delivery with existing name", async () => {
-      const existsDelivery = await createDeliveryHelper(
-        testingModule.dataSource
-      );
-      const delivery = await createDeliveryHelper(testingModule.dataSource);
+      const existsDelivery = await createDeliveryHelper(testingModule);
+      const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
         name: existsDelivery.name,
@@ -334,7 +330,7 @@ describe("[Delivery Module] ...", () => {
 
     describe(`should throw an error when creating a delivery with ${DeliveryTypeEnum.PERCENT} delivery type and with a value that greater than 100`, () => {
       test("full update", async () => {
-        const delivery = await createDeliveryHelper(testingModule.dataSource, {
+        const delivery = await createDeliveryHelper(testingModule, {
           type: DeliveryTypeEnum.IN_CASH,
           value: 500,
         });
@@ -358,7 +354,7 @@ describe("[Delivery Module] ...", () => {
       });
 
       test("the value update", async () => {
-        const delivery = await createDeliveryHelper(testingModule.dataSource, {
+        const delivery = await createDeliveryHelper(testingModule, {
           type: DeliveryTypeEnum.PERCENT,
           value: 5,
         });
@@ -381,7 +377,7 @@ describe("[Delivery Module] ...", () => {
       });
 
       test("the type update", async () => {
-        const delivery = await createDeliveryHelper(testingModule.dataSource, {
+        const delivery = await createDeliveryHelper(testingModule, {
           type: DeliveryTypeEnum.IN_CASH,
           value: 500,
         });
@@ -405,7 +401,7 @@ describe("[Delivery Module] ...", () => {
     });
 
     it(`should throw an error when creating a delivery with ${DeliveryOperatorEnum.BETWEEN} delivery operator and without without providing the value2`, async () => {
-      const delivery = await createDeliveryHelper(testingModule.dataSource);
+      const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
         name: faker.datatype.string(),
@@ -434,14 +430,14 @@ describe("[Delivery Module] ...", () => {
 
     it(`should throw an error when creating a delivery with existing article number`, async () => {
       const modifierCategory = await createModifierCategoryHelper(
-        testingModule.dataSource
+        testingModule
       );
       const modifier = await createModifierHelper(
-        testingModule.dataSource,
+        testingModule,
         modifierCategory
       );
 
-      const delivery = await createDeliveryHelper(testingModule.dataSource);
+      const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
         name: faker.datatype.string(),
@@ -471,7 +467,7 @@ describe("[Delivery Module] ...", () => {
 
   describe("[Delete] /deliveries", () => {
     it("should successfully delete a delivery", async () => {
-      const delivery = await createDeliveryHelper(testingModule.dataSource);
+      const delivery = await createDeliveryHelper(testingModule);
 
       const deleteDeliveryResponse = await api.deleteDelivery(delivery.uuid);
 

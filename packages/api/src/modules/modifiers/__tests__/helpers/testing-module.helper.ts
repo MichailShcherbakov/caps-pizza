@@ -12,7 +12,7 @@ export default class TestingModule extends ITestingModule {
   }
 
   async clearDataSource(): Promise<void> {
-    await this.dataSource.query(
+    await this.queryRunner.query(
       "TRUNCATE modifiers, modifier_categories CASCADE"
     );
   }

@@ -8,6 +8,6 @@ export default class TestingModule extends ITestingModule {
   }
 
   clearDataSource(): Promise<void> {
-    return this.dataSource.query("TRUNCATE modifier_categories CASCADE");
+    return this.queryRunner.query("TRUNCATE modifier_categories CASCADE");
   }
 }

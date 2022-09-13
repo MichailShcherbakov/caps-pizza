@@ -8,6 +8,6 @@ export default class TestingModule extends ITestingModule {
   }
 
   async clearDataSource(): Promise<void> {
-    await this.dataSource.query("TRUNCATE payments CASCADE");
+    await this.queryRunner.query("TRUNCATE payments CASCADE");
   }
 }

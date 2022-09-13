@@ -8,7 +8,7 @@ export default class TestingModule extends ITestingModule {
   }
 
   clearDataSource(): Promise<void> {
-    return this.dataSource.query(
+    return this.queryRunner.query(
       "TRUNCATE discounts, discount_strategies CASCADE"
     );
   }

@@ -13,6 +13,6 @@ export default class TestingModule extends ITestingModule {
   }
 
   async clearDataSource(): Promise<void> {
-    await this.dataSource.query("TRUNCATE products CASCADE");
+    await this.queryRunner.query("TRUNCATE products CASCADE");
   }
 }

@@ -39,7 +39,7 @@ describe("[Modifier Categories Module] ...", () => {
   describe("[Get] /modifiers/categories", () => {
     it("should return all exists modifier categories", async () => {
       const modifierCategories = await createModifierCategoriesHelper(
-        testingModule.dataSource
+        testingModule
       );
 
       const getModifierCategoriesResponse = await api.getModifierCategories();
@@ -60,7 +60,7 @@ describe("[Modifier Categories Module] ...", () => {
 
     it("should return a special modifier category", async () => {
       const modifierCategories = await createModifierCategoriesHelper(
-        testingModule.dataSource
+        testingModule
       );
       const modifierCategory = modifierCategories[2];
 
@@ -149,9 +149,7 @@ describe("[Modifier Categories Module] ...", () => {
 
   describe("[Put] /modifiers/categories", () => {
     it("should successfully update a category", async () => {
-      const initialCarogory = await createModifierCategoryHelper(
-        testingModule.dataSource
-      );
+      const initialCarogory = await createModifierCategoryHelper(testingModule);
 
       const dto: UpdateModifierCategoryDto = {
         name: faker.datatype.string(),
@@ -198,7 +196,7 @@ describe("[Modifier Categories Module] ...", () => {
   describe("[Delete] /modifiers/categories", () => {
     it("should successfully delete a category", async () => {
       const modifierCategory = await createModifierCategoryHelper(
-        testingModule.dataSource
+        testingModule
       );
 
       const deleteModifierCategoryResponse = await api.deleteModifierCategory(

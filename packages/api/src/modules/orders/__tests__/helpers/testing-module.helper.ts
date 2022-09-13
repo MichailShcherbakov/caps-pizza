@@ -7,7 +7,7 @@ export default class TestingModule extends ITestingModule {
   }
 
   clearDataSource(): Promise<void> {
-    return this.dataSource.query(
+    return this.queryRunner.query(
       "TRUNCATE products, product_categories, modifiers, modifier_categories CASCADE"
     );
   }

@@ -12,6 +12,6 @@ export default class TestingModule extends ITestingModule {
   }
 
   async clearDataSource(): Promise<void> {
-    await this.dataSource.query("TRUNCATE deliveries CASCADE");
+    await this.queryRunner.query("TRUNCATE deliveries CASCADE");
   }
 }

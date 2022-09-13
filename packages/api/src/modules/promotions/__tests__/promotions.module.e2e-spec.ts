@@ -31,7 +31,7 @@ describe("[Promotion Module] ...", () => {
 
   describe("[Get] /promotions", () => {
     it("should return all exists promotions", async () => {
-      const products = await createPromotionsHelper(testingModule.dataSource);
+      const products = await createPromotionsHelper(testingModule);
 
       const getPromotionsResponse = await api.getPromotions();
 
@@ -43,7 +43,7 @@ describe("[Promotion Module] ...", () => {
     });
 
     it("should return a special promotion", async () => {
-      const promotion = await createPromotionHelper(testingModule.dataSource);
+      const promotion = await createPromotionHelper(testingModule);
 
       const getPromotionResponse = await api.getPromotion(promotion.uuid);
 
@@ -90,9 +90,7 @@ describe("[Promotion Module] ...", () => {
     });
 
     it("should throw an error when creating promotion with already exists promotion name", async () => {
-      const otherProduct = await createPromotionHelper(
-        testingModule.dataSource
-      );
+      const otherProduct = await createPromotionHelper(testingModule);
 
       const dto: CreatePromotionDto = {
         name: otherProduct.name,
@@ -112,9 +110,7 @@ describe("[Promotion Module] ...", () => {
     });
 
     it("should throw an error when creating promotion with already exists promotion image url", async () => {
-      const otherProduct = await createPromotionHelper(
-        testingModule.dataSource
-      );
+      const otherProduct = await createPromotionHelper(testingModule);
 
       const dto: CreatePromotionDto = {
         name: faker.datatype.string(),
@@ -136,7 +132,7 @@ describe("[Promotion Module] ...", () => {
 
   describe("[Put] /promotions", () => {
     it("should successfully update a promotion", async () => {
-      const promotion = await createPromotionHelper(testingModule.dataSource);
+      const promotion = await createPromotionHelper(testingModule);
 
       const dto: UpdatePromotionDto = {
         name: faker.datatype.string(),
@@ -161,10 +157,8 @@ describe("[Promotion Module] ...", () => {
     });
 
     it("should throw an error when updating promotion with already exists promotion name", async () => {
-      const promotion = await createPromotionHelper(testingModule.dataSource);
-      const otherPromotion = await createPromotionHelper(
-        testingModule.dataSource
-      );
+      const promotion = await createPromotionHelper(testingModule);
+      const otherPromotion = await createPromotionHelper(testingModule);
 
       const dto: UpdatePromotionDto = {
         name: otherPromotion.name,
@@ -184,10 +178,8 @@ describe("[Promotion Module] ...", () => {
     });
 
     it("should throw an error when updating promotion with already exists promotion image url", async () => {
-      const promotion = await createPromotionHelper(testingModule.dataSource);
-      const otherPromotion = await createPromotionHelper(
-        testingModule.dataSource
-      );
+      const promotion = await createPromotionHelper(testingModule);
+      const otherPromotion = await createPromotionHelper(testingModule);
 
       const dto: UpdatePromotionDto = {
         image_url: otherPromotion.image_url,
@@ -209,7 +201,7 @@ describe("[Promotion Module] ...", () => {
 
   describe("[Delete] /promotions", () => {
     it("should successfully delete a promotion", async () => {
-      const promotion = await createPromotionHelper(testingModule.dataSource);
+      const promotion = await createPromotionHelper(testingModule);
 
       const deletePromotionResponse = await api.deletePromotion(promotion.uuid);
 

@@ -34,7 +34,7 @@ describe("[Payment Module] ...", () => {
 
   describe("[Get] /payments", () => {
     it("should return all exists payments", async () => {
-      const payments = await createPaymentsHelper(testingModule.dataSource);
+      const payments = await createPaymentsHelper(testingModule);
 
       const getPaymentsResponse = await api.getPayments();
 
@@ -49,7 +49,7 @@ describe("[Payment Module] ...", () => {
     });
 
     it("should return a special payment", async () => {
-      const payment = await createPaymentHelper(testingModule.dataSource);
+      const payment = await createPaymentHelper(testingModule);
 
       const getPaymentResponse = await api.getPayment(payment.uuid);
 
@@ -94,7 +94,7 @@ describe("[Payment Module] ...", () => {
     });
 
     it("should throw an error when creating a payment with existing name", async () => {
-      const existsPayment = await createPaymentHelper(testingModule.dataSource);
+      const existsPayment = await createPaymentHelper(testingModule);
 
       const dto: CreatePaymentDto = {
         name: existsPayment.name,
@@ -112,7 +112,7 @@ describe("[Payment Module] ...", () => {
     });
 
     it("should throw an error when creating a payment with existing code", async () => {
-      const existsPayment = await createPaymentHelper(testingModule.dataSource);
+      const existsPayment = await createPaymentHelper(testingModule);
 
       const dto: CreatePaymentDto = {
         name: faker.datatype.string(),
@@ -132,7 +132,7 @@ describe("[Payment Module] ...", () => {
 
   describe("[Put] /payments", () => {
     it("should successfully update a payment", async () => {
-      const payment = await createPaymentHelper(testingModule.dataSource);
+      const payment = await createPaymentHelper(testingModule);
 
       const dto: UpdatePaymentDto = {
         name: faker.datatype.string(),
@@ -173,8 +173,8 @@ describe("[Payment Module] ...", () => {
     });
 
     it("should throw an error when updating a payment with existing name", async () => {
-      const existsPayment = await createPaymentHelper(testingModule.dataSource);
-      const payment = await createPaymentHelper(testingModule.dataSource);
+      const existsPayment = await createPaymentHelper(testingModule);
+      const payment = await createPaymentHelper(testingModule);
 
       const dto: UpdatePaymentDto = {
         name: existsPayment.name,
@@ -191,8 +191,8 @@ describe("[Payment Module] ...", () => {
     });
 
     it("should throw an error when updating a payment with existing code", async () => {
-      const existsPayment = await createPaymentHelper(testingModule.dataSource);
-      const payment = await createPaymentHelper(testingModule.dataSource);
+      const existsPayment = await createPaymentHelper(testingModule);
+      const payment = await createPaymentHelper(testingModule);
 
       const dto: UpdatePaymentDto = {
         code: existsPayment.code,
@@ -211,7 +211,7 @@ describe("[Payment Module] ...", () => {
 
   describe("[Delete] /payments", () => {
     it("should successfully delete a payment", async () => {
-      const payment = await createPaymentHelper(testingModule.dataSource);
+      const payment = await createPaymentHelper(testingModule);
 
       const deletePaymentResponse = await api.deletePayment(payment.uuid);
 

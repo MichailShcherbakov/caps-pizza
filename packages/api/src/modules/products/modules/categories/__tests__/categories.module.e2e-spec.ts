@@ -40,9 +40,7 @@ describe("[Product Categories Module] ... ", () => {
     let productCategories: ProductCategoryEntity[];
 
     beforeEach(async () => {
-      productCategories = await createProductCategoriesHelper(
-        testingModule.dataSource
-      );
+      productCategories = await createProductCategoriesHelper(testingModule);
     });
 
     it("should return all exists product categories", async () => {
@@ -146,7 +144,7 @@ describe("[Product Categories Module] ... ", () => {
 
     it("should throw an error when creating a product category with exists name", async () => {
       const otherProductCategory = await createProductCategoryHelper(
-        testingModule.dataSource
+        testingModule
       );
 
       const dto: CreateProductCategoryDto = {
@@ -171,7 +169,7 @@ describe("[Product Categories Module] ... ", () => {
   describe("[Put] /products/categories", () => {
     it("should successfully update a product category", async () => {
       const initialProductCategory = await createProductCategoryHelper(
-        testingModule.dataSource
+        testingModule
       );
 
       const dto: UpdateProductCategoryDto = {
@@ -219,10 +217,10 @@ describe("[Product Categories Module] ... ", () => {
 
     it("should throw an error when updating a product category with exists name", async () => {
       const initialProductCategory = await createProductCategoryHelper(
-        testingModule.dataSource
+        testingModule
       );
       const otherProductCategory = await createProductCategoryHelper(
-        testingModule.dataSource
+        testingModule
       );
 
       const dto: UpdateProductCategoryDto = {
@@ -245,9 +243,7 @@ describe("[Product Categories Module] ... ", () => {
 
   describe("[Delete] /products/categories", () => {
     it("should successfully delete a product category", async () => {
-      const productCategory = await createProductCategoryHelper(
-        testingModule.dataSource
-      );
+      const productCategory = await createProductCategoryHelper(testingModule);
 
       const deleteProductCategoryResponse = await api.deleteProductCategory(
         productCategory.uuid

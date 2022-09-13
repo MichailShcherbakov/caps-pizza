@@ -32,6 +32,9 @@ describe("[Unit] [Sync Module] ... ", () => {
     const deliveriesService =
       testingModule.get<DeliveriesService>(DeliveriesService);
     findOneDeliveryWrapper = jest.spyOn(deliveriesService, "findOne");
+
+    __DEV__ = false;
+    __SYNC_ON__ = true;
   });
 
   afterEach(() => {
@@ -49,8 +52,8 @@ describe("[Unit] [Sync Module] ... ", () => {
       syncWithFrontPadWrapper.mockResolvedValueOnce(true);
 
       expect(
-        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
-      ).resolves.toBeTruthy();
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeTruthy();
     });
 
     it("should return false when the article number is busy by the product", async () => {
@@ -59,8 +62,8 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneProductWrapper.mockResolvedValueOnce({});
 
       expect(
-        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
-      ).resolves.toBeFalsy();
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
 
     it("should return false when the article number is busy by the modifier", async () => {
@@ -69,8 +72,8 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneModifierWrapper.mockResolvedValueOnce({});
 
       expect(
-        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
-      ).resolves.toBeFalsy();
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
 
     it("should return false when the article number is busy by the delivery", async () => {
@@ -79,8 +82,8 @@ describe("[Unit] [Sync Module] ... ", () => {
       findOneDeliveryWrapper.mockResolvedValueOnce({});
 
       expect(
-        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
-      ).resolves.toBeFalsy();
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
 
     it("should return false when the article number is not found in the frontpad platform", async () => {
@@ -89,8 +92,8 @@ describe("[Unit] [Sync Module] ... ", () => {
       syncWithFrontPadWrapper.mockResolvedValueOnce(false);
 
       expect(
-        syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
-      ).resolves.toBeFalsy();
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
   });
 
@@ -101,13 +104,19 @@ describe("[Unit] [Sync Module] ... ", () => {
 
       findOneProductWrapper.mockResolvedValueOnce(TEST_PRODUCT);
 
-      expect(
+      await expect(
         syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(
           `The product ${TEST_PRODUCT.uuid} already has the article number`
         )
       );
+
+      findOneProductWrapper.mockResolvedValueOnce(TEST_PRODUCT);
+
+      expect(
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
 
     it("should throw an error when the article number is busy by the modifier", async () => {
@@ -116,13 +125,19 @@ describe("[Unit] [Sync Module] ... ", () => {
 
       findOneModifierWrapper.mockResolvedValueOnce(TEST_MODIFIER);
 
-      expect(
+      await expect(
         syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(
           `The modifier ${TEST_MODIFIER.uuid} already has the article number`
         )
       );
+
+      findOneModifierWrapper.mockResolvedValueOnce(TEST_MODIFIER);
+
+      expect(
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
 
     it("should throw an error when the article number is busy by the delivery", async () => {
@@ -131,13 +146,19 @@ describe("[Unit] [Sync Module] ... ", () => {
 
       findOneDeliveryWrapper.mockResolvedValueOnce(TEST_DELIVERY);
 
-      expect(
+      await expect(
         syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(
           `The delivery ${TEST_DELIVERY.uuid} already has the article number`
         )
       );
+
+      findOneDeliveryWrapper.mockResolvedValueOnce(TEST_DELIVERY);
+
+      expect(
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
 
     it("should throw an error when the article number is not found in the frontpad platform", async () => {
@@ -145,11 +166,17 @@ describe("[Unit] [Sync Module] ... ", () => {
 
       syncWithFrontPadWrapper.mockResolvedValueOnce(false);
 
-      expect(
+      await expect(
         syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER, true)
       ).rejects.toThrow(
         new BadRequestException(`Sync error. The article number not found`)
       );
+
+      syncWithFrontPadWrapper.mockResolvedValueOnce(false);
+
+      expect(
+        await syncService.isArticleNumberAvailable(TEST_ARTICLE_NUMBER)
+      ).toBeFalsy();
     });
   });
 });

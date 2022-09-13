@@ -42,21 +42,13 @@ describe("[Discounts Module] ...", () => {
 
     await api.init();
 
-    productCategories = await createProductCategoriesHelper(
-      testingModule.dataSource
-    );
-    products = await createProductsHelper(
-      testingModule.dataSource,
-      productCategories
-    );
+    productCategories = await createProductCategoriesHelper(testingModule);
+    products = await createProductsHelper(testingModule, productCategories);
 
     const modifierCategories = await createModifierCategoriesHelper(
-      testingModule.dataSource
+      testingModule
     );
-    modifiers = await createModifiersHelper(
-      testingModule.dataSource,
-      modifierCategories
-    );
+    modifiers = await createModifiersHelper(testingModule, modifierCategories);
   });
 
   afterEach(async () => {
@@ -69,28 +61,19 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Get] /discounts", () => {
     it("should return all exists discounts", async () => {
-      const discounts = await createDiscountsHelper(testingModule.dataSource);
+      const discounts = await createDiscountsHelper(testingModule);
 
       const getDiscountsResponse = await api.getDiscounts();
 
       expect(getDiscountsResponse.status).toEqual(200);
       expect(getDiscountsResponse.body).toEqual({
         statusCode: 200,
-        data: deleteObjectsPropsHelper(
-          DiscountsService.sort(discounts).map(discount => ({
-            ...discount,
-            strategies: deleteObjectsPropsHelper(discount.strategies, [
-              "updated_at",
-              "created_at",
-            ]),
-          })),
-          ["updated_at", "created_at"]
-        ),
+        data: DiscountsService.sort(discounts),
       });
     });
 
     it("should return a special discount", async () => {
-      const discounts = await createDiscountsHelper(testingModule.dataSource);
+      const discounts = await createDiscountsHelper(testingModule);
       const discount = discounts[2];
 
       const getDiscountResponse = await api.getDiscount(discount.uuid);
@@ -98,16 +81,7 @@ describe("[Discounts Module] ...", () => {
       expect(getDiscountResponse.status).toEqual(200);
       expect(getDiscountResponse.body).toEqual({
         statusCode: 200,
-        data: deleteObjectPropsHelper(
-          {
-            ...discount,
-            strategies: deleteObjectsPropsHelper(discount.strategies, [
-              "updated_at",
-              "created_at",
-            ]),
-          },
-          ["updated_at", "created_at"]
-        ),
+        data: discount,
       });
     });
 
@@ -282,9 +256,7 @@ describe("[Discounts Module] ...", () => {
     });
 
     it("should throw an error when creating a discount with exists name", async () => {
-      const otherDiscount = await createDiscountHelper(
-        testingModule.dataSource
-      );
+      const otherDiscount = await createDiscountHelper(testingModule);
 
       const dto: CreateDiscountDto = {
         name: otherDiscount.name,
@@ -650,7 +622,7 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Put] /discounts", () => {
     it(`should successfully update a discount`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule);
       const choisedProductCategories = [productCategories[2]];
       const choisedModifiers = [modifiers[3]];
 
@@ -723,10 +695,8 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with exists name`, async () => {
-      const otherDiscount = await createDiscountHelper(
-        testingModule.dataSource
-      );
-      const discount = await createDiscountHelper(testingModule.dataSource, {
+      const otherDiscount = await createDiscountHelper(testingModule);
+      const discount = await createDiscountHelper(testingModule, {
         type: DiscountTypeEnum.IN_CASH,
         value: 100,
       });
@@ -749,7 +719,7 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with a non-exists product`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule);
       const fakeProductUUID = faker.datatype.uuid();
       const chosenProducts = [
         products[2],
@@ -786,7 +756,7 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with a non-exists product category`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule);
       const fakeProductCategoryUUID = faker.datatype.uuid();
       const chosenProductCategories = [
         productCategories[2],
@@ -823,7 +793,7 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with a non-exists modifier`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule);
       const fakeModifierUUID = faker.datatype.uuid();
       const chosenModifiers = [
         modifiers[2],
@@ -860,7 +830,7 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with ${DiscountTypeEnum.PERCENT} and the value greater then 100`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource, {
+      const discount = await createDiscountHelper(testingModule, {
         type: DiscountTypeEnum.IN_CASH,
         value: 1000,
       });
@@ -884,7 +854,7 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`throw an error when updating a discount with ${DiscountTypeEnum.PERCENT} and the exist value greater then 100`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource, {
+      const discount = await createDiscountHelper(testingModule, {
         type: DiscountTypeEnum.IN_CASH,
         value: 1000,
       });
@@ -907,7 +877,7 @@ describe("[Discounts Module] ...", () => {
     });
 
     it(`should throw an error when updating a discount with ${DiscountOperatorEnum.BETWEEN} criteria operator and without provided value2`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule);
 
       const dto: UpdateDiscountDto = {
         strategies: [
@@ -939,10 +909,10 @@ describe("[Discounts Module] ...", () => {
 
     describe(`should throw an error when upading the discount with ${DiscountTypeEnum.FIXED_PRICE} discount type and with global discount scope`, () => {
       test("with type update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.PERCENT,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
@@ -972,10 +942,10 @@ describe("[Discounts Module] ...", () => {
       });
 
       test("with scope update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.FIXED_PRICE,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
@@ -1017,11 +987,11 @@ describe("[Discounts Module] ...", () => {
 
     describe(`should throw an error when upading the discount with ${DiscountTypeEnum.FIXED_PRICE} discount type and with ${DiscountCriteriaEnum.PRICE} discount criteria`, () => {
       test("with full update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.PERCENT,
           value: 3,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
@@ -1063,10 +1033,10 @@ describe("[Discounts Module] ...", () => {
       });
 
       test("with criteria update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.FIXED_PRICE,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
@@ -1107,10 +1077,10 @@ describe("[Discounts Module] ...", () => {
       });
 
       test("with type update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.PERCENT,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.PRICE,
@@ -1142,10 +1112,10 @@ describe("[Discounts Module] ...", () => {
 
     describe(`should throw an error when upading the discount with ${DiscountTypeEnum.FIXED_PRICE} discount type and with not ${DiscountOperatorEnum.EQUAL} discount operator`, () => {
       test("with full update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.PERCENT,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
@@ -1187,10 +1157,10 @@ describe("[Discounts Module] ...", () => {
       });
 
       test("with operator update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.FIXED_PRICE,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
@@ -1231,10 +1201,10 @@ describe("[Discounts Module] ...", () => {
       });
 
       test("with type update", async () => {
-        const discount = await createDiscountHelper(testingModule.dataSource, {
+        const discount = await createDiscountHelper(testingModule, {
           type: DiscountTypeEnum.PERCENT,
         });
-        await createDiscountStrategyHelper(testingModule.dataSource, {
+        await createDiscountStrategyHelper(testingModule, {
           discount_uuid: discount.uuid,
           condition: {
             criteria: DiscountCriteriaEnum.COUNT,
@@ -1267,7 +1237,7 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Delete] /discounts", () => {
     it(`should successfully delete a discount`, async () => {
-      const discount = await createDiscountHelper(testingModule.dataSource);
+      const discount = await createDiscountHelper(testingModule);
 
       const deleteDiscountResponse = await api.deleteDiscount(discount.uuid);
 

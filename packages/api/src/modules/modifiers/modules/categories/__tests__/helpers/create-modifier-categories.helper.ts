@@ -1,14 +1,14 @@
-import { DataSource } from "typeorm";
 import ModifierCategoryEntity from "~/db/entities/modifier-category.entity";
 import ModifierCategoriesSeeder from "~/db/seeders/modifier-categories.seeder";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/delete-object-props.helper";
+import { ITestingModule } from "~/utils/testing-module.interface";
 
 export default function createModifierCategoriesHelper(
-  dataSource: DataSource
+  testingModule: ITestingModule
 ): Promise<ModifierCategoryEntity[]> {
-  const seeder = new ModifierCategoriesSeeder(dataSource.createQueryRunner());
+  const seeder = new ModifierCategoriesSeeder(testingModule.queryRunner);
   return seeder
     .run(10)
     .then(
@@ -21,9 +21,9 @@ export default function createModifierCategoriesHelper(
 }
 
 export function createModifierCategoryHelper(
-  dataSource: DataSource
+  testingModule: ITestingModule
 ): Promise<ModifierCategoryEntity> {
-  const seeder = new ModifierCategoriesSeeder(dataSource.createQueryRunner());
+  const seeder = new ModifierCategoriesSeeder(testingModule.queryRunner);
   return seeder
     .seed({})
     .then(

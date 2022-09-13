@@ -32,26 +32,32 @@ export default class SyncService {
       this.deliveryService.findOne({ article_number: articleNumber }),
     ]);
 
-    if (product)
+    if (product) {
       if (throwError)
         throw new BadRequestException(
           `The product ${product.uuid} already has the article number`
         );
-      else return false;
 
-    if (modifier)
+      return false;
+    }
+
+    if (modifier) {
       if (throwError)
         throw new BadRequestException(
           `The modifier ${modifier.uuid} already has the article number`
         );
-      else return false;
 
-    if (delivery)
+      return false;
+    }
+
+    if (delivery) {
       if (throwError)
         throw new BadRequestException(
           `The delivery ${delivery.uuid} already has the article number`
         );
-      else return false;
+
+      return false;
+    }
 
     if (__DEV__ && !__SYNC_ON__) return true;
 
