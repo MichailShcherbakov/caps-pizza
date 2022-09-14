@@ -29,6 +29,7 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
+          base-path: ./packages/api
           path-to-lcov: ./packages/api/coverage/lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -49,5 +50,6 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
+          base-path: ./packages/web
           path-to-lcov: ./packages/web/coverage/lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
