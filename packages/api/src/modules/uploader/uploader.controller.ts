@@ -9,6 +9,11 @@ import {
 import { FileInterceptor } from "@nestjs/platform-express";
 import AuthGuard from "../auth/auth.guard";
 import { IImage, IMAGE_FILE_SIZE } from "@monorepo/common";
+import {
+  APP_IMAGES_LOCATION_PATH,
+  APP_IMAGES_LOCATION_URL,
+  APP_IMAGES_LOCATION_FULL_URL,
+} from "~/config";
 
 export class File implements IImage {
   filename: string;
@@ -18,7 +23,7 @@ export class File implements IImage {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, __APP_IMAGES_LOCATION_PATH__);
+    cb(null, APP_IMAGES_LOCATION_PATH);
   },
   filename: function (req, file, cb) {
     const ext = file.mimetype.split("/")[1].split("+")[0];
@@ -41,8 +46,8 @@ export class UploaderController {
 
     return {
       filename: file.filename,
-      url: `${__APP_IMAGES_LOCATION_URL__}/${file.filename}`,
-      full_url: `${__APP_IMAGES_LOCATION_FULL_URL__}/${file.filename}`,
+      url: `${APP_IMAGES_LOCATION_URL}/${file.filename}`,
+      full_url: `${APP_IMAGES_LOCATION_FULL_URL}/${file.filename}`,
     };
   }
 }
