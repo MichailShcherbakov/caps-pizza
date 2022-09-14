@@ -27,3 +27,7 @@ jobs:
         run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit api
       - name: Run Web tests
         run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit web
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -27,4 +27,4 @@ COPY . .
 # Build common package
 RUN npx lerna run build --scope @monorepo/common
 
-CMD npx lerna link && npx lerna run start:test --scope @monorepo/api
+CMD npx lerna link && npx lerna run start:test:cov --scope @monorepo/api
