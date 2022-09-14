@@ -28,9 +28,9 @@ COPY . .
 RUN yarn build:common
 
 # Run linter
-RUN yarn lint
+RUN yarn lint:api
 
 # Run formatter
-RUN yarn fmt
+RUN yarn fmt:api
 
 CMD npx lerna link && npx lerna run start:test:cov --scope @monorepo/api  
