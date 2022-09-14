@@ -9,11 +9,11 @@
   <img alt="GitHub" src="https://img.shields.io/github/license/MichailShcherbakov/caps-pizza">
 <p>
 
-## Preview
+## 🎨 Preview
 
 <img alt src="https://github.com//MichailShcherbakov/caps-pizza/blob/master/.github/screenshots/main.png?raw=true" />
 
-## Quick Start
+## 🚀 Quick Start
 
 1. Create in the root directory a file `.env` by sample `.env.example`
 
@@ -34,7 +34,7 @@ DATABASE_PASSWORD=db_password
 ```sh
 docker compose --file docker-compose.prod.yml up --build
 ```
-## Stack
+## ⚒ Stack
 
 <h4>API</h4>
 
@@ -49,7 +49,7 @@ docker compose --file docker-compose.prod.yml up --build
 - Material Design
 - Formik
 
-## Author
-<a href="https://github.com/MichailShcherbakov" >
-  <img src="https://avatars.githubusercontent.com/u/50011226?s=96&v=4" style="width: 44px; border-radius: 50%;"/>
+## 👨🏻‍💻 Author
+<a href="https://github.com/MichailShcherbakov" style="border-radius: 50%; overflow: 'hidden';">
+  <img src="https://avatars.githubusercontent.com/u/50011226?s=96&v=4" style="width: 44px"/>
 </a>
