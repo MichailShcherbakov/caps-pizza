@@ -38,6 +38,12 @@ RUN npx lerna bootstrap
 COPY . .
 
 # Build common package
-RUN npx lerna run build --scope @monorepo/common
+RUN yarn build:common
+
+# Run linter
+RUN yarn lint
+
+# Run formatter
+RUN yarn fmt
 
 CMD npx lerna link && npx lerna run start:test:cov --scope @monorepo/web
