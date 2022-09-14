@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   db:
@@ -15,7 +15,7 @@ services:
       context: .
       dockerfile: dockerfile.api.test
       args:
-          WORKDIR: /usr/src/caps-pizza/api
+        WORKDIR: /usr/src/caps-pizza/api
     environment:
       - SECRET=${API_SECRET}
       - PORT=8080
@@ -31,6 +31,8 @@ services:
       - SYNC_ON=1
     depends_on:
       - db
+    volumes:
+      - ./packages/api/coverage:/usr/src/caps-pizza/api/packages/api/coverage
     container_name: caps_pizza_test_api
     restart: "no"
 
@@ -41,12 +43,13 @@ services:
       args:
         WORKDIR: /usr/src/caps-pizza/web
         PORT: 3000
-        HOST: '127.0.0.1'
+        HOST: "127.0.0.1"
         IMAGE_HOST: ${HOST}
-        NEXT_PUBLIC_API_URL: 'http://${HOST}/api/v1'
-        NEXT_PUBLIC_IMAGES_SOURCE_URL: 'http://${HOST}/api/v1'
+        NEXT_PUBLIC_API_URL: "http://${HOST}/api/v1"
+        NEXT_PUBLIC_IMAGES_SOURCE_URL: "http://${HOST}/api/v1"
     depends_on:
       - api
+    volumes:
+      - ./packages/web/coverage:/usr/src/caps-pizza/web/packages/web/coverage
     container_name: caps_pizza_test_web
     restart: "no"
-    

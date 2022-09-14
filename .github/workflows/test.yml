@@ -13,7 +13,7 @@ env:
   DATABASE_USERNAME: ${{secrets.DATABASE_USERNAME}}
   DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
 jobs:
-  test:
+  test-api:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,8 +25,26 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Run API tests
         run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit api
-      - name: Run Web tests
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  test-web:
+    needs: test-api
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to DockerHub Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Run API tests
         run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit web
+
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
