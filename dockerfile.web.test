@@ -32,7 +32,7 @@ COPY packages/web/package.json ./packages/web/package.json
 RUN printf "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL\nNEXT_PUBLIC_IMAGES_SOURCE_URL=$NEXT_PUBLIC_IMAGES_SOURCE_URL" >> ./packages/web/.env.production
 
 RUN yarn install
-RUN npx lerna bootstrap
+RUN yarn bootstrap
 
 # Copy project
 COPY . .
@@ -40,10 +40,12 @@ COPY . .
 # Build common package
 RUN yarn build:common
 
+RUN yarn pkg:link
+
 # Run linter
 RUN yarn lint:web
 
 # Run formatter
 RUN yarn fmt:web
 
-CMD npx lerna link && npx lerna run start:test:cov --scope @monorepo/web
+CMD yarn start:test:cov:web

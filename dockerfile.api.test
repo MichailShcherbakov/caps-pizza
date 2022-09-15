@@ -19,7 +19,7 @@ COPY packages/api/package.json ./packages/api/package.json
 
 # Install dev deps
 RUN yarn install
-RUN npx lerna bootstrap
+RUN yarn bootstrap
 
 # Copy project
 COPY . .
@@ -27,10 +27,12 @@ COPY . .
 # Build common package
 RUN yarn build:common
 
+RUN yarn pkg:link
+
 # Run linter
 RUN yarn lint:api
 
 # Run formatter
 RUN yarn fmt:api
 
-CMD npx lerna link && npx lerna run start:test:cov --scope @monorepo/api  
+CMD yarn start:test:cov:api  
