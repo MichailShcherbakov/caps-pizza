@@ -71,4 +71,4 @@ COPY --from=builder ${WORKDIR}/packages/api/static/images ./packages/api/static/
 EXPOSE ${PORT}
 
 # Run
-CMD yarn migration:up && yarn start:prod:api
+CMD yarn pkg:link && yarn migration:up && yarn start:prod:api

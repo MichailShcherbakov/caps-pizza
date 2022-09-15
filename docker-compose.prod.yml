@@ -27,11 +27,7 @@ services:
     restart: unless-stopped
 
   api:
-    build:
-      context: .
-      dockerfile: dockerfile.api.prod
-      args:
-        WORKDIR: /usr/src/caps-pizza/api
+    image: 254891781/caps-pizza-api:latest
     environment:
       - SECRET=${API_SECRET}
       - PORT=8080
@@ -53,16 +49,7 @@ services:
     restart: unless-stopped
 
   web:
-    build:
-      context: .
-      dockerfile: ./dockerfile.web.prod
-      args:
-        WORKDIR: /usr/src/caps-pizza/web
-        PORT: 3000
-        HOST: "127.0.0.1"
-        IMAGE_HOST: ${HOST}
-        NEXT_PUBLIC_API_URL: "http://${HOST}/api/v1"
-        NEXT_PUBLIC_IMAGES_SOURCE_URL: "http://${HOST}/api/v1"
+    image: 254891781/caps-pizza-web:latest
     depends_on:
       - api
     container_name: caps_pizza_web

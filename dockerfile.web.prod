@@ -95,4 +95,4 @@ COPY --from=builder ${WORKDIR}/packages/web/next.config.js ./packages/web/next.c
 EXPOSE ${PORT}
 
 # Run
-CMD yarn start:prod:web
+CMD yarn pkg:link && yarn start:prod:web
