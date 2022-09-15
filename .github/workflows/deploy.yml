@@ -57,8 +57,8 @@ jobs:
           playbook: deploy.yml
           directory: ./
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-        inventory: |
-          [all]
-          ${{ secrets.HOST }} ansible_ssh_port=${{secrets.SSH_PORT}} ansible_ssh_user=${{secrets.SSH_USER}} ansible_become_user=${{secrets.ANSIBLE_BECOME_USER}} ansible_become_password=${{secrets.ANSIBLE_BECOME_PASSWORD}}
-        options: |
-          --verbose
+          inventory: |
+            [all]
+            ${{ secrets.HOST }} ansible_ssh_port=${{secrets.SSH_PORT}} ansible_ssh_user=${{secrets.SSH_USER}} ansible_become_user=${{secrets.ANSIBLE_BECOME_USER}} ansible_become_password=${{secrets.ANSIBLE_BECOME_PASSWORD}}
+          options: |
+            --verbose
