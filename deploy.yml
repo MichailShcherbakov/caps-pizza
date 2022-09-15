@@ -1,0 +1,34 @@
+---
+- hosts: all
+  gather_facts: true
+  vars:
+    app_path: /usr/src/caps-pizza
+  tasks:
+    - name: "create {{ app_path }}/"
+      file:
+        path: "{{ app_path }}/"
+        state: "directory"
+        owner: "noteadmin"
+        group: "noteadmin"
+        mode: 0775
+      become: yes
+      become_method: sudo
+
+    - name: "copy docker-compose.prod.yml"
+      copy:
+        src: "docker-compose.prod.yml"
+        dest: "{{ app_path }}/docker-compose.prod.yml"
+        owner: "noteadmin"
+        group: "noteadmin"
+        mode: 0644
+      become: yes
+      become_method: sudo
+
+    - name: "stop service"
+      shell: docker compose --file {{ app_path }}/docker-compose.prod.yml stop
+
+    - name: "pull images"
+      shell: docker-compose --file {{ app_path }}/docker-compose.prod.yml pull
+
+    - name: "start services"
+      shell: docker-compose --file {{ app_path }}/docker-compose.prod.yml up -d

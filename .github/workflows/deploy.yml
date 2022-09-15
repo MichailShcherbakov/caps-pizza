@@ -31,6 +31,8 @@ jobs:
           build-args: |
             WORKDIR=/usr/src/caps-pizza/api
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache,mode=max
 
       - name: Build and push WEB package
         uses: docker/build-push-action@v3
@@ -46,3 +48,12 @@ jobs:
             NEXT_PUBLIC_API_URL=http://${{ secrets.HOST }}/api/v1
             NEXT_PUBLIC_IMAGES_SOURCE_URL=http://${{ secrets.HOST }}/api/v1
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache,mode=max
+
+      - name: Deploy
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: deploy.yml
+          directory: ./
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
