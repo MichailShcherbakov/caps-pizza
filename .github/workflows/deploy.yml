@@ -27,7 +27,8 @@ jobs:
           context: .
           file: ./dockerfile.api.prod
           push: true
-          build-args: WORKDIR=/usr/src/caps-pizza/api
+          build-args:
+            - WORKDIR=/usr/src/caps-pizza/api
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:latest
 
       - name: Build and push WEB package
@@ -36,5 +37,11 @@ jobs:
           context: .
           file: ./dockerfile.web.prod
           push: true
-          build-args: WORKDIR=/usr/src/caps-pizza/web, PORT=3000, HOST=127.0.0.1, IMAGE_HOST=${{ secrets.HOST }}, NEXT_PUBLIC_API_URL=http://${{ secrets.HOST }}/api/v1, NEXT_PUBLIC_IMAGES_SOURCE_URL=http://${{ secrets.HOST }}/api/v1
+          build-args:
+            - WORKDIR=/usr/src/caps-pizza/web
+            - PORT=3000
+            - HOST=127.0.0.1
+            - IMAGE_HOST=${{ secrets.HOST }}
+            - NEXT_PUBLIC_API_URL=http://${{ secrets.HOST }}/api/v1
+            - NEXT_PUBLIC_IMAGES_SOURCE_URL=http://${{ secrets.HOST }}/api/v1
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:latest
