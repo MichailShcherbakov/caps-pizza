@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap && lerna link",
+    "ci": "yarn install --production --frozen-lockfile --ignore-scripts --prefer-offline",
+    "bootstrap": "lerna bootstrap",
+    "pkg:link": "lerna link",
     "build": "lerna run build --parallel",
     "start": "lerna run start --parallel",
     "migration:up": "lerna run migration:run --scope @monorepo/api",

@@ -19,20 +19,20 @@ COPY packages/api/package.json ./packages/api/package.json
 
 # Install dev deps
 RUN yarn install
-RUN npx lerna bootstrap
+RUN yarn bootstrap
 
 # Copy project
 COPY . .
 
 # Build
-RUN npx lerna run build --scope @monorepo/common
+RUN yarn build:common
 
-RUN npx lerna link
+RUN yarn pkg:link
 
-RUN npx lerna run build --scope @monorepo/api
+RUN yarn build:api
 
 # Install production deps
-RUN yarn install --production --frozen-lockfile --ignore-scripts --prefer-offline
+RUN yarn ci
 
 # Runner 
 FROM node:18.8-alpine3.15 as runner 
@@ -71,4 +71,4 @@ COPY --from=builder ${WORKDIR}/packages/api/static/images ./packages/api/static/
 EXPOSE ${PORT}
 
 # Run
-CMD npx lerna link && yarn run migration:up && yarn start:prod:api
+CMD yarn migration:up && yarn start:prod:api

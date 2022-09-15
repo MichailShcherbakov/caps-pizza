@@ -21,10 +21,20 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push API package
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./dockerfile.api.prod
           push: true
+          build-args: WORKDIR=/usr/src/caps-pizza/api
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:latest
+
+      - name: Build and push WEB package
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./dockerfile.web.prod
+          push: true
+          build-args: WORKDIR=/usr/src/caps-pizza/web
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:latest

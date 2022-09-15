@@ -23,6 +23,3 @@ docker-compose*
 packages/**/dockerfile*
 packages/**/docker-compose*
 packages/**/.dockerignore*
-
-wallaby.js
-
