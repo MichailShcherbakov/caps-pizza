@@ -10,7 +10,7 @@
         state: "directory"
         owner: "noteadmin"
         group: "noteadmin"
-        mode: 1740
+        mode: 1744
       become: yes
       become_method: sudo
 
