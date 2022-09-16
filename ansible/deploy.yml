@@ -26,8 +26,8 @@
 
     - name: "copy nginx.conf"
       copy:
-        src: "../nginx/default.conf"
-        dest: "{{ app_path }}/nginx/default.conf"
+        src: "../nginx"
+        dest: "{{ app_path }}/nginx"
         owner: "root"
         group: "root"
         mode: 0700
