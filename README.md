@@ -32,7 +32,7 @@ DATABASE_PASSWORD=db_password
 
 2. Next, run the following command:
 ```sh
-docker compose --file docker-compose.prod.yml up --build
+docker compose --file docker-compose.prod.yml up
 ```
 
 ## Secrets
