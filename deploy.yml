@@ -8,9 +8,9 @@
       file:
         path: "{{ app_path }}/"
         state: "directory"
-        owner: "noteadmin"
-        group: "noteadmin"
-        mode: 1744
+        owner: "root"
+        group: "root"
+        mode: 1700
       become: yes
       become_method: sudo
 
@@ -18,9 +18,9 @@
       copy:
         src: "docker-compose.prod.yml"
         dest: "{{ app_path }}/docker-compose.prod.yml"
-        owner: "noteadmin"
-        group: "noteadmin"
-        mode: 0744
+        owner: "root"
+        group: "root"
+        mode: 0700
       become: yes
       become_method: sudo
 
