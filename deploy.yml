@@ -10,7 +10,7 @@
         state: "directory"
         owner: "noteadmin"
         group: "noteadmin"
-        mode: 0775
+        mode: 1740
       become: yes
       become_method: sudo
 
@@ -20,7 +20,7 @@
         dest: "{{ app_path }}/docker-compose.prod.yml"
         owner: "noteadmin"
         group: "noteadmin"
-        mode: 0644
+        mode: 0744
       become: yes
       become_method: sudo
 
