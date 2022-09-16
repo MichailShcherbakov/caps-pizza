@@ -45,7 +45,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Run API tests
+      - name: Run WEB tests
         run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit web
 
       - name: Coveralls
