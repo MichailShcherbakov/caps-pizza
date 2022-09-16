@@ -24,6 +24,16 @@
       become: yes
       become_method: sudo
 
+    - name: "copy nginx.conf"
+      copy:
+        src: "nginx/default.conf"
+        dest: "{{ app_path }}/nginx/default.conf"
+        owner: "root"
+        group: "root"
+        mode: 0700
+      become: yes
+      become_method: sudo
+
     - name: "stop service"
       shell: docker compose --file {{ app_path }}/docker-compose.prod.yml stop
 
