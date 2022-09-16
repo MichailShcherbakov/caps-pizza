@@ -2,12 +2,15 @@ import { GetServerSideProps } from "next";
 import { getRunningOperationPromises } from "~/services/api.service";
 import { wrapper } from "~/store";
 import { setAccessToken } from "~/store/auth.reducer";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 export const withAuth: GetServerSideProps = wrapper.getServerSideProps(
   store =>
     async ({ req, res }) => {
       const refreshTokenResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
+        `${publicRuntimeConfig.API_URL}/auth/refresh-token`,
         {
           method: "POST",
           headers: {

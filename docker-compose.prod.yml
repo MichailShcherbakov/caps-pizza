@@ -14,6 +14,7 @@ services:
     depends_on:
       - web
       - api
+    restart: unless-stopped
 
   db:
     image: postgres:14
@@ -29,9 +30,9 @@ services:
   api:
     image: 254891781/caps-pizza-api:latest
     environment:
-      - SECRET=${API_SECRET}
       - PORT=8080
       - HOST=127.0.0.1
+      - SECRET=${API_SECRET}
       - FRONTEND_URL=http://${HOST}
       - JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}
       - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
@@ -50,6 +51,12 @@ services:
 
   web:
     image: 254891781/caps-pizza-web:latest
+    environment:
+      - PORT=3000
+      - HOST=127.0.0.1
+      - IMAGE_HOST=${HOST}
+      - API_URL=http://${HOST}/api/v1
+      - IMAGES_SOURCE_URL=http://${HOST}/api/v1
     depends_on:
       - api
     container_name: caps_pizza_web

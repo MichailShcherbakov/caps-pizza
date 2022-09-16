@@ -7,9 +7,12 @@ import {
   SelectChangeEvent,
   Stack,
 } from "@mui/material";
+import getConfig from "next/config";
 import React from "react";
 import { ProductCategory } from "~/services/product-categories.service";
 import { ExternalSvg } from "~/ui";
+
+const { publicRuntimeConfig } = getConfig();
 
 export interface ProductCategoriesSelectProps {
   productCategories: ProductCategory[];
@@ -49,7 +52,7 @@ export const ProductCategoriesSelect: React.FC<ProductCategoriesSelectProps> =
                   }}
                 >
                   <ExternalSvg
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${c.image_url}`}
+                    src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${c.image_url}`}
                     sx={{
                       width: theme => theme.spacing(3),
                       height: theme => theme.spacing(3),

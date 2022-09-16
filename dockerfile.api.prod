@@ -22,7 +22,8 @@ RUN yarn install
 RUN yarn bootstrap
 
 # Copy project
-COPY . .
+COPY packages/common ./packages/common
+COPY packages/api ./packages/api
 
 # Build
 RUN yarn build:common
@@ -60,7 +61,7 @@ COPY --from=builder ${WORKDIR}/packages/common/dist ./packages/common/dist
 COPY --from=builder ${WORKDIR}/packages/common/package.json ./packages/common/package.json
 COPY --from=builder ${WORKDIR}/packages/common/node_modules ./packages/common/node_modules
 
-# COPY --from=builder --chown=nextjs:nodejs ${WORKDIR}/packages/api/dist ./packages/api/dist
+# COPY --from=builder --chown=nestjs:nodejs ${WORKDIR}/packages/api/dist ./packages/api/dist
 COPY --from=builder ${WORKDIR}/packages/api/dist ./packages/api/dist
 COPY --from=builder ${WORKDIR}/packages/api/package.json ./packages/api/package.json
 COPY --from=builder ${WORKDIR}/packages/api/node_modules ./packages/api/node_modules

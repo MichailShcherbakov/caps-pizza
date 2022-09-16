@@ -34,6 +34,26 @@ DATABASE_PASSWORD=db_password
 ```sh
 docker compose --file docker-compose.prod.yml up --build
 ```
+
+## Secrets
+
+ | Secrets | Discription | Example |
+| ------ | ------ | ------ |
+| **SSH_USER** | *Username of ssh connection* | root
+| **SSH_PORT** | *SSH port* | 22
+| **SSH_PRIVATE_KEY** | *Private Key from Key pair of your server* | -----BEGIN RSA PRIVATE KEY...
+| **ANSIBLE_BECOME_USER** | *Username of ansible become* | admin
+| **ANSIBLE_BECOME_PASSWORD** | *Password of ansible become* | admin
+| **DOCKER_HUB_USERNAME** | *Username of your Dockerhub account* | docker
+| **DOCKER_HUB_ACCESS_TOKEN** | *Password of your Dockerhub account* | docker
+| **HOST** | *Host your server* | my.great.site.com \| 57.57.57.57
+| **API_SECRET** | *Your frontpad secret key* | 4gd6f54g6df4g...
+| **JWT_ACCESS_TOKEN_SECRET** | *JWT secret* | gdf46g5d4f6...
+| **JWT_REFRESH_TOKEN_SECRET** | *JWT secret* | gdf46g5d4f6...
+| **DATABASE_NAME** | *Database name* | db_name 
+| **DATABASE_USERNAME** | *Database username* | db_username 
+| **DATABASE_PASSWORD** | *Database password* | db_password 
+
 ## ⚒ Stack
 
 <h4>API</h4>

@@ -17,9 +17,9 @@ services:
       args:
         WORKDIR: /usr/src/caps-pizza/api
     environment:
-      - SECRET=${API_SECRET}
       - PORT=8080
       - HOST=127.0.0.1
+      - SECRET=${API_SECRET}
       - FRONTEND_URL=http://${HOST}
       - JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}
       - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
@@ -42,11 +42,12 @@ services:
       dockerfile: ./dockerfile.web.test
       args:
         WORKDIR: /usr/src/caps-pizza/web
-        PORT: 3000
-        HOST: "127.0.0.1"
-        IMAGE_HOST: ${HOST}
-        NEXT_PUBLIC_API_URL: "http://${HOST}/api/v1"
-        NEXT_PUBLIC_IMAGES_SOURCE_URL: "http://${HOST}/api/v1"
+    environment:
+      - HOST=3000
+      - PORT=127.0.0.1
+      - IMAGE_HOST=${HOST}
+      - API_URL=http://${HOST}/api/v1
+      - IMAGES_SOURCE_URL=http://${HOST}/api/v1
     depends_on:
       - api
     volumes:

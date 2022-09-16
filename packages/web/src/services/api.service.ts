@@ -1,11 +1,14 @@
+import getConfig from "next/config";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { HYDRATE } from "next-redux-wrapper";
 import { RootState } from "~/store";
 import { setAccessToken } from "~/store/auth.reducer";
 import { RefreshTokenResponse } from "./auth.service";
 
+const { publicRuntimeConfig } = getConfig();
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL,
+  baseUrl: publicRuntimeConfig.API_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
 

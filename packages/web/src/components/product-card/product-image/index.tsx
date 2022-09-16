@@ -3,7 +3,9 @@ import { Stack } from "@mui/material";
 import React from "react";
 import LoadingIcon from "~/assets/pizza-loading-2.svg";
 import { useStyle } from "./index.style";
+import getConfig from "next/config";
 
+const { publicRuntimeConfig } = getConfig();
 export interface ProductCardImageProps {
   productName: string;
   imageURL: string;
@@ -32,7 +34,7 @@ export const ProductImage: React.FC<ProductCardImageProps> = ({
     <Stack component="picture" className={classes.root}>
       {loading ? <LoadingIcon /> : undefined}
       <NextImage
-        src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
+        src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
         alt={productName}
         layout="fill"
         onLoadingComplete={onLoadingComplete}

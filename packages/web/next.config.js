@@ -16,6 +16,10 @@ const nextConfig = {
   images: {
     domains: [process.env.HOST, process.env.IMAGE_HOST],
   },
+  publicRuntimeConfig: {
+    API_URL: process.env.API_URL,
+    IMAGES_SOURCE_URL: process.env.IMAGES_SOURCE_URL,
+  },
 };
 
 module.exports = withPlugins([withTM], nextConfig);
