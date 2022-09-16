@@ -27,7 +27,7 @@
     - name: "copy nginx.conf"
       copy:
         src: "../nginx"
-        dest: "{{ app_path }}/nginx"
+        dest: "{{ app_path }}"
         owner: "root"
         group: "root"
         mode: 0700
