@@ -27,7 +27,7 @@
           DATABASE_PASSWORD={{ DATABASE_PASSWORD }}
         owner: "root"
         group: "root"
-        mode: 1700
+        mode: 0700
       become: yes
       become_method: sudo
 
@@ -47,7 +47,7 @@
         dest: "{{ app_path }}"
         owner: "root"
         group: "root"
-        mode: 0700
+        mode: 1700
       become: yes
       become_method: sudo
 
