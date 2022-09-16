@@ -56,5 +56,5 @@ jobs:
             [all]
             ${{ secrets.HOST }} ansible_ssh_port=${{secrets.SSH_PORT}} ansible_ssh_user=${{secrets.SSH_USER}} ansible_become_user=${{secrets.ANSIBLE_BECOME_USER}} ansible_become_password=${{secrets.ANSIBLE_BECOME_PASSWORD}}
           options: |
-            --extra-vars HOST=${{ secrets.HOST }} API_SECRET=${{ secrets.API_SECRET }} JWT_ACCESS_TOKEN_SECRET=${{ secrets.JWT_ACCESS_TOKEN_SECRET }} JWT_REFRESH_TOKEN_SECRET=${{ secrets.JWT_REFRESH_TOKEN_SECRET }} DATABASE_NAME=${{ secrets.DATABASE_NAME }} DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            --extra-vars "HOST=${{ secrets.HOST }} API_SECRET=${{ secrets.API_SECRET }} JWT_ACCESS_TOKEN_SECRET=${{ secrets.JWT_ACCESS_TOKEN_SECRET }} JWT_REFRESH_TOKEN_SECRET=${{ secrets.JWT_REFRESH_TOKEN_SECRET }} DATABASE_NAME=${{ secrets.DATABASE_NAME }} DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
             --verbose
