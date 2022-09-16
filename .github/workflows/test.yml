@@ -15,6 +15,7 @@ env:
 jobs:
   test-api:
     runs-on: ubuntu-latest
+    environment: test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,8 +35,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   test-web:
-    needs: test-api
     runs-on: ubuntu-latest
+    environment: test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
