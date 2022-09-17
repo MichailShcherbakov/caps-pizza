@@ -2,8 +2,30 @@ name: Deploy CI
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Run API tests
+        run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit api
+
+      - name: Run WEB tests
+        run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit web
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     environment: production
     steps:
