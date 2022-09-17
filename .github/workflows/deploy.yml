@@ -4,6 +4,14 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+env:
+  HOST: ${{secrets.HOST}}
+  API_SECRET: ${{secrets.API_SECRET}}
+  JWT_ACCESS_TOKEN_SECRET: ${{secrets.JWT_ACCESS_TOKEN_SECRET}}
+  JWT_REFRESH_TOKEN_SECRET: ${{secrets.JWT_REFRESH_TOKEN_SECRET}}
+  DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+  DATABASE_USERNAME: ${{secrets.DATABASE_USERNAME}}
+  DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
 jobs:
   test:
     runs-on: ubuntu-latest
