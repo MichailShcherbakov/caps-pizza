@@ -35,7 +35,7 @@ DATABASE_PASSWORD=db_password
 docker compose --file docker-compose.prod.yml up
 ```
 
-## Secrets
+## 🔑 Secrets
 
  | Secrets | Discription | Example |
 | ------ | ------ | ------ |

@@ -52,4 +52,6 @@ function App(props: AppProps) {
   );
 }
 
+App.getInitialProps = () => ({});
+
 export default App;
