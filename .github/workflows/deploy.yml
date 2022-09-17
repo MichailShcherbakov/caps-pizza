@@ -4,8 +4,36 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+env:
+  HOST: ${{secrets.HOST}}
+  API_SECRET: ${{secrets.API_SECRET}}
+  JWT_ACCESS_TOKEN_SECRET: ${{secrets.JWT_ACCESS_TOKEN_SECRET}}
+  JWT_REFRESH_TOKEN_SECRET: ${{secrets.JWT_REFRESH_TOKEN_SECRET}}
+  DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+  DATABASE_USERNAME: ${{secrets.DATABASE_USERNAME}}
+  DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Run API tests
+        run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit api
+
+      - name: Run WEB tests
+        run: docker compose --file docker-compose.test.yml up --build --abort-on-container-exit web
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -33,8 +61,8 @@ jobs:
           build-args: |
             WORKDIR=/usr/src/caps-pizza/api
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache,mode=max
+          # cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache
+          # cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache,mode=max
 
       - name: Build and push WEB package
         uses: docker/build-push-action@v3
@@ -45,8 +73,8 @@ jobs:
           build-args: |
             WORKDIR=/usr/src/caps-pizza/web
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache,mode=max
+          # cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache
+          # cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache,mode=max
 
       - name: Deploy on VPS
         uses: dawidd6/action-ansible-playbook@v2
