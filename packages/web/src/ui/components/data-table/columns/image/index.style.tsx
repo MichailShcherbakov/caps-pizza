@@ -7,10 +7,7 @@ export interface StyleProps {
 export const useStyle = makeStyles<StyleProps>()((theme, { loading }) => ({
   root: {
     position: "relative",
-    alignSelf: "center",
     flexShrink: 0,
-    alignItems: "center",
-    justifyContent: "center",
     fill: theme.palette.neutral.light,
 
     "& > span img": {

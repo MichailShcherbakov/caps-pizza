@@ -1,9 +1,10 @@
 import NextImage from "next/image";
-import { Stack, TableCell } from "@mui/material";
+import { Stack } from "@mui/material";
 import React from "react";
 import LoadingIcon from "~/assets/pizza-loading-2.svg";
 import { useStyle } from "./index.style";
 import getConfig from "next/config";
+import { TableCell } from "~/ui";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -37,19 +38,22 @@ export const ImageColumn: React.FC<ProductCardImageProps> = ({
         direction="row"
         alignItems="center"
         justifyContent={align === "left" ? "flex-start" : "flex-end"}
-        className={cx(classes.root, className)}
-        style={{
-          width: `${imageWidth}px`,
-          height: `${imageHeight}px`,
-        }}
       >
-        {loading ? <LoadingIcon /> : undefined}
-        <NextImage
-          src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
-          layout="fill"
-          alt="data table image cell"
-          onLoadingComplete={onLoadingComplete}
-        />
+        <Stack
+          className={cx(classes.root, className)}
+          style={{
+            width: `${imageWidth}px`,
+            height: `${imageHeight}px`,
+          }}
+        >
+          {loading ? <LoadingIcon /> : undefined}
+          <NextImage
+            src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
+            layout="fill"
+            alt="data table image cell"
+            onLoadingComplete={onLoadingComplete}
+          />
+        </Stack>
       </Stack>
     </TableCell>
   );
