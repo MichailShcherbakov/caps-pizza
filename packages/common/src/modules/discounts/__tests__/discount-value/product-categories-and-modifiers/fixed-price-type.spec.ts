@@ -656,6 +656,84 @@ describe("[Discount Module] ...", () => {
         ).toEqual([]);
       });
 
+      it("should not return a discount (not enough full product cost)", () => {
+        const productCategory = createProductCategory();
+        const products = [
+          createProduct({
+            category_uuid: productCategory.uuid,
+            category: productCategory,
+            price: 420, // 420 * 3 = 1260 < 1299
+          }),
+        ];
+        const discount: IDiscount = createDiscount({
+          type: DiscountTypeEnum.FIXED_PRICE,
+          value: 1299,
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.COUNT,
+                op: DiscountOperatorEnum.EQUAL,
+                value: 3,
+              },
+              products: [],
+              product_categories: [productCategory],
+              modifiers: [],
+            },
+          ],
+        });
+        expect(
+          getSuitableDiscounts(
+            [discount],
+            [
+              {
+                ...products[0],
+                fullPrice: 420,
+                count: 3,
+              },
+            ]
+          )
+        ).toEqual([]);
+      });
+
+      it("should not return a discount (not enough full product cost [x2])", () => {
+        const productCategory = createProductCategory();
+        const products = [
+          createProduct({
+            category_uuid: productCategory.uuid,
+            category: productCategory,
+            price: 420, // 420 * 3 = 1260 < 1299
+          }),
+        ];
+        const discount: IDiscount = createDiscount({
+          type: DiscountTypeEnum.FIXED_PRICE,
+          value: 1299,
+          strategies: [
+            {
+              condition: {
+                criteria: DiscountCriteriaEnum.COUNT,
+                op: DiscountOperatorEnum.EQUAL,
+                value: 3,
+              },
+              products: [],
+              product_categories: [productCategory],
+              modifiers: [],
+            },
+          ],
+        });
+        expect(
+          getSuitableDiscounts(
+            [discount],
+            [
+              {
+                ...products[0],
+                fullPrice: 420,
+                count: 6,
+              },
+            ]
+          )
+        ).toEqual([]);
+      });
+
       it("should return a discount (two product)", () => {
         const productCategory = createProductCategory();
         const products = [

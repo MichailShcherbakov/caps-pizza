@@ -217,6 +217,8 @@ export function getSuitableDiscounts(
       discountValue = (suitableProductsCost / diff - discount.value) * diff;
     }
 
+    if (discountValue <= 0) continue;
+
     suitableDiscounts.push({
       discount,
       discountValue: Number.parseFloat(discountValue.toFixed(2)),
