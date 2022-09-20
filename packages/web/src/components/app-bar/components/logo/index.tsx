@@ -26,9 +26,18 @@ export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
         />
         {!onlyIcon ? (
           <Fade in={!onlyIcon}>
-            <Typography variant="h3" component="span" color="text.primary">
-              Пицца от КЭПа
-            </Typography>
+            <Stack>
+              <Typography variant="h3" component="span" color="text.primary">
+                Пицца от КЭПа
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                component="span"
+                color="text.primary"
+              >
+                🍕 Вкусно до последней корочки!
+              </Typography>
+            </Stack>
           </Fade>
         ) : undefined}
       </Stack>
