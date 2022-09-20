@@ -19,6 +19,7 @@ const nextConfig = {
   publicRuntimeConfig: {
     API_URL: process.env.API_URL,
     IMAGES_SOURCE_URL: process.env.IMAGES_SOURCE_URL,
+    __DEV__: process.env.NODE_ENV === "development",
   },
 };
 

@@ -93,6 +93,13 @@ export const API_ERRORS: ErrorInfo[] = [
     regex: /^The refresh token is expired$/,
     code: 401,
   },
+  /* Order Validation  */
+  {
+    type: "Нарушение валидации",
+    desc: "Неверно указан номер телефона",
+    regex: /^client_info.phone must be a valid phone number$/,
+    code: 400,
+  },
 ];
 
 export default API_ERRORS;

@@ -1,6 +1,5 @@
 import "../styles/globals.scss";
 import "../utils";
-import "../config";
 import type { AppProps as NextAppProps } from "next/app";
 import AppPage from "~/interfaces/app-page.interface";
 import AbortController from "abort-controller";
