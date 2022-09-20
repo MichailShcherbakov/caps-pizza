@@ -82,15 +82,15 @@ export class initialSeed1662919340693 implements MigrationInterface {
 
     await payments.createManyFrom([
       {
-        code: 2,
+        code: 861,
         name: "Оплата наличными, без сдачи",
       },
       {
-        code: 1,
+        code: 862,
         name: "Оплата наличными, необходима сдача",
       },
       {
-        code: 743,
+        code: 863,
         name: "Оплата картой",
       },
     ]);
@@ -743,7 +743,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       {
         name: "Ролл мини угорь",
         article_number: 10039,
-        image_url: "/images/M-acne.jpg",
+        image_url: "/images/m-acne.jpg",
         price: 240,
         category_uuid: rolls.uuid,
         volume: {
@@ -759,7 +759,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       {
         name: "Ролл острый мини лосось",
         article_number: 10040,
-        image_url: "/images/O-M-salmon.jpg",
+        image_url: "/images/o-m-salmon.jpg",
         price: 240,
         category_uuid: rolls.uuid,
         volume: {
@@ -775,7 +775,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       {
         name: "Ролл мини с Лососем",
         article_number: 10041,
-        image_url: "/images/R-salmon.jpg",
+        image_url: "/images/r-salmon.jpg",
         price: 240,
         category_uuid: rolls.uuid,
         volume: {
@@ -807,7 +807,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       {
         name: "Ролл острый мини угорь",
         article_number: 10043,
-        image_url: "/images/O-M-acne.jpg",
+        image_url: "/images/o-m-acne.jpg",
         price: 240,
         category_uuid: rolls.uuid,
         volume: {
@@ -1104,7 +1104,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Запеченный ролл Асама",
         desc: "Сливочный сыр, тамаго, креветка, окунь, яки соус, кунжут, соус унаги",
         article_number: 10061,
-        image_url: "/images/Asama.png",
+        image_url: "/images/asama.png",
         price: 340,
         category_uuid: rolls.uuid,
         volume: {
@@ -1121,7 +1121,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Запеченный ролл с курицей",
         desc: "Сливочный сыр, курица, огурец, сыр пармезан, соус унаги",
         article_number: 10062,
-        image_url: "/images/Z-chiken.jpg",
+        image_url: "/images/z-chiken.jpg",
         price: 310,
         category_uuid: rolls.uuid,
         volume: {
@@ -1138,7 +1138,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Запеченный ролл острый лосось",
         desc: "Сливочный сыр, огурец, тобико, лосось, спайси соус",
         article_number: 10063,
-        image_url: "/images/Z-O-salmon.jpg",
+        image_url: "/images/z-o-salmon.jpg",
         price: 370,
         category_uuid: rolls.uuid,
         volume: {
@@ -1258,7 +1258,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Запечёный ролл с креветкой",
         desc: "Сливочный сыр, креветка, яки соус, кунжут, унаги соус, тамаго, икра тобико",
         article_number: 10070,
-        image_url: "/images/Z-shrimp.jpg",
+        image_url: "/images/z-shrimp.jpg",
         price: 350,
         category_uuid: rolls.uuid,
         volume: {
@@ -1593,7 +1593,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Кола 0,33л",
         desc: "",
         article_number: 10091,
-        image_url: "/images/Cola-0.33.png",
+        image_url: "/images/cola-0.33.png",
         price: 60,
         category_uuid: drink.uuid,
         tags: [],
@@ -1602,7 +1602,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Сок яблочный 1л",
         desc: "",
         article_number: 10092,
-        image_url: "/images/Apple-juice.png",
+        image_url: "/images/apple-juice.png",
         price: 130,
         category_uuid: drink.uuid,
         tags: [],
@@ -1611,7 +1611,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Сок апельсиновый 1л",
         desc: "",
         article_number: 10093,
-        image_url: "/images/Orange-juice.png",
+        image_url: "/images/orange-juice.png",
         price: 130,
         category_uuid: drink.uuid,
         tags: [],
@@ -1620,7 +1620,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Сок вишневый 1л",
         desc: "",
         article_number: 10094,
-        image_url: "/images/Сherry-juice.png",
+        image_url: "/images/cherry-juice.png",
         price: 140,
         category_uuid: drink.uuid,
         tags: [],
@@ -1629,7 +1629,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Сок мультифрукт 1л",
         desc: "",
         article_number: 10095,
-        image_url: "/images/Multifruit-juice.png",
+        image_url: "/images/multifruit-juice.png",
         price: 130,
         category_uuid: drink.uuid,
         tags: [],
