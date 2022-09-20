@@ -80,6 +80,13 @@ export default class OrdersService {
             `The modifier ${modifier.uuid} does not found`
           );
 
+        /// skip default modifiers with 0 price
+        if (
+          foundProduct.modifiers.find(m => m.uuid === foundModifier.uuid) &&
+          foundModifier.price === 0
+        )
+          continue;
+
         const modifierIndex = currentProductIndex++;
 
         payload.append(
@@ -118,7 +125,8 @@ export default class OrdersService {
         `The delivery ${delivery.uuid} not available`
       );
 
-    if (delivery) {
+    /// skip free delivery
+    if (delivery && delivery.value !== 0) {
       const deliveryIndex = currentProductIndex++;
 
       payload.append(`product[${deliveryIndex}]`, delivery.article_number);
