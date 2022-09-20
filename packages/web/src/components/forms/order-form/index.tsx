@@ -70,7 +70,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
           },
           client_info: {
             name: value.name,
-            phone: value.phoneNumber,
+            phone: value.phoneNumber.replaceAll(/[+ ]/g, ""),
             email: value.email.length ? value.email : undefined,
           },
           description: value.description.length ? value.description : undefined,
