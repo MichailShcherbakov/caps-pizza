@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const validationSchema = yup.object({
   name: yup
     .string()
-    .max(50, "Название акции не должно превышать 50 символов")
+    .max(100, "Название акции не должно превышать 100 символов")
     .required("Это поле является обязательным"),
   image_url: yup.string().required("Это поле является обязательным"),
   display: yup.boolean().required("Это поле является обязательным"),

@@ -3,19 +3,11 @@ FROM node:18.8-alpine3.15 as builder
 
 # Args
 ARG WORKDIR
-ARG PORT=3000
-ARG HOST=127.0.0.1
-ARG IMAGE_HOST=127.0.0.1
-ARG NEXT_PUBLIC_API_URL=api_url_placeholder
-ARG NEXT_PUBLIC_IMAGES_SOURCE_URL=image_source_url_placeholder
 
 # Env
 ENV NODE_ENV=development
-ENV HOST=${HOST}
-ENV PORT=${PORT}
-ENV IMAGE_HOST=${IMAGE_HOST}
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NEXT_PUBLIC_IMAGES_SOURCE_URL=${NEXT_PUBLIC_IMAGES_SOURCE_URL}
+ENV HOST=127.0.0.1
+ENV IMAGE_HOST=127.0.0.1
 
 # Init
 WORKDIR ${WORKDIR}
@@ -26,44 +18,37 @@ COPY package.json .
 COPY yarn.lock .
 
 COPY packages/common/package.json ./packages/common/package.json
-
 COPY packages/web/package.json ./packages/web/package.json
 
-RUN printf "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL\nNEXT_PUBLIC_IMAGES_SOURCE_URL=$NEXT_PUBLIC_IMAGES_SOURCE_URL" >> ./packages/web/.env.production
-
 RUN yarn install
-RUN npx lerna bootstrap
+RUN yarn bootstrap
 
 # Copy project
-COPY . .
+COPY packages/common ./packages/common
+COPY packages/web ./packages/web
 
 # Build
-RUN npx lerna run build --scope @monorepo/common
+RUN yarn build:common
 
-RUN npx lerna link
+RUN yarn pkg:link
 
-RUN npx lerna run build --scope @monorepo/web
+RUN yarn build:web 
 
-RUN yarn install --production --frozen-lockfile --ignore-scripts --prefer-offline
+RUN yarn ci
 
 # Runner 
 FROM node:18.8-alpine3.15 as runner 
 
 # Args
 ARG WORKDIR
-ARG PORT=3000
-ARG HOST=127.0.0.1
-ARG IMAGE_HOST=127.0.0.1
-ARG NEXT_PUBLIC_API_URL=api_url_placeholder
-ARG NEXT_PUBLIC_IMAGES_SOURCE_URL=image_source_url_placeholder
 
 # Env
 ENV NODE_ENV=production
-ENV HOST=${HOST}
-ENV PORT=${PORT}
-ENV IMAGE_HOST=${IMAGE_HOST}
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NEXT_PUBLIC_IMAGES_SOURCE_URL=${NEXT_PUBLIC_IMAGES_SOURCE_URL}
+ENV PORT=3000 
+ENV HOST=127.0.0.1
+ENV IMAGE_HOST=127.0.0.1
+ENV API_URL=api_url_placeholder
+ENV IMAGES_SOURCE_URL=image_source_url_placeholder
 
 # Init
 WORKDIR ${WORKDIR}
@@ -87,12 +72,13 @@ COPY --from=builder ${WORKDIR}/packages/web/.next ./packages/web/.next
 COPY --from=builder ${WORKDIR}/packages/web/public ./packages/web/public
 COPY --from=builder ${WORKDIR}/packages/web/package.json ./packages/web/package.json
 COPY --from=builder ${WORKDIR}/packages/web/node_modules ./packages/web/node_modules
-COPY --from=builder ${WORKDIR}/packages/web/.env.production ./packages/web/.env.production
 COPY --from=builder ${WORKDIR}/packages/web/next.config.js ./packages/web/next.config.js
 
 # USER nextjs
 
 EXPOSE ${PORT}
 
+RUN npx next telemetry disable
+
 # Run
-CMD npx lerna link && npx lerna run start:prod --scope @monorepo/web
+CMD yarn pkg:link && yarn start:prod:web

@@ -1,21 +1,34 @@
+# GitHub
 .github/
 
+# Ansible
+ansible/
+
+# Nginx
 nginx/
 
+# Builds
+packages/**/dist/
+packages/**/.next/
+
+# Node modules
 node_modules/
 
 packages/**/node_modules/
-packages/**/dist/
-packages/**/coverage/
-packages/**/.next/
 
+# Coverage
+packages/**/coverage/
+
+# Env
 .env.*
 packages/**/.env.*
 
+# Git
 .git
 .gitignore
 packages/**/.gitignore
 
+# Docker
 dockerfile*
 docker-compose*
 .dockerignore*
@@ -24,5 +37,8 @@ packages/**/dockerfile*
 packages/**/docker-compose*
 packages/**/.dockerignore*
 
+# Configs
+.editorconfig
 wallaby.js
-
+jest.config.js
+README.md

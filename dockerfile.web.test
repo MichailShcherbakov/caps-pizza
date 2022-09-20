@@ -6,16 +6,16 @@ ARG WORKDIR
 ARG PORT=3000
 ARG HOST=127.0.0.1
 ARG IMAGE_HOST=127.0.0.1
-ARG NEXT_PUBLIC_API_URL=api_url_placeholder
-ARG NEXT_PUBLIC_IMAGES_SOURCE_URL=image_source_url_placeholder
+ARG API_URL=api_url_placeholder
+ARG IMAGES_SOURCE_URL=image_source_url_placeholder
 
 # Env
 ENV NODE_ENV=test
 ENV HOST=${HOST}
 ENV PORT=${PORT}
 ENV IMAGE_HOST=${IMAGE_HOST}
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NEXT_PUBLIC_IMAGES_SOURCE_URL=${NEXT_PUBLIC_IMAGES_SOURCE_URL}
+ENV API_URL=${API_URL}
+ENV IMAGES_SOURCE_URL=${IMAGES_SOURCE_URL}
 
 # Init
 WORKDIR ${WORKDIR}
@@ -26,19 +26,19 @@ COPY package.json .
 COPY yarn.lock .
 
 COPY packages/common/package.json ./packages/common/package.json
-
 COPY packages/web/package.json ./packages/web/package.json
 
-RUN printf "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL\nNEXT_PUBLIC_IMAGES_SOURCE_URL=$NEXT_PUBLIC_IMAGES_SOURCE_URL" >> ./packages/web/.env.production
-
 RUN yarn install
-RUN npx lerna bootstrap
+RUN yarn bootstrap
 
 # Copy project
-COPY . .
+COPY packages/common ./packages/common
+COPY packages/web ./packages/web
 
 # Build common package
 RUN yarn build:common
+
+RUN yarn pkg:link
 
 # Run linter
 RUN yarn lint:web
@@ -46,4 +46,4 @@ RUN yarn lint:web
 # Run formatter
 RUN yarn fmt:web
 
-CMD npx lerna link && npx lerna run start:test:cov --scope @monorepo/web
+CMD yarn start:test:cov:web

@@ -1,19 +1,36 @@
 version: "3.9"
 
 services:
+  nginx:
+    image: nginx:1.23
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/certs
+      - static_images:/etc/public/images
+    container_name: caps_pizza_nginx
+    depends_on:
+      - web
+      - api
+    restart: unless-stopped
+
   db:
     image: postgres:14
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    container_name: caps_pizza_test_db
-    restart: "no"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    container_name: caps_pizza_db
+    restart: unless-stopped
 
   api:
     build:
       context: .
-      dockerfile: dockerfile.api.test
+      dockerfile: dockerfile.api.prod
       args:
         WORKDIR: /usr/src/caps-pizza/api
     environment:
@@ -23,7 +40,7 @@ services:
       - FRONTEND_URL=http://${HOST}
       - JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}
       - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
-      - DATABASE_HOST=caps_pizza_test_db
+      - DATABASE_HOST=caps_pizza_db
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
@@ -32,25 +49,27 @@ services:
     depends_on:
       - db
     volumes:
-      - ./packages/api/coverage:/usr/src/caps-pizza/api/packages/api/coverage
-    container_name: caps_pizza_test_api
-    restart: "no"
+      - static_images:/usr/src/caps-pizza/api/packages/api/static/images
+    container_name: caps_pizza_api
+    restart: unless-stopped
 
   web:
     build:
       context: .
-      dockerfile: ./dockerfile.web.test
+      dockerfile: dockerfile.web.prod
       args:
         WORKDIR: /usr/src/caps-pizza/web
     environment:
-      - HOST=3000
-      - PORT=127.0.0.1
+      - PORT=3000
+      - HOST=127.0.0.1
       - IMAGE_HOST=${HOST}
       - API_URL=http://${HOST}/api/v1
       - IMAGES_SOURCE_URL=http://${HOST}/api/v1
     depends_on:
       - api
-    volumes:
-      - ./packages/web/coverage:/usr/src/caps-pizza/web/packages/web/coverage
-    container_name: caps_pizza_test_web
-    restart: "no"
+    container_name: caps_pizza_web
+    restart: unless-stopped
+
+volumes:
+  postgres:
+  static_images:

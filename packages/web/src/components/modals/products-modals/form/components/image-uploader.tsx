@@ -1,9 +1,12 @@
 import { Button, Stack, Tooltip } from "@mui/material";
 import React from "react";
 import NextImage from "next/image";
+import getConfig from "next/config";
 import ImageIcon from "@mui/icons-material/Image";
 import { useStyle } from "../../index.style";
 import LoadingIcon from "~/assets/pizza-loading-2.svg";
+
+const { publicRuntimeConfig } = getConfig();
 
 export interface ImageUploaderProps {
   image?: File;
@@ -64,7 +67,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
                   src={
                     image
                       ? imageURL
-                      : `${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`
+                      : `${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`
                   }
                   alt="loaded image"
                   layout="fill"

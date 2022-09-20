@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import NextImage from "next/image";
+import getConfig from "next/config";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper";
 import { useGetPromotionsQuery } from "~/services/promotions.service";
@@ -11,6 +12,8 @@ import "swiper/css/a11y";
 import "swiper/css/navigation";
 import Section from "../sections/section";
 import Title from "../title";
+
+const { publicRuntimeConfig } = getConfig();
 
 export interface PromotionSliderProps {}
 
@@ -36,7 +39,7 @@ export const PromotionSlider: React.FC<PromotionSliderProps> = () => {
             <SwiperSlide key={promotion.uuid}>
               <Stack className={classes.image}>
                 <NextImage
-                  src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${promotion.image_url}`}
+                  src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${promotion.image_url}`}
                   alt={promotion.name}
                   layout="fill"
                   priority

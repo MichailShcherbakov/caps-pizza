@@ -11,6 +11,9 @@ import {
   DataTableHeadColumnTypes,
 } from "./types";
 import DataTableRowResolver from "./row-resolver";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 export interface DataTableRowProps {
   head: DataTableHead;
@@ -105,7 +108,7 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                               <Stack direction="row">
                                 <NextImage
                                   src={`${
-                                    process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL
+                                    publicRuntimeConfig.IMAGES_SOURCE_URL
                                   }${colsMap.get(col.name)?.value}`}
                                   width={100}
                                   height={100}

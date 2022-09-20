@@ -1,0 +1,61 @@
+---
+- hosts: all
+  gather_facts: true
+  vars:
+    app_path: /usr/src/caps-pizza
+  tasks:
+    - name: "create {{ app_path }}/"
+      file:
+        path: "{{ app_path }}/"
+        state: "directory"
+        owner: "root"
+        group: "root"
+        mode: 1700
+      become: yes
+      become_method: sudo
+
+    - name: "create .env"
+      copy:
+        dest: "{{ app_path }}/.env"
+        content: |
+          HOST={{ HOST }}
+          API_SECRET={{ API_SECRET }}
+          JWT_ACCESS_TOKEN_SECRET={{ JWT_ACCESS_TOKEN_SECRET }}
+          JWT_REFRESH_TOKEN_SECRET={{ JWT_REFRESH_TOKEN_SECRET }}
+          DATABASE_NAME={{ DATABASE_NAME }}
+          DATABASE_USERNAME={{ DATABASE_USERNAME }}
+          DATABASE_PASSWORD={{ DATABASE_PASSWORD }}
+        owner: "root"
+        group: "root"
+        mode: 0700
+      become: yes
+      become_method: sudo
+
+    - name: "copy docker-compose.prod.yml"
+      copy:
+        src: "../docker-compose.prod.yml"
+        dest: "{{ app_path }}/docker-compose.prod.yml"
+        owner: "root"
+        group: "root"
+        mode: 0700
+      become: yes
+      become_method: sudo
+
+    - name: "copy nginx.conf"
+      copy:
+        src: "../nginx"
+        dest: "{{ app_path }}"
+        owner: "root"
+        group: "root"
+        mode: 1700
+      become: yes
+      become_method: sudo
+
+    - name: "stop service"
+      shell: docker compose --file {{ app_path }}/docker-compose.prod.yml stop
+
+    - name: "pull images"
+      shell: docker compose --file {{ app_path }}/docker-compose.prod.yml pull
+
+    - name: "start services"
+      shell: docker compose --file {{ app_path }}/docker-compose.prod.yml up -d

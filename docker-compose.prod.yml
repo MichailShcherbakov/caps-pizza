@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   nginx:
@@ -14,6 +14,7 @@ services:
     depends_on:
       - web
       - api
+    restart: unless-stopped
 
   db:
     image: postgres:14
@@ -22,20 +23,16 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - postgres:/var/lib/postgresql/data 
+      - postgres:/var/lib/postgresql/data
     container_name: caps_pizza_db
     restart: unless-stopped
 
   api:
-    build:
-      context: .
-      dockerfile: dockerfile.api.prod
-      args:
-          WORKDIR: /usr/src/caps-pizza/api
+    image: 254891781/caps-pizza-api:latest
     environment:
-      - SECRET=${API_SECRET}
       - PORT=8080
       - HOST=127.0.0.1
+      - SECRET=${API_SECRET}
       - FRONTEND_URL=http://${HOST}
       - JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}
       - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
@@ -53,16 +50,13 @@ services:
     restart: unless-stopped
 
   web:
-    build:
-      context: .
-      dockerfile: ./dockerfile.web.prod
-      args:
-        WORKDIR: /usr/src/caps-pizza/web
-        PORT: 3000
-        HOST: '127.0.0.1'
-        IMAGE_HOST: ${HOST}
-        NEXT_PUBLIC_API_URL: 'http://${HOST}/api/v1'
-        NEXT_PUBLIC_IMAGES_SOURCE_URL: 'http://${HOST}/api/v1'
+    image: 254891781/caps-pizza-web:latest
+    environment:
+      - PORT=3000
+      - HOST=127.0.0.1
+      - IMAGE_HOST=${HOST}
+      - API_URL=http://${HOST}/api/v1
+      - IMAGES_SOURCE_URL=http://${HOST}/api/v1
     depends_on:
       - api
     container_name: caps_pizza_web
@@ -71,4 +65,3 @@ services:
 volumes:
   postgres:
   static_images:
-  

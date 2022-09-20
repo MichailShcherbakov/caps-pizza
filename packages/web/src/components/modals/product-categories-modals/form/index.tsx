@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import NextImage from "next/image";
+import getConfig from "next/config";
 import { IconButton, Stack, Tooltip } from "@mui/material";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import {
@@ -14,6 +15,8 @@ import {
 } from "~/ui";
 import validationSchema from "~/components/tables/product-categories-table/helpers/validation-schema";
 import { ProductCategory } from "~/services/product-categories.service";
+
+const { publicRuntimeConfig } = getConfig();
 
 export type ProductCategorySubmitData = Omit<ProductCategory, "uuid"> & {
   image?: File;
@@ -116,7 +119,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = ({
                   />
                 ) : (
                   <ExternalSvg
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${formik.values.image_url}`}
+                    src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${formik.values.image_url}`}
                     sx={{
                       width: theme => theme.spacing(4),
                       height: theme => theme.spacing(4),

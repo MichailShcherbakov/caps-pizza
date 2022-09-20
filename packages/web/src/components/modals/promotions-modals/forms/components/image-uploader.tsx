@@ -2,6 +2,9 @@ import { Button, Stack, Tooltip } from "@mui/material";
 import React from "react";
 import NextImage from "next/image";
 import ImageIcon from "@mui/icons-material/Image";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 export interface ImageUploaderProps {
   image?: File;
@@ -55,7 +58,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
                 <NextImage src={imageURL} alt="loaded image" layout="fill" />
               ) : (
                 <NextImage
-                  src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
+                  src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
                   alt="loaded image"
                   layout="fill"
                 />

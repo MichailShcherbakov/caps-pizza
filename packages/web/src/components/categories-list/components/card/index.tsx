@@ -1,8 +1,11 @@
+import getConfig from "next/config";
 import React from "react";
 import { Button, Stack } from "@mui/material";
 import NextImage from "next/image";
 import Link from "next/link";
 import { StyleProps, useStyle } from "./index.style";
+
+const { publicRuntimeConfig } = getConfig();
 
 export interface CategoryCardProps extends StyleProps {
   name: string;
@@ -24,7 +27,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
           >
             <Stack className={classes.image}>
               <NextImage
-                src={`${process.env.NEXT_PUBLIC_IMAGES_SOURCE_URL}${imageURL}`}
+                src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
                 layout="fill"
                 priority
               />
