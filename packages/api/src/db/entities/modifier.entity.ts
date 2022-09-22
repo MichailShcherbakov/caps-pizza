@@ -20,6 +20,9 @@ export default class ModifierEntity extends IEntity implements IModifier {
   @Column({ type: "float4" })
   price: number;
 
+  @Column()
+  display: boolean;
+
   @Column({ nullable: true })
   display_position?: number;
 

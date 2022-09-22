@@ -1,16 +1,17 @@
 import React from "react";
 import { useFormik } from "formik";
-import { Checkbox, FormControlLabel, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import {
   MemoTextField,
   ModalContent,
   ModalControl,
   ModalFooter,
   ModalHeader,
+  ImageUploader,
 } from "~/ui";
 import validationSchema from "../helpers/validation-schema";
 import { Promotion } from "~/services/promotions.service";
-import ImageUploader from "./components/image-uploader";
+import CheckboxWithLabel from "~/ui/components/checkbox/with-label";
 
 export type PromotionFormSubmitData = Omit<Promotion, "uuid"> & {
   image?: File;
@@ -71,6 +72,8 @@ export const PromotionForm: React.FC<PromotionFormProps> = ({
             <ImageUploader
               image={formik.values.image}
               imageURL={formik.values.image_url}
+              imageWidth={200}
+              imageHeight={200}
               touched={formik.touched.image_url}
               errors={formik.errors.image_url}
               onChange={onImageChange}
@@ -106,17 +109,13 @@ export const PromotionForm: React.FC<PromotionFormProps> = ({
             color="secondary"
             onChange={formik.handleChange}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                id="display"
-                name="display"
-                checked={formik.values.display}
-                onChange={formik.handleChange}
-                color="secondary"
-                size="small"
-              />
-            }
+          <CheckboxWithLabel
+            id="display"
+            name="display"
+            checked={formik.values.display}
+            onChange={formik.handleChange}
+            color="secondary"
+            size="small"
             label="Отображать"
           />
         </Stack>

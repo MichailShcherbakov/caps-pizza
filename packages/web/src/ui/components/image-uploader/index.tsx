@@ -1,31 +1,23 @@
-import { Button, Stack, Tooltip } from "@mui/material";
 import React from "react";
-import NextImage from "next/image";
-import getConfig from "next/config";
+import { Button, Stack, Tooltip } from "@mui/material";
+import { useStyle } from "./index.style";
 import ImageIcon from "@mui/icons-material/Image";
-import { useStyle } from "../../index.style";
-import LoadingIcon from "~/assets/pizza-loading-2.svg";
-
-const { publicRuntimeConfig } = getConfig();
+import ExternalImage from "~/components/external-image";
+import Image from "../image";
 
 export interface ImageUploaderProps {
   image?: File;
   imageURL?: string;
+  imageWidth: number;
+  imageHeight: number;
   touched?: boolean;
   errors?: string;
   onChange?: (data: { image: File; imageURL: string }) => void;
 }
 
 export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
-  ({ image, imageURL, touched, errors, onChange }) => {
-    const [loading, setLoading] = React.useState<boolean>(true);
-    const { classes } = useStyle({
-      imageLoading: loading,
-    });
-
-    const onLoadingComplete = React.useCallback(() => {
-      setLoading(false);
-    }, []);
+  ({ image, imageURL, imageWidth, imageHeight, touched, errors, onChange }) => {
+    const { classes } = useStyle();
 
     return (
       <Tooltip
@@ -40,6 +32,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
           component="label"
           variant={imageURL ? "text" : "outlined"}
           color="neutral"
+          className={classes.btn}
         >
           <input
             hidden
@@ -59,25 +52,34 @@ export const ImageUploader: React.FC<ImageUploaderProps> = React.memo(
                 });
             }}
           />
-          <Stack className={classes.image}>
-            {imageURL ? (
-              <>
-                {loading ? <LoadingIcon /> : undefined}
-                <NextImage
-                  src={
-                    image
-                      ? imageURL
-                      : `${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`
-                  }
-                  alt="loaded image"
-                  layout="fill"
-                  onLoadingComplete={onLoadingComplete}
-                />
-              </>
+          {imageURL ? (
+            image ? (
+              <Image
+                url={imageURL}
+                alt="uploaded image"
+                imageWidth={imageWidth}
+                imageHeight={imageHeight}
+              />
             ) : (
+              <ExternalImage
+                url={imageURL}
+                alt="uploaded image"
+                imageWidth={imageWidth}
+                imageHeight={imageHeight}
+              />
+            )
+          ) : (
+            <Stack
+              alignItems="center"
+              justifyContent="center"
+              sx={{
+                width: imageWidth,
+                height: imageHeight,
+              }}
+            >
               <ImageIcon />
-            )}
-          </Stack>
+            </Stack>
+          )}
         </Button>
       </Tooltip>
     );

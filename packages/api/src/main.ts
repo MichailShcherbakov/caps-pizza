@@ -1,6 +1,6 @@
 import "~/env";
-import "~/utils";
 import "~/vars";
+import "~/utils";
 import { PORT } from "~/config";
 import { NestFactory } from "@nestjs/core";
 import AppModule from "./app.module";

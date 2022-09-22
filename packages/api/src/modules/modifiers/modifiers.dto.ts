@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -26,6 +27,10 @@ export class CreateModifierDto {
   @IsNotEmpty()
   @IsOptional()
   image_url?: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  display: boolean;
 
   @IsNumber()
   @IsNotEmpty()
@@ -65,6 +70,11 @@ export class UpdateModifierDto {
   @IsNotEmpty()
   @IsOptional()
   image_url?: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  @IsOptional()
+  display?: boolean;
 
   @IsNumber()
   @IsNotEmpty()

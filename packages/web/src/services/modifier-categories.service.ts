@@ -1,4 +1,8 @@
-import { IModifierCategory } from "@monorepo/common";
+import {
+  IModifierCategory,
+  ModifierCategoryChoiceOptionEnum,
+  ModifierCategoryDisplayVariantEnum,
+} from "@monorepo/common";
 import API from "./api.service";
 import transformResponse, {
   APIData,
@@ -9,6 +13,10 @@ export class ModifierCategory implements IModifierCategory {
   uuid: string;
   name: string;
   image_url?: string;
+  choice_option: ModifierCategoryChoiceOptionEnum;
+  display: boolean;
+  display_name?: string;
+  display_variant: ModifierCategoryDisplayVariantEnum;
   display_position?: number;
 }
 

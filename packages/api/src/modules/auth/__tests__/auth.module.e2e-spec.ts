@@ -19,8 +19,8 @@ describe("[Auth Module] ...", () => {
 
   const signUpHelper = async (): Promise<[UserEntity, string]> => {
     const dto: SignUpDto = {
-      username: faker.datatype.string(),
-      password: faker.datatype.string(),
+      username: faker.datatype.uuid(),
+      password: faker.datatype.uuid(),
     };
 
     await api.singUp(dto);
@@ -71,8 +71,8 @@ describe("[Auth Module] ...", () => {
   describe("[Post] /auth/sign-up", () => {
     it("should successfully sign up", async () => {
       const TEST_NEW_USER: SignUpDto = {
-        username: faker.datatype.string(),
-        password: faker.datatype.string(),
+        username: faker.datatype.uuid(),
+        password: faker.datatype.uuid(),
       };
 
       const signUpResponse = await api.singUp(TEST_NEW_USER);
@@ -120,7 +120,7 @@ describe("[Auth Module] ...", () => {
 
       const signInResponse = await api.singIn({
         username: user.name,
-        password: faker.datatype.string(),
+        password: faker.datatype.uuid(),
       });
 
       expect(signInResponse.status).toEqual(401);

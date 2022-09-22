@@ -21,11 +21,12 @@ export default function createModifierCategoriesHelper(
 }
 
 export function createModifierCategoryHelper(
-  testingModule: ITestingModule
+  testingModule: ITestingModule,
+  options?: Partial<ModifierCategoryEntity>
 ): Promise<ModifierCategoryEntity> {
   const seeder = new ModifierCategoriesSeeder(testingModule.queryRunner);
   return seeder
-    .create()
+    .create(options)
     .then(
       category =>
         deleteObjectPropsHelper(category, [

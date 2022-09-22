@@ -84,7 +84,7 @@ describe("[Delivery Module] ...", () => {
   describe("[Post] /deliveries", () => {
     it("should successfully create a delivery", async () => {
       const dto: CreateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         condition: {
           criteria: DeliveryCriteriaEnum.PRICE,
@@ -134,7 +134,7 @@ describe("[Delivery Module] ...", () => {
 
     it(`should throw an error when creating a delivery with ${DeliveryTypeEnum.PERCENT} delivery type and with a value that greater than 100`, async () => {
       const dto: CreateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         condition: {
           criteria: DeliveryCriteriaEnum.PRICE,
@@ -157,7 +157,7 @@ describe("[Delivery Module] ...", () => {
 
     it(`should throw an error when creating a delivery with ${DeliveryOperatorEnum.BETWEEN} delivery operator and without without providing the value2`, async () => {
       const dto: CreateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         condition: {
           criteria: DeliveryCriteriaEnum.COUNT,
@@ -188,7 +188,7 @@ describe("[Delivery Module] ...", () => {
       );
 
       const dto: CreateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: modifier.article_number,
         condition: {
           criteria: DeliveryCriteriaEnum.COUNT,
@@ -215,7 +215,7 @@ describe("[Delivery Module] ...", () => {
       const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         condition: {
           criteria: DeliveryCriteriaEnum.PRICE,
@@ -275,7 +275,7 @@ describe("[Delivery Module] ...", () => {
       const fakeDeliveryUUID = faker.datatype.uuid();
 
       const dto: UpdateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         condition: {
           criteria: DeliveryCriteriaEnum.PRICE,
@@ -404,7 +404,7 @@ describe("[Delivery Module] ...", () => {
       const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         condition: {
           criteria: DeliveryCriteriaEnum.COUNT,
@@ -440,7 +440,7 @@ describe("[Delivery Module] ...", () => {
       const delivery = await createDeliveryHelper(testingModule);
 
       const dto: UpdateDeliveryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: modifier.article_number,
         condition: {
           criteria: DeliveryCriteriaEnum.COUNT,

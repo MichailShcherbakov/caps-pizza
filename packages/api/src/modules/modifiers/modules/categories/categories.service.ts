@@ -43,16 +43,29 @@ export default class ModifierCategoriesService {
   async create(
     dto: CreateModifierCategoryDto
   ): Promise<ModifierCategoryEntity> {
-    const foundModifierCategory = await this.findOne({ name: dto.name });
+    const [foundModifierCategoryName, foundModifierCategoryDisplayName] =
+      await Promise.all([
+        this.findOne({ name: dto.name }),
+        this.findOne({ display_name: dto.display_name }),
+      ]);
 
-    if (foundModifierCategory)
+    if (foundModifierCategoryName)
       throw new BadRequestException(
         `The modifier category with '${dto.name}' name already exists`
+      );
+
+    if (foundModifierCategoryDisplayName)
+      throw new BadRequestException(
+        `The modifier category with '${dto.display_name}' display name already exists`
       );
 
     const newModifierCategory = new ModifierCategoryEntity();
     newModifierCategory.name = dto.name;
     newModifierCategory.image_url = dto.image_url;
+    newModifierCategory.choice_option = dto.choice_option;
+    newModifierCategory.display = dto.display;
+    newModifierCategory.display_name = dto.display_name;
+    newModifierCategory.display_variant = dto.display_variant;
     newModifierCategory.display_position = dto.display_position;
 
     return this.modifierCategoriesRespository.save(newModifierCategory);
@@ -69,9 +82,41 @@ export default class ModifierCategoriesService {
         `The modifier category ${uuid} does not exist`
       );
 
-    foundModifierCategory.name = dto.name ?? foundModifierCategory.name;
+    if (dto.name && foundModifierCategory.name !== dto.name) {
+      const foundModifierCategoryName = await this.findOne({ name: dto.name });
+
+      if (foundModifierCategoryName)
+        throw new BadRequestException(
+          `The modifier category with '${dto.name}' name already exists`
+        );
+
+      foundModifierCategory.name = dto.name;
+    }
+
+    if (
+      dto.display_name &&
+      foundModifierCategory.display_name !== dto.display_name
+    ) {
+      const foundModifierCategoryDisplayName = await this.findOne({
+        display_name: dto.display_name,
+      });
+
+      if (foundModifierCategoryDisplayName)
+        throw new BadRequestException(
+          `The modifier category with '${dto.display_name}' display name already exists`
+        );
+
+      foundModifierCategory.display_name = dto.display_name;
+    }
+
     foundModifierCategory.image_url =
       dto.image_url ?? foundModifierCategory.image_url;
+    foundModifierCategory.choice_option =
+      dto.choice_option ?? foundModifierCategory.choice_option;
+    foundModifierCategory.display =
+      dto.display ?? foundModifierCategory.display;
+    foundModifierCategory.display_variant =
+      dto.display_variant ?? foundModifierCategory.display_variant;
     foundModifierCategory.display_position =
       dto.display_position ?? foundModifierCategory.display_position;
 

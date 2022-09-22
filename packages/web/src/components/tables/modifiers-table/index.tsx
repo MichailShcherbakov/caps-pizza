@@ -25,6 +25,10 @@ export const ModifiersTable: React.FC<ModifiersTableProps> = () => {
               value: modifier.article_number,
             },
             {
+              name: "image",
+              value: modifier.image_url,
+            },
+            {
               name: "name",
               value: modifier.name,
             },
@@ -39,6 +43,10 @@ export const ModifiersTable: React.FC<ModifiersTableProps> = () => {
             {
               name: "category",
               value: modifier.category?.name,
+            },
+            {
+              name: "display",
+              value: modifier.display ? "Да" : "Нет",
             },
             {
               name: "position",

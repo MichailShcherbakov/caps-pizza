@@ -71,8 +71,9 @@ export default class ModifiersService {
     newModifier.article_number = dto.article_number;
     newModifier.category_uuid = foundModifierCategory.uuid;
     newModifier.category = foundModifierCategory;
-    newModifier.display_position = dto.display_position;
     newModifier.price = dto.price;
+    newModifier.display = dto.display;
+    newModifier.display_position = dto.display_position;
 
     return this.modifiersRepository.save(newModifier);
   }
@@ -125,9 +126,10 @@ export default class ModifiersService {
     foundModifier.name = dto.name ?? foundModifier.name;
     foundModifier.desc = dto.desc ?? foundModifier.desc;
     foundModifier.image_url = dto.image_url ?? foundModifier.desc;
+    foundModifier.price = dto.price ?? foundModifier.price;
+    foundModifier.display = dto.display ?? foundModifier.display;
     foundModifier.display_position =
       dto.display_position ?? foundModifier.display_position;
-    foundModifier.price = dto.price ?? foundModifier.price;
 
     return this.modifiersRepository.save(foundModifier);
   }

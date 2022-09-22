@@ -77,7 +77,7 @@ describe("[Payment Module] ...", () => {
   describe("[Post] /payments", () => {
     it("should successfully create a payment", async () => {
       const dto: CreatePaymentDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         code: faker.datatype.number(),
       };
 
@@ -115,7 +115,7 @@ describe("[Payment Module] ...", () => {
       const existsPayment = await createPaymentHelper(testingModule);
 
       const dto: CreatePaymentDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         code: existsPayment.code,
       };
 
@@ -135,7 +135,7 @@ describe("[Payment Module] ...", () => {
       const payment = await createPaymentHelper(testingModule);
 
       const dto: UpdatePaymentDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         code: faker.datatype.number(),
       };
 
@@ -155,7 +155,7 @@ describe("[Payment Module] ...", () => {
       const fakePaymentUUID = faker.datatype.uuid();
 
       const dto: UpdatePaymentDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         code: faker.datatype.number(),
       };
 

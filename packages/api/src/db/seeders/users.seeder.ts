@@ -6,9 +6,9 @@ import UserEntity from "../entities/user.entity";
 export class UsersFactory extends IFactory<UserEntity> {
   create(options?: Partial<UserEntity>): UserEntity {
     const e = new UserEntity();
-    e.name = options?.name ?? faker.datatype.string();
-    e.password_hash = options?.password_hash ?? faker.datatype.string();
-    e.salt = options?.salt ?? faker.datatype.string();
+    e.name = options?.name ?? faker.datatype.uuid();
+    e.password_hash = options?.password_hash ?? faker.datatype.uuid();
+    e.salt = options?.salt ?? faker.datatype.uuid();
     return e;
   }
 }

@@ -129,16 +129,16 @@ describe("[Orders Module] ...", () => {
       })),
       delivery_uuid: TEST_DELIVERY.uuid,
       delivery_address: {
-        street: faker.datatype.string(),
-        house: faker.datatype.string(),
+        street: faker.datatype.uuid(),
+        house: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
       payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
-        name: faker.datatype.string(),
-        phone: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        phone: faker.datatype.uuid(),
       },
     };
 
@@ -297,16 +297,16 @@ describe("[Orders Module] ...", () => {
         ],
       })),
       delivery_address: {
-        street: faker.datatype.string(),
-        house: faker.datatype.string(),
+        street: faker.datatype.uuid(),
+        house: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
       payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
-        name: faker.datatype.string(),
-        phone: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        phone: faker.datatype.uuid(),
       },
     };
 
@@ -354,16 +354,16 @@ describe("[Orders Module] ...", () => {
         ],
       })),
       delivery_address: {
-        street: faker.datatype.string(),
-        house: faker.datatype.string(),
+        street: faker.datatype.uuid(),
+        house: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
       payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
-        name: faker.datatype.string(),
-        phone: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        phone: faker.datatype.uuid(),
       },
     };
 
@@ -412,16 +412,16 @@ describe("[Orders Module] ...", () => {
       })),
       delivery_uuid: TEST_FAKE_DELIVERY_UUID,
       delivery_address: {
-        street: faker.datatype.string(),
-        house: faker.datatype.string(),
+        street: faker.datatype.uuid(),
+        house: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
       payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
-        name: faker.datatype.string(),
-        phone: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        phone: faker.datatype.uuid(),
       },
     };
 
@@ -476,16 +476,16 @@ describe("[Orders Module] ...", () => {
       })),
       delivery_uuid: TEST_NOT_AVAILABLE_DELIVERY.uuid,
       delivery_address: {
-        street: faker.datatype.string(),
-        house: faker.datatype.string(),
+        street: faker.datatype.uuid(),
+        house: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
       },
       payment_uuid: TEST_PAYMENT.uuid,
       client_info: {
-        name: faker.datatype.string(),
-        phone: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        phone: faker.datatype.uuid(),
       },
     };
 

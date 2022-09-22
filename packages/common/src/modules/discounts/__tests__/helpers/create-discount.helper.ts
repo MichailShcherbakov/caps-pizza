@@ -9,7 +9,7 @@ import {
 export const createDiscount = (options: Partial<IDiscount> = {}): IDiscount => {
   return {
     uuid: faker.datatype.uuid(),
-    name: faker.datatype.string(),
+    name: faker.datatype.uuid(),
     strategies: [
       {
         condition: {

@@ -31,12 +31,18 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
   CancelButtonProps,
   ModalFooterProps,
   onAccept,
+  onClose,
   ...props
 }) => {
+  const onAcceptHandle = React.useCallback(() => {
+    onAccept && onAccept();
+    onClose && onClose();
+  }, [onAccept, onClose]);
+
   return (
-    <Modal {...props} onClose={props.onClose}>
+    <Modal {...props} onClose={onClose}>
       <ModalControl>
-        <ModalHeader title={HEAD_TITLES[variant]} onExit={props.onClose} />
+        <ModalHeader title={HEAD_TITLES[variant]} onExit={onClose} />
         <ModalContent>
           <Stack spacing={1}>
             <Typography variant="h4" textAlign="center">
@@ -53,8 +59,8 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({
             color: variant,
           }}
           CancelButtonProps={CancelButtonProps}
-          onAccept={onAccept}
-          onCancel={props.onClose}
+          onAccept={onAcceptHandle}
+          onCancel={onClose}
         />
       </ModalControl>
     </Modal>

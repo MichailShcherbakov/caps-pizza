@@ -292,7 +292,7 @@ describe("[Discounts Module] ...", () => {
 
     it(`should throw an error when creating a discount with type ${DiscountTypeEnum.PERCENT} and the value greater then 100`, async () => {
       const dto: CreateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.PERCENT,
         value: 1299,
         strategies: [
@@ -326,7 +326,7 @@ describe("[Discounts Module] ...", () => {
     it(`should throw an error when creating a discount with a non-exists product`, async () => {
       const fakeProductUUID = faker.datatype.uuid();
       const dto: CreateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
         strategies: [
@@ -360,7 +360,7 @@ describe("[Discounts Module] ...", () => {
     it(`should throw an error when creating a discount with a non-exists product category`, async () => {
       const fakeProductCategoryUUID = faker.datatype.uuid();
       const dto: CreateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
         strategies: [
@@ -394,7 +394,7 @@ describe("[Discounts Module] ...", () => {
     it(`should throw an error when creating a discount with a non-exists modifier`, async () => {
       const fakeModifierUUID = faker.datatype.uuid();
       const dto: CreateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
         strategies: [
@@ -428,7 +428,7 @@ describe("[Discounts Module] ...", () => {
     it(`should throw an error when creating a discount with a invalid product uuid`, async () => {
       const fakeProductUUID = faker.datatype.string();
       const dto: CreateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
         strategies: [
@@ -462,7 +462,7 @@ describe("[Discounts Module] ...", () => {
     it(`should throw an error when creating a discount with a invalid product category uuid`, async () => {
       const fakeProductCategoryUUID = faker.datatype.string();
       const dto: CreateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
         strategies: [
@@ -497,7 +497,7 @@ describe("[Discounts Module] ...", () => {
 
     it(`should throw an error when creating a discount with ${DiscountOperatorEnum.BETWEEN} criteria operator and without provided value2`, async () => {
       const dto: CreateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
         strategies: [
@@ -527,7 +527,7 @@ describe("[Discounts Module] ...", () => {
     describe(`should throw an erro when creating the discount with ${DiscountTypeEnum.FIXED_PRICE} and ...`, () => {
       test(`with global discount scope`, async () => {
         const dto: CreateDiscountDto = {
-          name: faker.datatype.string(),
+          name: faker.datatype.uuid(),
           type: DiscountTypeEnum.FIXED_PRICE,
           value: 1299,
           strategies: [
@@ -556,7 +556,7 @@ describe("[Discounts Module] ...", () => {
 
       test(`with ${DiscountCriteriaEnum.PRICE} discount criteria`, async () => {
         const dto: CreateDiscountDto = {
-          name: faker.datatype.string(),
+          name: faker.datatype.uuid(),
           type: DiscountTypeEnum.FIXED_PRICE,
           value: 1299,
           strategies: [
@@ -588,7 +588,7 @@ describe("[Discounts Module] ...", () => {
 
       test(`with not ${DiscountOperatorEnum.EQUAL} discount operator`, async () => {
         const dto: CreateDiscountDto = {
-          name: faker.datatype.string(),
+          name: faker.datatype.uuid(),
           type: DiscountTypeEnum.FIXED_PRICE,
           value: 1299,
           strategies: [
@@ -627,7 +627,7 @@ describe("[Discounts Module] ...", () => {
       const choisedModifiers = [modifiers[3]];
 
       const dto: UpdateDiscountDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         type: DiscountTypeEnum.IN_CASH,
         value: 1299,
         strategies: [

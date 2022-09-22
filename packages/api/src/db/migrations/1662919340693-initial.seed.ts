@@ -23,6 +23,10 @@ import PromotionSeeder from "../seeders/promotion.seeder";
 import DiscountsSeeder from "../seeders/discount.seeder";
 import DiscountStrategiesSeeder from "../seeders/discount-strategy.seeder";
 import PaymentSeeder from "../seeders/payment.seeder";
+import {
+  ModifierCategoryChoiceOptionEnum,
+  ModifierCategoryDisplayVariantEnum,
+} from "@monorepo/common";
 
 export class initialSeed1662919340693 implements MigrationInterface {
   name = "initialSeed1662919340693";
@@ -110,67 +114,109 @@ export class initialSeed1662919340693 implements MigrationInterface {
       },
     ]);
 
-    const [dough, sauce, kit] = await modifierCategories.createManyFrom([
-      {
-        name: "Тесто",
-        image_url: "",
-        display_position: 1,
-      },
-      {
-        name: "Соус",
-        image_url: "",
-        display_position: 1,
-      },
-      {
-        name: "Набор",
-        image_url: "",
-        display_position: 1,
-      },
-    ]);
+    const [dough, sauce, kit, addPizzaItems] =
+      await modifierCategories.createManyFrom([
+        {
+          name: "Тесто",
+          image_url: "",
+          choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+          display: true,
+          display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
+          display_position: 1,
+        },
+        {
+          name: "Соус",
+          image_url: "",
+          choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+          display: true,
+          display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
+          display_position: 1,
+        },
+        {
+          name: "Набор",
+          image_url: "",
+          choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+          display: true,
+          display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
+          display_position: 1,
+        },
+        {
+          name: "Доп. ингредиенты для пиццы",
+          image_url: "",
+          choice_option: ModifierCategoryChoiceOptionEnum.MANY,
+          display: true,
+          display_name: "Добавить в пиццу",
+          display_variant: ModifierCategoryDisplayVariantEnum.LIST,
+          display_position: 2,
+        },
+      ]);
 
     const [traditionalDough, _, yakiSauce, __, weekdayCombo] =
       await modifiers.createManyFrom([
         {
-          name: "Традиционное",
+          name: "Традиционное тесто",
           article_number: 10003,
-          display_position: 1,
           price: 0,
           category_uuid: dough.uuid,
+          display: true,
+          display_position: 1,
         },
         {
-          name: "Пышное",
+          name: "Пышное тесто",
           article_number: 10004,
-          display_position: 2,
           price: 50,
           category_uuid: dough.uuid,
+          display: true,
+          display_position: 2,
         },
         {
           name: "Яки соус",
           article_number: 10005,
-          display_position: 1,
           price: 0,
           category_uuid: sauce.uuid,
+          display: true,
+          display_position: 1,
         },
         {
           name: "Спайси соус",
           article_number: 10006,
-          display_position: 2,
           price: 0,
           category_uuid: sauce.uuid,
+          display: true,
+          display_position: 2,
         },
         {
           name: "Будний день",
           article_number: 10007,
-          display_position: 1,
           price: 0,
           category_uuid: kit.uuid,
+          display: true,
+          display_position: 1,
         },
         {
           name: "Выходной день",
           article_number: 10008,
-          display_position: 2,
           price: 200,
           category_uuid: kit.uuid,
+          display: true,
+          display_position: 2,
+        },
+        {
+          name: "Без добавлений",
+          article_number: 10097,
+          price: 0,
+          category_uuid: addPizzaItems.uuid,
+          display: false,
+          display_position: 0,
+        },
+        {
+          name: "Чеддер и пармезан",
+          image_url: "/images/cheese.png",
+          article_number: 10096,
+          price: 79,
+          category_uuid: addPizzaItems.uuid,
+          display: true,
+          display_position: 1,
         },
       ]);
 
@@ -1581,55 +1627,79 @@ export class initialSeed1662919340693 implements MigrationInterface {
       },
       // DRINKS
       {
-        name: "Кола 0,9л",
+        name: "Кола",
         desc: "",
         article_number: 10090,
         image_url: "/images/coca-cola.png",
+        weight: {
+          type: ProductWeightTypeEnum.LITERS,
+          value: 0.9,
+        },
         price: 125,
         category_uuid: drink.uuid,
         tags: [],
       },
       {
-        name: "Кола 0,33л",
+        name: "Кола",
         desc: "",
         article_number: 10091,
         image_url: "/images/cola-0.33.png",
+        weight: {
+          type: ProductWeightTypeEnum.LITERS,
+          value: 0.33,
+        },
         price: 60,
         category_uuid: drink.uuid,
         tags: [],
       },
       {
-        name: "Сок яблочный 1л",
+        name: "Сок яблочный",
         desc: "",
         article_number: 10092,
         image_url: "/images/apple-juice.png",
+        weight: {
+          type: ProductWeightTypeEnum.LITERS,
+          value: 1,
+        },
         price: 130,
         category_uuid: drink.uuid,
         tags: [],
       },
       {
-        name: "Сок апельсиновый 1л",
+        name: "Сок апельсиновый",
         desc: "",
         article_number: 10093,
         image_url: "/images/orange-juice.png",
+        weight: {
+          type: ProductWeightTypeEnum.LITERS,
+          value: 1,
+        },
         price: 130,
         category_uuid: drink.uuid,
         tags: [],
       },
       {
-        name: "Сок вишневый 1л",
+        name: "Сок вишневый",
         desc: "",
         article_number: 10094,
         image_url: "/images/cherry-juice.png",
+        weight: {
+          type: ProductWeightTypeEnum.LITERS,
+          value: 1,
+        },
         price: 140,
         category_uuid: drink.uuid,
         tags: [],
       },
       {
-        name: "Сок мультифрукт 1л",
+        name: "Сок мультифрукт",
         desc: "",
         article_number: 10095,
         image_url: "/images/multifruit-juice.png",
+        weight: {
+          type: ProductWeightTypeEnum.LITERS,
+          value: 1,
+        },
         price: 130,
         category_uuid: drink.uuid,
         tags: [],

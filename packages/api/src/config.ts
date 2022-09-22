@@ -2,14 +2,14 @@ import { resolve } from "path";
 
 export const PORT = Number.parseInt(process.env.PORT ?? "8080");
 export const HOST = process.env.HOST ?? "127.0.0.1";
-export const DEV =
-  process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test";
 export const SECRET = process.env.SECRET ?? "";
 export const JWT_ACCESS_TOKEN_SECRET =
   process.env.JWT_ACCESS_TOKEN_SECRET ?? "";
 export const JWT_REFRESH_TOKEN_SECRET =
   process.env.JWT_REFRESH_TOKEN_SECRET ?? "";
-export const SYNC_ON = Boolean(process.env.SYNC_ON);
+export const SYNC_ON = Boolean(
+  process.env.SYNC_ON && Number.parseInt(process.env.SYNC_ON)
+);
 export const FRONTEND_URL = process.env.FRONTEND_URL ?? "*";
 export const APP_ROOT_PATH = resolve(__dirname, "../");
 export const APP_ROOT_URL = `http://${HOST}:${PORT}`;

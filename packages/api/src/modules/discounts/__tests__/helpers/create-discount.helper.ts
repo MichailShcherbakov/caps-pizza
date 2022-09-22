@@ -7,7 +7,7 @@ export default function createDiscountHelper(
   return {
     ...options,
     uuid: faker.datatype.uuid(),
-    name: faker.datatype.string(),
+    name: faker.datatype.uuid(),
     updated_at: new Date(),
     created_at: new Date(),
   };

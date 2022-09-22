@@ -14,55 +14,95 @@ import {
   ModalControl,
   ModalFooter,
   ModalHeader,
+  ImageUploader,
 } from "~/ui";
 import { Modifier } from "~/services/modifiers.service";
 import validationSchema from "../helpers/validation-schema";
 import { ModifierCategory } from "~/services/modifier-categories.service";
+import CheckboxWithLabel from "~/ui/components/checkbox/with-label";
 
-export type UpdateModifierFormSubmitData = Omit<Modifier, "uuid">;
+export type ModifierFormSubmitData = Omit<Modifier, "uuid"> & {
+  image?: File;
+};
 
-export interface UpdateModifierFormProps {
-  modifier: Modifier;
+export interface ModifierFormProps {
+  modifier?: Modifier;
   modifierCategories: ModifierCategory[];
-  onSubmit?: (data: UpdateModifierFormSubmitData) => void;
+  onSubmit?: (data: ModifierFormSubmitData) => void;
   onCancel?: () => void;
 }
 
-export const UpdateModifierForm: React.FC<UpdateModifierFormProps> = ({
+export interface ModifierFormData {
+  name: string;
+  image?: File;
+  image_url?: string;
+  desc?: string;
+  article_number: string;
+  price: string;
+  display: boolean;
+  display_position: string;
+  category_uuid: string;
+}
+
+export const ModifierForm: React.FC<ModifierFormProps> = ({
   modifier,
   modifierCategories,
   onSubmit,
   onCancel,
 }) => {
-  const formik = useFormik({
+  const formik = useFormik<ModifierFormData>({
     initialValues: {
-      name: modifier.name,
-      desc: modifier.desc ?? "",
-      article_number: modifier.article_number.toString(),
-      price: modifier.price.toString(),
-      display_position: modifier.display_position?.toString() ?? "",
-      category_uuid: modifier.category_uuid,
+      name: modifier?.name ?? "",
+      image: undefined,
+      image_url: modifier?.image_url,
+      desc: modifier?.desc ?? "",
+      article_number: modifier?.article_number.toString() ?? "",
+      price: modifier?.price.toString() ?? "",
+      display: modifier?.display ?? true,
+      display_position: modifier?.display_position?.toString() ?? "",
+      category_uuid: modifier?.category_uuid ?? "",
     },
     validationSchema,
     onSubmit: value => {
       onSubmit &&
         onSubmit({
           name: value.name,
+          image: value.image,
+          image_url: value.image_url,
           desc: value.desc ? value.desc : undefined,
           article_number: Number.parseInt(value.article_number),
           price: Number.parseFloat(value.price),
-          category_uuid: value.category_uuid,
+          display: value.display,
           display_position:
             Number.parseInt(value.display_position) ?? undefined,
+          category_uuid: value.category_uuid,
         });
     },
   });
+
+  const setFieldValue = formik.setFieldValue;
+  const onImageChange = React.useCallback(
+    ({ image, imageURL }: { image: File; imageURL: string }) => {
+      setFieldValue("image", image);
+      setFieldValue("image_url", imageURL);
+    },
+    [setFieldValue]
+  );
 
   return (
     <ModalControl component="form" onSubmit={formik.handleSubmit}>
       <ModalHeader title="Изменение модификатора" />
       <ModalContent>
         <Stack spacing={2}>
+          <ImageUploader
+            image={formik.values.image}
+            imageURL={formik.values.image_url}
+            imageWidth={200}
+            imageHeight={200}
+            touched={formik.touched.image_url}
+            errors={formik.errors.image_url}
+            onChange={onImageChange}
+          />
           <MemoTextField
             fullWidth
             required
@@ -171,6 +211,15 @@ export const UpdateModifierForm: React.FC<UpdateModifierFormProps> = ({
                 ))}
             </Select>
           </FormControl>
+          <CheckboxWithLabel
+            id="display"
+            name="display"
+            checked={formik.values.display}
+            onChange={formik.handleChange}
+            color="secondary"
+            size="small"
+            label="Отображать"
+          />
         </Stack>
       </ModalContent>
       <ModalFooter onCancel={onCancel} />
@@ -178,4 +227,4 @@ export const UpdateModifierForm: React.FC<UpdateModifierFormProps> = ({
   );
 };
 
-export default UpdateModifierForm;
+export default ModifierForm;

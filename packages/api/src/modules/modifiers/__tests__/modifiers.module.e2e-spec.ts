@@ -83,11 +83,12 @@ describe("[Modifier Module] ...", () => {
     it("should successfully create a modifier", async () => {
       const category = categories[5];
       const dto: CreateModifierDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
+        display: true,
         display_position: faker.datatype.number(),
         category_uuid: category.uuid,
       };
@@ -110,10 +111,10 @@ describe("[Modifier Module] ...", () => {
 
     it("should throw an error when creating a modifier without a category", async () => {
       const dto: Partial<CreateModifierDto> = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
         display_position: faker.datatype.number(),
       };
@@ -127,6 +128,8 @@ describe("[Modifier Module] ...", () => {
         statusCode: 400,
         error: "Bad Request",
         message: [
+          "display should not be empty",
+          "display must be a boolean value",
           "category_uuid should not be empty",
           "category_uuid must be a string",
           "category_uuid must be a UUID",
@@ -136,11 +139,12 @@ describe("[Modifier Module] ...", () => {
 
     it("should throw an error when creating a modifier with non-exists a category", async () => {
       const dto: CreateModifierDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
+        display: true,
         display_position: faker.datatype.number(),
         category_uuid: faker.datatype.uuid(),
       };
@@ -166,8 +170,9 @@ describe("[Modifier Module] ...", () => {
         name: initialModifier.name,
         article_number: faker.datatype.number(),
         price: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
+        display: true,
         display_position: faker.datatype.number(),
         category_uuid: initialModifier.category_uuid,
       };
@@ -188,11 +193,12 @@ describe("[Modifier Module] ...", () => {
       const modifierCategory = categories[5];
 
       const dto: CreateModifierDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: product.article_number,
         image_url: faker.image.imageUrl(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         price: faker.datatype.number(),
+        display: true,
         display_position: faker.datatype.number(),
         category_uuid: modifierCategory.uuid,
       };
@@ -216,11 +222,12 @@ describe("[Modifier Module] ...", () => {
       const category = categories[5];
 
       const dto: CreateModifierDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: otherModifier.article_number,
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        display: true,
         display_position: faker.datatype.number(),
         category_uuid: category.uuid,
       };
@@ -246,13 +253,14 @@ describe("[Modifier Module] ...", () => {
 
       const newCategory = categories[3];
       const dto: UpdateModifierDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
-        display_position: faker.datatype.number(),
         category_uuid: newCategory.uuid,
+        display: true,
+        display_position: faker.datatype.number(),
       };
 
       const updateModifierResponse = await api.updateModifier(
@@ -284,11 +292,12 @@ describe("[Modifier Module] ...", () => {
       const dto: UpdateModifierDto = {
         name: initialModifier.name,
         article_number: initialModifier.article_number,
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
-        display_position: faker.datatype.number(),
         category_uuid: initialCategory.uuid,
+        display: true,
+        display_position: faker.datatype.number(),
       };
 
       const updateModifierResponse = await api.updateModifier(
@@ -318,9 +327,9 @@ describe("[Modifier Module] ...", () => {
       );
 
       const dto: UpdateModifierDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),
@@ -356,7 +365,7 @@ describe("[Modifier Module] ...", () => {
       const dto: UpdateModifierDto = {
         name: otherModifier.name,
         article_number: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),
@@ -380,9 +389,9 @@ describe("[Modifier Module] ...", () => {
       const fakeModifierUUID = faker.datatype.uuid();
 
       const dto: UpdateModifierDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
-        desc: faker.datatype.string(),
+        desc: faker.datatype.uuid(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         display_position: faker.datatype.number(),

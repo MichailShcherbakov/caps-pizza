@@ -3,7 +3,6 @@ import { Grid, IconButton, Stack, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { CollapsibleTableRow, TableCell, TableRow } from "../table";
-import NextImage from "next/image";
 import { useMediaQuery } from "../../theme";
 import {
   DataTableColumn,
@@ -11,9 +10,7 @@ import {
   DataTableHeadColumnTypes,
 } from "./types";
 import DataTableRowResolver from "./row-resolver";
-import getConfig from "next/config";
-
-const { publicRuntimeConfig } = getConfig();
+import ExternalImage from "~/components/external-image";
 
 export interface DataTableRowProps {
   head: DataTableHead;
@@ -106,14 +103,13 @@ export const DataTableRow: React.FC<DataTableRowProps> = React.memo(
                                 {col.displayName}
                               </Typography>
                               <Stack direction="row">
-                                <NextImage
-                                  src={`${
-                                    publicRuntimeConfig.IMAGES_SOURCE_URL
-                                  }${colsMap.get(col.name)?.value}`}
-                                  width={100}
-                                  height={100}
-                                  layout="fixed"
-                                  alt="product image"
+                                <ExternalImage
+                                  url={
+                                    (colsMap.get(col.name)?.value as string) ??
+                                    "/"
+                                  }
+                                  imageWidth={100}
+                                  imageHeight={100}
                                 />
                               </Stack>
                             </Stack>

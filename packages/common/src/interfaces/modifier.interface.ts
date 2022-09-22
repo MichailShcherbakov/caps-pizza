@@ -7,9 +7,10 @@ export interface IModifier extends IEntity {
   article_number: number;
   image_url?: string;
   price: number;
-  display_position?: number;
   category_uuid: string;
   category?: IModifierCategory;
+  display: boolean;
+  display_position?: number;
 }
 
 export default IModifier;

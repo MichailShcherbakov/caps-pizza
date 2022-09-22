@@ -71,8 +71,8 @@ describe("[Promotion Module] ...", () => {
   describe("[Post] /promotions", () => {
     it("should successfully create a promotion", async () => {
       const dto: CreatePromotionDto = {
-        name: faker.datatype.string(),
-        image_url: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        image_url: faker.datatype.uuid(),
         display: true,
         display_position: 0,
       };
@@ -94,7 +94,7 @@ describe("[Promotion Module] ...", () => {
 
       const dto: CreatePromotionDto = {
         name: otherProduct.name,
-        image_url: faker.datatype.string(),
+        image_url: faker.datatype.uuid(),
         display: true,
         display_position: 0,
       };
@@ -113,7 +113,7 @@ describe("[Promotion Module] ...", () => {
       const otherProduct = await createPromotionHelper(testingModule);
 
       const dto: CreatePromotionDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         image_url: otherProduct.image_url,
         display: true,
         display_position: 0,
@@ -135,8 +135,8 @@ describe("[Promotion Module] ...", () => {
       const promotion = await createPromotionHelper(testingModule);
 
       const dto: UpdatePromotionDto = {
-        name: faker.datatype.string(),
-        image_url: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        image_url: faker.datatype.uuid(),
         display: false,
         display_position: faker.datatype.number(),
       };

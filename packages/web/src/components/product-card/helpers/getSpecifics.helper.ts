@@ -9,7 +9,9 @@ export const getSpecifics = (product: Product): string => {
   }
 
   if (product.weight) {
-    specifics += ` / ${product.weight.value}${locale[product.weight.type]}`;
+    if (specifics.length) specifics += " / ";
+
+    specifics += `${product.weight.value}${locale[product.weight.type]}`;
   }
 
   return specifics;

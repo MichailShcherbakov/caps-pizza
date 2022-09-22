@@ -25,3 +25,6 @@ export * from "./buttons/options-button";
 export * from "./buttons/toggle-button";
 export * from "./select";
 export * from "./snackbar";
+export * from "./image-uploader";
+export * from "./image";
+export * from "./checkbox/with-label";

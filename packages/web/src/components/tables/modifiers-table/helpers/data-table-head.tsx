@@ -14,6 +14,13 @@ export const useModifiersTableHead = () => {
           fullWidth: true,
         },
         {
+          type: "image",
+          name: "image",
+          displayName: "Изображение",
+          imageWidth: 80,
+          imageHeight: 80,
+        },
+        {
           name: "name",
           displayName: "Название",
           primary: true,
@@ -22,11 +29,13 @@ export const useModifiersTableHead = () => {
           name: "desc",
           displayName: "Описание",
           fullWidth: true,
+          collapsed: true,
         },
         {
           name: "price",
           displayName: "Цена",
           fullWidth: true,
+          truncate: true,
         },
         {
           name: "category",
@@ -34,9 +43,16 @@ export const useModifiersTableHead = () => {
           primary: true,
         },
         {
+          name: "display",
+          displayName: "Отображать",
+          fullWidth: true,
+          collapsed: true,
+        },
+        {
           name: "position",
           displayName: "Позиция",
           fullWidth: true,
+          collapsed: true,
         },
         {
           name: "controls",

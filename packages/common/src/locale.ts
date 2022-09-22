@@ -1,17 +1,15 @@
 import {
   ProductVolumeTypeEnum,
   ProductWeightTypeEnum,
-} from "./interfaces/product.interface";
-import {
   DiscountCriteriaEnum,
   DiscountOperatorEnum,
   DiscountTypeEnum,
-} from "./interfaces/discount.interface";
-import {
   DeliveryCriteriaEnum,
   DeliveryOperatorEnum,
   DeliveryTypeEnum,
-} from "./interfaces/delivery.interface";
+  ModifierCategoryChoiceOptionEnum,
+  ModifierCategoryDisplayVariantEnum,
+} from "./interfaces";
 
 export const locale = {
   [ProductWeightTypeEnum.GRAMS]: "гр",
@@ -35,6 +33,10 @@ export const locale = {
   [DeliveryOperatorEnum.BETWEEN]: "Между",
   [DeliveryTypeEnum.IN_CASH]: "Фиксированная сумма",
   [DeliveryTypeEnum.PERCENT]: "Процент",
+  [ModifierCategoryChoiceOptionEnum.ONE]: "Один из",
+  [ModifierCategoryChoiceOptionEnum.MANY]: "Несколько из",
+  [ModifierCategoryDisplayVariantEnum.LIST]: "Список",
+  [ModifierCategoryDisplayVariantEnum.SWITCHER]: "Переключатель",
 };
 
 export default locale;

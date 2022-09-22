@@ -10,7 +10,6 @@ import validationSchema from "../helpers/validation-schema";
 import { ProductCategory } from "~/services/product-categories.service";
 import { Modifier } from "~/services/modifiers.service";
 import ModifierList from "../helpers/modifiers-list";
-import ImageUploader from "./components/image-uploader";
 import ProductCategoriesSelect from "./components/product-categories-select";
 import {
   FormComponentProps,
@@ -20,6 +19,7 @@ import {
   ModalFooter,
   ModalHeader,
   TagsTextField,
+  ImageUploader,
 } from "~/ui";
 import VolumeTextField from "./components/volume-text-field";
 import WeightTextField from "./components/weight-text-field";
@@ -45,7 +45,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const { classes } = useStyle({});
+  const { classes } = useStyle();
   const formik = useFormik({
     initialValues: {
       name: product?.name ?? "",
@@ -122,6 +122,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           <ImageUploader
             image={formik.values.image}
             imageURL={formik.values.imageURL}
+            imageWidth={200}
+            imageHeight={200}
             touched={formik.touched.imageURL}
             errors={formik.errors.imageURL}
             onChange={onImageChange}

@@ -3,47 +3,51 @@ import React from "react";
 import { Modifier } from "~/services/modifiers.service";
 import { Product } from "~/services/products.service";
 import getSpecifics from "../helpers/getSpecifics.helper";
-import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
+
 import { Snackbar } from "~/ui";
 import { useStyle } from "./index.style";
+import { ProductConstructorModal } from "~/components/modals/product-constructor";
+import { ModifierCategory } from "~/services/modifier-categories.service";
+import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
 
 export interface ProductPriceProps {
   product: Product;
-  currentModifiers: Modifier[];
+  modifiers: Modifier[];
+  modifierCategories: ModifierCategory[];
 }
 
 export const ProductPrice: React.FC<ProductPriceProps> = ({
   product,
-  currentModifiers,
+  modifiers,
+  modifierCategories,
 }) => {
   const { classes } = useStyle();
-  const [open, setOpen] = React.useState<boolean>(false);
-  const { addProduct } = useShoppingCartActions();
+  const [showSnackbar, setShowSnackbar] = React.useState<boolean>(false);
   const specifics = React.useMemo(() => getSpecifics(product), [product]);
 
   const price = React.useMemo(
     () =>
-      currentModifiers.reduce(
+      product.modifiers.reduce(
         (price, modifier) => price + modifier.price,
         product.price
       ),
-    [product, currentModifiers]
+    [product]
   );
+
+  const handleClose = React.useCallback(() => {
+    setShowSnackbar(false);
+  }, []);
+
+  const { addProduct } = useShoppingCartActions();
 
   const onProductCardSelect = React.useCallback(() => {
     addProduct({
       uuid: product.uuid,
-      modifiers: currentModifiers.map(modifier => ({
-        uuid: modifier.uuid,
-      })),
+      modifiers: [],
     });
 
-    setOpen(true);
-  }, [product, currentModifiers, addProduct]);
-
-  const handleClose = React.useCallback(() => {
-    setOpen(false);
-  }, []);
+    setShowSnackbar(true);
+  }, [product, addProduct]);
 
   return (
     <>
@@ -51,24 +55,29 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
         <Typography variant="subtitle1" className={classes.specifics}>
           {specifics}
         </Typography>
-        <Button
-          variant="outlined"
-          className={classes.btn}
-          onClick={onProductCardSelect}
-        >
-          <Typography variant="button" className={classes.btnText}>
-            Выбрать
-          </Typography>
-          <Typography variant="button" className={classes.btnPrice}>
-            {price} ₽
-          </Typography>
-        </Button>
         <Typography variant="h4" component="p" className={classes.price}>
-          {price} ₽
+          {Boolean(product.modifiers.length) && "от"} {price} ₽
         </Typography>
+        {product.modifiers.length ? (
+          <ProductConstructorModal
+            product={product}
+            modifiers={modifiers}
+            modifierCategories={modifierCategories}
+          >
+            {({ open }) => (
+              <Button variant="outlined" onClick={open}>
+                Выбрать
+              </Button>
+            )}
+          </ProductConstructorModal>
+        ) : (
+          <Button variant="outlined" onClick={onProductCardSelect}>
+            Выбрать
+          </Button>
+        )}
       </Stack>
       <Snackbar
-        open={open}
+        open={showSnackbar}
         onClose={handleClose}
         label="Товар добавлен в корзину"
       />

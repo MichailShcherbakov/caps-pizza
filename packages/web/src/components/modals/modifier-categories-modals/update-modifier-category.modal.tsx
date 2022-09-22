@@ -10,10 +10,10 @@ import {
   ModifierCategory,
   useUpdateModifierCategoryMutation,
 } from "~/services/modifier-categories.service";
-import UpdateModifierCategoryForm, {
-  UpdateModifierCategoryFormProps,
-  UpdateModifierCategoryFormSubmitData,
-} from "./forms/update-modifier-category.form";
+import ModifierCategoryForm, {
+  ModifierCategoryFormProps,
+  ModifierCategoryFormSubmitData,
+} from "./forms";
 import { APIError } from "~/services/helpers/transform-response.helper";
 import ModalErrorCatcher from "~/components/error-catcher/modal";
 
@@ -39,14 +39,11 @@ export const UpdateModifierCategoryModal: React.FC<
       <ModalErrorCatcher error={error} />
       <ModalController
         Modal={
-          FormModal<
-            UpdateModifierCategoryFormProps,
-            UpdateModifierCategoryFormSubmitData
-          >
+          FormModal<ModifierCategoryFormProps, ModifierCategoryFormSubmitData>
         }
         ModalProps={{
           onClose,
-          Form: UpdateModifierCategoryForm,
+          Form: ModifierCategoryForm,
           FormProps: {
             category,
             onSubmit: async value => {

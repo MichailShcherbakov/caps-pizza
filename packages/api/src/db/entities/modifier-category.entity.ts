@@ -1,5 +1,9 @@
 import { Column, Entity } from "typeorm";
-import { IModifierCategory } from "@monorepo/common";
+import {
+  IModifierCategory,
+  ModifierCategoryChoiceOptionEnum,
+  ModifierCategoryDisplayVariantEnum,
+} from "@monorepo/common";
 import IEntity from "./entity.inteface";
 
 @Entity("modifier_categories")
@@ -12,6 +16,18 @@ export default class ModifierCategoryEntity
 
   @Column({ nullable: true })
   image_url?: string;
+
+  @Column()
+  choice_option: ModifierCategoryChoiceOptionEnum;
+
+  @Column()
+  display: boolean;
+
+  @Column({ unique: true, nullable: true })
+  display_name?: string;
+
+  @Column()
+  display_variant: ModifierCategoryDisplayVariantEnum;
 
   @Column({ nullable: true })
   display_position?: number;

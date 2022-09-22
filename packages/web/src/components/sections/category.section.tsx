@@ -1,5 +1,6 @@
 import { Grid, Stack } from "@mui/material";
 import React from "react";
+import { useGetModifierCategoriesQuery } from "~/services/modifier-categories.service";
 import { useGetModifiersQuery } from "~/services/modifiers.service";
 import { ProductCategory } from "~/services/product-categories.service";
 import { useGetProductsQuery } from "~/services/products.service";
@@ -20,6 +21,7 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
   ({ category }) => {
     const { data: products = [] } = useGetProductsQuery();
     const { data: modifiers = [] } = useGetModifiersQuery();
+    const { data: modifierCategories = [] } = useGetModifierCategoriesQuery();
     const categoryProducts = React.useMemo(
       () => products.filter(product => product.category_uuid === category.uuid),
       [products, category.uuid]
@@ -68,6 +70,7 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
                         <ProductCard
                           product={product}
                           modifiers={availableProductModifiers}
+                          modifierCategories={modifierCategories}
                         />
                       </Grid>
                     );

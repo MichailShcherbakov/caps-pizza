@@ -7,8 +7,8 @@ import { faker } from "@faker-js/faker";
 export default class Api extends IApi {
   async getAccessToken(): Promise<string> {
     const user = {
-      username: faker.datatype.string(),
-      password: faker.datatype.string(),
+      username: faker.datatype.uuid(),
+      password: faker.datatype.uuid(),
     };
 
     await this.singUp(user);

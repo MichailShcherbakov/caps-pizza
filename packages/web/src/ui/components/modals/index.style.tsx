@@ -4,26 +4,25 @@ export interface StyleProps {}
 
 export const useStyle = makeStyles<StyleProps>()(theme => ({
   root: {
-    padding: theme.spacing(2),
-    borderRadius: theme.spacing(1),
+    padding: `${theme.spacing(4)} ${theme.spacing(3)} `,
+    borderRadius: theme.spacing(2),
     background: theme.palette.background.paper,
     overflow: "hidden",
 
-    maxWidth: "680px",
+    minWidth: "680px",
+    maxWidth: "924px",
+
     maxHeight: "560px",
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      minWidth: "auto",
+      maxHeight: "80vh",
+
       borderBottomLeftRadius: 0,
       borderBottomRightRadius: 0,
-    },
 
-    [theme.breakpoints.up("sm")]: {
-      width: theme.breakpoints.values.sm,
-    },
-
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      maxHeight: "80vh",
+      padding: `${theme.spacing(3)} ${theme.spacing(2)} `,
     },
   },
   overlay: {
@@ -31,7 +30,7 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
     alignItems: "center",
     justifyContent: "center",
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       alignItems: "flex-end",
     },
   },

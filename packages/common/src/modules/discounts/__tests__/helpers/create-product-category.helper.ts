@@ -6,7 +6,7 @@ export const createProductCategory = (
 ): IProductCategory => {
   return {
     uuid: faker.datatype.uuid(),
-    name: faker.datatype.string(),
+    name: faker.datatype.uuid(),
     image_url: faker.image.imageUrl(),
     display_position: faker.datatype.number(),
     ...options,

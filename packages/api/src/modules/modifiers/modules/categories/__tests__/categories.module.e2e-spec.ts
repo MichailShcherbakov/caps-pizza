@@ -1,4 +1,8 @@
 import { faker } from "@faker-js/faker";
+import {
+  ModifierCategoryChoiceOptionEnum,
+  ModifierCategoryDisplayVariantEnum,
+} from "@monorepo/common";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
 } from "~/utils/__tests__/helpers/delete-object-props.helper";
@@ -86,8 +90,13 @@ describe("[Modifier Categories Module] ...", () => {
   describe("[Post] /modifier/categories", () => {
     it("should successfully create a category", async () => {
       const dto: CreateModifierCategoryDto = {
-        name: faker.commerce.productName(),
-        image_url: faker.image.imageUrl(),
+        name: faker.datatype.uuid(),
+        image_url: faker.datatype.uuid(),
+        choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+        display: true,
+        display_name: faker.datatype.uuid(),
+        display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
+        display_position: 1,
       };
 
       const createModifierCategoryResponse = await api.createModifierCategory(
@@ -109,7 +118,7 @@ describe("[Modifier Categories Module] ...", () => {
       });
     });
 
-    it("should throw an error when creating a category without name", async () => {
+    it("should throw an error when creating a category without data", async () => {
       const dto: Partial<CreateModifierCategoryDto> = {};
 
       const createModifierCategoryResponse = await api.createModifierCategory(
@@ -120,13 +129,26 @@ describe("[Modifier Categories Module] ...", () => {
       expect(createModifierCategoryResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
-        message: ["name should not be empty", "name must be a string"],
+        message: [
+          "name should not be empty",
+          "name must be a string",
+          "choice_option should not be empty",
+          "choice_option must be a valid enum value",
+          "display should not be empty",
+          "display must be a boolean value",
+          "display_variant should not be empty",
+          "display_variant must be a valid enum value",
+        ],
       });
     });
 
     it("should throw an error when creating a category with existing name", async () => {
       const dto: CreateModifierCategoryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+        display: true,
+        display_name: faker.datatype.uuid(),
+        display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
         display_position: 1,
       };
 
@@ -136,13 +158,53 @@ describe("[Modifier Categories Module] ...", () => {
       expect(firstCreateModifierCategoryResponse.statusCode).toEqual(201);
 
       const secondCreateModifierCategoryResponse =
-        await api.createModifierCategory(dto);
+        await api.createModifierCategory({
+          name: dto.name,
+          choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+          display: true,
+          display_name: faker.datatype.uuid(),
+          display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
+          display_position: 1,
+        });
 
       expect(secondCreateModifierCategoryResponse.statusCode).toEqual(400);
       expect(secondCreateModifierCategoryResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
         message: `The modifier category with '${dto.name}' name already exists`,
+      });
+    });
+
+    it("should throw an error when creating a category with existing display name", async () => {
+      const dto: CreateModifierCategoryDto = {
+        name: faker.datatype.uuid(),
+        choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+        display: true,
+        display_name: faker.datatype.uuid(),
+        display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
+        display_position: 1,
+      };
+
+      const firstCreateModifierCategoryResponse =
+        await api.createModifierCategory(dto);
+
+      expect(firstCreateModifierCategoryResponse.statusCode).toEqual(201);
+
+      const secondCreateModifierCategoryResponse =
+        await api.createModifierCategory({
+          name: faker.datatype.uuid(),
+          choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+          display: true,
+          display_name: dto.display_name,
+          display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
+          display_position: 1,
+        });
+
+      expect(secondCreateModifierCategoryResponse.statusCode).toEqual(400);
+      expect(secondCreateModifierCategoryResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier category with '${dto.display_name}' display name already exists`,
       });
     });
   });
@@ -152,7 +214,11 @@ describe("[Modifier Categories Module] ...", () => {
       const initialCarogory = await createModifierCategoryHelper(testingModule);
 
       const dto: UpdateModifierCategoryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
+        choice_option: ModifierCategoryChoiceOptionEnum.ONE,
+        display: true,
+        display_name: faker.datatype.uuid(),
+        display_variant: ModifierCategoryDisplayVariantEnum.SWITCHER,
         display_position: faker.datatype.number(),
       };
 
@@ -173,7 +239,7 @@ describe("[Modifier Categories Module] ...", () => {
 
     it("should throw an error when update a non-exists category", async () => {
       const dto: UpdateModifierCategoryDto = {
-        name: faker.datatype.string(),
+        name: faker.datatype.uuid(),
         display_position: faker.datatype.number(),
       };
 
@@ -189,6 +255,50 @@ describe("[Modifier Categories Module] ...", () => {
         statusCode: 404,
         error: "Not Found",
         message: `The modifier category ${fakerModifierCategoryUUID} does not exist`,
+      });
+    });
+
+    it("should throw an error when update a with exists name", async () => {
+      const otherCategory = await createModifierCategoryHelper(testingModule);
+      const category = await createModifierCategoryHelper(testingModule);
+
+      const dto: UpdateModifierCategoryDto = {
+        name: otherCategory.name,
+      };
+
+      const updateModifierCategoryResponse = await api.updateModifierCategory(
+        category.uuid,
+        dto
+      );
+
+      expect(updateModifierCategoryResponse.status).toEqual(400);
+      expect(updateModifierCategoryResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier category with '${dto.name}' name already exists`,
+      });
+    });
+
+    it("should throw an error when update a with exists display name", async () => {
+      const otherCategory = await createModifierCategoryHelper(testingModule, {
+        display_name: faker.datatype.uuid(),
+      });
+      const category = await createModifierCategoryHelper(testingModule);
+
+      const dto: UpdateModifierCategoryDto = {
+        display_name: otherCategory.display_name,
+      };
+
+      const updateModifierCategoryResponse = await api.updateModifierCategory(
+        category.uuid,
+        dto
+      );
+
+      expect(updateModifierCategoryResponse.status).toEqual(400);
+      expect(updateModifierCategoryResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: `The modifier category with '${dto.display_name}' display name already exists`,
       });
     });
   });

@@ -26,12 +26,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
         <ProductImage productName={product.name} imageURL={product.image_url} />
         <Stack width="100%" spacing={1}>
           <Stack width="100%" height="100%" spacing={1}>
-            <Stack
-              width="100%"
-              direction="row"
-              // alignItems="center"
-              justifyContent="space-between"
-            >
+            <Stack width="100%" direction="row" justifyContent="space-between">
               <Typography variant="h4">{product.name}</Typography>
               <IconButton
                 size="small"
@@ -52,11 +47,16 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
               </IconButton>
             </Stack>
             <Stack>
-              {product.modifiers.map(modifier => (
-                <Typography key={modifier.uuid}>{`${
-                  modifier.category?.name
-                } ${modifier.name.toLowerCase()}`}</Typography>
-              ))}
+              {product.modifiers.map(modifier =>
+                modifier.display ? (
+                  <Typography key={modifier.uuid}>
+                    {modifier.name[0].toUpperCase() +
+                      modifier.name
+                        .slice(1, modifier.name.length)
+                        .toLowerCase()}
+                  </Typography>
+                ) : null
+              )}
             </Stack>
             <Typography variant="subtitle1">{getSpecifics(product)}</Typography>
           </Stack>
@@ -82,7 +82,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
                 })
               }
             />
-            <Typography variant="h5" className={classes.price}>
+            <Typography component="span" variant="h5" className={classes.price}>
               {`${product.fullPrice * product.count} ₽`}
             </Typography>
           </Stack>

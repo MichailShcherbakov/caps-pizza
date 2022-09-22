@@ -6,7 +6,7 @@ import PaymentEntity from "../entities/payment.entity";
 export class PaymentFactory extends IFactory<PaymentEntity> {
   create(options?: Partial<PaymentEntity>): PaymentEntity {
     const e = new PaymentEntity();
-    e.name = options?.name ?? faker.datatype.string();
+    e.name = options?.name ?? faker.datatype.uuid();
     e.code = options?.code ?? faker.datatype.number();
     return e;
   }

@@ -14,9 +14,31 @@ export const useModifierCategoriesTableHead = () => {
           primary: true,
         },
         {
-          name: "position",
+          name: "choice_option",
+          displayName: "Вариант выбора",
+          fullWidth: true,
+        },
+        {
+          name: "display",
+          displayName: "Отображение",
+          fullWidth: true,
+          collapsed: true,
+        },
+        {
+          name: "display_name",
+          displayName: "Отображаемое название",
+          fullWidth: true,
+        },
+        {
+          name: "display_variant",
+          displayName: "Вариант отображения",
+          fullWidth: true,
+        },
+        {
+          name: "display_position",
           displayName: "Позиция",
-          primary: true,
+          fullWidth: true,
+          collapsed: true,
         },
         {
           name: "controls",

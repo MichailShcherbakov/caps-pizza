@@ -18,7 +18,7 @@ export interface ModifierListProps {
 
 export const ModifierList: React.FC<ModifierListProps> = React.memo(
   ({ value, modifiers, onChange }) => {
-    const { classes } = useStyle({});
+    const { classes } = useStyle();
     const checked = new Set<string>(value.map(m => m.uuid));
 
     const isAvailable = (m: Modifier) => {

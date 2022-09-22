@@ -7,8 +7,6 @@ export interface InfoBarProps extends StackProps {}
 
 export const InfoBar: React.FC<InfoBarProps> = props => {
   const { classes } = useStyle();
-  const deliveryTime = "00:24:19";
-
   return (
     <Stack {...props} className={classes.root} alignItems="center">
       <Container>
@@ -19,9 +17,6 @@ export const InfoBar: React.FC<InfoBarProps> = props => {
         >
           <Stack direction="row" alignItems="center" spacing={2}>
             <DestinationButton />
-            <Typography variant="subtitle2" className={classes.deliveryTime}>
-              Среднее время доставки*: {deliveryTime}
-            </Typography>
           </Stack>
           <Typography variant="subtitle2">
             Время работы: с 11:00 до 22:30

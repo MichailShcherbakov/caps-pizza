@@ -8,7 +8,7 @@ import {
 export const validationSchema = yup.object({
   name: yup
     .string()
-    .max(50, "Название не должно превышать 50 символов")
+    .max(30, "Название не должно превышать 30 символов")
     .required("Это поле является обязательным"),
   articleNumber: yup
     .number()

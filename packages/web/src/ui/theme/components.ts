@@ -35,6 +35,25 @@ export const makeComponents = (
         padding: 0.5,
         border: "1px solid",
         borderColor: "divider",
+        borderRadius: theme.spacing(1),
+
+        "& > .MuiToggleButton-root.MuiToggleButtonGroup-grouped:not(:last-of-type)":
+          {
+            borderRadius: theme.spacing(1),
+
+            "&:hover:not(.Mui-selected)": {
+              backgroundColor: "transparent",
+            },
+          },
+
+        "& > .MuiToggleButton-root.MuiToggleButtonGroup-grouped:not(:first-of-type)":
+          {
+            borderRadius: theme.spacing(1),
+
+            "&:hover:not(.Mui-selected)": {
+              backgroundColor: "transparent",
+            },
+          },
       }),
     },
   },

@@ -12,10 +12,11 @@ export class Modifier implements IModifier {
   desc?: string;
   article_number: number;
   image_url?: string;
-  display_position?: number;
   price: number;
   category_uuid: string;
   category?: ModifierCategory;
+  display: boolean;
+  display_position?: number;
 }
 
 export const ModifiersAPI = API.injectEndpoints({

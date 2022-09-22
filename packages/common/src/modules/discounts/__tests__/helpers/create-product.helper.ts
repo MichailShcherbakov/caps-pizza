@@ -8,8 +8,8 @@ import {
 export const createProduct = (options: Partial<IProduct> = {}): IProduct => {
   return {
     uuid: faker.datatype.uuid(),
-    name: faker.datatype.string(),
-    desc: faker.datatype.string(),
+    name: faker.datatype.uuid(),
+    desc: faker.datatype.uuid(),
     article_number: faker.datatype.number(),
     image_url: faker.image.imageUrl(),
     price: faker.datatype.number(),
