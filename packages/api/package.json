@@ -25,7 +25,8 @@
     "start:test:watch": "jest --watch",
     "start:test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "lint": "eslint \"src/**/*.ts\" --fix",
-    "fmt": "prettier --write \"src/**/*.ts\""
+    "fmt": "prettier --write \"src/**/*.ts\"",
+    "fmt:check": "prettier --check \"src/**/*.ts\""
   },
   "dependencies": {
     "@faker-js/faker": "^7.3.0",

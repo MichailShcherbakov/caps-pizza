@@ -32,7 +32,7 @@ RUN yarn pkg:link
 # Run linter
 RUN yarn lint:api
 
-# # Run formatter
-# RUN yarn fmt:api
+# Run formatter
+RUN yarn fmt:check:api
 
 CMD yarn start:test:cov:api  

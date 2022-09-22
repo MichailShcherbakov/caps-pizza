@@ -43,7 +43,7 @@ RUN yarn pkg:link
 # Run linter
 RUN yarn lint:web
 
-# # Run formatter
-# RUN yarn fmt:web
+# Run formatter
+RUN yarn fmt:check:web
 
 CMD yarn start:test:cov:web

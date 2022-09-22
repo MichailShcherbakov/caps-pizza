@@ -10,7 +10,8 @@
     "start:test:cov": "jest --config ./jest.config.js --runInBand --coverage",
     "build": "next build",
     "lint": "next lint",
-    "fmt": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\""
+    "fmt": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
+    "fmt:check": "prettier --check \"src/**/*.ts\""
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",

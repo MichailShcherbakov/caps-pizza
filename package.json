@@ -27,8 +27,10 @@
     "fmt": "lerna run fmt --parallel",
     "lint:api": "lerna run lint --scope @monorepo/api",
     "fmt:api": "lerna run fmt --scope @monorepo/api",
+    "fmt:check:api": "lerna run fmt:check --scope @monorepo/api",
     "lint:web": "lerna run lint --scope @monorepo/web",
-    "fmt:web": "lerna run fmt --scope @monorepo/web"
+    "fmt:web": "lerna run fmt --scope @monorepo/web",
+    "fmt:check:web": "lerna run fmt:check --scope @monorepo/web"
   },
   "workspaces": [
     "packages/*"
