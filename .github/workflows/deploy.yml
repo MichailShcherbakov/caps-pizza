@@ -61,8 +61,8 @@ jobs:
           build-args: |
             WORKDIR=/usr/src/caps-pizza/api
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:latest
-          # cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache
-          # cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache,mode=max
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-api:buildcache,mode=max
 
       - name: Build and push WEB package
         uses: docker/build-push-action@v3
@@ -73,8 +73,8 @@ jobs:
           build-args: |
             WORKDIR=/usr/src/caps-pizza/web
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:latest
-          # cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache
-          # cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache,mode=max
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/caps-pizza-web:buildcache,mode=max
 
       - name: Deploy on VPS
         uses: dawidd6/action-ansible-playbook@v2
