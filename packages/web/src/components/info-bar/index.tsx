@@ -19,7 +19,7 @@ export const InfoBar: React.FC<InfoBarProps> = props => {
             <DestinationButton />
           </Stack>
           <Typography variant="subtitle2">
-            Время работы: с 11:00 до 22:30
+            Приём заказов с 11:00 до 22:30
           </Typography>
         </Stack>
       </Container>

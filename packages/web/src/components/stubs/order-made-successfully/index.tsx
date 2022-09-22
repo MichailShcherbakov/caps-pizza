@@ -22,12 +22,6 @@ export const OrderMadeSuccessfully: React.FC<OrderMadeSuccessfullyProps> = ({
           Спасибо за заказ!
         </Typography>
         <Typography component="p" variant="subtitle2" className={classes.text}>
-          Примерное время доставки
-          <Typography component="span" variant="h6" className={classes.text}>
-            : от 45 минут
-          </Typography>
-        </Typography>
-        <Typography component="p" variant="subtitle2" className={classes.text}>
           Через 5-7 минут вам перезвонит наш оператор, чтобы уточнить все детали
           и подтвердить заказ.
         </Typography>

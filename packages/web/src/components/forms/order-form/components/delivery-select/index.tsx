@@ -12,7 +12,7 @@ export const DeliverySelect: React.FC<DeliverySelectProps> = React.memo(
     const options: SelectOption[] = React.useMemo(
       () =>
         deliveries.map(delivery => ({
-          name: delivery.name,
+          name: `${delivery.name} (${delivery.value}р.)`,
           value: delivery.uuid,
         })),
       [deliveries]

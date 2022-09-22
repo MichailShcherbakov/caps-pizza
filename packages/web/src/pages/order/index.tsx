@@ -23,6 +23,11 @@ export const OrderPage: AppPage = () => {
         const makeOrderResponse = await makeOrder(order).unwrap();
         setOrderNumber(makeOrderResponse?.order_id);
         clear();
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
       } catch (e) {
         setError(e);
       } finally {

@@ -210,10 +210,10 @@ export class initialSeed1662919340693 implements MigrationInterface {
           display_position: 0,
         },
         {
-          name: "Чеддер и пармезан",
+          name: "Моцарелла",
           image_url: "/images/cheese.png",
           article_number: 10096,
-          price: 79,
+          price: 100,
           category_uuid: addPizzaItems.uuid,
           display: true,
           display_position: 1,
@@ -759,7 +759,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
       },
       // COMBO
       {
-        name: "Название Италия-Япония 1:3",
+        name: "Набор Италия-Япония 1:3",
         desc: "Пицца пушкинская, запеченный ролл мини лосось, запеченный ролл мини с креветкой, запеченный ролл мини с крабом",
         article_number: 10037,
         image_url: "/images/nabor-1.jpg",
