@@ -32,7 +32,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
   return (
     <Stack className={classes.root}>
-      <Stack direction="row" justifyContent="space-between" spacing={3}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        className={classes.header}
+      >
         <Typography variant="h4" component="p">
           {`${product.name}${amount}`}
         </Typography>

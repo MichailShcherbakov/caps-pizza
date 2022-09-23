@@ -7,9 +7,12 @@ export const useStyle = makeStyles()(theme => ({
   },
   specifics: {
     whiteSpace: "nowrap",
+  },
+  header: {
+    gap: theme.spacing(1),
 
     [theme.breakpoints.down("sm")]: {
-      display: "none",
+      flexDirection: "column",
     },
   },
 }));

@@ -2,10 +2,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import { Modifier } from "~/services/modifiers.service";
 import { Product } from "~/services/products.service";
-import getSpecifics from "../helpers/getSpecifics.helper";
-
 import { Snackbar } from "~/ui";
-import { useStyle } from "./index.style";
 import { ProductConstructorModal } from "~/components/modals/product-constructor";
 import { ModifierCategory } from "~/services/modifier-categories.service";
 import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
@@ -21,9 +18,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
   modifiers,
   modifierCategories,
 }) => {
-  const { classes } = useStyle();
   const [showSnackbar, setShowSnackbar] = React.useState<boolean>(false);
-  const specifics = React.useMemo(() => getSpecifics(product), [product]);
 
   const price = React.useMemo(
     () =>
@@ -52,10 +47,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="subtitle1" className={classes.specifics}>
-          {specifics}
-        </Typography>
-        <Typography variant="h4" component="p" className={classes.price}>
+        <Typography variant="h4" component="p" sx={{ whiteSpace: "nowrap" }}>
           {Boolean(product.modifiers.length) && "от"} {price} ₽
         </Typography>
         {product.modifiers.length ? (
