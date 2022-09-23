@@ -100,6 +100,12 @@ export const API_ERRORS: ErrorInfo[] = [
     regex: /^client_info.phone must be a valid phone number$/,
     code: 400,
   },
+  {
+    type: "Нарушение валидации",
+    desc: "Неверно указан адрес электронной почты",
+    regex: /^client_info.email must be an email$/,
+    code: 400,
+  },
 ];
 
 export default API_ERRORS;
