@@ -4,6 +4,7 @@ import { MaskedTextField, TextFieldProps } from ".";
 export type NumberTextFieldProps = TextFieldProps & {
   min?: number;
   max?: number;
+  value?: string | number;
 };
 
 export const NumberTextField: React.FC<NumberTextFieldProps> = React.memo(

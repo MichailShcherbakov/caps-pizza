@@ -2,7 +2,7 @@ import getConfig from "next/config";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { HYDRATE } from "next-redux-wrapper";
 import { RootState } from "~/store";
-import { setAccessToken } from "~/store/auth.reducer";
+import { setAccessToken } from "~/store/reducers/auth.reducer";
 import { RefreshTokenResponse } from "./auth.service";
 
 const { publicRuntimeConfig } = getConfig();

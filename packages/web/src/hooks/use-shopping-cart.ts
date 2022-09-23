@@ -2,7 +2,7 @@ import React from "react";
 import { useGetDiscountsQuery } from "~/services/discounts.service";
 import { Modifier, useGetModifiersQuery } from "~/services/modifiers.service";
 import { Product, useGetProductsQuery } from "~/services/products.service";
-import { OrderedProduct } from "~/store/shopping-cart.reducer";
+import { OrderedProduct } from "~/store/reducers/shopping-cart.reducer";
 import getSuitableDiscounts, {
   ISuitableDiscount,
 } from "@monorepo/common/modules/discounts/get-suitable-discounts";

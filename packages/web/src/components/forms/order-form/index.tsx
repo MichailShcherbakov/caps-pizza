@@ -17,6 +17,7 @@ import EmptyShoppingCartStub from "./components/empty-shopping-cart-stub";
 import NameField from "./components/name-field";
 import OrderFormSkeleton from "./components/skeleton";
 import { useStyle } from "./index.style";
+import { useOrderCache } from "~/hooks/use-order-cache";
 
 export interface OrderFormProps {
   onSubmit?: (order: Order) => void;
@@ -35,48 +36,57 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     discounts,
     isLoading: isShoppingCartLoading,
   } = useShoppingCart();
+  const { cache, write } = useOrderCache();
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      phoneNumber: "",
-      email: "",
-      address: "",
-      house: "",
-      entrance: "",
-      floor: "",
-      apartment: "",
+      name: cache.client_info?.name ?? "",
+      phoneNumber: cache.client_info?.phone ?? "",
+      email: cache.client_info?.email ?? "",
+      address: cache.delivery_address?.street ?? "",
+      house: cache.delivery_address?.house ?? "",
+      entrance: cache.delivery_address?.entrance.toString() ?? "",
+      floor: cache.delivery_address?.floor.toString() ?? "",
+      apartment: cache.delivery_address?.apartment.toString() ?? "",
       description: "",
       payment_uuid: "",
       delivery_uuid: "",
     },
     validationSchema,
     onSubmit: value => {
-      onSubmit &&
-        onSubmit({
-          products: (products ?? []).map(product => ({
-            uuid: product.uuid,
-            count: product.count,
-            modifiers: product.modifiers.map(modifier => ({
-              uuid: modifier.uuid,
-            })),
+      const order: Order = {
+        products: (products ?? []).map(product => ({
+          uuid: product.uuid,
+          count: product.count,
+          modifiers: product.modifiers.map(modifier => ({
+            uuid: modifier.uuid,
           })),
-          delivery_address: {
-            street: value.address,
-            house: value.house,
-            entrance: Number.parseInt(value.entrance),
-            floor: Number.parseInt(value.floor),
-            apartment: Number.parseInt(value.apartment),
-          },
-          client_info: {
-            name: value.name,
-            phone: value.phoneNumber.replaceAll(/[+ ]/g, ""),
-            email: value.email.length ? value.email : undefined,
-          },
-          description: value.description.length ? value.description : undefined,
-          payment_uuid: value.payment_uuid,
-          delivery_uuid: value.delivery_uuid,
-        });
+        })),
+        delivery_address: {
+          street: value.address,
+          house: value.house,
+          entrance: Number.parseInt(value.entrance),
+          floor: Number.parseInt(value.floor),
+          apartment: Number.parseInt(value.apartment),
+        },
+        client_info: {
+          name: value.name,
+          phone: value.phoneNumber.replaceAll(/[+ ]/g, ""),
+          email: value.email.length ? value.email : undefined,
+        },
+        description: value.description.length ? value.description : undefined,
+        payment_uuid: value.payment_uuid,
+        delivery_uuid: value.delivery_uuid,
+      };
+
+      write({
+        cache: {
+          client_info: order.client_info,
+          delivery_address: order.delivery_address,
+        },
+      });
+
+      onSubmit && onSubmit(order);
     },
   });
 
@@ -103,6 +113,17 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     productsCount,
     setFieldValue,
   ]);
+
+  React.useEffect(() => {
+    setFieldValue("name", cache.client_info?.name);
+    setFieldValue("phoneNumber", cache.client_info?.phone);
+    setFieldValue("email", cache.client_info?.email);
+    setFieldValue("address", cache.delivery_address?.street);
+    setFieldValue("house", cache.delivery_address?.house);
+    setFieldValue("entrance", cache.delivery_address?.entrance);
+    setFieldValue("floor", cache.delivery_address?.floor);
+    setFieldValue("apartment", cache.delivery_address?.apartment);
+  }, [cache, setFieldValue]);
 
   const currentDelivery = React.useMemo(
     () => availableDeliveries.find(d => d.uuid === formik.values.delivery_uuid),

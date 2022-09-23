@@ -6,9 +6,7 @@ import {
   OrderedProduct,
   setMetaStep,
   clear,
-} from "~/store/shopping-cart.reducer";
-
-export const SHOPPING_CART_STORAGE_KEY = "shopping-cart-storage";
+} from "~/store/reducers/shopping-cart.reducer";
 
 export const useShoppingCartActions = () => {
   const dispatch = useAppDispatch();

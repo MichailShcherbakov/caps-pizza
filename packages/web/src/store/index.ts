@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import API from "~/services/api.service";
-import authReducer from "./auth.reducer";
-import shoppingCartReducer from "./shopping-cart.reducer";
-import { listenerMiddleware } from "./middleware";
+import authReducer from "./reducers/auth.reducer";
+import shoppingCartReducer from "./reducers/shopping-cart.reducer";
+import ShoppingCartMiddleware from "./middleware/shopping-cart.middleware";
+import orderCacheReducer from "./reducers/order-cache.reducer";
+import OrderCacheMiddleware from "./middleware/order-cache.middleware";
 
 export const createStore = () =>
   configureStore({
@@ -11,11 +13,13 @@ export const createStore = () =>
       [API.reducerPath]: API.reducer,
       auth: authReducer,
       shoppingCart: shoppingCartReducer,
+      orderCache: orderCacheReducer,
     },
     middleware: getDefaultMiddleware =>
       getDefaultMiddleware()
         .concat(API.middleware)
-        .prepend(listenerMiddleware.middleware),
+        .prepend(ShoppingCartMiddleware)
+        .prepend(OrderCacheMiddleware),
   });
 
 export type AppStore = ReturnType<typeof createStore>;

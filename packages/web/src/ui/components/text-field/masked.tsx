@@ -10,6 +10,7 @@ export type MaskedTextFieldProps = TextFieldProps & {
     maskRef: React.MutableRefObject<IMask.InputMask<IMask.AnyMaskedOptions>>,
     e?: InputEvent | undefined
   ) => void;
+  value?: string | number;
 };
 
 export const MaskedTextField: React.FC<MaskedTextFieldProps> = React.memo(
@@ -26,6 +27,10 @@ export const MaskedTextField: React.FC<MaskedTextFieldProps> = React.memo(
           } as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>);
       },
     });
+
+    React.useEffect(() => {
+      maskRef.current.value = props.value?.toString() ?? "";
+    }, [maskRef, props.value]);
 
     return (
       <TextField {...props} value={value} InputProps={{ inputRef: ref }} />

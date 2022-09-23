@@ -1,18 +1,20 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
-import { RootState } from ".";
+import { RootState } from "..";
 import {
   addProduct,
   clear,
   init,
   removeProduct,
   setMetaStep,
-} from "./shopping-cart.reducer";
+} from "../reducers/shopping-cart.reducer";
+
+const { middleware, startListening } = createListenerMiddleware();
+
+export const ShoppingCartMiddleware = middleware;
 
 export const SHOPPING_CART_STORAGE_KEY = "shopping-cart-storage";
 
-export const listenerMiddleware = createListenerMiddleware();
-
-listenerMiddleware.startListening({
+startListening({
   matcher: isAnyOf(addProduct, removeProduct),
   effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
@@ -26,7 +28,7 @@ listenerMiddleware.startListening({
   },
 });
 
-listenerMiddleware.startListening({
+startListening({
   actionCreator: setMetaStep,
   effect: (action, listenerApi) => {
     if (action.payload.step === "pending") {
@@ -58,9 +60,11 @@ listenerMiddleware.startListening({
   },
 });
 
-listenerMiddleware.startListening({
+startListening({
   actionCreator: clear,
   effect: () => {
     localStorage.removeItem(SHOPPING_CART_STORAGE_KEY);
   },
 });
+
+export default ShoppingCartMiddleware;

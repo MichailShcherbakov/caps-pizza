@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { getRunningOperationPromises } from "~/services/api.service";
 import { wrapper } from "~/store";
-import { setAccessToken } from "~/store/auth.reducer";
+import { setAccessToken } from "~/store/reducers/auth.reducer";
 import getConfig from "next/config";
 
 const { publicRuntimeConfig } = getConfig();
