@@ -5,7 +5,6 @@ import {
   ProductVolumeTypeEnum,
   ProductWeightTypeEnum,
 } from "~/services/products.service";
-import getSpecifics from "../helpers/getSpecifics.helper";
 import { useStyle } from "./index.style";
 import { locale } from "@monorepo/common/locale";
 
@@ -15,19 +14,26 @@ export interface ProductInfoProps {
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const { classes } = useStyle();
-  const specifics = React.useMemo(() => getSpecifics(product), [product]);
 
   let amount = "";
+  let specifics = "";
 
-  if (product.weight && product.weight.type === ProductWeightTypeEnum.LITERS) {
-    amount = `, ${product.weight.value}${locale[product.weight.type]}`;
+  if (product.volume) {
+    if (product.volume.type === ProductVolumeTypeEnum.QUANTITY) {
+      amount = `, ${product.volume.value}${locale[product.volume.type]}`;
+    } else {
+      specifics += `${product.volume.value}${locale[product.volume.type]}`;
+    }
   }
 
-  if (
-    product.volume &&
-    product.volume.type === ProductVolumeTypeEnum.QUANTITY
-  ) {
-    amount = `, ${product.volume.value}${locale[product.volume.type]}`;
+  if (product.weight) {
+    if (product.weight.type === ProductWeightTypeEnum.LITERS) {
+      amount = `, ${product.weight.value}${locale[product.weight.type]}`;
+    } else {
+      if (specifics.length) specifics += " / ";
+
+      specifics += `${product.weight.value}${locale[product.weight.type]}`;
+    }
   }
 
   return (
