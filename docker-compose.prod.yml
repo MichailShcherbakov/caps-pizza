@@ -33,7 +33,7 @@ services:
       - PORT=8080
       - HOST=127.0.0.1
       - SECRET=${API_SECRET}
-      - FRONTEND_URL=http://${HOST}
+      - FRONTEND_URL=https://${HOST}
       - JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}
       - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
       - DATABASE_HOST=caps_pizza_db
@@ -55,8 +55,8 @@ services:
       - PORT=3000
       - HOST=127.0.0.1
       - IMAGE_HOST=${HOST}
-      - API_URL=http://${HOST}/api/v1
-      - IMAGES_SOURCE_URL=http://${HOST}/api/v1
+      - API_URL=https://${HOST}/api/v1
+      - IMAGES_SOURCE_URL=https://${HOST}/api/v1
     depends_on:
       - api
     container_name: caps_pizza_web
