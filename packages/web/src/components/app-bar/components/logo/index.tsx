@@ -1,5 +1,5 @@
 import NextLink from "next/link";
-import LogoIcon from "~/assets/logo.svg";
+import NextImage from "next/image";
 import { Fade, Stack, Typography } from "@mui/material";
 
 export interface LogoProps {
@@ -18,12 +18,7 @@ export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
           cursor: "pointer",
         }}
       >
-        <LogoIcon
-          sx={{
-            width: "1.5rem",
-            height: "1.5rem",
-          }}
-        />
+        <NextImage src="/logo-v2.png" width={48} height={48} priority />
         {!onlyIcon ? (
           <Fade in={!onlyIcon}>
             <Stack>
