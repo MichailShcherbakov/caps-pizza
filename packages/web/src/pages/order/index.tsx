@@ -8,6 +8,7 @@ import { APIError } from "~/services/helpers/transform-response.helper";
 import { LoadingBackdrop } from "~/ui";
 import OrderMadeSuccessfully from "~/components/stubs/order-made-successfully";
 import useShoppingCartActions from "~/hooks/use-shopping-cart-actions";
+import Head from "next/head";
 
 export const OrderPage: AppPage = () => {
   const { clear } = useShoppingCartActions();
@@ -51,7 +52,19 @@ export const OrderPage: AppPage = () => {
 };
 
 OrderPage.getLayout = page => {
-  return <OrderLayout>{page}</OrderLayout>;
+  return (
+    <OrderLayout>
+      <Head>
+        <title>Оформление заказа</title>
+        <meta name="keywords" content="заказ, пицца, доставка, пушкин" />
+        <meta
+          name="description"
+          content="Заказ пиццы, роллов и суши с доставкой в Славянке, Павловске, Глинка, Войскорово, Федоровское, Ленсоветовский, Никольское, Коммунаре. Купить пиццу с бесплатной доставкой по Пушкину СПб."
+        />
+      </Head>
+      {page}
+    </OrderLayout>
+  );
 };
 
 export default OrderPage;

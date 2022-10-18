@@ -4,6 +4,7 @@ import { ProductCategory } from "~/services/product-categories.service";
 import { Stack } from "@mui/system";
 import MainLayout from "~/layouts/main";
 import { Typography } from "@mui/material";
+import Head from "next/head";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -209,7 +210,22 @@ export const PolicyPage: AppPage = () => {
 };
 
 PolicyPage.getLayout = page => {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      <Head>
+        <title>Политика обработки персональных данных</title>
+        <meta
+          name="keywords"
+          content="заказ, пицца, доставка, пушкин, данных, обработки персональных данных"
+        />
+        <meta
+          name="description"
+          content="Заказ пиццы, роллов и суши с доставкой в Славянке, Павловске, Глинка, Войскорово, Федоровское, Ленсоветовский, Никольское, Коммунаре. Купить пиццу с бесплатной доставкой по Пушкину СПб."
+        />
+      </Head>
+      {page}
+    </MainLayout>
+  );
 };
 
 export default PolicyPage;

@@ -6,6 +6,7 @@ import CreateProductCategoryModal from "~/components/modals/product-categories-m
 import ProductCategoriesTable from "~/components/tables/product-categories-table";
 import { GetServerSideProps } from "next";
 import withAuth from "~/helpers/with-auth";
+import Head from "next/head";
 
 export const ProductCategoriesPage: AppPage = () => {
   return (
@@ -25,7 +26,14 @@ export const ProductCategoriesPage: AppPage = () => {
 };
 
 ProductCategoriesPage.getLayout = page => {
-  return <AdminPanelLayout>{page}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      <Head>
+        <title>Панель администратора - Категория Товаров</title>
+      </Head>
+      {page}
+    </AdminPanelLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withAuth;

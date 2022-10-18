@@ -6,6 +6,7 @@ import withAuth from "~/helpers/with-auth";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import CreatePaymentModal from "~/components/modals/payments-modals/create-payment.modal";
 import PaymentsTable from "~/components/tables/payments-table";
+import Head from "next/head";
 
 export const PaymentsPage: AppPage = () => {
   return (
@@ -25,7 +26,14 @@ export const PaymentsPage: AppPage = () => {
 };
 
 PaymentsPage.getLayout = page => {
-  return <AdminPanelLayout>{page}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      <Head>
+        <title>Панель администратора - Оплата</title>
+      </Head>
+      {page}
+    </AdminPanelLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withAuth;

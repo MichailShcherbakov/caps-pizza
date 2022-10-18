@@ -9,6 +9,7 @@ import { APIError } from "~/services/helpers/transform-response.helper";
 import ModalErrorCatcher from "~/components/error-catcher/modal";
 import { useRouter } from "next/router";
 import makeStyles from "~/ui/theme/makesStyles";
+import Head from "next/head";
 
 export const useStyle = makeStyles()(theme => ({
   root: {
@@ -94,6 +95,9 @@ SinInPage.getLayout = page => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Head>
+        <title>Панель администратора - Вход</title>
+      </Head>
       {page}
     </ThemeProvider>
   );

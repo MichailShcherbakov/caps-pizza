@@ -9,6 +9,7 @@ import ModifiersTable from "~/components/tables/modifiers-table";
 import { useGetModifierCategoriesQuery } from "~/services/modifier-categories.service";
 import CreateAnotherObjectModal from "~/components/notifications/modals/create-another-object.notification";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export const ModifiersPage: AppPage = () => {
   const router = useRouter();
@@ -50,7 +51,14 @@ export const ModifiersPage: AppPage = () => {
 };
 
 ModifiersPage.getLayout = page => {
-  return <AdminPanelLayout>{page}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      <Head>
+        <title>Панель администратора - Модификаторы</title>
+      </Head>
+      {page}
+    </AdminPanelLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withAuth;

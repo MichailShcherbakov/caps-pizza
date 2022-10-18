@@ -6,6 +6,7 @@ import CreateDeliveryModal from "~/components/modals/delivery-modals/create-deli
 import DeliveryTable from "~/components/tables/delivery-table";
 import { GetServerSideProps } from "next";
 import withAuth from "~/helpers/with-auth";
+import Head from "next/head";
 
 export const DeliveryPage: AppPage = () => {
   return (
@@ -25,7 +26,14 @@ export const DeliveryPage: AppPage = () => {
 };
 
 DeliveryPage.getLayout = page => {
-  return <AdminPanelLayout>{page}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      <Head>
+        <title>Панель администратора - Доставка</title>
+      </Head>
+      {page}
+    </AdminPanelLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withAuth;

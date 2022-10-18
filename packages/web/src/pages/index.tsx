@@ -18,6 +18,7 @@ import useScroll from "~/hooks/use-scroll";
 import useProductCategories from "~/hooks/use-product-categories";
 import PromotionSlider from "~/components/promotion-slider";
 import { Stack } from "@mui/system";
+import Head from "next/head";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -102,7 +103,21 @@ export const HomePage: AppPage = () => {
 };
 
 HomePage.getLayout = page => {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      <Head>
+        <title>
+          Заказать пиццу, суши и роллы у Кэпа в Пушкине с доставкой на дом
+        </title>
+        <meta name="keywords" content="заказ, пицца, доставка, пушкин" />
+        <meta
+          name="description"
+          content="Заказ пиццы, роллов и суши с доставкой в Славянке, Павловске, Глинка, Войскорово, Федоровское, Ленсоветовский, Никольское, Коммунаре. Купить пиццу с бесплатной доставкой по Пушкину СПб."
+        />
+      </Head>
+      {page}
+    </MainLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps =

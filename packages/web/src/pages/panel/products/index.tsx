@@ -9,6 +9,7 @@ import ProductsTable from "~/components/tables/products-table";
 import withAuth from "~/helpers/with-auth";
 import CreateAnotherObjectModal from "~/components/notifications/modals/create-another-object.notification";
 import { useGetProductCategoriesQuery } from "~/services/product-categories.service";
+import Head from "next/head";
 
 export const ProductsPage: AppPage = () => {
   const router = useRouter();
@@ -50,7 +51,14 @@ export const ProductsPage: AppPage = () => {
 };
 
 ProductsPage.getLayout = page => {
-  return <AdminPanelLayout>{page}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      <Head>
+        <title>Панель администратора - Товары</title>
+      </Head>
+      {page}
+    </AdminPanelLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withAuth;

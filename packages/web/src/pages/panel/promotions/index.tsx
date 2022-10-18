@@ -6,6 +6,7 @@ import withAuth from "~/helpers/with-auth";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import CreatePromotionModal from "~/components/modals/promotions-modals/create-promotion.modal";
 import PromotionsTable from "~/components/tables/promotions-table";
+import Head from "next/head";
 
 export const PromotionsPage: AppPage = () => {
   return (
@@ -25,7 +26,14 @@ export const PromotionsPage: AppPage = () => {
 };
 
 PromotionsPage.getLayout = page => {
-  return <AdminPanelLayout>{page}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      <Head>
+        <title>Панель администратора - Акции</title>
+      </Head>
+      {page}
+    </AdminPanelLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withAuth;

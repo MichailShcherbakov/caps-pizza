@@ -6,6 +6,7 @@ import withAuth from "~/helpers/with-auth";
 import AdminPanelLayout from "~/layouts/admin-panel";
 import CreateModifierCategoryModal from "~/components/modals/modifier-categories-modals/create-modifier-category.modal";
 import ModifierCategoriesTable from "~/components/tables/modifier-categories-table";
+import Head from "next/head";
 
 export const ModifierCategoriesPage: AppPage = () => {
   return (
@@ -25,7 +26,14 @@ export const ModifierCategoriesPage: AppPage = () => {
 };
 
 ModifierCategoriesPage.getLayout = page => {
-  return <AdminPanelLayout>{page}</AdminPanelLayout>;
+  return (
+    <AdminPanelLayout>
+      <Head>
+        <title>Панель администратора - Типы Модификаторов</title>
+      </Head>
+      {page}
+    </AdminPanelLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withAuth;
