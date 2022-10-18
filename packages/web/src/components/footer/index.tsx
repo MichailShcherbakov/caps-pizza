@@ -19,8 +19,8 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
           <Grid
             className={classes.section}
             item
-            xl={3}
-            lg={3}
+            xl={6}
+            lg={6}
             md={6}
             sm={12}
             xs={12}
@@ -36,13 +36,13 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               </Typography>
             </Stack>
           </Grid>
-          <Grid container item xl={9} lg={9} md={6} sm={12} xs={12}>
+          <Grid container item xl={6} lg={6} md={6} sm={12} xs={12}>
             <Grid
               className={classes.section}
               item
-              xl={4}
-              lg={4}
-              md={6}
+              xl={6}
+              lg={6}
+              md={12}
               sm={12}
               xs={12}
             >
@@ -51,37 +51,29 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
                   <Typography variant="h4">Пицца от КЭПа</Typography>
                 </Stack>
                 <Stack spacing={2}>
-                  <Typography>О Компании</Typography>
-                  <Typography>Пользовательское соглашение</Typography>
-                  <Typography>Политика обработки данных</Typography>
+                  <Typography
+                    component="a"
+                    href="/policy"
+                    className={classes.link}
+                  >
+                    Политика обработки персональных данных
+                  </Typography>
+                  <Typography
+                    component="a"
+                    href="https://vk.com/pizza30cm_pushkin"
+                    target="_blank"
+                    className={classes.link}
+                  >
+                    Служба поддержки
+                  </Typography>
                 </Stack>
               </Stack>
             </Grid>
             <Grid
               className={classes.section}
               item
-              xl={4}
-              lg={4}
-              md={6}
-              sm={12}
-              xs={12}
-            >
-              <Stack direction="column" spacing={2}>
-                <Stack>
-                  <Typography variant="h4">Помощь</Typography>
-                </Stack>
-                <Stack spacing={2}>
-                  <Typography>Контакты</Typography>
-                  <Typography>Наши продукты</Typography>
-                  <Typography>Служба поддержки</Typography>
-                </Stack>
-              </Stack>
-            </Grid>
-            <Grid
-              className={classes.section}
-              item
-              xl={4}
-              lg={4}
+              xl={6}
+              lg={6}
               md={12}
               sm={12}
               xs={12}
@@ -118,6 +110,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
                     <Typography
                       component="a"
                       href="mailto:World151217@mail.ru"
+                      target="_blank"
                       className={classes.link}
                     >
                       World151217@mail.ru
@@ -132,6 +125,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
                     <Typography
                       component="a"
                       href="https://vk.com/pizza30cm_pushkin"
+                      target="_blank"
                       className={classes.link}
                     >
                       Вконтакте

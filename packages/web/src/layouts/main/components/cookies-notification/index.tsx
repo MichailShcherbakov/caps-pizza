@@ -23,7 +23,12 @@ export const CookiesNotification: React.FC<CookiesNotificationProps> = ({
       <Typography>
         Мы используем cookies для быстрой и удобной работы сайта. Продолжая
         пользоваться сайтом, вы принимаете{" "}
-        <Typography component="a" href="/" color="primary">
+        <Typography
+          component="a"
+          href="/policy"
+          color="primary"
+          target="_blank"
+        >
           условия обработки персональных данных
         </Typography>
       </Typography>

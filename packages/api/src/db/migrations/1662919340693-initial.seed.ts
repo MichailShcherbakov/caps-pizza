@@ -106,12 +106,12 @@ export class initialSeed1662919340693 implements MigrationInterface {
         display: true,
         display_position: 1,
       },
-      {
+      /*   {
         name: "Бесплатная доставка при заказе от 700 рублей",
         image_url: "/images/promo2.svg",
         display: true,
         display_position: 2,
-      },
+      }, */
     ]);
 
     const [dough, sauce, kit, addPizzaItems] =
