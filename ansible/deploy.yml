@@ -51,6 +51,16 @@
       become: yes
       become_method: sudo
 
+    - name: "copy api/images folder"
+      copy:
+        src: "../packages/api/static/images/"
+        dest: "{{ app_path }}/images"
+        owner: "root"
+        group: "root"
+        mode: 1700
+      become: yes
+      become_method: sudo
+
     - name: "stop service"
       shell: docker compose --file {{ app_path }}/docker-compose.prod.yml stop
 

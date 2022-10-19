@@ -117,8 +117,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   React.useEffect(() => {
     if (cache.client_info?.name) setFieldValue("name", cache.client_info.name);
 
-    if (cache.client_info?.phone)
-      setFieldValue("phoneNumber", cache.client_info.phone);
+    /* Phone number is not stored */
 
     if (cache.client_info?.email)
       setFieldValue("email", cache.client_info.email);
