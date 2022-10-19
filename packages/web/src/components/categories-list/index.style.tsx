@@ -13,6 +13,9 @@ export const useStyle = makeStyles<StyleProps>()((theme, { width }) => ({
     flexDirection: "row",
     alignItems: "center",
     gap: theme.spacing(2),
+    paddingTop: theme.spacing(0.35),
+    paddingBottom: theme.spacing(0.35),
+    userSelect: "none",
 
     ...(width === "full" && {
       justifyContent: "flex-start",
@@ -23,8 +26,18 @@ export const useStyle = makeStyles<StyleProps>()((theme, { width }) => ({
       justifyContent: "flex-start",
     }),
 
-    ["&::-webkit-scrollbar"]: {
-      display: "none",
+    "&::-webkit-scrollbar": {
+      width: 3,
+      height: 3,
+    },
+
+    "&::-webkit-scrollbar-track": {
+      background: "transparent",
+    },
+
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ff701060",
+      borderRadius: 20,
     },
 
     [theme.breakpoints.down("md")]: {
