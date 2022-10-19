@@ -12,6 +12,7 @@ export const useStyle = makeStyles<StyleProps, "image">({
     alignItems: "center",
     borderRadius: theme.spacing(2),
     gap: theme.spacing(1),
+    textAlign: "center",
 
     ...(size === "medium" && {
       flexDirection: "column",
@@ -29,6 +30,7 @@ export const useStyle = makeStyles<StyleProps, "image">({
         flexDirection: "row",
         width: "auto",
         height: "auto",
+        whiteSpace: "nowrap",
 
         padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
 
@@ -40,6 +42,7 @@ export const useStyle = makeStyles<StyleProps, "image">({
     }),
 
     ...(size === "small" && {
+      whiteSpace: "nowrap",
       padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
 
       [`> .${classes.image}`]: {
@@ -57,5 +60,7 @@ export const useStyle = makeStyles<StyleProps, "image">({
   },
   image: {
     position: "relative",
+    flexShrink: 0,
+    flexGrow: 0,
   },
 }));

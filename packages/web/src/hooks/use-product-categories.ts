@@ -14,6 +14,18 @@ export const useProductCategories = () => {
           display_position: 1,
         },
         ...data,
+        {
+          uuid: "2",
+          name: "Доставка и оплата",
+          image_url: "/images/delivery.svg",
+          display_position: data.length + 2,
+        },
+        {
+          uuid: "3",
+          name: "Контакты",
+          image_url: "/images/email.svg",
+          display_position: data.length + 3,
+        },
       ],
       isLoading,
     };

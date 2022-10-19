@@ -78,7 +78,7 @@ export const HomePage: AppPage = () => {
         Ленсоветовский, Федоровское, Павловск, Коммунар. Доставка бесплатно.
         Минимальный заказ 700 р.
       </ArticleSection>
-      <ArticleSection id="О доставке" title="Доставка">
+      <ArticleSection id="Доставка и оплата" title="Доставка">
         {`Доставка пиццы, суши и роллов бесплатна при заказе от 700 рублей.
 
               Среднее время доставки 45 минут.
@@ -95,7 +95,7 @@ export const HomePage: AppPage = () => {
                 - банковской картой через терминал
                 `}
       </ArticleSection>
-      <ArticleSection id="О приёме заказов" title="Приём заказов">
+      <ArticleSection id="Контакты" title="Приём заказов">
         Ежедневно 11:00 — 22:30
       </ArticleSection>
     </>
