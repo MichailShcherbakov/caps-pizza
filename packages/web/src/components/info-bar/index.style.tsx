@@ -9,4 +9,31 @@ export const useStyle = makeStyles()(theme => ({
       display: "none",
     },
   },
+  container: {
+    gap: theme.spacing(0.5),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+
+    [theme.breakpoints.down("md")]: {
+      gap: theme.spacing(1),
+    },
+  },
+  link: {
+    color: theme.palette.text.primary,
+
+    ["&:hover"]: {
+      color: theme.palette.primary.main,
+    },
+  },
+  linkContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.spacing(2),
+
+    [theme.breakpoints.down("xxs")]: {
+      flexDirection: "column",
+      alignItems: "flex-end",
+      gap: theme.spacing(1),
+    },
+  },
 }));
