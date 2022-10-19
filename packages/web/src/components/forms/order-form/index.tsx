@@ -115,15 +115,44 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   ]);
 
   React.useEffect(() => {
-    setFieldValue("name", cache.client_info?.name);
-    setFieldValue("phoneNumber", cache.client_info?.phone);
-    setFieldValue("email", cache.client_info?.email);
-    setFieldValue("address", cache.delivery_address?.street);
-    setFieldValue("house", cache.delivery_address?.house);
-    setFieldValue("entrance", cache.delivery_address?.entrance);
-    setFieldValue("floor", cache.delivery_address?.floor);
-    setFieldValue("apartment", cache.delivery_address?.apartment);
-  }, [cache, setFieldValue]);
+    setFieldValue("name", cache.client_info?.name ?? formik.values.name);
+    setFieldValue(
+      "phoneNumber",
+      cache.client_info?.phone ?? formik.values.phoneNumber
+    );
+    setFieldValue("email", cache.client_info?.email ?? formik.values.email);
+    setFieldValue(
+      "address",
+      cache.delivery_address?.street ?? formik.values.address
+    );
+    setFieldValue(
+      "house",
+      cache.delivery_address?.house ?? formik.values.house
+    );
+    setFieldValue(
+      "entrance",
+      cache.delivery_address?.entrance ?? formik.values.entrance
+    );
+    setFieldValue(
+      "floor",
+      cache.delivery_address?.floor ?? formik.values.floor
+    );
+    setFieldValue(
+      "apartment",
+      cache.delivery_address?.apartment ?? formik.values.apartment
+    );
+  }, [
+    cache,
+    formik.values.address,
+    formik.values.apartment,
+    formik.values.email,
+    formik.values.entrance,
+    formik.values.floor,
+    formik.values.house,
+    formik.values.name,
+    formik.values.phoneNumber,
+    setFieldValue,
+  ]);
 
   const currentDelivery = React.useMemo(
     () => availableDeliveries.find(d => d.uuid === formik.values.delivery_uuid),
