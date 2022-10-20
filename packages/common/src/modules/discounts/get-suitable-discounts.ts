@@ -2,6 +2,7 @@ import {
   DiscountCriteriaEnum,
   DiscountTypeEnum,
   IDiscount,
+  IProduct,
   IProductWithFullPrice,
 } from "../../interfaces";
 import { computeProductsCost } from "./compute-product-cost.helper";
@@ -13,16 +14,19 @@ import orderProductsByProfitable from "./order-produts-by-profitable";
 
 export interface ISuitableDiscount {
   discount: IDiscount;
-  products: IProductWithFullPrice[];
+  products: IProduct[];
   discountValue: number;
 }
 
 export function getSuitableDiscounts(
   discounts: IDiscount[],
-  products: IProductWithFullPrice[]
+  products: Omit<IProductWithFullPrice, "fullPrice">[]
 ): ISuitableDiscount[] {
   let suitableDiscounts: ISuitableDiscount[] = [];
-  let providedProducts = products.map(p => ({ ...p }));
+  let providedProducts: IProductWithFullPrice[] = products.map(p => ({
+    ...p,
+    fullPrice: p.price,
+  }));
 
   for (const discount of discounts) {
     let passed = true;

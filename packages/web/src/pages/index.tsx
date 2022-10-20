@@ -46,6 +46,7 @@ export const HomePage: AppPage = () => {
         }}
       >
         <CategoriesList
+          id="app_bar_stopper"
           categories={productCategories}
           CategoryCardProps={{ size: "medium" }}
         />

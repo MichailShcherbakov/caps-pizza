@@ -20,7 +20,7 @@ export const createModifiers = (count = 5) => {
   const modifiers: IModifier[] = [];
 
   for (let i = 0; i < count; i++) {
-    modifiers.push(createModifier());
+    modifiers.push(createModifier({ price: 0 }));
   }
 
   return modifiers;

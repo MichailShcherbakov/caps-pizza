@@ -13,24 +13,29 @@ import { useStyle } from "./index.style";
 import useProductCategories from "~/hooks/use-product-categories";
 
 const ShoppingCartButton = dynamic(() => import("../shopping-cart-button"), {
-  suspense: true,
   ssr: false,
 });
 
-const APP_BAR_SMALL_SCREEN_TOP_OFFSET = 100;
-const APP_BAR_LARGE_SCREEN_TOP_OFFSET = 150;
-
-export const AppBarHead = () => {
+export const AppBarHead = ({
+  appBarRef,
+}: {
+  appBarRef: HTMLElement | null;
+}) => {
   const { productCategories } = useProductCategories();
   const [showCategories, setShowCategories] = React.useState<boolean>(false);
 
   useScroll({
     onScrollChange: () => {
-      const offset =
-        window.innerWidth > 900
-          ? APP_BAR_LARGE_SCREEN_TOP_OFFSET
-          : APP_BAR_SMALL_SCREEN_TOP_OFFSET;
-      setShowCategories(window.scrollY > offset);
+      const stopper = document.getElementById(
+        "app_bar_stopper"
+      ) as HTMLElement | null;
+
+      if (!stopper || !appBarRef) return;
+
+      setShowCategories(
+        window.scrollY >
+          stopper.offsetTop + stopper.offsetHeight - appBarRef.offsetHeight
+      );
     },
   });
 
@@ -38,7 +43,7 @@ export const AppBarHead = () => {
     <>
       <Logo onlyIcon={showCategories} />
       {showCategories ? (
-        <Fade in={showCategories} unmountOnExit>
+        <Fade in unmountOnExit>
           <CategoriesList fullWidth categories={productCategories} />
         </Fade>
       ) : undefined}
@@ -50,10 +55,12 @@ export interface AppBarProps extends MUIAppBarProps {}
 
 export const AppBar: React.FC<AppBarProps> = ({ className, ...props }) => {
   const { classes, cx } = useStyle();
+  const [ref, setRef] = React.useState<HTMLElement | null>(null);
 
   return (
     <MUIAppBar
       {...props}
+      ref={setRef}
       position="sticky"
       className={cx(classes.root, className)}
     >
@@ -65,10 +72,8 @@ export const AppBar: React.FC<AppBarProps> = ({ className, ...props }) => {
           spacing={2}
           className={classes.container}
         >
-          <AppBarHead />
-          <React.Suspense>
-            <ShoppingCartButton />
-          </React.Suspense>
+          <AppBarHead appBarRef={ref} />
+          <ShoppingCartButton />
         </Stack>
       </Container>
     </MUIAppBar>

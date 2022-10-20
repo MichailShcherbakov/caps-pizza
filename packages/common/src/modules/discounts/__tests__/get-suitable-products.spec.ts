@@ -17,7 +17,11 @@ describe("[Helper] [getSuitableProducts] ...", () => {
         createProductCategory(),
         createProductCategory(),
       ];
-      const modifiers = [createModifier()];
+      const modifiers = [
+        createModifier({
+          price: 0,
+        }),
+      ];
       const products = [
         createProduct({
           modifiers,
@@ -49,7 +53,7 @@ describe("[Helper] [getSuitableProducts] ...", () => {
           category: productCategories[1],
           category_uuid: productCategories[1].uuid,
         }),
-      ];
+      ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 
       const needsProducts = [products[0], products[1]];
 
@@ -78,7 +82,11 @@ describe("[Helper] [getSuitableProducts] ...", () => {
 
   describe("[Products] ...", () => {
     it("should return product of a special product list", () => {
-      const products = createProducts(20);
+      const products = createProducts(20).map(p => ({
+        ...p,
+        fullPrice: p.price,
+        count: 1,
+      }));
       const needsProducts = products.slice(
         faker.datatype.number({ min: 0, max: products.length / 2 }),
         faker.datatype.number({
@@ -114,7 +122,9 @@ describe("[Helper] [getSuitableProducts] ...", () => {
     it("should return product of a special product list, but all of them should have the same category and modifiers", () => {
       const productCategory = createProductCategory();
       const otherProductCategory = createProductCategory();
-      const modifier = createModifier();
+      const modifier = createModifier({
+        price: 0,
+      });
       const products = [
         /// is fulfill product
         createProduct({
@@ -144,7 +154,7 @@ describe("[Helper] [getSuitableProducts] ...", () => {
           category: otherProductCategory,
           category_uuid: otherProductCategory.uuid,
         }),
-      ];
+      ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 
       const needsProducts = [products[0], products[1]];
 
@@ -196,7 +206,7 @@ describe("[Helper] [getSuitableProducts] ...", () => {
           category: otherProductCategory,
           category_uuid: otherProductCategory.uuid,
         }),
-      ];
+      ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 
       const needsProducts = [products[0], products[1]];
 
@@ -227,7 +237,9 @@ describe("[Helper] [getSuitableProducts] ...", () => {
     it("should return product of a special product list, but all of them should have the same modifiers", () => {
       const productCategory = createProductCategory();
       const otherProductCategory = createProductCategory();
-      const modifier = createModifier();
+      const modifier = createModifier({
+        price: 0,
+      });
       const products = [
         /// is fulfill product
         createProduct({
@@ -252,7 +264,7 @@ describe("[Helper] [getSuitableProducts] ...", () => {
           category: otherProductCategory,
           category_uuid: otherProductCategory.uuid,
         }),
-      ];
+      ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 
       const needsProducts = [products[0], products[1], products[3]];
 
@@ -281,7 +293,11 @@ describe("[Helper] [getSuitableProducts] ...", () => {
 
   describe("[Global] ...", () => {
     it("should return all products, without filters", () => {
-      const products = createProducts(20);
+      const products = createProducts(20).map(p => ({
+        ...p,
+        fullPrice: p.price,
+        count: 1,
+      }));
 
       const needsProducts = products;
 

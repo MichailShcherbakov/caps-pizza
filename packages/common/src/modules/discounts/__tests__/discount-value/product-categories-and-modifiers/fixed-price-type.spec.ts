@@ -17,6 +17,7 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -43,7 +44,6 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 3,
                 },
               ]
@@ -67,10 +67,12 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 520,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -97,12 +99,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 2,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 1,
                 },
               ]
@@ -131,14 +131,17 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 520,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 560,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -165,17 +168,14 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 1,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 1,
                 },
                 {
                   ...products[2],
-                  fullPrice: 560,
                   count: 1,
                 },
               ]
@@ -209,6 +209,7 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -235,7 +236,6 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 6,
                 },
               ]
@@ -259,10 +259,12 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 520,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -289,12 +291,11 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 4,
                 },
                 {
                   ...products[0],
-                  fullPrice: 440,
+                  price: 440,
                   count: 2,
                 },
               ]
@@ -324,14 +325,17 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 520,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 560,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -358,17 +362,14 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 2,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 3,
                 },
                 {
                   ...products[2],
-                  fullPrice: 560,
                   count: 4,
                 },
               ]
@@ -407,10 +408,12 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 520,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -437,12 +440,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 2,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 2,
                 },
               ]
@@ -471,10 +472,12 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 520,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -501,12 +504,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 3,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 4,
                 },
               ]
@@ -536,10 +537,12 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
             createProduct({
+              price: 520,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -566,12 +569,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 1,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 1,
                 },
               ]
@@ -583,6 +584,7 @@ describe("[Discount Module] ...", () => {
           const productCategory = createProductCategory();
           const products = [
             createProduct({
+              price: 440,
               category_uuid: productCategory.uuid,
               category: productCategory,
             }),
@@ -609,7 +611,6 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 2,
                 },
               ]
@@ -622,6 +623,7 @@ describe("[Discount Module] ...", () => {
         const productCategory = createProductCategory();
         const products = [
           createProduct({
+            price: 440,
             category_uuid: productCategory.uuid,
             category: productCategory,
           }),
@@ -648,7 +650,6 @@ describe("[Discount Module] ...", () => {
             [
               {
                 ...products[0],
-                fullPrice: 440,
                 count: 2,
               },
             ]
@@ -660,9 +661,9 @@ describe("[Discount Module] ...", () => {
         const productCategory = createProductCategory();
         const products = [
           createProduct({
+            price: 420,
             category_uuid: productCategory.uuid,
             category: productCategory,
-            price: 420, // 420 * 3 = 1260 < 1299
           }),
         ];
         const discount: IDiscount = createDiscount({
@@ -687,7 +688,6 @@ describe("[Discount Module] ...", () => {
             [
               {
                 ...products[0],
-                fullPrice: 420,
                 count: 3,
               },
             ]
@@ -699,9 +699,9 @@ describe("[Discount Module] ...", () => {
         const productCategory = createProductCategory();
         const products = [
           createProduct({
+            price: 420,
             category_uuid: productCategory.uuid,
             category: productCategory,
-            price: 420, // 420 * 3 = 1260 < 1299
           }),
         ];
         const discount: IDiscount = createDiscount({
@@ -726,7 +726,6 @@ describe("[Discount Module] ...", () => {
             [
               {
                 ...products[0],
-                fullPrice: 420,
                 count: 6,
               },
             ]
@@ -738,10 +737,12 @@ describe("[Discount Module] ...", () => {
         const productCategory = createProductCategory();
         const products = [
           createProduct({
+            price: 440,
             category_uuid: productCategory.uuid,
             category: productCategory,
           }),
           createProduct({
+            price: 433,
             category_uuid: productCategory.uuid,
             category: productCategory,
           }),
@@ -768,12 +769,10 @@ describe("[Discount Module] ...", () => {
             [
               {
                 ...products[0],
-                fullPrice: 440,
                 count: 3,
               },
               {
                 ...products[1],
-                fullPrice: 433,
                 count: 1,
               },
             ]

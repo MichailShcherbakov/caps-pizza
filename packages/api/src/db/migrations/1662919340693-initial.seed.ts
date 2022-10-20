@@ -151,74 +151,81 @@ export class initialSeed1662919340693 implements MigrationInterface {
         },
       ]);
 
-    const [traditionalDough, _, yakiSauce, __, weekdayCombo] =
-      await modifiers.createManyFrom([
-        {
-          name: "Традиционное тесто",
-          article_number: 140102,
-          price: 0,
-          category_uuid: dough.uuid,
-          display: true,
-          display_position: 1,
-        },
-        {
-          name: "Пышное тесто",
-          article_number: 140103,
-          price: 50,
-          category_uuid: dough.uuid,
-          display: true,
-          display_position: 2,
-        },
-        {
-          name: "Яки соус",
-          article_number: 140104,
-          price: 0,
-          category_uuid: sauce.uuid,
-          display: true,
-          display_position: 1,
-        },
-        {
-          name: "Спайси соус",
-          article_number: 140105,
-          price: 0,
-          category_uuid: sauce.uuid,
-          display: true,
-          display_position: 2,
-        },
-        {
-          name: "Будний день",
-          article_number: 140106,
-          price: 0,
-          category_uuid: kit.uuid,
-          display: true,
-          display_position: 1,
-        },
-        {
-          name: "Выходной день",
-          article_number: 140107,
-          price: 200,
-          category_uuid: kit.uuid,
-          display: true,
-          display_position: 2,
-        },
-        {
-          name: "Без добавлений",
-          article_number: 140100,
-          price: 0,
-          category_uuid: addPizzaItems.uuid,
-          display: false,
-          display_position: 0,
-        },
-        {
-          name: "Моцарелла",
-          image_url: "/images/cheese.png",
-          article_number: 140101,
-          price: 100,
-          category_uuid: addPizzaItems.uuid,
-          display: true,
-          display_position: 1,
-        },
-      ]);
+    const [
+      traditionalDough,
+      _,
+      yakiSauce,
+      __,
+      weekdayCombo,
+      ____,
+      withoutAdds,
+    ] = await modifiers.createManyFrom([
+      {
+        name: "Традиционное тесто",
+        article_number: 140102,
+        price: 0,
+        category_uuid: dough.uuid,
+        display: true,
+        display_position: 1,
+      },
+      {
+        name: "Пышное тесто",
+        article_number: 140103,
+        price: 50,
+        category_uuid: dough.uuid,
+        display: true,
+        display_position: 2,
+      },
+      {
+        name: "Яки соус",
+        article_number: 140104,
+        price: 0,
+        category_uuid: sauce.uuid,
+        display: true,
+        display_position: 1,
+      },
+      {
+        name: "Спайси соус",
+        article_number: 140105,
+        price: 0,
+        category_uuid: sauce.uuid,
+        display: true,
+        display_position: 2,
+      },
+      {
+        name: "Будний день",
+        article_number: 140106,
+        price: 0,
+        category_uuid: kit.uuid,
+        display: true,
+        display_position: 1,
+      },
+      {
+        name: "Выходной день",
+        article_number: 140107,
+        price: 200,
+        category_uuid: kit.uuid,
+        display: true,
+        display_position: 2,
+      },
+      {
+        name: "Без добавлений",
+        article_number: 140100,
+        price: 0,
+        category_uuid: addPizzaItems.uuid,
+        display: false,
+        display_position: 0,
+      },
+      {
+        name: "Моцарелла",
+        image_url: "/images/cheese.png",
+        article_number: 140101,
+        price: 100,
+        category_uuid: addPizzaItems.uuid,
+        display: true,
+        display_position: 1,
+      },
+    ]);
 
     const [pizza, combo, rolls, snacks, drink] =
       await productCategories.createManyFrom([
@@ -277,7 +284,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 420,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Пепперони",
@@ -295,7 +302,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 470,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Карбонара",
@@ -313,7 +320,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 470,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Жульен",
@@ -331,7 +338,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 535,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца 4 сезона",
@@ -349,7 +356,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 520,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Прошутто-фунги",
@@ -367,7 +374,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 510,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Вегетарианская",
@@ -385,7 +392,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 470,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца 4 сыра",
@@ -403,7 +410,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 470,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Поло",
@@ -421,7 +428,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 530,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Неаполитана",
@@ -439,7 +446,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 520,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Мясная",
@@ -457,7 +464,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 740,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Барбекю",
@@ -475,7 +482,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 530,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Острая",
@@ -493,7 +500,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 540,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Морская",
@@ -507,7 +514,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 30,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Охотничья",
@@ -521,7 +528,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 30,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Пивная",
@@ -539,7 +546,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 635,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца от Кэпа",
@@ -557,7 +564,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 715,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Ди-феста",
@@ -575,7 +582,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 540,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Гавайская с ветчиной",
@@ -593,7 +600,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 630,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Гавайская с курицей",
@@ -611,7 +618,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 650,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Детская",
@@ -629,7 +636,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 440,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца 4 сезона бьянко",
@@ -647,7 +654,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 520,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Пепперони бьянко",
@@ -665,7 +672,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 470,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Мясная бьянко",
@@ -683,7 +690,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 740,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Прошутто-фунги бьянко",
@@ -701,7 +708,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 510,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Сборная",
@@ -719,7 +726,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 600,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Пушкинская",
@@ -737,7 +744,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 600,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       {
         name: "Пицца Пармеджано",
@@ -755,7 +762,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
           value: 540,
         },
         tags: [],
-        modifiers: [traditionalDough],
+        modifiers: [traditionalDough, withoutAdds],
       },
       // COMBO
       {
@@ -1568,6 +1575,15 @@ export class initialSeed1662919340693 implements MigrationInterface {
         desc: "",
         article_number: 150010,
         image_url: "/images/dop-nabor.jpg",
+        price: 50,
+        category_uuid: rolls.uuid,
+        tags: ["#Дополнительно:4"],
+      },
+      {
+        name: "Дополнительный спайси соус",
+        desc: "",
+        article_number: 140108,
+        image_url: "/images/spacy-souce.png",
         price: 50,
         category_uuid: rolls.uuid,
         tags: ["#Дополнительно:4"],

@@ -13,7 +13,11 @@ describe("[Discount Module] ...", () => {
     describe("[Discount type] [Percent] ...", () => {
       describe("[Discount condition criteria] [Count] ...", () => {
         it("should return a discount (full coincidence)", () => {
-          const products = [createProduct(), createProduct(), createProduct()];
+          const products = [
+            createProduct({ price: 440 }),
+            createProduct({ price: 560 }),
+            createProduct({ price: 120 }),
+          ];
           const discount: IDiscount = createDiscount({
             type: DiscountTypeEnum.PERCENT,
             value: 3,
@@ -46,17 +50,14 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 1,
                 },
                 {
                   ...products[1],
-                  fullPrice: 560,
                   count: 1,
                 },
                 {
                   ...products[2],
-                  fullPrice: 120,
                   count: 1,
                 },
               ]
@@ -88,7 +89,11 @@ describe("[Discount Module] ...", () => {
         });
 
         it("should return a discount (more one coincidence)", () => {
-          const products = [createProduct(), createProduct(), createProduct()];
+          const products = [
+            createProduct({ price: 440 }),
+            createProduct({ price: 560 }),
+            createProduct({ price: 120 }),
+          ];
           const discount: IDiscount = createDiscount({
             type: DiscountTypeEnum.PERCENT,
             value: 3,
@@ -121,17 +126,14 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 3,
                 },
                 {
                   ...products[1],
-                  fullPrice: 560,
                   count: 1,
                 },
                 {
                   ...products[2],
-                  fullPrice: 120,
                   count: 2,
                 },
               ]
@@ -163,7 +165,11 @@ describe("[Discount Module] ...", () => {
         });
 
         it("should return a discount (cross coincidence)", () => {
-          const products = [createProduct(), createProduct(), createProduct()];
+          const products = [
+            createProduct({ price: 440 }),
+            createProduct({ price: 560 }),
+            createProduct(),
+          ];
           const discount: IDiscount = createDiscount({
             type: DiscountTypeEnum.PERCENT,
             value: 3,
@@ -196,12 +202,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 1,
                 },
                 {
                   ...products[1],
-                  fullPrice: 560,
                   count: 2,
                 },
               ]
@@ -227,7 +231,11 @@ describe("[Discount Module] ...", () => {
         });
 
         it("should not return a discount (one non-coincidence)", () => {
-          const products = [createProduct(), createProduct(), createProduct()];
+          const products = [
+            createProduct(),
+            createProduct({ price: 560 }),
+            createProduct({ price: 120 }),
+          ];
           const discount: IDiscount = createDiscount({
             type: DiscountTypeEnum.PERCENT,
             value: 3,
@@ -260,12 +268,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[1],
-                  fullPrice: 560,
                   count: 2,
                 },
                 {
                   ...products[2],
-                  fullPrice: 120,
                   count: 2,
                 },
               ]
@@ -274,7 +280,11 @@ describe("[Discount Module] ...", () => {
         });
 
         it("should not return a discount (one non-coincidence)", () => {
-          const products = [createProduct(), createProduct(), createProduct()];
+          const products = [
+            createProduct({ price: 440 }),
+            createProduct({ price: 560 }),
+            createProduct(),
+          ];
           const discount: IDiscount = createDiscount({
             type: DiscountTypeEnum.PERCENT,
             value: 3,
@@ -307,12 +317,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 2,
                 },
                 {
                   ...products[1],
-                  fullPrice: 560,
                   count: 2,
                 },
               ]
@@ -322,7 +330,11 @@ describe("[Discount Module] ...", () => {
       });
 
       it("should not return a discount (cross coincidence)", () => {
-        const products = [createProduct(), createProduct(), createProduct()];
+        const products = [
+          createProduct({ price: 440 }),
+          createProduct({ price: 560 }),
+          createProduct(),
+        ];
         const discount: IDiscount = createDiscount({
           type: DiscountTypeEnum.PERCENT,
           value: 3,
@@ -355,12 +367,10 @@ describe("[Discount Module] ...", () => {
             [
               {
                 ...products[0],
-                fullPrice: 440,
                 count: 1,
               },
               {
                 ...products[1],
-                fullPrice: 560,
                 count: 1,
               },
             ]

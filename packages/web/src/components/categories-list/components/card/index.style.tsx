@@ -51,9 +51,10 @@ export const useStyle = makeStyles<StyleProps, "image">({
       },
 
       ...(active && {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: "#ff701030",
+
         "&:hover": {
-          backgroundColor: theme.palette.primary.light,
+          backgroundColor: "#ff701030",
         },
       }),
     }),

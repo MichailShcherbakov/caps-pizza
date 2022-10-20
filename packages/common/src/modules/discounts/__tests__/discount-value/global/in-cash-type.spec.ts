@@ -16,15 +16,22 @@ describe("[Discount Module] ...", () => {
     describe("[Discount type] [In cashe] ...", () => {
       describe("[Discount condition criteria] [Price] ...", () => {
         it("should return a discount (one coincidence)", () => {
-          const modifiers = [createModifier()];
+          const modifiers = [
+            createModifier({
+              price: 0,
+            }),
+          ];
           const products = [
             createProduct({
+              price: 440,
               modifiers,
             }),
             createProduct({
+              price: 520,
               modifiers,
             }),
             createProduct({
+              price: 560,
               modifiers,
             }),
           ];
@@ -50,17 +57,14 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 1,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 1,
                 },
                 {
                   ...products[2],
-                  fullPrice: 560,
                   count: 1,
                 },
               ]
@@ -91,15 +95,22 @@ describe("[Discount Module] ...", () => {
         });
 
         it("should return a suitable discount (nth coincidence (three))", () => {
-          const modifiers = [createModifier()];
+          const modifiers = [
+            createModifier({
+              price: 0,
+            }),
+          ];
           const products = [
             createProduct({
+              price: 440,
               modifiers,
             }),
             createProduct({
+              price: 520,
               modifiers,
             }),
             createProduct({
+              price: 560,
               modifiers,
             }),
           ];
@@ -125,17 +136,15 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 3,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
+
                   count: 3,
                 },
                 {
                   ...products[2],
-                  fullPrice: 560,
                   count: 3,
                 },
               ]
@@ -166,16 +175,33 @@ describe("[Discount Module] ...", () => {
         });
 
         it("should return a suitable discount (not full coincidence (other modifiers))", () => {
-          const modifiers = [createModifier()];
+          const modifiers = [
+            createModifier({
+              price: 0,
+            }),
+          ];
           const products = [
             createProduct({
-              modifiers: [createModifier(), ...modifiers],
+              price: 440,
+              modifiers: [
+                createModifier({
+                  price: 0,
+                }),
+                ...modifiers,
+              ],
             }),
             createProduct({
+              price: 520,
               modifiers,
             }),
             createProduct({
-              modifiers: [...modifiers, createModifier()],
+              price: 560,
+              modifiers: [
+                ...modifiers,
+                createModifier({
+                  price: 0,
+                }),
+              ],
             }),
           ];
           const discount: IDiscount = createDiscount({
@@ -200,17 +226,14 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 2,
                 },
                 {
                   ...products[1],
-                  fullPrice: 520,
                   count: 2,
                 },
                 {
                   ...products[2],
-                  fullPrice: 560,
                   count: 2,
                 },
               ]
@@ -241,12 +264,23 @@ describe("[Discount Module] ...", () => {
         });
 
         it("should return a suitable discount (not full coincidence (other modifiers))", () => {
-          const modifiers = [createModifier()];
+          const modifiers = [
+            createModifier({
+              price: 0,
+            }),
+          ];
           const products = [
             createProduct({
-              modifiers: [createModifier(), ...modifiers],
+              price: 440,
+              modifiers: [
+                createModifier({
+                  price: 0,
+                }),
+                ...modifiers,
+              ],
             }),
             createProduct({
+              price: 560,
               modifiers,
             }),
           ];
@@ -272,12 +306,10 @@ describe("[Discount Module] ...", () => {
               [
                 {
                   ...products[0],
-                  fullPrice: 440,
                   count: 2,
                 },
                 {
                   ...products[1],
-                  fullPrice: 560,
                   count: 2,
                 },
               ]

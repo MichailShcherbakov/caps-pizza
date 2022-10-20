@@ -20,7 +20,7 @@ export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
       >
         <NextImage src="/logo-v2.png" width={48} height={48} priority />
         {!onlyIcon ? (
-          <Fade in={!onlyIcon}>
+          <Fade in>
             <Stack>
               <Typography variant="h3" component="span" color="text.primary">
                 Пицца от КЭПа
