@@ -14,15 +14,16 @@ export const CookiesNotification: React.FC<CookiesNotificationProps> = ({
         <CloseIcon />
       </IconButton>
       <Typography>
-        Мы используем cookies для быстрой и удобной работы сайта. Продолжая
-        пользоваться сайтом, вы принимаете
+        {
+          "Мы используем cookies для быстрой и удобной работы сайта. Продолжая пользоваться сайтом, вы принимаете "
+        }
         <Typography
           component="a"
           href="/policy"
           color="primary"
           target="_blank"
         >
-          условия обработки персональных данных
+          {"условия обработки персональных данных"}
         </Typography>
       </Typography>
     </Stack>
