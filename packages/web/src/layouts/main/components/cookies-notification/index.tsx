@@ -11,11 +11,11 @@ export const CookiesNotification: React.FC<CookiesNotificationProps> = ({
   return (
     <Stack direction="row" alignItems="center" spacing={2} py={0.5}>
       <IconButton size="small" aria-label="close-button" onClick={onClose}>
-        <CloseIcon />s
+        <CloseIcon />
       </IconButton>
       <Typography>
         Мы используем cookies для быстрой и удобной работы сайта. Продолжая
-        пользоваться сайтом, вы принимаете{" "}
+        пользоваться сайтом, вы принимаете
         <Typography
           component="a"
           href="/policy"
