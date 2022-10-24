@@ -129,7 +129,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 
   return {
     props: {},
-    revalidate: 30, // In seconds
+    revalidate: 60, // In seconds
   };
 });
 

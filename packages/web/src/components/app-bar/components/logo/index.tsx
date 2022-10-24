@@ -1,12 +1,14 @@
 import NextLink from "next/link";
 import NextImage from "next/image";
 import { Fade, Stack, Typography } from "@mui/material";
+import makeStyles from "~/ui/theme/makesStyles";
 
 export interface LogoProps {
   onlyIcon?: boolean;
 }
 
 export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
+  const { classes } = useStyle();
   return (
     <NextLink href="/" passHref>
       <Stack
@@ -18,7 +20,14 @@ export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
           cursor: "pointer",
         }}
       >
-        <NextImage src="/logo-v2.png" width={48} height={48} priority />
+        <Stack className={classes.imageContainer}>
+          <NextImage
+            src="/logo-v2.png"
+            layout="fill"
+            alt="Пицца от КЭПа"
+            priority
+          />
+        </Stack>
         {!onlyIcon ? (
           <Fade in>
             <Stack>
@@ -39,5 +48,15 @@ export const Logo: React.FC<LogoProps> = ({ onlyIcon }) => {
     </NextLink>
   );
 };
+
+const useStyle = makeStyles()(() => ({
+  imageContainer: {
+    position: "relative",
+    width: 48,
+    height: 48,
+    flexShrink: 0,
+    flexGrow: 0,
+  },
+}));
 
 export default Logo;

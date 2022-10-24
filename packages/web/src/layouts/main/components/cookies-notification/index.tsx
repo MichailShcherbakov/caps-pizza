@@ -9,16 +9,9 @@ export const CookiesNotification: React.FC<CookiesNotificationProps> = ({
   onClose = () => {},
 }) => {
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={2}
-      sx={{
-        paddingY: 0.5,
-      }}
-    >
-      <IconButton size="small" onClick={onClose}>
-        <CloseIcon />
+    <Stack direction="row" alignItems="center" spacing={2} py={0.5}>
+      <IconButton size="small" aria-label="close-button" onClick={onClose}>
+        <CloseIcon />s
       </IconButton>
       <Typography>
         Мы используем cookies для быстрой и удобной работы сайта. Продолжая

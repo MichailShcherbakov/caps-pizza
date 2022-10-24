@@ -2,7 +2,6 @@ import { Stack } from "@mui/material";
 import React from "react";
 import { Modifier } from "~/services/modifiers.service";
 import { Product } from "~/services/products.service";
-/* import ModifierList from "./modifier-list"; */
 import ProductImage from "./product-image";
 import ProductInfo from "./product-info";
 import ProductPrice from "./product-price";

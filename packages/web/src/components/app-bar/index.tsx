@@ -13,6 +13,7 @@ import { useStyle } from "./index.style";
 import useProductCategories from "~/hooks/use-product-categories";
 
 const ShoppingCartButton = dynamic(() => import("../shopping-cart-button"), {
+  suspense: true,
   ssr: false,
 });
 
@@ -73,7 +74,9 @@ export const AppBar: React.FC<AppBarProps> = ({ className, ...props }) => {
           className={classes.container}
         >
           <AppBarHead appBarRef={ref} />
-          <ShoppingCartButton />
+          <React.Suspense>
+            <ShoppingCartButton />
+          </React.Suspense>
         </Stack>
       </Container>
     </MUIAppBar>

@@ -29,6 +29,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
               <NextImage
                 src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
                 layout="fill"
+                alt={name}
                 priority
               />
             </Stack>

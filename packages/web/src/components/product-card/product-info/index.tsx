@@ -46,7 +46,11 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         <Typography variant="h4" component="p">
           {`${product.name}${amount}`}
         </Typography>
-        <Typography variant="subtitle1" className={classes.specifics}>
+        <Typography
+          variant="subtitle1"
+          component="p"
+          className={classes.specifics}
+        >
           {specifics}
         </Typography>
       </Stack>

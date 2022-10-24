@@ -48,7 +48,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
             >
               <Stack direction="column" spacing={2}>
                 <Stack>
-                  <Typography variant="h4">Пицца от КЭПа</Typography>
+                  <Typography variant="h4" component="p">
+                    Пицца от КЭПа
+                  </Typography>
                 </Stack>
                 <Stack spacing={2}>
                   <Typography
@@ -80,7 +82,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
             >
               <Stack direction="column" spacing={2}>
                 <Stack>
-                  <Typography variant="h4">Контакты</Typography>
+                  <Typography variant="h4" component="p">
+                    Контакты
+                  </Typography>
                 </Stack>
                 <Stack spacing={2}>
                   <Stack direction="row" alignItems="center" spacing={2}>
