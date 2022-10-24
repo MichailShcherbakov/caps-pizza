@@ -14,6 +14,7 @@ const nextConfig = {
     return config;
   },
   images: {
+    minimumCacheTTL: 60,
     domains: [process.env.HOST, process.env.IMAGE_HOST],
   },
   publicRuntimeConfig: {

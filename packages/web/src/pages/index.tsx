@@ -7,7 +7,6 @@ import {
   ProductCategory,
 } from "~/services/product-categories.service";
 import CategorySection from "~/components/sections/category.section";
-import { GetServerSideProps } from "next";
 import { wrapper } from "~/store";
 import { getRunningOperationPromises } from "~/services/api.service";
 import { getProducts } from "~/services/products.service";
@@ -121,17 +120,17 @@ HomePage.getLayout = page => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps =
-  wrapper.getServerSideProps(store => async () => {
-    store.dispatch(getProducts.initiate());
-    store.dispatch(getProductCategories.initiate());
-    store.dispatch(getModifiers.initiate());
+export const getStaticProps = wrapper.getStaticProps(store => async () => {
+  store.dispatch(getProducts.initiate());
+  store.dispatch(getProductCategories.initiate());
+  store.dispatch(getModifiers.initiate());
 
-    await Promise.all(getRunningOperationPromises());
+  await Promise.all(getRunningOperationPromises());
 
-    return {
-      props: {},
-    };
-  });
+  return {
+    props: {},
+    revalidate: 30, // In seconds
+  };
+});
 
 export default HomePage;

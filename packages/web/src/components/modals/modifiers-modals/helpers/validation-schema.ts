@@ -11,6 +11,7 @@ export const validationSchema = yup.object({
   image_url: yup.string().required("Это поле является обязательным"),
   article_number: yup
     .number()
+    .positive("Значение артикля должно быть положительным")
     .max(99999, "Значение артикля невалидно")
     .positive("Артикул модификатора должен быть положительным")
     .required("Это поле является обязательным"),
