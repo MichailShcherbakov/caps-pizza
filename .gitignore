@@ -1,5 +1,7 @@
 node_modules/
 
+.ssh
+
 # sql files
 *.sql
 
