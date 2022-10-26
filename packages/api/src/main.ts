@@ -26,10 +26,14 @@ async function bootstrap() {
             ),
           }),
           new winston.transports.File({
+            dirname: "logs",
             filename: "error.log",
             level: "error",
           }),
-          new winston.transports.File({ filename: "combined.log" }),
+          new winston.transports.File({
+            dirname: "logs",
+            filename: "combined.log",
+          }),
         ],
       }),
     }),

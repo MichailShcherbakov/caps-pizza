@@ -46,8 +46,7 @@ services:
       - db
     volumes:
       - ./images:/usr/src/caps-pizza/api/packages/api/static/images
-      - ./error.log:/usr/src/caps-pizza/api/packages/api/error.log
-      - ./combined.log:/usr/src/caps-pizza/api/packages/api/combined.log
+      - ./logs:/usr/src/caps-pizza/api/packages/api/logs
     container_name: caps_pizza_api
     restart: unless-stopped
 
