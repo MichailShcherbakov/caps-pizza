@@ -48,7 +48,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
     <>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Typography variant="h4" component="p" sx={{ whiteSpace: "nowrap" }}>
-          {Boolean(product.modifiers.length) && "от"} {price} ₽
+          {price} ₽
         </Typography>
         {product.modifiers.length ? (
           <ProductConstructorModal
