@@ -45,6 +45,7 @@
     "dotenv": "^16.0.1",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
+    "nest-winston": "^1.8.0",
     "nestjs": "^0.0.1",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
@@ -53,7 +54,8 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.7",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

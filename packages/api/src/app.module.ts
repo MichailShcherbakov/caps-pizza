@@ -13,6 +13,7 @@ import AuthModule from "./modules/auth/auth.module";
 import UsersModule from "./modules/users/users.module";
 import PaymentModule from "./modules/payment/payment.module";
 import PromotionsModule from "./modules/promotions/promotions.module";
+import { LoggerModule } from "./modules/logger/logger.module";
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import PromotionsModule from "./modules/promotions/promotions.module";
     UsersModule,
     PaymentModule,
     PromotionsModule,
+    LoggerModule,
   ],
 })
 export default class AppModule {}

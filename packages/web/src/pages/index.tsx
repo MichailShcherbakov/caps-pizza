@@ -18,6 +18,7 @@ import useProductCategories from "~/hooks/use-product-categories";
 import PromotionSlider from "~/components/promotion-slider";
 import { Stack } from "@mui/system";
 import Head from "next/head";
+import ErrorBoundary from "~/components/error-boundary";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -105,17 +106,19 @@ export const HomePage: AppPage = () => {
 HomePage.getLayout = page => {
   return (
     <MainLayout>
-      <Head>
-        <title>
-          Заказать пиццу, суши и роллы у Кэпа в Пушкине с доставкой на дом
-        </title>
-        <meta name="keywords" content="заказ, пицца, доставка, пушкин" />
-        <meta
-          name="description"
-          content="Заказ пиццы, роллов и суши с доставкой в Славянке, Павловске, Глинка, Войскорово, Федоровское, Ленсоветовский, Никольское, Коммунаре. Купить пиццу с бесплатной доставкой по Пушкину СПб."
-        />
-      </Head>
-      {page}
+      <ErrorBoundary>
+        <Head>
+          <title>
+            Заказать пиццу, суши и роллы у Кэпа в Пушкине с доставкой на дом
+          </title>
+          <meta name="keywords" content="заказ, пицца, доставка, пушкин" />
+          <meta
+            name="description"
+            content="Заказ пиццы, роллов и суши с доставкой в Славянке, Павловске, Глинка, Войскорово, Федоровское, Ленсоветовский, Никольское, Коммунаре. Купить пиццу с бесплатной доставкой по Пушкину СПб."
+          />
+        </Head>
+        {page}
+      </ErrorBoundary>
     </MainLayout>
   );
 };
