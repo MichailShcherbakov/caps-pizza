@@ -14,7 +14,7 @@ export const ProductCardList = () => {
   });
 
   return (
-    <Stack className={classes.root}>
+    <Stack className={classes.root} spacing={2}>
       {isLoading || !products.length ? (
         <EmptyStub />
       ) : (

@@ -22,7 +22,12 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
     }));
 
     return (
-      <Stack direction="row" alignItems="stretch" className={classes.root}>
+      <Stack
+        direction="row"
+        alignItems="stretch"
+        className={classes.root}
+        spacing={2}
+      >
         <ProductImage productName={product.name} imageURL={product.image_url} />
         <Stack width="100%" spacing={1}>
           <Stack width="100%" height="100%" spacing={1}>

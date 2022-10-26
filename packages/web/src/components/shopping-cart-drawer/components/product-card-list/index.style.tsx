@@ -9,7 +9,6 @@ export const useStyle = makeStyles<StyleProps>()((theme, { empty }) => ({
     height: "100%",
     overflowX: "hidden",
     overflowY: "auto",
-    gap: theme.spacing(2),
 
     ...(empty && {
       alignItems: "center",

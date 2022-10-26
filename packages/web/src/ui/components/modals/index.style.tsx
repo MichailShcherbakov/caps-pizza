@@ -35,9 +35,6 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
     },
   },
   modal: {
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(2),
     overflow: "hidden",
   },
   header: {
@@ -55,12 +52,8 @@ export const useStyle = makeStyles<StyleProps>()(theme => ({
     overflowY: "auto",
     overflowX: "hidden",
     padding: `${theme.spacing(2)} 0`,
-    gap: theme.spacing(2),
   },
   footer: {
     width: "100%",
-  },
-  footerControls: {
-    gap: theme.spacing(1),
   },
 }));

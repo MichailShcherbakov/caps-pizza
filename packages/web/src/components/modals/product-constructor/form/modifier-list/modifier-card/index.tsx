@@ -20,6 +20,7 @@ export const ModifierCard: React.FC<ModifierCardProps> = React.memo(
         component="button"
         alignItems="center"
         className={classes.root}
+        spacing={0.5}
         onClick={() => onClick && onClick(modifier)}
       >
         <ExternalImage url={modifier.image_url} className={classes.image} />

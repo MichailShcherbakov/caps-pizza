@@ -114,6 +114,7 @@ export const DeliveryForm: React.FC<DeliveryFormProps> = ({
           direction="row"
           alignItems="center"
           className={classes.deliveryCondition}
+          spacing={2}
         >
           <DeliveryCriteriaSelect
             value={formik.values.conditionCriteria}

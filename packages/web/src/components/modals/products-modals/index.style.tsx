@@ -11,8 +11,6 @@ export const useStyle = makeStyles()(theme => ({
     backgroundColor: theme.palette.background.default,
   },
   productFeatures: {
-    gap: theme.spacing(2),
-
     [theme.breakpoints.down("xs")]: {
       flexDirection: "column",
       margin: 0,

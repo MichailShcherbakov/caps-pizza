@@ -19,19 +19,28 @@ export const InfoBar: React.FC<InfoBarProps> = props => {
           <Stack direction="row" alignItems="center" spacing={2}>
             <DestinationButton />
           </Stack>
-          <Stack alignItems="flex-end" className={classes.container}>
+          <Stack
+            alignItems="flex-end"
+            spacing={0.5}
+            className={classes.container}
+          >
             <Stack
               direction="row"
               alignItems="center"
               justifyContent="center"
-              gap={1}
+              spacing={1}
             >
               <Typography variant="subtitle2">
                 Приём заказов с 11:00 до 22:30
               </Typography>
             </Stack>
-            <Stack className={classes.linkContainer}>
-              <Stack direction="row" alignItems="center" gap={1}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={2}
+              className={classes.linkContainer}
+            >
+              <Stack direction="row" alignItems="center" spacing={1}>
                 <PhoneIcon />
                 <Typography
                   variant="subtitle2"
@@ -42,7 +51,7 @@ export const InfoBar: React.FC<InfoBarProps> = props => {
                   +7(812)416-41-05
                 </Typography>
               </Stack>
-              <Stack direction="row" alignItems="center" gap={1}>
+              <Stack direction="row" alignItems="center" spacing={1}>
                 <PhoneIcon />
                 <Typography
                   variant="subtitle2"

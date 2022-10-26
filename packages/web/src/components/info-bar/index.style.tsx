@@ -11,12 +11,14 @@ export const useStyle = makeStyles()(theme => ({
     },
   },
   container: {
-    gap: theme.spacing(0.5),
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
 
     [theme.breakpoints.down("md")]: {
-      gap: theme.spacing(1),
+      "& > :not(style)+:not(style)": {
+        margin: 0,
+        marginTop: theme.spacing(0.5),
+      },
     },
   },
   link: {
@@ -27,14 +29,16 @@ export const useStyle = makeStyles()(theme => ({
     },
   },
   linkContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: theme.spacing(2),
+    flexShrink: 0,
 
     [theme.breakpoints.down("xxs")]: {
       flexDirection: "column",
       alignItems: "flex-end",
-      gap: theme.spacing(1),
+
+      "& > :not(style)+:not(style)": {
+        margin: 0,
+        marginTop: theme.spacing(0.5),
+      },
     },
   },
 }));

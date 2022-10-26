@@ -16,7 +16,6 @@ import { getAvailableDeliveries } from "@monorepo/common/modules/delivery/get-av
 import EmptyShoppingCartStub from "./components/empty-shopping-cart-stub";
 import NameField from "./components/name-field";
 import OrderFormSkeleton from "./components/skeleton";
-import { useStyle } from "./index.style";
 import { useOrderCache } from "~/hooks/use-order-cache";
 
 export interface OrderFormProps {
@@ -24,7 +23,6 @@ export interface OrderFormProps {
 }
 
 export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
-  const { classes } = useStyle();
   const { data: payments = [], isLoading: isGetPaymentsLoading } =
     useGetPaymentsQuery();
   const { data: deliveries = [], isLoading: isGetDeliveriesLoading } =
@@ -154,7 +152,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   if (!products.length) return <EmptyShoppingCartStub />;
 
   return (
-    <form className={classes.root} onSubmit={formik.handleSubmit}>
+    <Stack
+      component="form"
+      direction="column"
+      spacing={4}
+      py={1}
+      onSubmit={formik.handleSubmit}
+    >
       <Title text="Ваш заказ" />
       <Stack component="ul" spacing={2}>
         {products.map(product => (
@@ -383,7 +387,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
           </Button>
         </Stack>
       </Stack>
-    </form>
+    </Stack>
   );
 };
 

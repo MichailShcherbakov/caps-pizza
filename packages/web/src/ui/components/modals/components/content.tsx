@@ -10,7 +10,9 @@ export const ModalContent: React.FC<ModalContentProps> = ({
 }: ModalContentProps) => {
   const { classes, cx } = useStyle({});
 
-  return <Stack {...props} className={cx(classes.inner, className)} />;
+  return (
+    <Stack {...props} className={cx(classes.inner, className)} spacing={2} />
+  );
 };
 
 export default ModalContent;

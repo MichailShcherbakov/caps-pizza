@@ -41,7 +41,7 @@ export const ModalFooter: React.FC<ModalFooterProps> = React.memo(
           direction="row"
           alignItems="center"
           justifyContent="flex-end"
-          className={classes.footerControls}
+          spacing={2}
         >
           {variant === "dialog" && (
             <Button

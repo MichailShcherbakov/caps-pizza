@@ -11,7 +11,6 @@ export const useStyle = makeStyles<StyleProps, "image">({
   root: {
     alignItems: "center",
     borderRadius: theme.spacing(2),
-    gap: theme.spacing(1),
     textAlign: "center",
 
     ...(size === "medium" && {
@@ -63,5 +62,18 @@ export const useStyle = makeStyles<StyleProps, "image">({
     position: "relative",
     flexShrink: 0,
     flexGrow: 0,
+
+    ...(size === "medium" && {
+      marginBottom: theme.spacing(1),
+
+      [theme.breakpoints.down("md")]: {
+        marginBottom: 0,
+        marginRight: theme.spacing(1),
+      },
+    }),
+
+    ...(size === "small" && {
+      marginRight: theme.spacing(1),
+    }),
   },
 }));

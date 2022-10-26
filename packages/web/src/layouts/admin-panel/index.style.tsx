@@ -20,6 +20,5 @@ export const useStyle = makeStyles()(theme => ({
     borderColor: theme.palette.divider,
     borderRadius: theme.spacing(1),
     padding: `${theme.spacing(2)} 0`,
-    gap: theme.spacing(2),
   },
 }));

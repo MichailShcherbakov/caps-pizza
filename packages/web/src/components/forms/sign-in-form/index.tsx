@@ -34,6 +34,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({
     <Stack
       component="form"
       className={classes.root}
+      spacing={6}
       onSubmit={formik.handleSubmit}
     >
       <Stack alignItems="center" justifyContent="center">

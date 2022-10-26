@@ -16,7 +16,7 @@ export const PolicyPage: AppPage = () => {
       sx={{
         paddingY: 2,
       }}
-      gap={2}
+      spacing={2}
     >
       <Typography variant="h3" component="h1">
         Политика обработки персональных данных

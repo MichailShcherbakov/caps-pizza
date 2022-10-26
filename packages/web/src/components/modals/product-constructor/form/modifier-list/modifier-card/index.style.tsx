@@ -11,7 +11,6 @@ export const useStyle = makeStyles<StyleProps>()((theme, { checked }) => ({
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.spacing(2),
     cursor: "pointer",
-    gap: theme.spacing(0.5),
     backgroundColor: "transparent",
     flexShrink: 0,
 

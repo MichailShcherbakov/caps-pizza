@@ -18,9 +18,19 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
   ({ product, modifiers, modifierCategories }) => {
     const { classes } = useStyle();
     return (
-      <Stack component="article" className={classes.root}>
+      <Stack
+        direction="column"
+        component="article"
+        className={classes.root}
+        spacing={2}
+      >
         <ProductImage productName={product.name} imageURL={product.image_url} />
-        <Stack component="main" className={classes.inner}>
+        <Stack
+          direction="column"
+          component="main"
+          className={classes.inner}
+          spacing={2}
+        >
           <ProductInfo product={product} />
           <ProductPrice
             product={product}

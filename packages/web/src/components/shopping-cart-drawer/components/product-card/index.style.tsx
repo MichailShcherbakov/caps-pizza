@@ -6,7 +6,6 @@ export const useStyle = makeStyles()(theme => ({
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
-    gap: theme.spacing(2),
   },
   image: {
     position: "relative",

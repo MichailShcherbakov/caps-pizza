@@ -159,6 +159,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             direction="row"
             alignItems="center"
             className={classes.productFeatures}
+            spacing={2}
           >
             <VolumeTextField
               volume={formik.values.volume}

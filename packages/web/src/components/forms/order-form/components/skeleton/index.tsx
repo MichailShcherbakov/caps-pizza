@@ -5,7 +5,7 @@ import { useStyle } from "./index.style";
 export const ProductCardSkeleton = () => {
   const { classes } = useStyle();
   return (
-    <Stack direction="row" className={classes.root}>
+    <Stack direction="row" className={classes.root} spacing={2}>
       <Skeleton width={120} height={120} className={classes.image} />
       <Stack width="100%">
         <Stack

@@ -3,6 +3,7 @@ import CategoryCard, { CategoryCardProps } from "./components/card";
 import { ProductCategory } from "~/services/product-categories.service";
 import { useCurrentSection } from "~/helpers/section-provider";
 import { useStyle } from "./index.style";
+import { Stack } from "@mui/material";
 
 export interface CategoriesProps
   extends React.HTMLAttributes<HTMLUListElement> {
@@ -21,7 +22,14 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
   const { currentActiveSectionName } = useCurrentSection();
 
   return (
-    <ul {...props} ref={ref} className={cx(classes.root, className)}>
+    <Stack
+      {...props}
+      direction="row"
+      component="ul"
+      ref={ref}
+      className={cx(classes.root, className)}
+      spacing={2}
+    >
       {categories.map(category => (
         <CategoryCard
           {...CategoryCardProps}
@@ -31,7 +39,7 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
           active={currentActiveSectionName === category.name}
         />
       ))}
-    </ul>
+    </Stack>
   );
 });
 
