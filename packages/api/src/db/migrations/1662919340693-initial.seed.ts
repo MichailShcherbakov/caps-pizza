@@ -86,7 +86,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
 
     await payments.createManyFrom([
       {
-        code: 1741,
+        code: 1,
         name: "Оплата наличными, без сдачи",
       },
       {
@@ -94,7 +94,7 @@ export class initialSeed1662919340693 implements MigrationInterface {
         name: "Оплата наличными, необходима сдача",
       },
       {
-        code: 1743,
+        code: 2,
         name: "Оплата картой",
       },
     ]);
