@@ -25,7 +25,7 @@ export const ModifierList: React.FC<ModifierListProps> = React.memo(
       chosenModifiers.forEach(modifier => {
         const existsModifiers = map.get(modifier.category_uuid);
 
-        if (existsModifiers) {
+        if (Array.isArray(existsModifiers)) {
           existsModifiers.push(modifier);
         } else {
           map.set(modifier.category_uuid, [modifier]);
@@ -83,7 +83,11 @@ export const ModifierList: React.FC<ModifierListProps> = React.memo(
               <ToggleButton
                 exclusive
                 key={category.uuid}
-                value={currentChosenModifiers.at(0)?.uuid} /// .at(0) - only one modifier can be chosen
+                value={
+                  currentChosenModifiers.length
+                    ? currentChosenModifiers[0].uuid
+                    : undefined
+                } /// - only one modifier can be chosen
                 elements={modifiers.map(modifier => ({
                   name: modifier.name,
                   value: modifier.uuid,
