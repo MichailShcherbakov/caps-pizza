@@ -79,23 +79,24 @@ export const ModifierList: React.FC<ModifierListProps> = React.memo(
             category.display_variant ==
               ModifierCategoryDisplayVariantEnum.SWITCHER
           ) {
+            const currentChosenModifier =
+              currentChosenModifiers.length > 0
+                ? currentChosenModifiers[0].uuid
+                : undefined; /// only one modifier can be chosen
+
             return (
               <ToggleButton
                 exclusive
                 key={category.uuid}
-                value={
-                  currentChosenModifiers.length
-                    ? currentChosenModifiers[0].uuid
-                    : undefined
-                } /// - only one modifier can be chosen
+                value={currentChosenModifier}
                 elements={modifiers.map(modifier => ({
                   name: modifier.name,
                   value: modifier.uuid,
                 }))}
                 onChange={(_, modifierUUID) => {
-                  const modifier = modifiersMap.get(
-                    modifierUUID as string
-                  ) as Modifier;
+                  const modifier = modifiersMap.get(modifierUUID as string);
+
+                  if (!modifier) return;
 
                   chosenModifiersPerCategory.set(category.uuid, [modifier]); /// again - look above
 
