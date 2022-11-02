@@ -22,7 +22,9 @@ async function bootstrap() {
             format: winston.format.combine(
               winston.format.timestamp(),
               winston.format.ms(),
-              nestWinstonModuleUtilities.format.nestLike("App", {})
+              nestWinstonModuleUtilities.format.nestLike("App", {
+                colors: true,
+              })
             ),
           }),
           new winston.transports.File({
