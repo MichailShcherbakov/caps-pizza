@@ -31,7 +31,7 @@ export const validationSchema = yup.object({
     .required("Это поле является обязательным"),
   apartment: yup
     .string()
-    .max(3, "Номер квартиры не должен превышать 2-х символов")
+    .max(4, "Номер квартиры не должен превышать 4-х символов")
     .required("Это поле является обязательным"),
   description: yup
     .string()

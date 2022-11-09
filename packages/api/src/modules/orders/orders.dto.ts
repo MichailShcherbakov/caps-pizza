@@ -61,7 +61,7 @@ export class DeliveryAddress implements IDeliveryAddress {
   @IsNotEmpty()
   floor: number;
 
-  @IsNumber({ maxDecimalPlaces: 3 })
+  @IsNumber({ maxDecimalPlaces: 4 })
   @IsNotEmpty()
   apartment: number;
 }

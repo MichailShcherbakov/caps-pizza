@@ -295,7 +295,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
                 label="Квартира"
                 placeholder="15"
                 min={1}
-                max={999}
+                max={9999}
                 value={formik.values.apartment}
                 error={
                   formik.touched.apartment && Boolean(formik.errors.apartment)
