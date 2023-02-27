@@ -12,7 +12,6 @@ import { useStyle } from "./index.style";
 const ShoppingCartButton = dynamic(
   () => import("../../components/shopping-cart-button"),
   {
-    suspense: true,
     ssr: false,
   }
 );
@@ -20,7 +19,6 @@ const ShoppingCartButton = dynamic(
 export const NotificationManager = dynamic(
   () => import("./components/notification-manager"),
   {
-    suspense: true,
     ssr: false,
   }
 );
@@ -37,9 +35,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <CssBaseline />
         <ShoppingCart>
           <Stack alignItems="center" className={classes.root}>
-            <React.Suspense>
-              <NotificationManager />
-            </React.Suspense>
+            <NotificationManager />
             <InfoBar />
             <AppBar />
             <Container component="main" className={classes.container}>
@@ -47,9 +43,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </Container>
             <Footer />
           </Stack>
-          <React.Suspense>
-            <ShoppingCartButton variant="filled & rounded" />
-          </React.Suspense>
+          <ShoppingCartButton variant="filled & rounded" />
         </ShoppingCart>
       </ThemeProvider>
     </SectionProvider>

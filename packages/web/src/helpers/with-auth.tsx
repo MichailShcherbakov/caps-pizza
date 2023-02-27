@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getRunningOperationPromises } from "~/services/api.service";
+import { getRunningQueriesThunk } from "~/services/api.service";
 import { wrapper } from "~/store";
 import { setAccessToken } from "~/store/reducers/auth.reducer";
 import getConfig from "next/config";
@@ -36,7 +36,7 @@ export const withAuth: GetServerSideProps = wrapper.getServerSideProps(
 
       store.dispatch(setAccessToken({ token: accessToken }));
 
-      await Promise.all(getRunningOperationPromises());
+      await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
       store.dispatch(setAccessToken({ token: null }));
 

@@ -1,4 +1,4 @@
-import { Components, experimental_sx as sx, Theme } from "@mui/material/styles";
+import { Components, Theme } from "@mui/material/styles";
 
 export const makeComponents = (
   theme: Theme
@@ -21,7 +21,7 @@ export const makeComponents = (
   },
   MuiToggleButton: {
     styleOverrides: {
-      root: sx({
+      root: theme.unstable_sx({
         width: "100%",
         paddingX: 2,
         paddingY: 1,
@@ -31,7 +31,7 @@ export const makeComponents = (
   },
   MuiToggleButtonGroup: {
     styleOverrides: {
-      root: sx({
+      root: theme.unstable_sx({
         padding: 0.5,
         border: "1px solid",
         borderColor: "divider",

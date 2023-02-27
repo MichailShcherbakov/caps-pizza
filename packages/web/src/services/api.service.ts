@@ -65,7 +65,7 @@ export const API = createApi({
 });
 
 export const {
-  util: { getRunningOperationPromises },
+  util: { getRunningQueriesThunk },
 } = API;
 
 export default API;

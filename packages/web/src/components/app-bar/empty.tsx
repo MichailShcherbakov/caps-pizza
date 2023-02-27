@@ -10,7 +10,6 @@ import { Container } from "@mui/system";
 import { useStyle } from "./index.style";
 
 const ShoppingCartButton = dynamic(() => import("../shopping-cart-button"), {
-  suspense: true,
   ssr: false,
 });
 
@@ -34,9 +33,7 @@ export const EmptyAppBar: React.FC<AppBarProps> = ({ className, ...props }) => {
           className={classes.container}
         >
           <Logo />
-          <React.Suspense>
-            <ShoppingCartButton />
-          </React.Suspense>
+          <ShoppingCartButton variant="outlined" />
         </Stack>
       </Container>
     </MUIAppBar>

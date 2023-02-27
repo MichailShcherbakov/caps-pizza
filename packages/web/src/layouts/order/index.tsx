@@ -10,7 +10,6 @@ import { useStyle } from "../main/index.style";
 export const NotificationManager = dynamic(
   () => import("../main/components/notification-manager"),
   {
-    suspense: true,
     ssr: false,
   }
 );
@@ -26,9 +25,7 @@ export const OrderLayout: React.FC<OrderLayoutProps> = ({ children }) => {
       <CssBaseline />
       <ShoppingCart>
         <Stack alignItems="center" className={classes.root}>
-          <React.Suspense>
-            <NotificationManager />
-          </React.Suspense>
+          <NotificationManager />
           <EmptyAppBar />
           <Container component="main" className={classes.container}>
             {children}

@@ -8,7 +8,7 @@ import {
 } from "~/services/product-categories.service";
 import CategorySection from "~/components/sections/category.section";
 import { wrapper } from "~/store";
-import { getRunningOperationPromises } from "~/services/api.service";
+import { getRunningQueriesThunk } from "~/services/api.service";
 import { getProducts } from "~/services/products.service";
 import { LoadingBackdrop } from "~/ui";
 import { getModifiers } from "~/services/modifiers.service";
@@ -128,7 +128,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
   store.dispatch(getProductCategories.initiate());
   store.dispatch(getModifiers.initiate());
 
-  await Promise.all(getRunningOperationPromises());
+  await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
   return {
     props: {},
