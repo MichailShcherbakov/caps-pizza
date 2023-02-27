@@ -1,4 +1,6 @@
-import { resolve } from "path";
+import "~/env";
+import { resolve, sep } from "path";
+import { DataSourceOptions } from "typeorm";
 
 export const PORT = Number.parseInt(process.env.PORT ?? "8080");
 export const HOST = process.env.HOST ?? "127.0.0.1";
@@ -16,29 +18,23 @@ export const APP_ROOT_URL = `http://${HOST}:${PORT}`;
 export const APP_IMAGES_LOCATION_PATH = `${APP_ROOT_PATH}/static/images`;
 export const APP_IMAGES_LOCATION_FULL_URL = `${APP_ROOT_URL}/images`;
 export const APP_IMAGES_LOCATION_URL = `/images`;
-export const TYPEORM_CONFIG: {
-  type: "postgres";
-  host?: string;
-  username?: string;
-  password?: string;
-  database?: string;
-  port: number;
-  entities: string[];
-  migrations: string[];
-  subscribers: string[];
-  migrationsRun: boolean;
-  synchronize: boolean;
-  logging: boolean;
-} = {
+
+export const TYPEORM_CONFIG: DataSourceOptions = {
   type: "postgres",
   host: process.env.DATABASE_HOST,
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   port: Number.parseInt(process.env.DATABASE_PORT ?? "5432"),
-  entities: [__dirname + "/db/entities/*{.js,.ts}"],
-  migrations: [__dirname + "/db/migrations/*{.js,.ts}"],
-  subscribers: [__dirname + "/db/subscribers/*{.js,.ts}"],
+  entities: [
+    resolve(__dirname, "db/entities/**/*.entity.{js,ts}").replaceAll(sep, "/"),
+  ],
+  migrations: [
+    resolve(__dirname, "db/migrations/**/*.{js,ts}").replaceAll(sep, "/"),
+  ],
+  subscribers: [
+    resolve(__dirname, "db/subscribers/**/*.{js,ts}").replaceAll(sep, "/"),
+  ],
   migrationsRun: false,
   synchronize: false,
   logging: true,

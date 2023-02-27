@@ -49,7 +49,7 @@ export class DeliveryAddress implements IDeliveryAddress {
   street: string;
 
   @IsString()
-  @MaxLength(50)
+  @MaxLength(10)
   @IsNotEmpty()
   house: string;
 

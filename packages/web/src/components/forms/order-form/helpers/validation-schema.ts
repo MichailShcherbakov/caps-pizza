@@ -19,7 +19,7 @@ export const validationSchema = yup.object({
     .required("Это поле является обязательным"),
   house: yup
     .string()
-    .max(50, "Номер дома не должен превышать 50 символов")
+    .max(4, "Номер дома не должен превышать 4 символов")
     .required("Это поле является обязательным"),
   entrance: yup
     .string()

@@ -15,6 +15,9 @@ export const NameField: React.FC<NameFieldProps> = React.memo(props => {
       label="Имя"
       placeholder="Алексей"
       options={{ mask: /[ЁёА-я ]$/ }}
+      inputProps={{
+        maxLength: 50,
+      }}
     />
   );
 });

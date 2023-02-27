@@ -7,7 +7,7 @@ import useShoppingCart from "~/hooks/use-shopping-cart";
 import { useGetDeliveriesQuery } from "~/services/delivery.service";
 import { Order } from "~/services/orders.service";
 import { useGetPaymentsQuery } from "~/services/payments.service";
-import { MemoTextField, NumberTextField } from "~/ui";
+import { NumberTextField } from "~/ui";
 import DeliverySelect from "./components/delivery-select";
 import PaymentSelect from "./components/payment-select";
 import PhoneNumberField from "./components/phone-number-field";
@@ -17,6 +17,7 @@ import EmptyShoppingCartStub from "./components/empty-shopping-cart-stub";
 import NameField from "./components/name-field";
 import OrderFormSkeleton from "./components/skeleton";
 import { useOrderCache } from "~/hooks/use-order-cache";
+import LimitedTextField from "~/ui/components/text-field/limited";
 
 export interface OrderFormProps {
   onSubmit?: (order: Order) => void;
@@ -212,11 +213,12 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
               />
             </Grid>
             <Grid item xl={4} lg={4} sm={4} xs={12}>
-              <MemoTextField
+              <LimitedTextField
                 fullWidth
                 id="email"
                 name="email"
                 label="Почта"
+                maxLength={50}
                 placeholder="mail-address@mail.ru"
                 value={formik.values.email}
                 error={formik.touched.email && Boolean(formik.errors.email)}
@@ -230,11 +232,12 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
         <Stack>
           <Grid spacing={2} rowSpacing={2} container>
             <Grid item xl={12} lg={12} sm={12} xs={12}>
-              <MemoTextField
+              <LimitedTextField
                 fullWidth
                 id="address"
                 name="address"
                 label="Адрес"
+                maxLength={50}
                 placeholder="Пушкин"
                 value={formik.values.address}
                 error={formik.touched.address && Boolean(formik.errors.address)}
@@ -243,12 +246,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
               />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <MemoTextField
+              <LimitedTextField
                 fullWidth
                 id="house"
                 name="house"
                 label="Дом"
                 placeholder="1а"
+                maxLength={4}
                 value={formik.values.house}
                 error={formik.touched.house && Boolean(formik.errors.house)}
                 helperText={formik.touched.house && formik.errors.house}
@@ -349,12 +353,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
           </>
         ) : undefined}
         <Title text="Комментарий" />
-        <MemoTextField
+        <LimitedTextField
           multiline
           id="description"
           name="description"
           placeholder="Есть уточнения?"
           rows={6}
+          maxLength={100}
           value={formik.values.description}
           error={
             formik.touched.description && Boolean(formik.errors.description)

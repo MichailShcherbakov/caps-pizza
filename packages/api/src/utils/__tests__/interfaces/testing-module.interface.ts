@@ -91,9 +91,15 @@ export abstract class ITestingModule {
   get<T>(
     // eslint-disable-next-line @typescript-eslint/ban-types
     typeOrToken: string | symbol | Function | Type<T>,
-    options?: { strict: boolean } | undefined
+    options?:
+      | {
+          strict?: boolean;
+        }
+      | undefined
   ): T {
-    return this.handle.get<T>(typeOrToken, options);
+    return this.handle.get<T, T>(typeOrToken, {
+      strict: options?.strict,
+    });
   }
 
   abstract clearDataSource(): Promise<void>;

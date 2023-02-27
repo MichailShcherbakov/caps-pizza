@@ -16,6 +16,7 @@ class Guard extends PasswordGuard("jwt") {
     if (err || !user) {
       throw err || new UnauthorizedException(`The authentication fails`);
     }
+
     return user;
   }
 }

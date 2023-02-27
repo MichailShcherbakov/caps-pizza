@@ -8,7 +8,6 @@ import {
 import ResponseFormatInterceptor from "./response-format.interceptor";
 import { Reflector } from "@nestjs/core";
 import { FRONTEND_URL } from "~/config";
-import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston";
 
 export interface InitAppOptions {
   usePrefix?: boolean;
