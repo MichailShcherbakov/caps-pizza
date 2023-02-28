@@ -21,6 +21,8 @@ export const PhoneNumberField: React.FC<PhoneNumberFieldProps> = React.memo(
         value={value}
         onChange={onChange}
         onAccept={(value, maskRef) => {
+          if (!maskRef.current) return;
+
           let val = value;
 
           if (
