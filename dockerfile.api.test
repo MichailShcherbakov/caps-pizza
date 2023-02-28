@@ -1,4 +1,4 @@
-FROM node:18.8-alpine3.15 as builder
+FROM node:18.14-alpine3.17 as builder
 
 # Args
 ARG WORKDIR
