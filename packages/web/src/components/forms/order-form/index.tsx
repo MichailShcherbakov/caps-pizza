@@ -234,6 +234,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
             <Grid item xl={12} lg={12} sm={12} xs={12}>
               <LimitedTextField
                 fullWidth
+                masked
                 id="address"
                 name="address"
                 label="Адрес"
@@ -248,6 +249,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <LimitedTextField
                 fullWidth
+                masked
                 id="house"
                 name="house"
                 label="Дом"
