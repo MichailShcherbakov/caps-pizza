@@ -254,7 +254,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
                 name="house"
                 label="Дом"
                 placeholder="1а"
-                maxLength={4}
+                maxLength={10}
                 value={formik.values.house}
                 error={formik.touched.house && Boolean(formik.errors.house)}
                 helperText={formik.touched.house && formik.errors.house}
