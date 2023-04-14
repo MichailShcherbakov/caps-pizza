@@ -14,7 +14,7 @@ export const LimitedTextField: React.FC<LimitedTextFieldProps> = React.memo(
         {...props}
         inputProps={{ maxLength: props.maxLength }}
         options={{
-          mask: /[ЁёА-я0-9A-Za-z.,\- ]$/,
+          mask: /[ЁёА-я0-9A-Za-z.,\-/ ]$/,
           maxLength: props.maxLength,
         }}
       />
