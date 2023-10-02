@@ -5,6 +5,11 @@ export interface StyleProps {}
 export const useStyle = makeStyles<StyleProps>()(theme => ({
   root: {
     width: "100%",
+    paddingBottom: "64px",
+
+    [theme.breakpoints.down("md")]: {
+      paddingBottom: 0,
+    },
   },
   icon: {
     width: "20px",

@@ -21,6 +21,9 @@ export const validationSchema = yup.object({
     .string()
     .max(10, "Номер дома не должен превышать 10 символов")
     .required("Это поле является обязательным"),
+  building: yup
+    .string()
+    .max(10, "Корпус дома не должен превышать 10 символов"),
   entrance: yup
     .number()
     .min(1, "Номер парадной не может быть меньше 1")

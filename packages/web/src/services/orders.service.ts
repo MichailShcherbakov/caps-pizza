@@ -24,6 +24,7 @@ export class OrderedProduct implements IOrderedProduct {
 export class DeliveryAddress implements IDeliveryAddress {
   street: string;
   house: string;
+  building?: string;
   entrance: number;
   floor: number;
   apartment: number;

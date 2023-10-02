@@ -19,6 +19,7 @@ import {
   IOrderedProduct,
 } from "@monorepo/common";
 import { Type } from "class-transformer";
+import { Trim } from "~/utils/trim";
 
 export class OrderedModifier implements IOrderedModifier {
   @IsUUID()
@@ -46,12 +47,21 @@ export class DeliveryAddress implements IDeliveryAddress {
   @IsString()
   @MaxLength(50)
   @IsNotEmpty()
+  @Trim()
   street: string;
 
   @IsString()
-  @MaxLength(50)
+  @MaxLength(20)
   @IsNotEmpty()
+  @Trim()
   house: string;
+
+  @IsString()
+  @MaxLength(20)
+  @IsNotEmpty()
+  @Trim()
+  @IsOptional()
+  building?: string;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsNotEmpty()
@@ -69,15 +79,18 @@ export class DeliveryAddress implements IDeliveryAddress {
 export class ClientInfo implements IClientInfo {
   @IsString()
   @MaxLength(50)
+  @Trim()
   name: string;
 
   @IsPhoneNumber("RU")
   @IsNotEmpty()
+  @Trim()
   phone: string;
 
   @IsEmail()
   @MaxLength(50)
   @IsOptional()
+  @Trim()
   email?: string;
 }
 
@@ -111,6 +124,7 @@ export class Order implements IOrder {
   @MaxLength(100)
   @IsNotEmpty()
   @IsOptional()
+  @Trim()
   description?: string;
 
   @IsUUID()

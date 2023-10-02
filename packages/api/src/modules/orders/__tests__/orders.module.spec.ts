@@ -16,6 +16,9 @@ import OrdersService, {
   FIXED_MODIFIER_COUNT,
 } from "../orders.service";
 import UnitTestingModule from "./helpers/testing-module.unit.helper";
+import { stringifyHouseInfo } from "../utils/stringifyHouseInfo";
+import { validate } from "class-validator";
+import { plainToInstance } from "class-transformer";
 
 interface IFormDataMock {
   append: jest.Mock;
@@ -131,6 +134,7 @@ describe("[Orders Module] ...", () => {
       delivery_address: {
         street: faker.datatype.uuid(),
         house: faker.datatype.uuid(),
+        building: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
@@ -239,7 +243,13 @@ describe("[Orders Module] ...", () => {
 
     expect(payload.append).toBeCalledWith("pay", TEST_PAYMENT.code);
 
-    expect(payload.append).toBeCalledWith("home", dto.delivery_address.house);
+    expect(payload.append).toBeCalledWith(
+      "home",
+      stringifyHouseInfo({
+        house: dto.delivery_address.house,
+        building: dto.delivery_address.building,
+      })
+    );
     expect(payload.append).toBeCalledWith("pod", dto.delivery_address.entrance);
     expect(payload.append).toBeCalledWith("et", dto.delivery_address.floor);
     expect(payload.append).toBeCalledWith(
@@ -299,6 +309,7 @@ describe("[Orders Module] ...", () => {
       delivery_address: {
         street: faker.datatype.uuid(),
         house: faker.datatype.uuid(),
+        building: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
@@ -356,6 +367,7 @@ describe("[Orders Module] ...", () => {
       delivery_address: {
         street: faker.datatype.uuid(),
         house: faker.datatype.uuid(),
+        building: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
@@ -414,6 +426,7 @@ describe("[Orders Module] ...", () => {
       delivery_address: {
         street: faker.datatype.uuid(),
         house: faker.datatype.uuid(),
+        building: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
@@ -478,6 +491,7 @@ describe("[Orders Module] ...", () => {
       delivery_address: {
         street: faker.datatype.uuid(),
         house: faker.datatype.uuid(),
+        building: faker.datatype.uuid(),
         entrance: faker.datatype.number({ max: 99, min: 0 }),
         floor: faker.datatype.number({ max: 99, min: 0 }),
         apartment: faker.datatype.number({ max: 99, min: 0 }),
@@ -492,5 +506,40 @@ describe("[Orders Module] ...", () => {
     expect(orderService.makeAnOrder(dto)).rejects.toThrow(
       `The delivery ${TEST_NOT_AVAILABLE_DELIVERY.uuid} not available`
     );
+  });
+
+  it("should perform 'trim' for all string fields", async () => {
+    const obj = plainToInstance(MakeAnOrderDto, {
+      products: [],
+      delivery_uuid: faker.datatype.uuid(),
+      delivery_address: {
+        street: `   ${faker.datatype.string()}     `,
+        house: ` ${faker.datatype.string()}  `,
+        building: ` ${faker.datatype.string()}  `,
+        entrance: faker.datatype.number({ max: 99, min: 0 }),
+        floor: faker.datatype.number({ max: 99, min: 0 }),
+        apartment: faker.datatype.number({ max: 99, min: 0 }),
+      },
+      payment_uuid: faker.datatype.uuid(),
+      client_info: {
+        name: `   ${faker.datatype.string()}     `,
+        phone: `   ${faker.phone.number("+7 (961) ###-##-##")}     `,
+      },
+    });
+
+    const errors = await validate(obj);
+
+    expect(errors).toHaveLength(0);
+    expect(obj.delivery_address.street).toEqual(
+      obj.delivery_address.street.trim()
+    );
+    expect(obj.delivery_address.house).toEqual(
+      obj.delivery_address.house.trim()
+    );
+    expect(obj.delivery_address.building).toEqual(
+      obj.delivery_address.building?.trim()
+    );
+    expect(obj.client_info.name).toEqual(obj.client_info.name.trim());
+    expect(obj.client_info.phone).toEqual(obj.client_info.phone.trim());
   });
 });

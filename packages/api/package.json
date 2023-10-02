@@ -19,6 +19,7 @@
     "start:test": "jest --config ./jest.config.js --runInBand",
     "start:test:cov": "jest --config ./jest.config.js --runInBand --coverage",
     "start:test:unit": "jest --config ./jest.unit.config.js",
+    "start:test:unit:watch": "jest --config ./jest.unit.config.js --watch",
     "start:test:unit:cov": "jest --config ./jest.unit.config.js --coverage",
     "start:test:e2e": "jest --config ./jest.e2e.config.js --runInBand",
     "start:test:e2e:cov": "jest --config ./jest.e2e.config.js --runInBand --coverage",

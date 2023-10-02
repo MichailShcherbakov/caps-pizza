@@ -44,6 +44,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
       email: cache.client_info?.email ?? "",
       address: cache.delivery_address?.street ?? "",
       house: cache.delivery_address?.house ?? "",
+      building: cache.delivery_address?.building ?? "",
       entrance: cache.delivery_address?.entrance.toString() ?? "",
       floor: cache.delivery_address?.floor.toString() ?? "",
       apartment: cache.delivery_address?.apartment.toString() ?? "",
@@ -64,6 +65,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
         delivery_address: {
           street: value.address,
           house: value.house,
+          building: value.building.length ? value.building : undefined,
           entrance: Number.parseInt(value.entrance),
           floor: Number.parseInt(value.floor),
           apartment: Number.parseInt(value.apartment),
@@ -126,6 +128,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
 
     if (cache.delivery_address?.house)
       setFieldValue("house", cache.delivery_address.house);
+
+    if (cache.delivery_address?.building)
+      setFieldValue("building", cache.delivery_address.building);
 
     if (cache.delivery_address?.entrance)
       setFieldValue("entrance", cache.delivery_address.entrance);
@@ -246,14 +251,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
                 onChange={formik.handleChange}
               />
             </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <Grid item xl={4} lg={4} sm={4} xs={12}>
               <LimitedTextField
                 fullWidth
                 masked
                 id="house"
                 name="house"
                 label="Дом"
-                placeholder="1а"
+                placeholder="10"
                 maxLength={10}
                 value={formik.values.house}
                 error={formik.touched.house && Boolean(formik.errors.house)}
@@ -261,7 +266,22 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
                 onChange={formik.handleChange}
               />
             </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <Grid item xl={2} lg={2} sm={4} xs={12}>
+              <LimitedTextField
+                fullWidth
+                masked
+                id="building"
+                name="building"
+                label="Корпус"
+                placeholder="A"
+                maxLength={10}
+                value={formik.values.building}
+                error={formik.touched.building && Boolean(formik.errors.building)}
+                helperText={formik.touched.building && formik.errors.building}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xl={2} lg={2} sm={4} xs={12}>
               <NumberTextField
                 fullWidth
                 id="entrance"
@@ -278,7 +298,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
                 onChange={formik.handleChange}
               />
             </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <Grid item xl={2} lg={2} sm={6} xs={12}>
               <NumberTextField
                 fullWidth
                 id="floor"
@@ -293,7 +313,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
                 onChange={formik.handleChange}
               />
             </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <Grid item xl={2} lg={2} sm={6} xs={12}>
               <NumberTextField
                 fullWidth
                 id="apartment"

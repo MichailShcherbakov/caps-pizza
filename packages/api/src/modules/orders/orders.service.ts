@@ -13,6 +13,7 @@ import DiscountsService from "../discounts/discounts.service";
 import DeliveriesService from "../delivery/deliveries.service";
 import PaymentService from "../payment/payment.service";
 import { SECRET } from "~/config";
+import { stringifyHouseInfo } from "./utils/stringifyHouseInfo";
 
 export const FIXED_MODIFIER_COUNT = 1;
 export const FIXED_DELIVERY_COUNT = 1;
@@ -141,7 +142,13 @@ export default class OrdersService {
 
     payload.append("sale_amount", discount);
     payload.append("street", dto.delivery_address.street);
-    payload.append("home", dto.delivery_address.house);
+    payload.append(
+      "home",
+      stringifyHouseInfo({
+        house: dto.delivery_address.house,
+        building: dto.delivery_address.building,
+      })
+    );
     payload.append("pod", dto.delivery_address.entrance);
     payload.append("et", dto.delivery_address.floor);
     payload.append("apart", dto.delivery_address.apartment);
