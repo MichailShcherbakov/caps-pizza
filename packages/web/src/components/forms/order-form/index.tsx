@@ -1,10 +1,9 @@
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import ProductCard from "~/components/shopping-cart-drawer/components/product-card";
 import Title from "~/components/title";
 import useShoppingCart from "~/hooks/use-shopping-cart";
-import { useGetDeliveriesQuery } from "~/services/delivery.service";
 import { Order } from "~/services/orders.service";
 import { useGetPaymentsQuery } from "~/services/payments.service";
 import { NumberTextField } from "~/ui";
@@ -12,12 +11,12 @@ import DeliverySelect from "./components/delivery-select";
 import PaymentSelect from "./components/payment-select";
 import PhoneNumberField from "./components/phone-number-field";
 import validationSchema from "./helpers/validation-schema";
-import { getAvailableDeliveries } from "@monorepo/common/modules/delivery/get-available-deliveries";
 import EmptyShoppingCartStub from "./components/empty-shopping-cart-stub";
 import NameField from "./components/name-field";
 import OrderFormSkeleton from "./components/skeleton";
 import { useOrderCache } from "~/hooks/use-order-cache";
 import LimitedTextField from "~/ui/components/text-field/limited";
+import { useGetSettingsQuery } from "~/services/shopping-cart-settings.service";
 
 export interface OrderFormProps {
   onSubmit?: (order: Order) => void;
@@ -26,14 +25,16 @@ export interface OrderFormProps {
 export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   const { data: payments = [], isLoading: isGetPaymentsLoading } =
     useGetPaymentsQuery();
-  const { data: deliveries = [], isLoading: isGetDeliveriesLoading } =
-    useGetDeliveriesQuery();
+  const { data: settings, isLoading: isGetSettingsLoading } =
+    useGetSettingsQuery();
+
   const {
     products,
-    productsCount,
-    totalCost,
+    totalCost = 0,
     discounts,
     isLoading: isShoppingCartLoading,
+    availableDeliveries,
+    minAvailableDelivery,
   } = useShoppingCart();
   const { cache, write } = useOrderCache();
 
@@ -54,6 +55,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     },
     validationSchema,
     onSubmit: value => {
+      if (!canMakeOrder) {
+        return;
+      }
+
       const order: Order = {
         products: (products ?? []).map(product => ({
           uuid: product.uuid,
@@ -92,30 +97,12 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   });
 
   const setFieldValue = formik.setFieldValue;
-  const availableDeliveries = React.useMemo(() => {
-    if (isShoppingCartLoading || isGetDeliveriesLoading) return [];
-
-    const availableDeliveries = getAvailableDeliveries({
-      deliveries,
-      orderCost: totalCost,
-      orderedProductsCount: productsCount,
-    });
-
-    if (availableDeliveries.length) {
-      setFieldValue("delivery_uuid", availableDeliveries[0].uuid);
-    }
-
-    return availableDeliveries;
-  }, [
-    isShoppingCartLoading,
-    isGetDeliveriesLoading,
-    deliveries,
-    totalCost,
-    productsCount,
-    setFieldValue,
-  ]);
 
   React.useEffect(() => {
+    const delivery = minAvailableDelivery ?? availableDeliveries.at(0);
+
+    delivery && setFieldValue("delivery_uuid", delivery.uuid);
+
     if (cache.client_info?.name) setFieldValue("name", cache.client_info.name);
 
     /* Phone number is not stored */
@@ -140,7 +127,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
 
     if (cache.delivery_address?.apartment)
       setFieldValue("apartment", cache.delivery_address.apartment);
-  }, [cache, setFieldValue]);
+  }, [availableDeliveries, cache, minAvailableDelivery, setFieldValue]);
 
   const currentDelivery = React.useMemo(
     () => availableDeliveries.find(d => d.uuid === formik.values.delivery_uuid),
@@ -152,7 +139,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
     [currentDelivery, totalCost]
   );
 
-  if (isGetPaymentsLoading || isShoppingCartLoading || isGetDeliveriesLoading)
+  const minimumOrderAmount = settings?.minimum_order_amount ?? 0;
+  const canMakeOrder = totalOrderCost >= minimumOrderAmount;
+
+  if (isGetPaymentsLoading || isShoppingCartLoading || isGetSettingsLoading)
     return <OrderFormSkeleton />;
 
   if (!products.length) return <EmptyShoppingCartStub />;
@@ -276,7 +266,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
                 placeholder="A"
                 maxLength={10}
                 value={formik.values.building}
-                error={formik.touched.building && Boolean(formik.errors.building)}
+                error={
+                  formik.touched.building && Boolean(formik.errors.building)
+                }
                 helperText={formik.touched.building && formik.errors.building}
                 onChange={formik.handleChange}
               />
@@ -409,9 +401,23 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
               </Typography>
             ) : undefined}
           </Stack>
-          <Button type="submit" variant="contained">
-            Оформить заказ
-          </Button>
+          <Tooltip
+            disableInteractive
+            disableFocusListener={canMakeOrder}
+            disableHoverListener={canMakeOrder}
+            disableTouchListener={canMakeOrder}
+            title={`Минимальна сумма заказа от ${minimumOrderAmount} ₽`}
+          >
+            <span>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!canMakeOrder}
+              >
+                Оформить заказ
+              </Button>
+            </span>
+          </Tooltip>
         </Stack>
       </Stack>
     </Stack>

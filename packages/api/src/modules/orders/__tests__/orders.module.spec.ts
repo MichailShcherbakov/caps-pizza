@@ -19,6 +19,13 @@ import UnitTestingModule from "./helpers/testing-module.unit.helper";
 import { stringifyHouseInfo } from "../utils/stringifyHouseInfo";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
+import { BadRequestException } from "@nestjs/common";
+import ShoppingCartSettingsService from "~/modules/shopping-cart-settings/shopping-cart-settings.service";
+import {
+  DeliveryCriteriaEnum,
+  DeliveryOperatorEnum,
+  DeliveryTypeEnum,
+} from "@monorepo/common";
 
 interface IFormDataMock {
   append: jest.Mock;
@@ -35,6 +42,7 @@ describe("[Orders Module] ...", () => {
   let orderService: OrdersService;
   let deliveriesService: DeliveriesService;
   let paymentService: PaymentService;
+  let shoppingCartSettingsService: ShoppingCartSettingsService;
   const productsFactory: ProductsFactory = new ProductsFactory();
   const modifiersFactory: ModifiersFactory = new ModifiersFactory();
   const deliveriesFactory: DeliveryFactory = new DeliveryFactory();
@@ -46,6 +54,7 @@ describe("[Orders Module] ...", () => {
   let getAvailableDeliveriesWrapper: jest.SpyInstance;
   let calculateDiscountWrapper: jest.SpyInstance;
   let findOneOrFailPaymentWrapper: jest.SpyInstance;
+  let getSettings: jest.SpyInstance;
 
   beforeAll(async () => {
     testingModule = new UnitTestingModule();
@@ -77,6 +86,12 @@ describe("[Orders Module] ...", () => {
 
     paymentService = testingModule.get<PaymentService>(PaymentService);
     findOneOrFailPaymentWrapper = jest.spyOn(paymentService, "findOneOrFail");
+
+    shoppingCartSettingsService =
+      testingModule.get<ShoppingCartSettingsService>(
+        ShoppingCartSettingsService
+      );
+    getSettings = jest.spyOn(shoppingCartSettingsService, "getSettings");
   });
 
   afterEach(() => {
@@ -85,18 +100,13 @@ describe("[Orders Module] ...", () => {
   });
 
   it("should correct make an order", async () => {
-    const TEST_SEND_TO_FRONT_PAD_RESULT = {
-      resualt: "ok",
-    };
+    const TEST_SEND_TO_FRONT_PAD_RESULT = { result: "ok" };
+    const TEST_MINIMUM_ORDER_AMOUNT = 1000;
     const TEST_DISCOUNT = 100;
-    const TEST_DELIVERY = {
-      ...deliveriesFactory.create(),
-      uuid: faker.datatype.uuid(),
-    };
-    const TEST_PAYMENT = {
-      ...paymentFactory.create(),
-      uuid: faker.datatype.uuid(),
-    };
+    const TEST_DELIVERY = deliveriesFactory.create({
+      type: DeliveryTypeEnum.IN_CASH,
+    });
+    const TEST_PAYMENT = paymentFactory.create();
 
     const orderedProducts = (5).map(() =>
       productsFactory.create({
@@ -119,6 +129,10 @@ describe("[Orders Module] ...", () => {
     findOneDeliveryWrapper.mockResolvedValueOnce(TEST_DELIVERY);
 
     findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
+
+    getSettings.mockResolvedValueOnce({
+      minimum_order_amount: TEST_MINIMUM_ORDER_AMOUNT,
+    });
 
     const dto: MakeAnOrderDto = {
       products: orderedProducts.map<OrderedProduct>(p => ({
@@ -386,15 +400,13 @@ describe("[Orders Module] ...", () => {
 
   it("should throw an error when the delivery was not provided, but the available deliveries exits", async () => {
     const TEST_FAKE_DELIVERY_UUID = faker.datatype.uuid();
+    const TEST_MINIMUM_ORDER_AMOUNT = 1000;
     const orderedProducts = (5).map(() =>
       productsFactory.create({
         category_uuid: faker.datatype.uuid(),
       })
     );
-    const TEST_PAYMENT = {
-      ...paymentFactory.create(),
-      uuid: faker.datatype.uuid(),
-    };
+    const TEST_PAYMENT = paymentFactory.create();
 
     findProductsWrapper.mockResolvedValueOnce(orderedProducts);
 
@@ -411,6 +423,10 @@ describe("[Orders Module] ...", () => {
     getAvailableDeliveriesWrapper.mockResolvedValueOnce([
       deliveriesFactory.create(),
     ]);
+
+    getSettings.mockResolvedValueOnce({
+      minimum_order_amount: TEST_MINIMUM_ORDER_AMOUNT,
+    });
 
     const dto: MakeAnOrderDto = {
       products: orderedProducts.map<OrderedProduct>(p => ({
@@ -444,6 +460,7 @@ describe("[Orders Module] ...", () => {
   });
 
   it("should throw an error when the delivery is not available", async () => {
+    const TEST_MINIMUM_ORDER_AMOUNT = 1000;
     const TEST_NOT_AVAILABLE_DELIVERY = {
       ...deliveriesFactory.create(),
       uuid: faker.datatype.uuid(),
@@ -477,6 +494,10 @@ describe("[Orders Module] ...", () => {
 
     findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
 
+    getSettings.mockResolvedValueOnce({
+      minimum_order_amount: TEST_MINIMUM_ORDER_AMOUNT,
+    });
+
     const dto: MakeAnOrderDto = {
       products: orderedProducts.map<OrderedProduct>(p => ({
         uuid: p.uuid,
@@ -505,6 +526,157 @@ describe("[Orders Module] ...", () => {
 
     expect(orderService.makeAnOrder(dto)).rejects.toThrow(
       `The delivery ${TEST_NOT_AVAILABLE_DELIVERY.uuid} not available`
+    );
+  });
+
+  it("should throw an error when the cost of the order is too low", async () => {
+    const TEST_SEND_TO_FRONT_PAD_RESULT = {
+      result: "ok",
+    };
+    const TEST_MINIMUM_ORDER_AMOUNT = 1000;
+    const TEST_DISCOUNT = 0;
+    const TEST_DELIVERY = deliveriesFactory.create({
+      type: DeliveryTypeEnum.IN_CASH,
+      condition: {
+        criteria: DeliveryCriteriaEnum.COUNT,
+        op: DeliveryOperatorEnum.GREATER,
+        value: 0,
+      },
+      value: 100,
+    });
+    const TEST_PAYMENT = paymentFactory.create();
+
+    const orderedProducts = (5).map(() =>
+      productsFactory.create({
+        category_uuid: faker.datatype.uuid(),
+        price: 100,
+      })
+    );
+
+    findProductsWrapper.mockResolvedValueOnce(orderedProducts);
+
+    const usedModifiers = (5).map(() =>
+      modifiersFactory.create({
+        category_uuid: faker.datatype.uuid(),
+      })
+    );
+
+    findModifiersWrapper.mockResolvedValueOnce(usedModifiers);
+    findModifiersWrapper.mockResolvedValueOnce(usedModifiers);
+
+    getAvailableDeliveriesWrapper.mockResolvedValueOnce([TEST_DELIVERY]);
+
+    findOneDeliveryWrapper.mockResolvedValueOnce(TEST_DELIVERY);
+
+    findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
+    getSettings.mockResolvedValueOnce({
+      minimum_order_amount: TEST_MINIMUM_ORDER_AMOUNT,
+    });
+
+    sendToFrontPadWrapper.mockResolvedValueOnce(TEST_SEND_TO_FRONT_PAD_RESULT);
+    calculateDiscountWrapper.mockResolvedValueOnce(TEST_DISCOUNT);
+
+    const dto: MakeAnOrderDto = {
+      products: orderedProducts.map<OrderedProduct>(p => ({
+        uuid: p.uuid,
+        count: 1,
+        modifiers: [],
+      })),
+      delivery_uuid: TEST_DELIVERY.uuid,
+      delivery_address: {
+        street: faker.datatype.uuid(),
+        house: faker.datatype.uuid(),
+        building: faker.datatype.uuid(),
+        entrance: faker.datatype.number({ max: 99, min: 0 }),
+        floor: faker.datatype.number({ max: 99, min: 0 }),
+        apartment: faker.datatype.number({ max: 99, min: 0 }),
+      },
+      payment_uuid: TEST_PAYMENT.uuid,
+      client_info: {
+        name: faker.datatype.uuid(),
+        phone: faker.datatype.uuid(),
+      },
+    };
+
+    expect(orderService.makeAnOrder(dto)).rejects.toThrow(
+      new BadRequestException("The cost of the order is too low")
+    );
+  });
+
+  it("should not throw an error when the cost of the order passes the minimum", async () => {
+    const TEST_SEND_TO_FRONT_PAD_RESULT = {
+      result: "ok",
+    };
+    const TEST_MINIMUM_ORDER_AMOUNT = 1000;
+    const TEST_DISCOUNT = 0;
+    const TEST_DELIVERY = deliveriesFactory.create({
+      type: DeliveryTypeEnum.IN_CASH,
+      condition: {
+        criteria: DeliveryCriteriaEnum.COUNT,
+        op: DeliveryOperatorEnum.GREATER,
+        value: 0,
+      },
+      value: 100,
+    });
+    const TEST_PAYMENT = {
+      ...paymentFactory.create(),
+      uuid: faker.datatype.uuid(),
+    };
+
+    const orderedProducts = (5).map(() =>
+      productsFactory.create({
+        category_uuid: faker.datatype.uuid(),
+        price: 180,
+      })
+    );
+
+    findProductsWrapper.mockResolvedValueOnce(orderedProducts);
+
+    const usedModifiers = (5).map(() =>
+      modifiersFactory.create({
+        category_uuid: faker.datatype.uuid(),
+      })
+    );
+
+    findModifiersWrapper.mockResolvedValueOnce(usedModifiers);
+    findModifiersWrapper.mockResolvedValueOnce(usedModifiers);
+
+    getAvailableDeliveriesWrapper.mockResolvedValueOnce([TEST_DELIVERY]);
+
+    findOneDeliveryWrapper.mockResolvedValueOnce(TEST_DELIVERY);
+
+    findOneOrFailPaymentWrapper.mockResolvedValueOnce(TEST_PAYMENT);
+    getSettings.mockResolvedValueOnce({
+      minimum_order_amount: TEST_MINIMUM_ORDER_AMOUNT,
+    });
+
+    sendToFrontPadWrapper.mockResolvedValueOnce(TEST_SEND_TO_FRONT_PAD_RESULT);
+    calculateDiscountWrapper.mockResolvedValueOnce(TEST_DISCOUNT);
+
+    const dto: MakeAnOrderDto = {
+      products: orderedProducts.map<OrderedProduct>(p => ({
+        uuid: p.uuid,
+        count: 1,
+        modifiers: [],
+      })),
+      delivery_uuid: TEST_DELIVERY.uuid,
+      delivery_address: {
+        street: faker.datatype.uuid(),
+        house: faker.datatype.uuid(),
+        building: faker.datatype.uuid(),
+        entrance: faker.datatype.number({ max: 99, min: 0 }),
+        floor: faker.datatype.number({ max: 99, min: 0 }),
+        apartment: faker.datatype.number({ max: 99, min: 0 }),
+      },
+      payment_uuid: TEST_PAYMENT.uuid,
+      client_info: {
+        name: faker.datatype.uuid(),
+        phone: faker.datatype.uuid(),
+      },
+    };
+
+    expect(orderService.makeAnOrder(dto)).resolves.toEqual(
+      TEST_SEND_TO_FRONT_PAD_RESULT
     );
   });
 

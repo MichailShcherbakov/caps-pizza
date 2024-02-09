@@ -8,16 +8,22 @@ import getSuitableDiscounts, {
 } from "@monorepo/common/modules/discounts/get-suitable-discounts";
 import { useAppSelector } from "~/store/hooks";
 import useShoppingCartActions from "./use-shopping-cart-actions";
+import { useGetDeliveriesQuery } from "~/services/delivery.service";
+import getAvailableDeliveries from "@monorepo/common/modules/delivery/get-available-deliveries";
+import { IDelivery } from "@monorepo/common";
 
 export type ShoppingCartProduct = Pick<OrderedProduct, "count"> &
   Product & { fullPrice: number };
 
 export type ShoppingCartLoading = {
   isLoading: true;
-  products: undefined;
-  productsCount: undefined;
-  totalCost: undefined;
-  discounts: [];
+  products: ShoppingCartProduct[];
+  productsCount: number;
+  totalCost: number;
+  totalOrderCost: number;
+  discounts: ISuitableDiscount[];
+  availableDeliveries: IDelivery[];
+  minAvailableDelivery: undefined;
 };
 
 export type ShoppingCartFulfilled = {
@@ -25,7 +31,10 @@ export type ShoppingCartFulfilled = {
   products: ShoppingCartProduct[];
   productsCount: number;
   totalCost: number;
+  totalOrderCost: number;
   discounts: ISuitableDiscount[];
+  availableDeliveries: IDelivery[];
+  minAvailableDelivery: IDelivery | undefined;
 };
 
 export const useShoppingCart = ():
@@ -44,18 +53,26 @@ export const useShoppingCart = ():
     useGetModifiersQuery();
   const { data: discounts = [], isLoading: isGetDiscountLoading } =
     useGetDiscountsQuery();
+  const { data: deliveries = [], isLoading: isGetDeliveriesLoading } =
+    useGetDeliveriesQuery();
 
   const isLoading =
     isShoppingCartLoading ||
     isGetProductsLoading ||
     isGetModifiersLoading ||
-    isGetDiscountLoading;
+    isGetDiscountLoading ||
+    isGetDeliveriesLoading;
 
   return React.useMemo(() => {
     if (isLoading)
       return {
         isLoading,
         discounts: [],
+        products: [],
+        availableDeliveries: [],
+        productsCount: 0,
+        totalCost: 0,
+        totalOrderCost: 0,
       };
 
     const productMap = new Map(products.map(p => [p.uuid, p]));
@@ -69,10 +86,12 @@ export const useShoppingCart = ():
         clear();
         return {
           isLoading,
+          discounts: [],
           products: [],
+          availableDeliveries: [],
           productsCount: 0,
           totalCost: 0,
-          discounts: [],
+          totalOrderCost: 0,
         };
       }
 
@@ -85,10 +104,12 @@ export const useShoppingCart = ():
           clear();
           return {
             isLoading,
+            discounts: [],
             products: [],
+            availableDeliveries: [],
             productsCount: 0,
             totalCost: 0,
-            discounts: [],
+            totalOrderCost: 0,
           };
         }
 
@@ -127,14 +148,44 @@ export const useShoppingCart = ():
       0
     );
 
+    const availableDeliveries = getAvailableDeliveries({
+      deliveries,
+      orderCost: totalCost,
+      orderedProductsCount: productsCount,
+    });
+
+    let minAvailableDelivery = availableDeliveries.at(0);
+
+    availableDeliveries.forEach(d => {
+      if (
+        typeof minAvailableDelivery === "undefined" ||
+        d.value < minAvailableDelivery.value
+      ) {
+        minAvailableDelivery = d;
+      }
+    });
+
+    const totalOrderCost = totalCost + (minAvailableDelivery?.value ?? 0);
+
     return {
-      isLoading: isLoading,
+      isLoading,
       products: shoppingCartProducts,
       productsCount,
-      totalCost: totalCost,
+      totalCost,
+      totalOrderCost,
       discounts: suitableDiscounts,
+      availableDeliveries,
+      minAvailableDelivery,
     };
-  }, [isLoading, products, modifiers, discounts, chosenProducts, clear]);
+  }, [
+    isLoading,
+    products,
+    modifiers,
+    discounts,
+    deliveries,
+    chosenProducts,
+    clear,
+  ]);
 };
 
 export default useShoppingCart;

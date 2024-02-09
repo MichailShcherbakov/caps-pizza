@@ -19,6 +19,10 @@ import PromotionSlider from "~/components/promotion-slider";
 import { Stack } from "@mui/system";
 import Head from "next/head";
 import ErrorBoundary from "~/components/error-boundary";
+import {
+  getSettings,
+  useGetSettingsQuery,
+} from "~/services/shopping-cart-settings.service";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -26,7 +30,10 @@ export interface SectionContainerProps {
 
 export const HomePage: AppPage = () => {
   const { scrollToSection } = useScroll();
-  const { productCategories, isLoading } = useProductCategories();
+  const { productCategories, isLoading: isProductCategoriesLoading } =
+    useProductCategories();
+  const { data: settings, isLoading: isSettingsLoading } =
+    useGetSettingsQuery();
 
   React.useEffect(() => {
     const hash = decodeURIComponent(document.location.hash);
@@ -35,6 +42,8 @@ export const HomePage: AppPage = () => {
 
     scrollToSection(hash.slice(1)); /// #Роллы -> Роллы
   }, [scrollToSection]);
+
+  const isLoading = isProductCategoriesLoading || isSettingsLoading;
 
   return isLoading ? (
     <LoadingBackdrop open />
@@ -79,9 +88,11 @@ export const HomePage: AppPage = () => {
         Ленсоветовский, Федоровское, Павловск, Коммунар.
       </ArticleSection>
       <ArticleSection id="Доставка и оплата" title="Доставка">
-        {`Доставка пиццы, суши и роллов. Минимальная сумма заказа от 1000 рублей (Пушкин, Славянка).
+        {`Доставка пиццы, суши и роллов. Минимальная сумма заказа от ${
+          settings?.minimum_order_amount ?? 0
+        } рублей (Пушкин, Славянка).
 
-              Доставка платная - 50 рублей.
+              Доставка платная - 30 рублей.
 
               Среднее время доставки 45 минут.
 
@@ -128,6 +139,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
   store.dispatch(getProducts.initiate());
   store.dispatch(getProductCategories.initiate());
   store.dispatch(getModifiers.initiate());
+  store.dispatch(getSettings.initiate());
 
   await Promise.all(store.dispatch(getRunningQueriesThunk()));
 

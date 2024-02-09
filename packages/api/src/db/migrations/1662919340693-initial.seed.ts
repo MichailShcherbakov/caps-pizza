@@ -65,23 +65,22 @@ export class initialSeed1662919340693 implements MigrationInterface {
         type: DeliveryTypeEnum.IN_CASH,
         value: 100,
         condition: {
-          criteria: DeliveryCriteriaEnum.PRICE,
-          op: DeliveryOperatorEnum.BETWEEN,
-          value: 0,
-          value2: 700,
-        },
-      },
-      {
-        name: "Бесплатная доставка пиццы от Кэпа",
-        article_number: 9999998,
-        type: DeliveryTypeEnum.IN_CASH,
-        value: 0,
-        condition: {
-          criteria: DeliveryCriteriaEnum.PRICE,
+          criteria: DeliveryCriteriaEnum.COUNT,
           op: DeliveryOperatorEnum.GREATER,
-          value: 700,
+          value: 0,
         },
       },
+      // {
+      //   name: "Бесплатная доставка пиццы от Кэпа",
+      //   article_number: 9999998,
+      //   type: DeliveryTypeEnum.IN_CASH,
+      //   value: 0,
+      //   condition: {
+      //     criteria: DeliveryCriteriaEnum.PRICE,
+      //     op: DeliveryOperatorEnum.GREATER,
+      //     value: 700,
+      //   },
+      // },
     ]);
 
     await payments.createManyFrom([

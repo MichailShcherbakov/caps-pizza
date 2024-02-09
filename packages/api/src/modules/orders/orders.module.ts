@@ -7,6 +7,7 @@ import PaymentModule from "../payment/payment.module";
 import ProductsModule from "../products/products.module";
 import OrdersController from "./orders.controller";
 import OrdersService from "./orders.service";
+import ShoppingCartSettingsModule from "../shopping-cart-settings/shopping-cart-settings.module";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import OrdersService from "./orders.service";
     DiscountsModule,
     DeliveriesModule,
     PaymentModule,
+    ShoppingCartSettingsModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService],

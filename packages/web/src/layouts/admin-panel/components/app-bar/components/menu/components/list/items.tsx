@@ -6,6 +6,7 @@ import BackupTableOutlinedIcon from "@mui/icons-material/BackupTableOutlined";
 import InsertChartOutlinedSharpIcon from "@mui/icons-material/InsertChartOutlinedSharp";
 import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
 import NewReleasesOutlinedIcon from "@mui/icons-material/NewReleasesOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 export const MENU_ITEMS = [
   {
@@ -47,6 +48,11 @@ export const MENU_ITEMS = [
     name: "delivery",
     displayName: "Расчёт доставки",
     icon: <LocalShippingOutlinedIcon />,
+  },
+  {
+    name: "shopping-cart-settings",
+    displayName: "Настройки корзины покупок",
+    icon: <ShoppingCartOutlinedIcon />,
   },
 ];
 

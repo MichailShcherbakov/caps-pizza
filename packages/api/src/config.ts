@@ -35,7 +35,7 @@ export const TYPEORM_CONFIG: DataSourceOptions = {
   subscribers: [
     resolve(__dirname, "db/subscribers/**/*.{js,ts}").replaceAll(sep, "/"),
   ],
-  migrationsRun: false,
+  migrationsRun: true,
   synchronize: false,
   logging: true,
 };

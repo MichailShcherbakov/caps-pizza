@@ -14,6 +14,7 @@ import DeliveriesService from "../delivery/deliveries.service";
 import PaymentService from "../payment/payment.service";
 import { SECRET } from "~/config";
 import { stringifyHouseInfo } from "./utils/stringifyHouseInfo";
+import ShoppingCartSettingsService from "../shopping-cart-settings/shopping-cart-settings.service";
 
 export const FIXED_MODIFIER_COUNT = 1;
 export const FIXED_DELIVERY_COUNT = 1;
@@ -26,27 +27,30 @@ export default class OrdersService {
     private readonly modifiersService: ModifiersService,
     private readonly discountsService: DiscountsService,
     private readonly deliveriesService: DeliveriesService,
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
+    private readonly settingsService: ShoppingCartSettingsService
   ) {}
 
   async makeAnOrder(dto: MakeAnOrderDto): Promise<FrontPadResponse> {
-    const [products, modifiers, delivery, payment] = await Promise.all([
-      this.productsService.find({
-        uuid: In(dto.products.map(p => p.uuid)),
-      }),
-      this.modifiersService.find({
-        uuid: In(
-          dto.products.reduce<string[]>((uuids, curr) => {
-            uuids.push(...curr.modifiers.map(m => m.uuid));
-            return uuids;
-          }, [])
-        ),
-      }),
-      dto.delivery_uuid
-        ? await this.deliveriesService.findOne({ uuid: dto.delivery_uuid })
-        : null,
-      this.paymentService.findOneOrFail({ uuid: dto.payment_uuid }),
-    ]);
+    const [products, modifiers, delivery, payment, settings] =
+      await Promise.all([
+        this.productsService.find({
+          uuid: In(dto.products.map(p => p.uuid)),
+        }),
+        this.modifiersService.find({
+          uuid: In(
+            dto.products.reduce<string[]>((uuids, curr) => {
+              uuids.push(...curr.modifiers.map(m => m.uuid));
+              return uuids;
+            }, [])
+          ),
+        }),
+        dto.delivery_uuid
+          ? await this.deliveriesService.findOne({ uuid: dto.delivery_uuid })
+          : null,
+        this.paymentService.findOneOrFail({ uuid: dto.payment_uuid }),
+        this.settingsService.getSettings(),
+      ]);
 
     let orderCost = 0;
     const orderedProductsCount = dto.products.reduce(
@@ -129,13 +133,19 @@ export default class OrdersService {
     /// skip free delivery
     if (delivery && delivery.value !== 0) {
       const deliveryIndex = currentProductIndex++;
+      const deliveryValue = this.deliveriesService.calculate(delivery, {
+        orderCost,
+      });
 
       payload.append(`product[${deliveryIndex}]`, delivery.article_number);
       payload.append(`product_kol[${deliveryIndex}]`, FIXED_DELIVERY_COUNT);
-      payload.append(
-        `product_price[${deliveryIndex}]`,
-        this.deliveriesService.calculate(delivery, { orderCost })
-      );
+      payload.append(`product_price[${deliveryIndex}]`, deliveryValue);
+
+      orderCost += deliveryValue;
+    }
+
+    if (orderCost < settings.minimum_order_amount) {
+      throw new BadRequestException("The cost of the order is too low");
     }
 
     payload.append("pay", payment.code);

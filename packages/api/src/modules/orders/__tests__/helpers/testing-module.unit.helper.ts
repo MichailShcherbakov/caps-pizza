@@ -7,6 +7,9 @@ import PaymentService from "~/modules/payment/payment.service";
 import ProductsService from "~/modules/products/products.service";
 import { ITestingModule } from "~/utils/__tests__/interfaces/testing-module.interface";
 import OrdersService from "../../orders.service";
+import ShoppingCartSettingsService from "~/modules/shopping-cart-settings/shopping-cart-settings.service";
+import DeliveryEntity from "~/db/entities/delivery.entity";
+import deliveryModule from "@monorepo/common/modules/delivery";
 
 export default class UnitTestingModule extends ITestingModule {
   protected compile(): Promise<TestingModule> {
@@ -19,6 +22,7 @@ export default class UnitTestingModule extends ITestingModule {
         DiscountsService,
         DeliveriesService,
         PaymentService,
+        ShoppingCartSettingsService,
       ],
     })
       .overrideProvider(HttpService)
@@ -33,11 +37,22 @@ export default class UnitTestingModule extends ITestingModule {
       .useValue({
         findOne: jest.fn(),
         getAvailableDeliveries: jest.fn(),
-        calculate: jest.fn(),
+        calculate: (
+          delivery: DeliveryEntity,
+          { orderCost }: { orderCost: number }
+        ) =>
+          deliveryModule.calculateDelivery({
+            delivery,
+            orderCost,
+          }),
       })
       .overrideProvider(PaymentService)
       .useValue({
         findOneOrFail: jest.fn(),
+      })
+      .overrideProvider(ShoppingCartSettingsService)
+      .useValue({
+        getSettings: jest.fn(),
       })
       .compile();
   }

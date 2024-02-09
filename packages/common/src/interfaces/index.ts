@@ -9,3 +9,4 @@ export * from "./product.interface";
 export * from "./payment.interface";
 export * from "./order.interface";
 export * from "./promotion.interface";
+export * from "./shopping-cart-settings.interface";
