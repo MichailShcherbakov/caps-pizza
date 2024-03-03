@@ -17,6 +17,7 @@ import OrderFormSkeleton from "./components/skeleton";
 import { useOrderCache } from "~/hooks/use-order-cache";
 import LimitedTextField from "~/ui/components/text-field/limited";
 import { useGetSettingsQuery } from "~/services/shopping-cart-settings.service";
+import { IDelivery } from "@monorepo/common";
 
 export interface OrderFormProps {
   onSubmit?: (order: Order) => void;
@@ -99,7 +100,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   const setFieldValue = formik.setFieldValue;
 
   React.useEffect(() => {
-    const delivery = minAvailableDelivery ?? availableDeliveries.at(0);
+    const delivery: IDelivery | undefined =
+      minAvailableDelivery ?? availableDeliveries[0];
 
     delivery && setFieldValue("delivery_uuid", delivery.uuid);
 

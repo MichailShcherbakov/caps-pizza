@@ -154,7 +154,7 @@ export const useShoppingCart = ():
       orderedProductsCount: productsCount,
     });
 
-    let minAvailableDelivery = availableDeliveries.at(0);
+    let minAvailableDelivery: IDelivery | undefined = availableDeliveries[0];
 
     availableDeliveries.forEach(d => {
       if (
