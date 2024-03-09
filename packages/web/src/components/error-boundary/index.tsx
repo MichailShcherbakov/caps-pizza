@@ -18,8 +18,8 @@ export class ErrorBoundary extends React.Component<
     return { hasError: true };
   }
 
-  async componentDidCatch(error, errorInfo) {
-    await log({ error, errorInfo });
+  async componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    await log({ error: error.toString(), errorInfo });
   }
 
   render() {
