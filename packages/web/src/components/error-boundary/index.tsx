@@ -19,7 +19,11 @@ export class ErrorBoundary extends React.Component<
   }
 
   async componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    await log({ error: error.toString(), errorInfo });
+    await log({
+      error: error.toString(),
+      errorStack: error.stack ?? null,
+      errorInfo,
+    });
   }
 
   render() {
