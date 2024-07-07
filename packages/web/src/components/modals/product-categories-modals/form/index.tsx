@@ -5,6 +5,7 @@ import getConfig from "next/config";
 import { IconButton, Stack, Tooltip } from "@mui/material";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import {
+  CheckboxWithLabel,
   ExternalSvg,
   FormComponentProps,
   MemoTextField,
@@ -39,6 +40,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = ({
       name: category?.name ?? "",
       image: undefined,
       image_url: category?.image_url ?? "",
+      display: category?.display ?? true,
       display_position: category?.display_position?.toString() ?? "",
     },
     validationSchema,
@@ -48,6 +50,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = ({
           name: value.name,
           image: value.image,
           image_url: value.image_url,
+          display: value.display,
           display_position:
             Number.parseInt(value.display_position) ?? undefined,
         });
@@ -150,6 +153,15 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = ({
           onChange={formik.handleChange}
         />
       </ModalContent>
+      <CheckboxWithLabel
+        id="display"
+        name="display"
+        checked={formik.values.display}
+        onChange={formik.handleChange}
+        color="secondary"
+        size="small"
+        label="Отображать"
+      />
       <ModalFooter onCancel={onCancel} />
     </ModalControl>
   );

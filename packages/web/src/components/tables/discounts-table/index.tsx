@@ -151,9 +151,7 @@ export const DiscountsTable: React.FC<DiscountsTableProps> = () => {
                                   },
                                   {
                                     name: "category",
-                                    value: productCategoriesMap.get(
-                                      product.category_uuid
-                                    )?.name,
+                                    value: product.categories.map(c => productCategoriesMap.get(c.uuid)?.name).join(', '),
                                     defaultValue: "-",
                                   },
                                 ],

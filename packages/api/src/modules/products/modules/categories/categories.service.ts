@@ -51,6 +51,7 @@ export default class ProductCategoriesService {
     const newProductCategory = new ProductCategoryEntity();
     newProductCategory.name = dto.name;
     newProductCategory.image_url = dto.image_url;
+    newProductCategory.display = dto.display;
     newProductCategory.display_position = dto.display_position;
 
     return this.productCategoriesRepository.save(newProductCategory);
@@ -79,6 +80,8 @@ export default class ProductCategoriesService {
     foundProductCagegory.name = dto.name ?? foundProductCagegory.name;
     foundProductCagegory.image_url =
       dto.image_url ?? foundProductCagegory.image_url;
+    foundProductCagegory.display =
+      dto.display ?? foundProductCagegory.display;
     foundProductCagegory.display_position =
       dto.display_position ?? foundProductCagegory.display_position;
 

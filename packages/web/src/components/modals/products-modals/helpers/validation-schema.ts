@@ -23,7 +23,6 @@ export const validationSchema = yup.object({
     .min(0, "Цена товара должена быть положительной")
     .max(99999, "Значение цены невалидно")
     .required("Это поле является обязательным"),
-  categoryUUID: yup.string().required("Это поле является обязательным"),
   volume: yup
     .number()
     .min(0, "Объем товара должен быть положительным")

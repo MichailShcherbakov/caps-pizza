@@ -81,7 +81,7 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
                   weight: value.weight,
                   tags: value.tags,
                   price: value.price,
-                  category_uuid: value.category_uuid,
+                  categories_uuids: value.categories.map(c => c.uuid),
                   modifiers_uuids: value.modifiers.map(m => m.uuid),
                 }).unwrap();
               } catch (e) {

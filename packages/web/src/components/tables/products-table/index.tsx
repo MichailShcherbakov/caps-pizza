@@ -47,7 +47,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
             },
             {
               name: "category",
-              value: product.category?.name,
+              value: product.categories.map((c) => c.name).join(', '),
             },
             {
               name: "controls",

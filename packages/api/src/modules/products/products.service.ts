@@ -29,7 +29,7 @@ export default class ProductsService {
     return this.productsRepository
       .find({
         where: options,
-        relations: { category: true, modifiers: true },
+        relations: { categories: true, modifiers: true },
       })
       .then(products => ProductsService.sort(products));
   }
@@ -43,22 +43,26 @@ export default class ProductsService {
   ): Promise<ProductEntity | null> {
     return this.productsRepository.findOne({
       where: options,
-      relations: { category: true, modifiers: true },
+      relations: { categories: true, modifiers: true },
     });
   }
 
   async create(dto: CreateProductDto): Promise<ProductEntity> {
-    const [foundCategory, foundModifiers] = await Promise.all([
-      this.productCategoriesService.findOne({
-        uuid: dto.category_uuid,
-      }),
+    const [foundCategories, foundModifiers] = await Promise.all([
+      this.productCategoriesService.find({ uuid: In(dto.categories_uuids) }),
       this.modifiersService.find({ uuid: In(dto.modifiers_uuids) }),
     ]);
 
-    if (!foundCategory)
-      throw new NotFoundException(
-        `The category ${dto.category_uuid} does not exist`
-      );
+    if (foundCategories.length !== dto.categories_uuids.length) {
+      const foundCategoriesSet = new Set(foundCategories.map(c => c.uuid));
+
+      for (const categoryUUID of dto.categories_uuids) {
+        if (!foundCategoriesSet.has(categoryUUID))
+          throw new NotFoundException(
+            `The category ${categoryUUID} does not exist`
+          );
+      }
+    }
 
     if (foundModifiers.length !== dto.modifiers_uuids.length) {
       const foundModifiersSet = new Set(foundModifiers.map(m => m.uuid));
@@ -89,11 +93,10 @@ export default class ProductsService {
     e.image_url = dto.image_url;
     e.article_number = dto.article_number;
     e.price = dto.price;
-    e.category_uuid = foundCategory.uuid;
-    e.category = foundCategory;
     e.volume = dto.volume;
     e.weight = dto.weight;
     e.tags = dto.tags;
+    e.categories = ProductCategoriesService.sort(foundCategories);
     e.modifiers = ModifiersService.sort(foundModifiers);
 
     return this.productsRepository.save(e);
@@ -105,17 +108,23 @@ export default class ProductsService {
     if (!foundProduct)
       throw new NotFoundException(`The product ${uuid} does not exist`);
 
-    if (dto.category_uuid && foundProduct.category_uuid !== dto.category_uuid) {
-      const foundCategory = await this.productCategoriesService.findOne({
-        uuid: dto.category_uuid,
+    if (dto.categories_uuids) {
+      const foundCategories = await this.productCategoriesService.find({
+        uuid: In(dto.categories_uuids),
       });
 
-      if (!foundCategory)
-        throw new NotFoundException(
-          `The category ${dto.category_uuid} does not exist`
-        );
+      if (foundCategories.length !== dto.categories_uuids.length) {
+        const foundCategoriesSet = new Set(foundCategories.map(c => c.uuid));
 
-      foundProduct.category_uuid = foundCategory.uuid;
+        for (const categoryUUID of dto.categories_uuids) {
+          if (!foundCategoriesSet.has(categoryUUID))
+            throw new NotFoundException(
+              `The category ${categoryUUID} does not exist`
+            );
+        }
+      }
+
+      foundProduct.categories = ProductCategoriesService.sort(foundCategories);
     }
 
     if (dto.modifiers_uuids) {

@@ -14,7 +14,6 @@ import { LoadingBackdrop } from "~/ui";
 import { getModifiers } from "~/services/modifiers.service";
 import ArticleSection from "~/components/sections/article.section";
 import useScroll from "~/hooks/use-scroll";
-import useProductCategories from "~/hooks/use-product-categories";
 import PromotionSlider from "~/components/promotion-slider";
 import { Stack } from "@mui/system";
 import Head from "next/head";
@@ -23,6 +22,7 @@ import {
   getSettings,
   useGetSettingsQuery,
 } from "~/services/shopping-cart-settings.service";
+import { useDisplayProductCategories } from "~/hooks/user-display-product-categories";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -30,8 +30,8 @@ export interface SectionContainerProps {
 
 export const HomePage: AppPage = () => {
   const { scrollToSection } = useScroll();
-  const { productCategories, isLoading: isProductCategoriesLoading } =
-    useProductCategories();
+  const { displayProductCategories, isProductCategoriesLoading } =
+    useDisplayProductCategories();
   const { data: settings, isLoading: isSettingsLoading } =
     useGetSettingsQuery();
 
@@ -56,12 +56,12 @@ export const HomePage: AppPage = () => {
       >
         <CategoriesList
           id="app_bar_stopper"
-          categories={productCategories}
+          categories={displayProductCategories}
           CategoryCardProps={{ size: "medium" }}
         />
       </Stack>
       <PromotionSlider />
-      {productCategories.map(category => (
+      {displayProductCategories.map(category => (
         <CategorySection key={category.uuid} category={category} />
       ))}
       <ArticleSection id="О нас" title="Что мы предлагаем?" collapse>

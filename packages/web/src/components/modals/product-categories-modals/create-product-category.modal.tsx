@@ -38,7 +38,7 @@ export const CreateProductCategoryModal: React.FC<
           Form: ProductCategoryForm,
           FormProps: {
             variant: "create",
-            onSubmit: async ({ name, image, display_position }) => {
+            onSubmit: async ({ name, image, display, display_position }) => {
               try {
                 setLoading(true);
 
@@ -61,6 +61,7 @@ export const CreateProductCategoryModal: React.FC<
                 await createProductCategory({
                   name,
                   image_url: uploadedImage.url,
+                  display,
                   display_position,
                 }).unwrap();
               } catch (e) {

@@ -109,9 +109,7 @@ describe("[Orders Module] ...", () => {
     const TEST_PAYMENT = paymentFactory.create();
 
     const orderedProducts = (5).map(() =>
-      productsFactory.create({
-        category_uuid: faker.datatype.uuid(),
-      })
+      productsFactory.create()
     );
 
     findProductsWrapper.mockResolvedValueOnce(orderedProducts);
@@ -288,9 +286,7 @@ describe("[Orders Module] ...", () => {
     };
 
     const orderedProducts = (5).map(() =>
-      productsFactory.create({
-        category_uuid: faker.datatype.uuid(),
-      })
+      productsFactory.create()
     );
 
     findProductsWrapper.mockResolvedValueOnce(orderedProducts);
@@ -348,9 +344,7 @@ describe("[Orders Module] ...", () => {
     };
 
     const orderedProducts = (5).map(() =>
-      productsFactory.create({
-        category_uuid: faker.datatype.uuid(),
-      })
+      productsFactory.create()
     );
 
     findProductsWrapper.mockResolvedValueOnce(orderedProducts);
@@ -402,9 +396,7 @@ describe("[Orders Module] ...", () => {
     const TEST_FAKE_DELIVERY_UUID = faker.datatype.uuid();
     const TEST_MINIMUM_ORDER_AMOUNT = 1000;
     const orderedProducts = (5).map(() =>
-      productsFactory.create({
-        category_uuid: faker.datatype.uuid(),
-      })
+      productsFactory.create()
     );
     const TEST_PAYMENT = paymentFactory.create();
 
@@ -471,9 +463,7 @@ describe("[Orders Module] ...", () => {
     };
 
     const orderedProducts = (5).map(() =>
-      productsFactory.create({
-        category_uuid: faker.datatype.uuid(),
-      })
+      productsFactory.create()
     );
 
     findProductsWrapper.mockResolvedValueOnce(orderedProducts);
@@ -548,7 +538,6 @@ describe("[Orders Module] ...", () => {
 
     const orderedProducts = (5).map(() =>
       productsFactory.create({
-        category_uuid: faker.datatype.uuid(),
         price: 100,
       })
     );
@@ -625,7 +614,6 @@ describe("[Orders Module] ...", () => {
 
     const orderedProducts = (5).map(() =>
       productsFactory.create({
-        category_uuid: faker.datatype.uuid(),
         price: 180,
       })
     );

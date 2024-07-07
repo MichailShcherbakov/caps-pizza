@@ -8,6 +8,7 @@ export const createProductCategory = (
     uuid: faker.datatype.uuid(),
     name: faker.datatype.uuid(),
     image_url: faker.image.imageUrl(),
+    display: true,
     display_position: faker.datatype.number(),
     ...options,
   };

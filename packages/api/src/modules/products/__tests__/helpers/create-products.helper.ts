@@ -12,12 +12,7 @@ export default function createProductsHelper(
 ): Promise<ProductEntity[]> {
   const seeder = new ProductsSeeder(testingModule.queryRunner);
   return seeder
-    .createManyFrom(
-      categories.map(c => ({
-        category_uuid: c.uuid,
-        category: c,
-      }))
-    )
+    .createManyFrom(categories)
     .then(
       products =>
         deleteObjectsPropsHelper(products, [
@@ -33,7 +28,7 @@ export function createProductHelper(
 ): Promise<ProductEntity> {
   const seeder = new ProductsSeeder(testingModule.queryRunner);
   return seeder
-    .create({ category_uuid: category.uuid, category })
+    .create({ categories: [category], })
     .then(
       product =>
         deleteObjectPropsHelper(product, [

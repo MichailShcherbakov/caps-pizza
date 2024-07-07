@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -14,6 +15,10 @@ export class CreateProductCategoryDto {
   @IsString()
   @IsNotEmpty()
   image_url: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  display: boolean;
 
   @IsNumber()
   @IsNotEmpty()
@@ -33,6 +38,10 @@ export class UpdateProductCategoryDto {
   @IsOptional()
   image_url?: string;
 
+  @IsBoolean()
+  @IsNotEmpty()
+  display: boolean;
+  
   @IsNumber()
   @IsNotEmpty()
   @Min(1)

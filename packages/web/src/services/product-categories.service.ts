@@ -9,6 +9,7 @@ export class ProductCategory implements IProductCategory {
   uuid: string;
   name: string;
   image_url: string;
+  display: boolean;
   display_position?: number;
 }
 

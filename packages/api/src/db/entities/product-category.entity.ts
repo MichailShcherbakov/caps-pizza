@@ -13,8 +13,15 @@ export default class ProductCategoryEntity
   @Column()
   image_url: string;
 
+  @Column()
+  display: boolean;
+
   @Column({ nullable: true })
   display_position?: number;
+
+  static sort(categories: ProductCategoryEntity[]) {
+    return categories.sort((a, b) => ProductCategoryEntity.compare(a, b));
+  }
 
   static compare(a?: ProductCategoryEntity, b?: ProductCategoryEntity): number {
     if (!a && b) return 1;

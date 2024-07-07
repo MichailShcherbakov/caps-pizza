@@ -25,33 +25,27 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       const products = [
         createProduct({
           modifiers,
-          category: productCategories[0],
-          category_uuid: productCategories[0].uuid,
+          categories: [productCategories[0]],
         }),
         createProduct({
           modifiers,
-          category: productCategories[0],
-          category_uuid: productCategories[0].uuid,
+          categories: [productCategories[0]],
         }),
         /// same product category, but it does not have modifiers
         createProduct({
-          category: productCategories[0],
-          category_uuid: productCategories[0].uuid,
+          categories: [productCategories[0]],
         }),
         /// other product
         createProduct({
-          category: productCategories[1],
-          category_uuid: productCategories[1].uuid,
+          categories: [productCategories[1]],
         }),
         /// other product
         createProduct({
-          category: productCategories[1],
-          category_uuid: productCategories[1].uuid,
+          categories: [productCategories[1]],
         }),
         /// other product
         createProduct({
-          category: productCategories[1],
-          category_uuid: productCategories[1].uuid,
+          categories: [productCategories[1]],
         }),
       ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 
@@ -129,30 +123,25 @@ describe("[Helper] [getSuitableProducts] ...", () => {
         /// is fulfill product
         createProduct({
           modifiers: [modifier],
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// is fulfill product
         createProduct({
           modifiers: [modifier],
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// same product category, but it does not have modifiers
         createProduct({
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// same modifiers, but it has other product category
         createProduct({
           modifiers: [modifier],
-          category: otherProductCategory,
-          category_uuid: otherProductCategory.uuid,
+          categories: [otherProductCategory],
         }),
         /// other product
         createProduct({
-          category: otherProductCategory,
-          category_uuid: otherProductCategory.uuid,
+          categories: [otherProductCategory],
         }),
       ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 
@@ -188,23 +177,19 @@ describe("[Helper] [getSuitableProducts] ...", () => {
       const products = [
         /// is fulfill product
         createProduct({
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// is fulfill product
         createProduct({
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// other product category
         createProduct({
-          category: otherProductCategory,
-          category_uuid: otherProductCategory.uuid,
+          categories: [otherProductCategory],
         }),
         /// other product category
         createProduct({
-          category: otherProductCategory,
-          category_uuid: otherProductCategory.uuid,
+          categories: [otherProductCategory],
         }),
       ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 
@@ -244,25 +229,21 @@ describe("[Helper] [getSuitableProducts] ...", () => {
         /// is fulfill product
         createProduct({
           modifiers: [modifier],
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// is fulfill product
         createProduct({
           modifiers: [modifier],
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// same product category, but it does not have modifiers
         createProduct({
-          category: productCategory,
-          category_uuid: productCategory.uuid,
+          categories: [productCategory],
         }),
         /// other product category, but still it has correct modifiers
         createProduct({
           modifiers: [modifier],
-          category: otherProductCategory,
-          category_uuid: otherProductCategory.uuid,
+          categories: [otherProductCategory],
         }),
       ].map(p => ({ ...p, fullPrice: p.price, count: 1 }));
 

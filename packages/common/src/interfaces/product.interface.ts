@@ -31,8 +31,7 @@ export interface IProduct extends IEntity {
   weight?: IProductWeight;
   volume?: IProductVolume;
   tags?: string[];
-  category_uuid: string;
-  category?: IProductCategory;
+  categories: IProductCategory[];
   modifiers: IModifier[];
 }
 

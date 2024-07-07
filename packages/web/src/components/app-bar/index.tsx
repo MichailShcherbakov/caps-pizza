@@ -10,7 +10,7 @@ import Logo from "./components/logo";
 import dynamic from "next/dynamic";
 import { Container } from "@mui/system";
 import { useStyle } from "./index.style";
-import useProductCategories from "~/hooks/use-product-categories";
+import { useDisplayProductCategories } from "~/hooks/user-display-product-categories";
 
 const ShoppingCartButton = dynamic(() => import("../shopping-cart-button"), {
   ssr: false,
@@ -21,7 +21,7 @@ export const AppBarHead = ({
 }: {
   appBarRef: HTMLElement | null;
 }) => {
-  const { productCategories } = useProductCategories();
+  const { displayProductCategories } = useDisplayProductCategories();
   const [showCategories, setShowCategories] = React.useState<boolean>(false);
 
   useScroll({
@@ -44,7 +44,7 @@ export const AppBarHead = ({
       <Logo onlyIcon={showCategories} />
       {showCategories ? (
         <Fade in unmountOnExit>
-          <CategoriesList fullWidth categories={productCategories} />
+          <CategoriesList fullWidth categories={displayProductCategories} />
         </Fade>
       ) : undefined}
     </>

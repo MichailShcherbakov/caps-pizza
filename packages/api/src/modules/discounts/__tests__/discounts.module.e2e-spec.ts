@@ -1,3 +1,4 @@
+import { orderBy } from "lodash";
 import { faker } from "@faker-js/faker";
 import {
   DiscountCriteriaEnum,
@@ -7,12 +8,9 @@ import {
 import ModifierEntity from "~/db/entities/modifier.entity";
 import ProductCategoryEntity from "~/db/entities/product-category.entity";
 import ProductEntity from "~/db/entities/product.entity";
-import ModifiersService from "~/modules/modifiers/modifiers.service";
 import createModifierCategoriesHelper from "~/modules/modifiers/modules/categories/__tests__/helpers/create-modifier-categories.helper";
 import createModifiersHelper from "~/modules/modifiers/__tests__/helpers/create-modifiers.helper";
-import ProductCategoriesService from "~/modules/products/modules/categories/categories.service";
 import createProductCategoriesHelper from "~/modules/products/modules/categories/__tests__/helpers/create-categories.helper";
-import ProductsService from "~/modules/products/products.service";
 import createProductsHelper from "~/modules/products/__tests__/helpers/create-products.helper";
 import deleteObjectPropsHelper, {
   deleteObjectsPropsHelper,
@@ -101,11 +99,11 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Post] /discounts", () => {
     it("should successfully create a discount with products", async () => {
-      const chosenProducts = ProductsService.sort([
+      const chosenProducts = orderBy([
         products[2],
         products[1],
         products[6],
-      ]);
+      ], ['name', 'asc']);
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -140,7 +138,7 @@ describe("[Discounts Module] ...", () => {
                 uuid: createDiscountResponse.body.data.strategies[idx].uuid,
                 discount_uuid: createDiscountResponse.body.data.uuid,
                 products: deleteObjectsPropsHelper(chosenProducts, [
-                  "category",
+                  "categories",
                   "modifiers",
                 ]),
                 product_categories: [],
@@ -154,11 +152,11 @@ describe("[Discounts Module] ...", () => {
     });
 
     it("should successfully create a discount with product categories", async () => {
-      const chosenProductCategories = ProductCategoriesService.sort([
+      const chosenProductCategories = orderBy([
         productCategories[2],
         productCategories[1],
         productCategories[6],
-      ]);
+      ], ['name', 'asc']);
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -204,12 +202,12 @@ describe("[Discounts Module] ...", () => {
     });
 
     it("should successfully create a discount with modifiers", async () => {
-      const chosenModifiers = ModifiersService.sort([
+      const chosenModifiers = orderBy([
         modifiers[2],
         modifiers[1],
         modifiers[6],
-      ]);
-
+      ], ['name'], ['asc']);
+      
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
         type: DiscountTypeEnum.IN_CASH,

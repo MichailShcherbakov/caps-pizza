@@ -51,7 +51,7 @@ export const ProductTable: React.FC<ProductTableProps> = React.memo(
             },
             {
               name: "categoryName",
-              value: product.category?.name ?? "Нет",
+              value: product.categories.map(c => c.name).join(', ') ?? "Нет",
             },
           ],
         }))}

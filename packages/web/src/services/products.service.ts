@@ -35,8 +35,7 @@ export class Product implements IProduct {
   volume?: ProductVolume;
   tags?: string[];
   price: number;
-  category_uuid: string;
-  category?: ProductCategory;
+  categories: ProductCategory[];
   modifiers: Modifier[];
 }
 
@@ -50,7 +49,8 @@ export const ProductAPI = API.injectEndpoints({
     createProduct: builder.mutation<
       APIData<Product>,
       APIPayload<
-        Omit<Product, "uuid" | "category" | "modifiers"> & {
+        Omit<Product, "uuid" | "category" | "categories" | "modifiers"> & {
+          categories_uuids: string[];
           modifiers_uuids: string[];
         }
       >
@@ -66,7 +66,7 @@ export const ProductAPI = API.injectEndpoints({
     updateProduct: builder.mutation<
       APIData<Product>,
       APIPayload<
-        Omit<Product, "category" | "modifiers"> & { modifiers_uuids: string[] }
+        Omit<Product, "category" | "categories" | "modifiers"> & { categories_uuids: string[], modifiers_uuids: string[] }
       >
     >({
       query: body => ({

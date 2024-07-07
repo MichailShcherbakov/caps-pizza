@@ -6,6 +6,7 @@ export const validationSchema = yup.object({
     .max(50, "Название не должно превышать 50 символов")
     .required("Это поле является обязательным"),
   image_url: yup.string().required("Это поле является обязательным"),
+  display: yup.boolean().required("Это поле является обязательным"),
   display_position: yup
     .number()
     .min(1, "Позиция не должна быть меньше 1")

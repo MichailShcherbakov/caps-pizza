@@ -48,7 +48,7 @@ export const ProductsList: React.FC<ProductsListProps> = React.memo(
                     {p.name}
                   </Typography>
                   <Typography variant="subtitle2" component="p">
-                    {p.category?.name}
+                    {p.categories.map(c => c.name).join(', ')}
                   </Typography>
                 </Stack>
               </Stack>

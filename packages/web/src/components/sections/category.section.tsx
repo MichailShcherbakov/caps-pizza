@@ -23,7 +23,7 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
     const { data: modifiers = [] } = useGetModifiersQuery();
     const { data: modifierCategories = [] } = useGetModifierCategoriesQuery();
     const categoryProducts = React.useMemo(
-      () => products.filter(product => product.category_uuid === category.uuid),
+      () => products.filter(product => product.categories.find(c => c.uuid === category.uuid)),
       [products, category.uuid]
     );
 

@@ -54,7 +54,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       image: undefined,
       imageURL: product?.image_url ?? "",
       price: product?.price.toString() ?? "",
-      categoryUUID: product?.category_uuid ?? "",
+      categories: product?.categories ?? [],
       modifiers: product?.modifiers ?? [],
       volume: product?.volume?.value.toString() ?? "",
       volumeType: product?.volume?.type ?? ProductVolumeTypeEnum.QUANTITY,
@@ -72,7 +72,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           image: value.image,
           image_url: value.imageURL,
           price: Number.parseFloat(value.price),
-          category_uuid: value.categoryUUID,
+          categories: value.categories,
           modifiers: value.modifiers,
           weight: value.weight
             ? {
@@ -92,6 +92,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   });
 
   const setFieldValue = formik.setFieldValue;
+  const onCategoriesChange = React.useCallback(
+    (categories: ProductCategory[]) => setFieldValue("categories", categories),
+    [setFieldValue]
+  );
   const onModifiersChange = React.useCallback(
     (modifiers: Modifier[]) => setFieldValue("modifiers", modifiers),
     [setFieldValue]
@@ -221,8 +225,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           </Stack>
           <ProductCategoriesSelect
             productCategories={productCategories}
-            value={formik.values.categoryUUID}
-            onChange={formik.handleChange}
+            value={formik.values.categories}
+            onChange={onCategoriesChange}
           />
         </Stack>
         {modifiers.length ? (

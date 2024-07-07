@@ -1,23 +1,16 @@
 import {
   FormControl,
   InputLabel,
-  ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent,
-  Stack,
 } from "@mui/material";
-import getConfig from "next/config";
 import React from "react";
 import { ProductCategory } from "~/services/product-categories.service";
-import { ExternalSvg } from "~/ui";
-
-const { publicRuntimeConfig } = getConfig();
 
 export interface ProductCategoriesSelectProps {
   productCategories: ProductCategory[];
-  value: string;
-  onChange: (event: SelectChangeEvent<string>) => void;
+  value: ProductCategory[];
+  onChange: (categories: ProductCategory[]) => void;
 }
 
 export const ProductCategoriesSelect: React.FC<ProductCategoriesSelectProps> =
@@ -36,30 +29,22 @@ export const ProductCategoriesSelect: React.FC<ProductCategoriesSelectProps> =
           id="categoryUUID"
           name="categoryUUID"
           labelId="product-category-select-label"
-          value={value}
+          multiple
+          value={value.map(c => c.uuid)}
           label="Категория"
-          onChange={onChange}
+          onChange={({ target: { value }}) => {
+            const categoryIds = typeof value === 'string' ? value.split(',') : value;
+
+            const categories = categoryIds.map(categoryId => productCategories.find(c => c.uuid === categoryId)!); 
+
+            onChange(categories);
+          }}
           color="secondary"
         >
           {Array.isArray(productCategories) &&
             productCategories.map(c => (
               <MenuItem key={c.uuid} value={c.uuid}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  sx={{
-                    marginRight: 2,
-                  }}
-                >
-                  <ExternalSvg
-                    src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${c.image_url}`}
-                    sx={{
-                      width: theme => theme.spacing(3),
-                      height: theme => theme.spacing(3),
-                    }}
-                  />
-                </Stack>
-                <ListItemText>{c.name}</ListItemText>
+                {c.name}
               </MenuItem>
             ))}
         </Select>

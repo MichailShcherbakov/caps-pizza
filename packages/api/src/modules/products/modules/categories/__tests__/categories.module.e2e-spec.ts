@@ -86,6 +86,7 @@ describe("[Product Categories Module] ... ", () => {
       const dto: CreateProductCategoryDto = {
         name: faker.commerce.productName(),
         image_url: faker.image.imageUrl(),
+        display: true,
         display_position: faker.datatype.number(),
       };
 
@@ -106,6 +107,7 @@ describe("[Product Categories Module] ... ", () => {
     it("should throw an error when creating a product category without image_url", async () => {
       const dto: Partial<CreateProductCategoryDto> = {
         name: faker.commerce.productName(),
+        display: true,
         display_position: faker.datatype.number(),
       };
 
@@ -127,6 +129,7 @@ describe("[Product Categories Module] ... ", () => {
     it("should throw an error when creating a product category without name", async () => {
       const dto: Partial<CreateProductCategoryDto> = {
         image_url: faker.image.imageUrl(),
+        display: true,
         display_position: faker.datatype.number(),
       };
 
@@ -142,6 +145,25 @@ describe("[Product Categories Module] ... ", () => {
       });
     });
 
+    it("should throw an error when creating a product category without 'display'", async () => {
+      const dto: Partial<CreateProductCategoryDto> = {
+        name: faker.commerce.productName(),
+        image_url: faker.image.imageUrl(),
+        display_position: faker.datatype.number(),
+      };
+
+      const createProductCategoryResponse = await api.createProductCategory(
+        dto as CreateProductCategoryDto
+      );
+
+      expect(createProductCategoryResponse.statusCode).toEqual(400);
+      expect(createProductCategoryResponse.body).toEqual({
+        statusCode: 400,
+        error: "Bad Request",
+        message: ["display should not be empty", "display must be a boolean value"],
+      });
+    });
+
     it("should throw an error when creating a product category with exists name", async () => {
       const otherProductCategory = await createProductCategoryHelper(
         testingModule
@@ -150,6 +172,7 @@ describe("[Product Categories Module] ... ", () => {
       const dto: CreateProductCategoryDto = {
         name: otherProductCategory.name,
         image_url: faker.image.imageUrl(),
+        display: true,
         display_position: faker.datatype.number(),
       };
 
@@ -175,6 +198,7 @@ describe("[Product Categories Module] ... ", () => {
       const dto: UpdateProductCategoryDto = {
         name: faker.commerce.productName(),
         image_url: faker.image.imageUrl(),
+        display: false,
         display_position: faker.datatype.number(),
       };
 
@@ -199,6 +223,7 @@ describe("[Product Categories Module] ... ", () => {
       const dto: UpdateProductCategoryDto = {
         name: faker.commerce.productName(),
         image_url: faker.image.imageUrl(),
+        display: false,
         display_position: faker.datatype.number(),
       };
 
@@ -225,6 +250,7 @@ describe("[Product Categories Module] ... ", () => {
 
       const dto: UpdateProductCategoryDto = {
         name: otherProductCategory.name,
+        display: false,
       };
 
       const createProductCategoryResponse = await api.updateProductCategory(

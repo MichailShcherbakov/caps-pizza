@@ -5,8 +5,7 @@ import ProductEntity from "../entities/product.entity";
 
 export class ProductsFactory extends IFactory<ProductEntity> {
   create(
-    options: Partial<Omit<ProductEntity, "category_uuid">> &
-      Pick<ProductEntity, "category_uuid">
+    options: Partial<ProductEntity> = {}
   ): ProductEntity {
     const e = new ProductEntity();
     e.name = options.name ?? faker.commerce.productName();
@@ -16,11 +15,10 @@ export class ProductsFactory extends IFactory<ProductEntity> {
       faker.datatype.number({ max: 99999, min: 10000 });
     e.image_url = options.image_url ?? faker.image.imageUrl();
     e.price = options.price ?? faker.datatype.number({ max: 1000, min: 150 });
-    e.category_uuid = options.category_uuid;
     e.volume = options.volume;
     e.weight = options.weight;
     e.tags = options.tags ?? ["first:2", "second:4"];
-    e.category = options.category;
+    e.categories = options.categories ?? [];
     e.modifiers = options.modifiers ?? [];
     return e;
   }

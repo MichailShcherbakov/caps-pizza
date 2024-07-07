@@ -36,6 +36,19 @@ export default class DiscountsService {
     return this.discountRepository
       .find({
         where: options,
+        order: {
+          strategies: {
+            products: {
+              name: "ASC",
+            },
+            product_categories: {
+              name: "ASC",
+            },
+            modifiers: {
+              name: "ASC",
+            }
+          }
+        },
         relations: {
           strategies: {
             products: true,
@@ -52,6 +65,19 @@ export default class DiscountsService {
   ): Promise<DiscountEntity | null> {
     return this.discountRepository.findOne({
       where: options,
+      order: {
+        strategies: {
+          products: {
+            name: "ASC",
+          },
+          product_categories: {
+            name: "ASC",
+          },
+          modifiers: {
+            name: "ASC",
+          }
+        }
+      },
       relations: {
         strategies: {
           products: true,

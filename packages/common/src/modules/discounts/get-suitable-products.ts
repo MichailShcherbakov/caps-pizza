@@ -43,12 +43,16 @@ export function getSuitableProducts<T extends IProductWithFullPrice>(
       }
 
       if (strategy.product_categories.length) {
-        if (
-          !strategy.product_categories.find(
-            c => c.uuid === product.category_uuid
-          )
-        ) {
-          return false;
+        const categoriesSet = new Set(product.categories.map(c => c.uuid));
+
+        if (options?.strict) {
+          if (!strategy.product_categories.every(c => categoriesSet.has(c.uuid))) {
+            return false;
+          }
+        } else {
+          if (!strategy.product_categories.some(c => categoriesSet.has(c.uuid))) {
+            return false;
+          }
         }
       }
 

@@ -49,10 +49,10 @@ export class CreateProductDto {
   @IsNotEmpty()
   price: number;
 
-  @IsUUID()
-  @IsString()
+  @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
-  category_uuid: string;
+  categories_uuids: string[];
 
   @IsArray()
   @IsUUID(undefined, { each: true })
@@ -102,11 +102,11 @@ export class UpdateProductDto {
   @IsOptional()
   price?: number;
 
-  @IsUUID()
-  @IsString()
+  @IsArray()
+  @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   @IsOptional()
-  category_uuid?: string;
+  categories_uuids?: string[];
 
   @IsArray()
   @IsUUID(undefined, { each: true })

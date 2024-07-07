@@ -106,7 +106,7 @@ describe("[Product Module] ...", () => {
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
-        category_uuid: category.uuid,
+        categories_uuids: [category.uuid],
         modifiers_uuids: choisedModifiers.map(m => m.uuid),
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -126,41 +126,16 @@ describe("[Product Module] ...", () => {
         statusCode: 201,
         data: {
           uuid: createProductResponse.body.data.uuid,
-          category: deleteObjectPropsHelper(category, [
-            "updated_at",
-            "created_at",
-          ]),
+          categories: deleteObjectsPropsHelper(
+            ProductCategoryEntity.sort([category]),
+            ["updated_at", "created_at"]
+          ),
           modifiers: deleteObjectsPropsHelper(
             ModifiersService.sort(choisedModifiers),
             ["updated_at", "created_at"]
           ),
-          ...deleteObjectPropsHelper(dto, ["modifiers_uuids"]),
+          ...deleteObjectPropsHelper(dto, ["categories_uuids", "modifiers_uuids"]),
         },
-      });
-    });
-
-    it("should throw an error when creating a product without a category", async () => {
-      const dto: Omit<CreateProductDto, "category_uuid"> = {
-        name: faker.datatype.uuid(),
-        article_number: faker.datatype.number(),
-        image_url: faker.image.imageUrl(),
-        price: faker.datatype.number(),
-        modifiers_uuids: [],
-      };
-
-      const createProductResponse = await api.createProduct(
-        dto as CreateProductDto
-      );
-
-      expect(createProductResponse.status).toEqual(400);
-      expect(createProductResponse.body).toEqual({
-        statusCode: 400,
-        error: "Bad Request",
-        message: [
-          "category_uuid should not be empty",
-          "category_uuid must be a string",
-          "category_uuid must be a UUID",
-        ],
       });
     });
 
@@ -169,8 +144,8 @@ describe("[Product Module] ...", () => {
         name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
-        category_uuid: faker.datatype.uuid(),
         price: faker.datatype.number(),
+        categories_uuids: [faker.datatype.uuid()],
         modifiers_uuids: [],
       };
 
@@ -180,7 +155,7 @@ describe("[Product Module] ...", () => {
       expect(createProductResponse.body).toEqual({
         statusCode: 404,
         error: "Not Found",
-        message: `The category ${dto.category_uuid} does not exist`,
+        message: `The category ${dto.categories_uuids[0]} does not exist`,
       });
     });
 
@@ -192,8 +167,8 @@ describe("[Product Module] ...", () => {
         name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
-        category_uuid: category.uuid,
         price: faker.datatype.number(),
+        categories_uuids: [category.uuid],
         modifiers_uuids: [modifierFakerUUID],
       };
 
@@ -222,8 +197,8 @@ describe("[Product Module] ...", () => {
         name: faker.datatype.uuid(),
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
-        category_uuid: category.uuid,
         price: faker.datatype.number(),
+        categories_uuids: [category.uuid],
         modifiers_uuids,
       };
 
@@ -249,8 +224,8 @@ describe("[Product Module] ...", () => {
         name: faker.datatype.uuid(),
         article_number: otherProduct.article_number,
         image_url: faker.image.imageUrl(),
-        category_uuid: category.uuid,
         price: faker.datatype.number(),
+        categories_uuids: [category.uuid],
         modifiers_uuids: [],
       };
 
@@ -272,7 +247,7 @@ describe("[Product Module] ...", () => {
         name: faker.datatype.uuid(),
         article_number: modifier.article_number,
         image_url: faker.image.imageUrl(),
-        category_uuid: category.uuid,
+        categories_uuids: [category.uuid],
         price: faker.datatype.number(),
         modifiers_uuids: [],
       };
@@ -301,7 +276,7 @@ describe("[Product Module] ...", () => {
         price: faker.datatype.number(),
         article_number: faker.datatype.number(),
         desc: faker.datatype.uuid(),
-        category_uuid: otherCategory.uuid,
+        categories_uuids: [otherCategory.uuid],
         modifiers_uuids: newModifiers.map(m => m.uuid),
         weight: {
           type: ProductWeightTypeEnum.GRAMS,
@@ -323,12 +298,16 @@ describe("[Product Module] ...", () => {
           {
             ...product,
             ...dto,
+            categories: deleteObjectsPropsHelper(
+              ProductCategoryEntity.sort([otherCategory]),
+              ["updated_at", "created_at"]
+            ),
             modifiers: deleteObjectsPropsHelper(
               ModifiersService.sort(newModifiers),
               ["updated_at", "created_at"]
             ),
           },
-          ["updated_at", "created_at", "modifiers_uuids"]
+          ["updated_at", "created_at", "categories_uuids", "modifiers_uuids"]
         ),
       });
     });
@@ -343,7 +322,7 @@ describe("[Product Module] ...", () => {
         price: faker.datatype.number(),
         article_number: product.article_number,
         desc: faker.datatype.uuid(),
-        category_uuid: category.uuid,
+        categories_uuids: [category.uuid],
       };
 
       const response = await api.updateProduct(product.uuid, dto);
@@ -355,8 +334,12 @@ describe("[Product Module] ...", () => {
           {
             ...product,
             ...dto,
+            categories: deleteObjectsPropsHelper(
+              ProductCategoryEntity.sort([category]),
+              ["updated_at", "created_at"]
+            ),
           },
-          ["updated_at", "created_at"]
+          ["updated_at", "created_at", "categories_uuids", "modifiers_uuids"]
         ),
       });
     });
@@ -367,7 +350,7 @@ describe("[Product Module] ...", () => {
       const product = await createProductHelper(testingModule, category);
 
       const dto: UpdateProductDto = {
-        category_uuid: otherCategory.uuid,
+        categories_uuids: [otherCategory.uuid],
       };
 
       const updateProductResponse = await api.updateProduct(product.uuid, dto);
@@ -379,8 +362,12 @@ describe("[Product Module] ...", () => {
           {
             ...product,
             ...dto,
+            categories: deleteObjectsPropsHelper(
+              ProductCategoryEntity.sort([otherCategory]),
+              ["updated_at", "created_at"]
+            ),
           },
-          ["updated_at", "created_at"]
+          ["updated_at", "created_at", "categories_uuids", "modifiers_uuids"]
         ),
       });
     });
@@ -411,7 +398,7 @@ describe("[Product Module] ...", () => {
       const fakeCategoryUUID = faker.datatype.uuid();
 
       const dto: UpdateProductDto = {
-        category_uuid: fakeCategoryUUID,
+        categories_uuids: [fakeCategoryUUID],
         price: faker.datatype.number(),
       };
 
@@ -531,12 +518,7 @@ describe("[Product Module] ...", () => {
 
       const getProductResponse = await api.getProduct(product.uuid);
 
-      expect(getProductResponse.status).toEqual(404);
-      expect(getProductResponse.body).toEqual({
-        statusCode: 404,
-        error: "Not Found",
-        message: `The product ${product.uuid} does not exist`,
-      });
+      expect(getProductResponse.status).toEqual(200);
 
       categories = categories.filter(c => c.uuid !== category.uuid);
     });

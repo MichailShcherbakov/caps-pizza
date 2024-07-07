@@ -22,7 +22,7 @@ export const createProduct = (options: Partial<IProduct> = {}): IProduct => {
       value: faker.datatype.number(),
     },
     tags: ["test product"],
-    category_uuid: faker.datatype.uuid(),
+    categories: [],
     modifiers: [],
     ...options,
   };
