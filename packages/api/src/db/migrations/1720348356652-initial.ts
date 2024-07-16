@@ -17,13 +17,13 @@ export class initial1720348356652 implements MigrationInterface {
       `CREATE TABLE "product_categories" ("uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "image_url" character varying, "display" boolean NOT NULL, "display_position" integer, "parent_uuid" uuid, CONSTRAINT "UQ_a75bfadcd8291a0538ab7abfdcf" UNIQUE ("name"), CONSTRAINT "PK_9da897b4b067fca0ceb55f33244" PRIMARY KEY ("uuid"))`
     );
     await queryRunner.query(
-      `CREATE TABLE "products" ("uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "desc" character varying, "article_number" integer NOT NULL, "image_url" character varying NOT NULL, "price" real NOT NULL, "weight" jsonb, "volume" jsonb, CONSTRAINT "UQ_e5c2185abb85fad82c0b42ee76a" UNIQUE ("article_number"), CONSTRAINT "PK_98086f14e190574534d5129cd7c" PRIMARY KEY ("uuid"))`
-    );
-    await queryRunner.query(
-      `CREATE TABLE "discounts" ("uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "type" character varying NOT NULL, "value" real NOT NULL, CONSTRAINT "UQ_3c74d020d5ba37d5a01274010c0" UNIQUE ("name"), CONSTRAINT "PK_37a6d68689398082aa3698d7bd4" PRIMARY KEY ("uuid"))`
+      `CREATE TABLE "products" ("uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "desc" character varying, "article_number" integer NOT NULL, "image_url" character varying NOT NULL, "price" real NOT NULL, "weight" jsonb, "volume" jsonb, "display" boolean NOT NULL, CONSTRAINT "UQ_e5c2185abb85fad82c0b42ee76a" UNIQUE ("article_number"), CONSTRAINT "PK_98086f14e190574534d5129cd7c" PRIMARY KEY ("uuid"))`
     );
     await queryRunner.query(
       `CREATE TABLE "discount_strategies" ("uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "discount_uuid" uuid NOT NULL, "condition" jsonb NOT NULL, CONSTRAINT "PK_f2efee98b216791d57c3a8d0844" PRIMARY KEY ("uuid"))`
+    );
+    await queryRunner.query(
+      `CREATE TABLE "discounts" ("uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "type" character varying NOT NULL, "value" real NOT NULL, CONSTRAINT "UQ_3c74d020d5ba37d5a01274010c0" UNIQUE ("name"), CONSTRAINT "PK_37a6d68689398082aa3698d7bd4" PRIMARY KEY ("uuid"))`
     );
     await queryRunner.query(
       `CREATE TABLE "payments" ("uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying NOT NULL, "code" integer NOT NULL, CONSTRAINT "UQ_0709f8e16a95417c3b805e8581e" UNIQUE ("name"), CONSTRAINT "UQ_2b3c754ea3bf83cab000b8ed3d4" UNIQUE ("code"), CONSTRAINT "PK_2c540326a039a91fa7e942caed7" PRIMARY KEY ("uuid"))`
@@ -204,8 +204,8 @@ export class initial1720348356652 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "shopping_cart_settings"`);
     await queryRunner.query(`DROP TABLE "promotions"`);
     await queryRunner.query(`DROP TABLE "payments"`);
-    await queryRunner.query(`DROP TABLE "discount_strategies"`);
     await queryRunner.query(`DROP TABLE "discounts"`);
+    await queryRunner.query(`DROP TABLE "discount_strategies"`);
     await queryRunner.query(`DROP TABLE "products"`);
     await queryRunner.query(`DROP TABLE "product_categories"`);
     await queryRunner.query(`DROP TABLE "modifiers"`);

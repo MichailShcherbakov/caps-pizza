@@ -28,7 +28,7 @@ export function createProductHelper(
 ): Promise<ProductEntity> {
   const seeder = new ProductsSeeder(testingModule.queryRunner);
   return seeder
-    .create({ categories: [category], })
+    .create({ categories: [category] })
     .then(
       product =>
         deleteObjectPropsHelper(product, [

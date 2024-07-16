@@ -33,8 +33,8 @@ export class Product implements IProduct {
   image_url: string;
   weight?: ProductWeight;
   volume?: ProductVolume;
-  tags?: string[];
   price: number;
+  display: boolean;
   categories: ProductCategory[];
   modifiers: Modifier[];
 }
@@ -66,7 +66,10 @@ export const ProductAPI = API.injectEndpoints({
     updateProduct: builder.mutation<
       APIData<Product>,
       APIPayload<
-        Omit<Product, "category" | "categories" | "modifiers"> & { categories_uuids: string[], modifiers_uuids: string[] }
+        Omit<Product, "category" | "categories" | "modifiers"> & {
+          categories_uuids: string[];
+          modifiers_uuids: string[];
+        }
       >
     >({
       query: body => ({

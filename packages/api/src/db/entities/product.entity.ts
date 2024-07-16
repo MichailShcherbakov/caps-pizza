@@ -55,6 +55,9 @@ export class ProductEntity extends IEntity implements IProduct {
   @Column({ type: "jsonb", nullable: true })
   volume?: ProductVolume;
 
+  @Column()
+  display: boolean;
+
   @ManyToMany(() => ProductCategoryEntity)
   @JoinTable({
     name: "products_categories",

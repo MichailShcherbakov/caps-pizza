@@ -79,7 +79,7 @@ export const CreateProductModal: React.FC<CreateProductModalProps> = ({
                   image_url: uploadedImage.url,
                   volume: value.volume,
                   weight: value.weight,
-                  tags: value.tags,
+                  display: value.display,
                   price: value.price,
                   categories_uuids: value.categories.map(c => c.uuid),
                   modifiers_uuids: value.modifiers.map(m => m.uuid),

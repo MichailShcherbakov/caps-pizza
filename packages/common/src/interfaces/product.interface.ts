@@ -28,6 +28,7 @@ export interface IProduct extends IEntity {
   article_number: number;
   image_url: string;
   price: number;
+  display: boolean;
   weight?: IProductWeight;
   volume?: IProductVolume;
   categories: IProductCategory[];

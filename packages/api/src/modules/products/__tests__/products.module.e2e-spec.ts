@@ -62,10 +62,13 @@ describe("[Product Module] ...", () => {
       expect(getProductsResponse.status).toEqual(200);
       expect(getProductsResponse.body).toEqual({
         statusCode: 200,
-        data: deleteObjectsPropsHelper(ProductsService.sort(products), [
-          "updated_at",
-          "created_at",
-        ]),
+        data: deleteObjectsPropsHelper(
+          ProductsService.sort(products).map(p => ({
+            ...p,
+            categories: deleteObjectsPropsHelper(p.categories, ["parent"]),
+          })),
+          ["updated_at", "created_at"]
+        ),
       });
     });
 
@@ -77,7 +80,15 @@ describe("[Product Module] ...", () => {
       expect(getProductResponse.status).toEqual(200);
       expect(getProductResponse.body).toEqual({
         statusCode: 200,
-        data: deleteObjectPropsHelper(product, ["updated_at", "created_at"]),
+        data: deleteObjectPropsHelper(
+          {
+            ...product,
+            categories: deleteObjectsPropsHelper(product.categories, [
+              "parent",
+            ]),
+          },
+          ["updated_at", "created_at"]
+        ),
       });
     });
 
@@ -98,7 +109,7 @@ describe("[Product Module] ...", () => {
   describe("[Post] /products", () => {
     it("should successfully create a product", async () => {
       const category = categories[5];
-      const choisedModifiers = [modifiers[2], modifiers[6]];
+      const chosenModifiers = [modifiers[2], modifiers[6]];
 
       const dto: CreateProductDto = {
         name: faker.datatype.uuid(),
@@ -107,7 +118,8 @@ describe("[Product Module] ...", () => {
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
         categories_uuids: [category.uuid],
-        modifiers_uuids: choisedModifiers.map(m => m.uuid),
+        modifiers_uuids: chosenModifiers.map(m => m.uuid),
+        display: false,
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 4,
@@ -130,7 +142,7 @@ describe("[Product Module] ...", () => {
             ["updated_at", "created_at"]
           ),
           modifiers: deleteObjectsPropsHelper(
-            ModifiersService.sort(choisedModifiers),
+            ModifiersService.sort(chosenModifiers),
             ["updated_at", "created_at"]
           ),
           ...deleteObjectPropsHelper(dto, [
@@ -147,6 +159,7 @@ describe("[Product Module] ...", () => {
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        display: false,
         categories_uuids: [faker.datatype.uuid()],
         modifiers_uuids: [],
       };
@@ -170,6 +183,7 @@ describe("[Product Module] ...", () => {
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        display: true,
         categories_uuids: [category.uuid],
         modifiers_uuids: [modifierFakerUUID],
       };
@@ -200,6 +214,7 @@ describe("[Product Module] ...", () => {
         article_number: faker.datatype.number(),
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        display: true,
         categories_uuids: [category.uuid],
         modifiers_uuids,
       };
@@ -227,6 +242,7 @@ describe("[Product Module] ...", () => {
         article_number: otherProduct.article_number,
         image_url: faker.image.imageUrl(),
         price: faker.datatype.number(),
+        display: true,
         categories_uuids: [category.uuid],
         modifiers_uuids: [],
       };
@@ -251,6 +267,7 @@ describe("[Product Module] ...", () => {
         image_url: faker.image.imageUrl(),
         categories_uuids: [category.uuid],
         price: faker.datatype.number(),
+        display: true,
         modifiers_uuids: [],
       };
 
@@ -280,6 +297,7 @@ describe("[Product Module] ...", () => {
         desc: faker.datatype.uuid(),
         categories_uuids: [otherCategory.uuid],
         modifiers_uuids: newModifiers.map(m => m.uuid),
+        display: false,
         weight: {
           type: ProductWeightTypeEnum.GRAMS,
           value: 250,
@@ -323,6 +341,7 @@ describe("[Product Module] ...", () => {
         price: faker.datatype.number(),
         article_number: product.article_number,
         desc: faker.datatype.uuid(),
+        display: false,
         categories_uuids: [category.uuid],
       };
 

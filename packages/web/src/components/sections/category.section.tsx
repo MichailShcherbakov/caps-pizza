@@ -21,8 +21,10 @@ export const CategorySection: React.FC<CategorySectionProps> = React.memo(
 
     const categoryProducts = React.useMemo(
       () =>
-        products.filter(product =>
-          product.categories.find(c => c.uuid === category.uuid)
+        products.filter(
+          product =>
+            product.categories.find(c => c.uuid === category.uuid) &&
+            product.display
         ),
       [products, category.uuid]
     );

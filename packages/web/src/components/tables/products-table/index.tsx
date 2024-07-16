@@ -47,7 +47,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
             },
             {
               name: "category",
-              value: product.categories.map((c) => c.name).join(', '),
+              value: product.categories.map(c => c.name).join(", "),
             },
             {
               name: "controls",
@@ -64,12 +64,6 @@ export const ProductsTable: React.FC<ProductsTableProps> = () => {
               value: product.weight
                 ? `${product.weight.value} ${locale[product.weight.type]}`
                 : "Не указано",
-            },
-            {
-              name: "tags",
-              value: product.tags?.length
-                ? product.tags.join("; ")
-                : "Не указаны",
             },
           ],
           collapsedRowSpace: () =>

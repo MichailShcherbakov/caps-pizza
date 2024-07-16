@@ -95,6 +95,7 @@ export default class ProductsService {
     e.price = dto.price;
     e.volume = dto.volume;
     e.weight = dto.weight;
+    e.display = dto.display ?? true;
     e.categories = ProductCategoriesService.sort(foundCategories);
     e.modifiers = ModifiersService.sort(foundModifiers);
 
@@ -170,6 +171,7 @@ export default class ProductsService {
     foundProduct.volume = dto.volume ?? foundProduct.volume;
     foundProduct.weight = dto.weight ?? foundProduct.weight;
     foundProduct.price = dto.price ?? foundProduct.price;
+    foundProduct.display = dto.display ?? foundProduct.display;
 
     return this.productsRepository.save(foundProduct);
   }

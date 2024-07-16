@@ -19,7 +19,6 @@ export * from "./data-table/skeleton-row";
 export * from "./buttons/options-button";
 export * from "./text-field";
 export * from "./text-field/with-select";
-export * from "./text-field/tags";
 export * from "./loading-backdrop";
 export * from "./buttons/options-button";
 export * from "./buttons/toggle-button";

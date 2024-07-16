@@ -1127,6 +1127,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 184146,
         image_url: "/images/sladkiy-roll-shokoladnofruktovyy.jpg",
         price: 410,
+        display: false,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,

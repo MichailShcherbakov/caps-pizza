@@ -7,7 +7,6 @@ import {
 export * from "./masked";
 export * from "./memo";
 export * from "./number";
-export * from "./tags";
 export * from "./with-select";
 
 export type TextFieldProps = MUITextFieldProps;

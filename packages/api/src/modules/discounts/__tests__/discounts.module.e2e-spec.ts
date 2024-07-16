@@ -1,4 +1,4 @@
-import orderBy from "lodash/orderBy";
+import { omit, orderBy } from "lodash";
 import { faker } from "@faker-js/faker";
 import {
   DiscountCriteriaEnum,
@@ -154,7 +154,7 @@ describe("[Discounts Module] ...", () => {
       const chosenProductCategories = orderBy(
         [productCategories[2], productCategories[1], productCategories[6]],
         ["name", "asc"]
-      );
+      ).map(c => omit(c, ["parent"]));
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -619,8 +619,10 @@ describe("[Discounts Module] ...", () => {
   describe("[Put] /discounts", () => {
     it(`should successfully update a discount`, async () => {
       const discount = await createDiscountHelper(testingModule);
-      const choisedProductCategories = [productCategories[2]];
-      const choisedModifiers = [modifiers[3]];
+      const chosenProductCategories = [productCategories[2]].map(c =>
+        omit(c, ["parent"])
+      );
+      const chosenModifiers = [modifiers[3]];
 
       const dto: UpdateDiscountDto = {
         name: faker.datatype.uuid(),
@@ -634,8 +636,8 @@ describe("[Discounts Module] ...", () => {
               value: 3,
             },
             products_uuids: [],
-            product_categories_uuids: choisedProductCategories.map(c => c.uuid),
-            modifiers_uuids: choisedModifiers.map(m => m.uuid),
+            product_categories_uuids: chosenProductCategories.map(c => c.uuid),
+            modifiers_uuids: chosenModifiers.map(m => m.uuid),
           },
         ],
       };
@@ -658,8 +660,8 @@ describe("[Discounts Module] ...", () => {
                 uuid: updateDiscountResponse.body.data.strategies[idx].uuid,
                 discount_uuid: updateDiscountResponse.body.data.uuid,
                 products: [],
-                product_categories: choisedProductCategories,
-                modifiers: deleteObjectsPropsHelper(choisedModifiers, [
+                product_categories: chosenProductCategories,
+                modifiers: deleteObjectsPropsHelper(chosenModifiers, [
                   "category",
                 ]),
               },

@@ -15,6 +15,7 @@ export class ProductsFactory extends IFactory<ProductEntity> {
     e.price = options.price ?? faker.datatype.number({ max: 1000, min: 150 });
     e.volume = options.volume;
     e.weight = options.weight;
+    e.display = options.display ?? true;
     e.categories = options.categories ?? [];
     e.modifiers = options.modifiers ?? [];
     return e;

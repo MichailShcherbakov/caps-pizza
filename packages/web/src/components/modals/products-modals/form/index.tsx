@@ -18,8 +18,8 @@ import {
   ModalControl,
   ModalFooter,
   ModalHeader,
-  TagsTextField,
   ImageUploader,
+  CheckboxWithLabel,
 } from "~/ui";
 import VolumeTextField from "./components/volume-text-field";
 import WeightTextField from "./components/weight-text-field";
@@ -54,13 +54,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       image: undefined,
       imageURL: product?.image_url ?? "",
       price: product?.price.toString() ?? "",
+      display: product?.display ?? true,
       categories: product?.categories ?? [],
       modifiers: product?.modifiers ?? [],
       volume: product?.volume?.value.toString() ?? "",
       volumeType: product?.volume?.type ?? ProductVolumeTypeEnum.QUANTITY,
       weight: product?.weight?.value.toString() ?? "",
       weightType: product?.weight?.type ?? ProductWeightTypeEnum.GRAMS,
-      tags: product?.tags ?? [],
     },
     validationSchema,
     onSubmit: value => {
@@ -72,6 +72,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           image: value.image,
           image_url: value.imageURL,
           price: Number.parseFloat(value.price),
+          display: value.display,
           categories: value.categories,
           modifiers: value.modifiers,
           weight: value.weight
@@ -86,7 +87,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 value: Number.parseInt(value.volume),
               }
             : undefined,
-          tags: value.tags,
         });
     },
   });
@@ -104,12 +104,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     ({ image, imageURL }: { image: File; imageURL: string }) => {
       setFieldValue("image", image);
       setFieldValue("imageURL", imageURL);
-    },
-    [setFieldValue]
-  );
-  const onTagsChange = React.useCallback(
-    (tags: string[]) => {
-      setFieldValue("tags", tags);
     },
     [setFieldValue]
   );
@@ -180,14 +174,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               onChange={formik.handleChange}
             />
           </Stack>
-          <TagsTextField
-            id="tags"
-            name="tags"
-            tags={formik.values.tags}
-            touched={formik.touched.tags}
-            errors={formik.errors.tags}
-            onChange={onTagsChange}
-          />
           <Stack direction="row" alignItems="center" spacing={2}>
             <MemoTextField
               fullWidth
@@ -227,6 +213,15 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             productCategories={productCategories}
             value={formik.values.categories}
             onChange={onCategoriesChange}
+          />
+          <CheckboxWithLabel
+            id="display"
+            name="display"
+            checked={formik.values.display}
+            onChange={formik.handleChange}
+            color="secondary"
+            size="small"
+            label="Отображать"
           />
         </Stack>
         {modifiers.length ? (

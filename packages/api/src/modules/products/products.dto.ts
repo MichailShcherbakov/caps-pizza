@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import {
   IsArray,
+  IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -43,6 +44,10 @@ export class CreateProductDto {
   @Min(0)
   @IsNotEmpty()
   price: number;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  display: boolean;
 
   @IsArray()
   @IsUUID(undefined, { each: true })
@@ -91,6 +96,10 @@ export class UpdateProductDto {
   @IsNotEmpty()
   @IsOptional()
   price?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  display?: boolean;
 
   @IsArray()
   @IsUUID(undefined, { each: true })
