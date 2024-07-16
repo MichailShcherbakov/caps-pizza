@@ -1,4 +1,4 @@
-import { orderBy } from "lodash";
+import orderBy from "lodash/orderBy";
 import { faker } from "@faker-js/faker";
 import {
   DiscountCriteriaEnum,
@@ -99,11 +99,10 @@ describe("[Discounts Module] ...", () => {
 
   describe("[Post] /discounts", () => {
     it("should successfully create a discount with products", async () => {
-      const chosenProducts = orderBy([
-        products[2],
-        products[1],
-        products[6],
-      ], ['name', 'asc']);
+      const chosenProducts = orderBy(
+        [products[2], products[1], products[6]],
+        ["name", "asc"]
+      );
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -152,11 +151,10 @@ describe("[Discounts Module] ...", () => {
     });
 
     it("should successfully create a discount with product categories", async () => {
-      const chosenProductCategories = orderBy([
-        productCategories[2],
-        productCategories[1],
-        productCategories[6],
-      ], ['name', 'asc']);
+      const chosenProductCategories = orderBy(
+        [productCategories[2], productCategories[1], productCategories[6]],
+        ["name", "asc"]
+      );
 
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
@@ -202,12 +200,12 @@ describe("[Discounts Module] ...", () => {
     });
 
     it("should successfully create a discount with modifiers", async () => {
-      const chosenModifiers = orderBy([
-        modifiers[2],
-        modifiers[1],
-        modifiers[6],
-      ], ['name'], ['asc']);
-      
+      const chosenModifiers = orderBy(
+        [modifiers[2], modifiers[1], modifiers[6]],
+        ["name"],
+        ["asc"]
+      );
+
       const dto: CreateDiscountDto = {
         name: faker.word.adjective(),
         type: DiscountTypeEnum.IN_CASH,

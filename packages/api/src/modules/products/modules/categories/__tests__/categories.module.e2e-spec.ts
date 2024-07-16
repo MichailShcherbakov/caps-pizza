@@ -104,6 +104,33 @@ describe("[Product Categories Module] ... ", () => {
       });
     });
 
+    it("should successfully create a child product category", async () => {
+      const parentProductCategory = await createProductCategoryHelper(
+        testingModule
+      );
+
+      const dto: CreateProductCategoryDto = {
+        name: faker.commerce.productName(),
+        image_url: faker.image.imageUrl(),
+        display: true,
+        display_position: faker.datatype.number(),
+        parent_uuid: parentProductCategory.uuid,
+      };
+
+      const createProductCategoryResponse = await api.createProductCategory(
+        dto
+      );
+
+      expect(createProductCategoryResponse.statusCode).toEqual(201);
+      expect(createProductCategoryResponse.body).toEqual({
+        statusCode: 201,
+        data: {
+          ...createProductCategoryResponse.body.data,
+          ...dto,
+        },
+      });
+    });
+
     it("should throw an error when creating a product category without image_url", async () => {
       const dto: Partial<CreateProductCategoryDto> = {
         name: faker.commerce.productName(),
@@ -160,7 +187,10 @@ describe("[Product Categories Module] ... ", () => {
       expect(createProductCategoryResponse.body).toEqual({
         statusCode: 400,
         error: "Bad Request",
-        message: ["display should not be empty", "display must be a boolean value"],
+        message: [
+          "display should not be empty",
+          "display must be a boolean value",
+        ],
       });
     });
 

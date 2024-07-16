@@ -10,7 +10,7 @@ import {
 } from "class-validator";
 import {
   DeliveryTypeEnum,
-  DeliveryСondition,
+  DeliveryCondition,
 } from "~/db/entities/delivery.entity";
 
 export class CreateDeliveryDto {
@@ -27,9 +27,9 @@ export class CreateDeliveryDto {
   @IsNotEmpty()
   type: DeliveryTypeEnum;
 
-  @Type(() => DeliveryСondition)
+  @Type(() => DeliveryCondition)
   @ValidateNested()
-  condition: DeliveryСondition;
+  condition: DeliveryCondition;
 
   @IsNumber()
   @Min(0)
@@ -54,10 +54,10 @@ export class UpdateDeliveryDto {
   @IsOptional()
   type?: DeliveryTypeEnum;
 
-  @Type(() => DeliveryСondition)
+  @Type(() => DeliveryCondition)
   @ValidateNested()
   @IsOptional()
-  condition?: DeliveryСondition;
+  condition?: DeliveryCondition;
 
   @IsNumber()
   @Min(0)

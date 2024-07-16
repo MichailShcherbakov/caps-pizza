@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { IProductWithFullPrice } from "~/../../common/dist";
+import { IProductWithFullPrice } from "@monorepo/common";
 
 export default function createProductHelper(
   options: Omit<

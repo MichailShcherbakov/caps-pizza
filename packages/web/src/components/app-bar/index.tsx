@@ -10,7 +10,7 @@ import Logo from "./components/logo";
 import dynamic from "next/dynamic";
 import { Container } from "@mui/system";
 import { useStyle } from "./index.style";
-import { useDisplayProductCategories } from "~/hooks/user-display-product-categories";
+import { useDisplayProductCategories } from "~/hooks/use-display-product-categories";
 
 const ShoppingCartButton = dynamic(() => import("../shopping-cart-button"), {
   ssr: false,

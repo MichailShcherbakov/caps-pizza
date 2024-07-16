@@ -1,5 +1,5 @@
 import { Column, Entity } from "typeorm";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 
 @Entity("shopping_cart_settings")
 export class ShoppingCartSettingsEntity extends IEntity {

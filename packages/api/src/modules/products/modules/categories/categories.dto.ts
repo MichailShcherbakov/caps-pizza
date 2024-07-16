@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
   Min,
 } from "class-validator";
 
@@ -25,6 +26,11 @@ export class CreateProductCategoryDto {
   @Min(1)
   @IsOptional()
   display_position?: number;
+
+  @IsUUID()
+  @IsString()
+  @IsOptional()
+  parent_uuid?: string;
 }
 
 export class UpdateProductCategoryDto {
@@ -41,10 +47,15 @@ export class UpdateProductCategoryDto {
   @IsBoolean()
   @IsNotEmpty()
   display: boolean;
-  
+
   @IsNumber()
   @IsNotEmpty()
   @Min(1)
   @IsOptional()
   display_position?: number;
+
+  @IsUUID()
+  @IsString()
+  @IsOptional()
+  parent_uuid?: string;
 }

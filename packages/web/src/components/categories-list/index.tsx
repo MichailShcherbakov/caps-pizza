@@ -4,6 +4,7 @@ import { ProductCategory } from "~/services/product-categories.service";
 import { useCurrentSection } from "~/helpers/section-provider";
 import { useStyle } from "./index.style";
 import { Stack } from "@mui/material";
+import orderBy from "lodash/orderBy";
 
 export interface CategoriesProps
   extends React.HTMLAttributes<HTMLUListElement> {
@@ -30,7 +31,11 @@ export const CategoriesList: React.FC<CategoriesProps> = React.forwardRef<
       className={cx(classes.root, className)}
       spacing={2}
     >
-      {categories.map(category => (
+      {orderBy(
+        categories.filter(category => !category.parent_uuid),
+        ["display_position", "name"],
+        ["asc", "asc"]
+      ).map(category => (
         <CategoryCard
           {...CategoryCardProps}
           key={category.uuid}

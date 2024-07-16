@@ -8,9 +8,11 @@ import transformResponse, {
 export class ProductCategory implements IProductCategory {
   uuid: string;
   name: string;
-  image_url: string;
+  image_url?: string | null;
   display: boolean;
   display_position?: number;
+  parent_uuid?: string | null;
+  parent?: IProductCategory | null;
 }
 
 export const ProductCategoryAPI = API.injectEndpoints({

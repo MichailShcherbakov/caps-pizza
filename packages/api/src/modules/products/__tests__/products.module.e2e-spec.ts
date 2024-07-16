@@ -116,7 +116,6 @@ describe("[Product Module] ...", () => {
           type: ProductWeightTypeEnum.GRAMS,
           value: 200,
         },
-        tags: ["first:1", "second:2"],
       };
 
       const createProductResponse = await api.createProduct(dto);
@@ -134,7 +133,10 @@ describe("[Product Module] ...", () => {
             ModifiersService.sort(choisedModifiers),
             ["updated_at", "created_at"]
           ),
-          ...deleteObjectPropsHelper(dto, ["categories_uuids", "modifiers_uuids"]),
+          ...deleteObjectPropsHelper(dto, [
+            "categories_uuids",
+            "modifiers_uuids",
+          ]),
         },
       });
     });
@@ -286,7 +288,6 @@ describe("[Product Module] ...", () => {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 2,
         },
-        tags: ["first:1", "second:2"],
       };
 
       const response = await api.updateProduct(product.uuid, dto);

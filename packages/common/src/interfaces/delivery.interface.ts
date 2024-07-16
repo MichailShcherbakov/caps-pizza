@@ -17,7 +17,7 @@ export enum DeliveryOperatorEnum {
   BETWEEN = "BETWEEN",
 }
 
-export interface IDeliveryСondition {
+export interface IDeliveryCondition {
   criteria: DeliveryCriteriaEnum;
   op: DeliveryOperatorEnum;
   value: number;
@@ -28,7 +28,7 @@ export interface IDelivery extends IEntity {
   name: string;
   article_number: number;
   type: DeliveryTypeEnum;
-  condition: IDeliveryСondition;
+  condition: IDeliveryCondition;
   value: number;
 }
 export default IDelivery;

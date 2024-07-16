@@ -1,17 +1,17 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, Min } from "class-validator";
 import { Column, Entity } from "typeorm";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 import {
   IDelivery,
   DeliveryCriteriaEnum,
   DeliveryOperatorEnum,
   DeliveryTypeEnum,
-  IDeliveryСondition,
+  IDeliveryCondition,
 } from "@monorepo/common";
 
 export { DeliveryCriteriaEnum, DeliveryOperatorEnum, DeliveryTypeEnum };
 
-export class DeliveryСondition implements IDeliveryСondition {
+export class DeliveryCondition implements IDeliveryCondition {
   @IsEnum(DeliveryCriteriaEnum)
   @IsNotEmpty()
   criteria: DeliveryCriteriaEnum;
@@ -44,7 +44,7 @@ export default class DeliveryEntity extends IEntity implements IDelivery {
   type: DeliveryTypeEnum;
 
   @Column({ type: "jsonb" })
-  condition: DeliveryСondition;
+  condition: DeliveryCondition;
 
   @Column({ type: "float4" })
   value: number;

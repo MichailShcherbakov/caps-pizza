@@ -4,9 +4,7 @@ import ISeeder, { IFactory } from "~/utils/seeder.interface";
 import ProductEntity from "../entities/product.entity";
 
 export class ProductsFactory extends IFactory<ProductEntity> {
-  create(
-    options: Partial<ProductEntity> = {}
-  ): ProductEntity {
+  create(options: Partial<ProductEntity> = {}): ProductEntity {
     const e = new ProductEntity();
     e.name = options.name ?? faker.commerce.productName();
     e.desc = options.desc;
@@ -17,7 +15,6 @@ export class ProductsFactory extends IFactory<ProductEntity> {
     e.price = options.price ?? faker.datatype.number({ max: 1000, min: 150 });
     e.volume = options.volume;
     e.weight = options.weight;
-    e.tags = options.tags ?? ["first:2", "second:4"];
     e.categories = options.categories ?? [];
     e.modifiers = options.modifiers ?? [];
     return e;

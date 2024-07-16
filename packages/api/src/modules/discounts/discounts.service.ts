@@ -46,8 +46,8 @@ export default class DiscountsService {
             },
             modifiers: {
               name: "ASC",
-            }
-          }
+            },
+          },
         },
         relations: {
           strategies: {
@@ -75,8 +75,8 @@ export default class DiscountsService {
           },
           modifiers: {
             name: "ASC",
-          }
-        }
+          },
+        },
       },
       relations: {
         strategies: {

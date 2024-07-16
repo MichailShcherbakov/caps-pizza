@@ -22,7 +22,7 @@ import {
   getSettings,
   useGetSettingsQuery,
 } from "~/services/shopping-cart-settings.service";
-import { useDisplayProductCategories } from "~/hooks/user-display-product-categories";
+import { useDisplayProductCategories } from "~/hooks/use-display-product-categories";
 
 export interface SectionContainerProps {
   categories: ProductCategory[];
@@ -61,8 +61,15 @@ export const HomePage: AppPage = () => {
         />
       </Stack>
       <PromotionSlider />
-      {displayProductCategories.map(category => (
-        <CategorySection key={category.uuid} category={category} />
+      {displayProductCategories.map((category, idx) => (
+        <CategorySection
+          key={category.uuid}
+          category={category}
+          head={
+            !!category.parent_uuid &&
+            category.parent_uuid !== category[idx - 1]?.parent_uuid
+          }
+        />
       ))}
       <ArticleSection id="О нас" title="Что мы предлагаем?" collapse>
         Если хочется вкусного ужина (приготовленного не вами) или вдруг к вам

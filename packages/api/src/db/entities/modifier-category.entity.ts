@@ -4,7 +4,7 @@ import {
   ModifierCategoryChoiceOptionEnum,
   ModifierCategoryDisplayVariantEnum,
 } from "@monorepo/common";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 
 @Entity("modifier_categories")
 export default class ModifierCategoryEntity

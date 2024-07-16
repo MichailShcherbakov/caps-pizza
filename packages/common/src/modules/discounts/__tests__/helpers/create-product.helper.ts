@@ -21,7 +21,6 @@ export const createProduct = (options: Partial<IProduct> = {}): IProduct => {
       type: ProductVolumeTypeEnum.QUANTITY,
       value: faker.datatype.number(),
     },
-    tags: ["test product"],
     categories: [],
     modifiers: [],
     ...options,

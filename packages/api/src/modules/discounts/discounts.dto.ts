@@ -10,13 +10,13 @@ import {
   Min,
   ValidateNested,
 } from "class-validator";
-import { DiscountСondition } from "~/db/entities/discount-strategy.entity";
+import { DiscountCondition } from "~/db/entities/discount-strategy.entity";
 import { DiscountTypeEnum } from "~/db/entities/discount.entity";
 
 export class DiscountStrategyDto {
-  @Type(() => DiscountСondition)
+  @Type(() => DiscountCondition)
   @ValidateNested()
-  condition: DiscountСondition;
+  condition: DiscountCondition;
 
   @IsArray()
   @IsUUID("all", { each: true })

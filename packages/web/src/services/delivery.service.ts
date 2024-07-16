@@ -3,7 +3,7 @@ import {
   DeliveryCriteriaEnum,
   DeliveryOperatorEnum,
   DeliveryTypeEnum,
-  IDeliveryСondition,
+  IDeliveryCondition,
 } from "@monorepo/common";
 import API from "./api.service";
 import transformResponse, {
@@ -13,7 +13,7 @@ import transformResponse, {
 
 export { DeliveryCriteriaEnum, DeliveryOperatorEnum, DeliveryTypeEnum };
 
-export class DeliveryСondition implements IDeliveryСondition {
+export class DeliveryCondition implements IDeliveryCondition {
   criteria: DeliveryCriteriaEnum;
   op: DeliveryOperatorEnum;
   value: number;
@@ -25,7 +25,7 @@ export class Delivery implements IDelivery {
   name: string;
   article_number: number;
   type: DeliveryTypeEnum;
-  condition: DeliveryСondition;
+  condition: DeliveryCondition;
   value: number;
 }
 

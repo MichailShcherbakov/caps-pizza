@@ -9,7 +9,7 @@ const { publicRuntimeConfig } = getConfig();
 
 export interface CategoryCardProps extends StyleProps {
   name: string;
-  imageURL: string;
+  imageURL?: string | null;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
@@ -26,12 +26,14 @@ export const CategoryCard: React.FC<CategoryCardProps> = React.memo(
             className={classes.root}
           >
             <Stack className={classes.image}>
-              <NextImage
-                src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
-                layout="fill"
-                alt={name}
-                priority
-              />
+              {!!imageURL && (
+                <NextImage
+                  src={`${publicRuntimeConfig.IMAGES_SOURCE_URL}${imageURL}`}
+                  layout="fill"
+                  alt={name}
+                  priority
+                />
+              )}
             </Stack>
             {name}
           </Button>

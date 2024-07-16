@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 import {
   DiscountCriteriaEnum,
   DiscountOperatorEnum,

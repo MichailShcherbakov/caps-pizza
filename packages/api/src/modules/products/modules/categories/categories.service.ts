@@ -24,6 +24,7 @@ export default class ProductCategoriesService {
     return this.productCategoriesRepository
       .find({
         where: options,
+        relations: { parent: true },
       })
       .then(categories => ProductCategoriesService.sort(categories));
   }
@@ -37,15 +38,25 @@ export default class ProductCategoriesService {
   ): Promise<ProductCategoryEntity | null> {
     return this.productCategoriesRepository.findOne({
       where: options,
+      relations: { parent: true },
     });
   }
 
   async create(dto: CreateProductCategoryDto): Promise<ProductCategoryEntity> {
-    const foundExistsProductCategory = await this.findOne({ name: dto.name });
+    const [foundExistsProductCategory, foundParentProductCategory] =
+      await Promise.all([
+        this.findOne({ name: dto.name }),
+        dto.parent_uuid && this.findOne({ uuid: dto.parent_uuid }),
+      ]);
 
     if (foundExistsProductCategory)
       throw new BadRequestException(
         `The product category with ${dto.name} name already exists`
+      );
+
+    if (dto.parent_uuid && !foundParentProductCategory)
+      throw new BadRequestException(
+        `The ${dto.parent_uuid} parent product category not found`
       );
 
     const newProductCategory = new ProductCategoryEntity();
@@ -53,6 +64,8 @@ export default class ProductCategoriesService {
     newProductCategory.image_url = dto.image_url;
     newProductCategory.display = dto.display;
     newProductCategory.display_position = dto.display_position;
+    newProductCategory.parent_uuid = dto.parent_uuid;
+    newProductCategory.parent = foundParentProductCategory || undefined;
 
     return this.productCategoriesRepository.save(newProductCategory);
   }
@@ -61,13 +74,17 @@ export default class ProductCategoriesService {
     uuid: string,
     dto: UpdateProductCategoryDto
   ): Promise<ProductCategoryEntity> {
-    const [foundProductCagegory, foundExistsProductCategory] =
-      await Promise.all([
-        this.findOne({ uuid }),
-        this.findOne({ uuid: Not(uuid), name: dto.name }),
-      ]);
+    const [
+      foundProductCategory,
+      foundExistsProductCategory,
+      foundParentProductCategory,
+    ] = await Promise.all([
+      this.findOne({ uuid }),
+      this.findOne({ uuid: Not(uuid), name: dto.name }),
+      dto.parent_uuid && this.findOne({ uuid: dto.parent_uuid }),
+    ]);
 
-    if (!foundProductCagegory)
+    if (!foundProductCategory)
       throw new NotFoundException(
         `The product category ${uuid} does not exist`
       );
@@ -77,15 +94,21 @@ export default class ProductCategoriesService {
         `The product category with ${dto.name} name already exists`
       );
 
-    foundProductCagegory.name = dto.name ?? foundProductCagegory.name;
-    foundProductCagegory.image_url =
-      dto.image_url ?? foundProductCagegory.image_url;
-    foundProductCagegory.display =
-      dto.display ?? foundProductCagegory.display;
-    foundProductCagegory.display_position =
-      dto.display_position ?? foundProductCagegory.display_position;
+    if (dto.parent_uuid && !foundParentProductCategory)
+      throw new BadRequestException(
+        `The parent product category ${dto.parent_uuid} does not exist`
+      );
 
-    return this.productCategoriesRepository.save(foundProductCagegory);
+    foundProductCategory.name = dto.name ?? foundProductCategory.name;
+    foundProductCategory.image_url =
+      dto.image_url ?? foundProductCategory.image_url;
+    foundProductCategory.display = dto.display ?? foundProductCategory.display;
+    foundProductCategory.display_position =
+      dto.display_position ?? foundProductCategory.display_position;
+    foundProductCategory.parent_uuid =
+      dto.parent_uuid ?? foundProductCategory.parent_uuid;
+
+    return this.productCategoriesRepository.save(foundProductCategory);
   }
 
   async delete(uuid: string): Promise<void> {

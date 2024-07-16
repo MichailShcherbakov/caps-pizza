@@ -1,6 +1,6 @@
 import { Column, Entity } from "typeorm";
 import { IPromotion } from "@monorepo/common";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 
 @Entity("promotions")
 export default class PromotionEntity extends IEntity implements IPromotion {

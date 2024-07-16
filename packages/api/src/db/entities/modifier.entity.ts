@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { IModifier } from "@monorepo/common";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 import ModifierCategoryEntity from "./modifier-category.entity";
 
 @Entity("modifiers")

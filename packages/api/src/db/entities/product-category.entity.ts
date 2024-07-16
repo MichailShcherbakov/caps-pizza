@@ -1,6 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { IProductCategory } from "@monorepo/common";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 
 @Entity("product_categories")
 export default class ProductCategoryEntity
@@ -10,14 +10,25 @@ export default class ProductCategoryEntity
   @Column({ unique: true })
   name: string;
 
-  @Column()
-  image_url: string;
+  @Column({ nullable: true })
+  image_url?: string;
 
   @Column()
   display: boolean;
 
   @Column({ nullable: true })
   display_position?: number;
+
+  @Column({ type: "uuid", nullable: true })
+  parent_uuid?: string | null;
+
+  @ManyToOne(() => ProductCategoryEntity, { onDelete: "SET NULL" })
+  @JoinColumn({
+    name: "parent_uuid",
+    referencedColumnName: "uuid",
+    foreignKeyConstraintName: "fk_product_categories_parent_uuid",
+  })
+  parent?: ProductCategoryEntity | null;
 
   static sort(categories: ProductCategoryEntity[]) {
     return categories.sort((a, b) => ProductCategoryEntity.compare(a, b));

@@ -1,6 +1,6 @@
 import { Column, Entity } from "typeorm";
 import { IPayment } from "@monorepo/common";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 
 @Entity("payments")
 export default class PaymentEntity extends IEntity implements IPayment {

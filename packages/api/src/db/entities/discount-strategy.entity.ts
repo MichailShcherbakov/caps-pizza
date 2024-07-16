@@ -7,7 +7,7 @@ import {
   ManyToMany,
   ManyToOne,
 } from "typeorm";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 import ModifierEntity from "./modifier.entity";
 import {
   DiscountCriteriaEnum,
@@ -22,7 +22,7 @@ import DiscountEntity from "./discount.entity";
 
 export { DiscountCriteriaEnum, DiscountOperatorEnum, DiscountTypeEnum };
 
-export class DiscountСondition implements IDiscountCondition {
+export class DiscountCondition implements IDiscountCondition {
   @IsEnum(DiscountCriteriaEnum)
   @IsNotEmpty()
   criteria: DiscountCriteriaEnum;
@@ -62,7 +62,7 @@ export default class DiscountStrategyEntity
   discount?: DiscountEntity;
 
   @Column({ type: "jsonb" })
-  condition: DiscountСondition;
+  condition: DiscountCondition;
 
   @ManyToMany(() => ProductEntity, { onDelete: "CASCADE" })
   @JoinTable({

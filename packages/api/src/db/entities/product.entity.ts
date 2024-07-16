@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import ProductCategoryEntity from "./product-category.entity";
-import IEntity from "./entity.inteface";
+import IEntity from "./entity.interface";
 import ModifierEntity from "./modifier.entity";
 import { IsEnum, IsNotEmpty, IsNumber } from "class-validator";
 import {
@@ -54,9 +54,6 @@ export class ProductEntity extends IEntity implements IProduct {
 
   @Column({ type: "jsonb", nullable: true })
   volume?: ProductVolume;
-
-  @Column({ type: "jsonb", nullable: true })
-  tags?: string[];
 
   @ManyToMany(() => ProductCategoryEntity)
   @JoinTable({

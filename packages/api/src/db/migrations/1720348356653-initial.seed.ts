@@ -47,7 +47,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
 
     await shoppingCartSettings.create({
       minimum_order_amount: 1000,
-    })
+    });
 
     await users.create({
       name: "admin",
@@ -272,6 +272,34 @@ export class initialSeed1720348356653 implements MigrationInterface {
         },
       ]);
 
+    const [classicRolls, bakedRolls, tempuraRolls, addition] =
+      await productCategories.createManyFrom([
+        {
+          name: "Роллы классические",
+          display: true,
+          display_position: 1,
+          parent: rolls,
+        },
+        {
+          name: "Роллы запеченные",
+          display: true,
+          display_position: 2,
+          parent: rolls,
+        },
+        {
+          name: "Роллы в темпуре",
+          display: true,
+          display_position: 3,
+          parent: rolls,
+        },
+        {
+          name: "Дополнительно",
+          display: true,
+          display_position: 4,
+          parent: rolls,
+        },
+      ]);
+
     await discountStrategies.create({
       discount_uuid: pizzasByFixedPrice.uuid,
       condition: {
@@ -299,7 +327,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 420,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -317,7 +344,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 470,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -335,7 +361,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 470,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -353,7 +378,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 535,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -371,7 +395,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 520,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -389,7 +412,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 510,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -407,7 +429,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 470,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -425,7 +446,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 470,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -443,7 +463,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 530,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -461,7 +480,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 520,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -479,7 +497,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 740,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -497,7 +514,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 530,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -515,7 +531,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 540,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -529,7 +544,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductVolumeTypeEnum.DIAMETER,
           value: 30,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -543,7 +557,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductVolumeTypeEnum.DIAMETER,
           value: 30,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -561,7 +574,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 635,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -579,7 +591,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 715,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -597,7 +608,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 540,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -615,7 +625,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 630,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -633,7 +642,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 650,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -651,7 +659,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 440,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -669,7 +676,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 520,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -687,7 +693,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 470,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -705,7 +710,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 740,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -723,7 +727,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 510,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -741,7 +744,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 600,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -759,7 +761,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 600,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       {
@@ -777,7 +778,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 540,
         },
-        tags: [],
         modifiers: [traditionalDough, withoutAdds],
       },
       // COMBO
@@ -788,7 +788,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
         image_url: "/images/nabor-1.jpg",
         price: 1200,
         categories: [combo],
-        tags: [],
         modifiers: [weekdayCombo],
       },
       // ROLLS
@@ -798,7 +797,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150111,
         image_url: "/images/creamy.jpg",
         price: 440,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -807,14 +806,13 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 240,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл мини угорь",
         article_number: 145372,
         image_url: "/images/m-acne.jpg",
         price: 310,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 6,
@@ -823,14 +821,13 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 105,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл острый мини лосось",
         article_number: 145373,
         image_url: "/images/o-m-salmon.jpg",
         price: 310,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 6,
@@ -839,14 +836,13 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 100,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл мини с Лососем",
         article_number: 150101,
         image_url: "/images/r-salmon.jpg",
         price: 310,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 6,
@@ -855,14 +851,13 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 100,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл с огурцом",
         article_number: 150102,
         image_url: "/images/cucumber.jpg",
         price: 190,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 6,
@@ -871,14 +866,13 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 100,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл острый мини угорь",
         article_number: 150106,
         image_url: "/images/o-m-acne.jpg",
         price: 310,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 6,
@@ -887,14 +881,13 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 110,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Мини ролл с креветкой",
         article_number: 184143,
         image_url: "/images/mini-roll-s-krevetkoy.jpg",
         price: 310,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 6,
@@ -903,7 +896,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 110,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Чикен спайси",
@@ -911,7 +903,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150107,
         image_url: "/images/spicy-chicken.jpg",
         price: 410,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -920,7 +912,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 269,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Калифорния с лососем",
@@ -928,7 +919,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150112,
         image_url: "/images/california-salmon.png",
         price: 450,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -937,7 +928,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 229,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Калифорния со снежным крабом",
@@ -945,7 +935,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150113,
         image_url: "/images/california-crab.png",
         price: 440,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -954,7 +944,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 220,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Филадельфия",
@@ -962,7 +951,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150103,
         image_url: "/images/philadelphia.jpg",
         price: 500,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -971,7 +960,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 250,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Филадельфия в угре",
@@ -979,7 +967,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150104,
         image_url: "/images/philadelphia-and-eel.jpg",
         price: 480,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -988,7 +976,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 220,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Филадельфия с ананасом",
@@ -996,7 +983,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 279334,
         image_url: "/",
         price: 480,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1005,7 +992,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Аляска",
@@ -1013,7 +999,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150105,
         image_url: "/images/alaska.png",
         price: 390,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1022,7 +1008,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 247,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Камчатка",
@@ -1030,7 +1015,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 184144,
         image_url: "/images/roll-kamchatka.jpg",
         price: 520,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1039,7 +1024,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 257,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Канада",
@@ -1047,7 +1031,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285829,
         image_url: "/",
         price: 480,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1056,7 +1040,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 290,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл с угрем в нори",
@@ -1064,7 +1047,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285830,
         image_url: "/",
         price: 415,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1073,7 +1056,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 219,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл со снежным крабом в нори",
@@ -1081,7 +1063,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285831,
         image_url: "/",
         price: 385,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1090,7 +1072,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 224,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл с креветкой в нори",
@@ -1098,7 +1079,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285832,
         image_url: "/",
         price: 385,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1107,7 +1088,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 224,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл с лососем в нори",
@@ -1115,7 +1095,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285833,
         image_url: "/",
         price: 395,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1124,7 +1104,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 219,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Ролл Сахалин",
@@ -1132,7 +1111,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 184145,
         image_url: "/images/roll-sahalin.jpg",
         price: 510,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1141,7 +1120,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 262,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Сладкий ролл шоколадно/фруктовый",
@@ -1149,12 +1127,11 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 184146,
         image_url: "/images/sladkiy-roll-shokoladnofruktovyy.jpg",
         price: 410,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Сладкий ролл ванильно/фруктовый",
@@ -1162,12 +1139,11 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 184147,
         image_url: "/images/sladkiy-roll-vanilnofruktovyy.jpg",
         price: 370,
-        categories: [rolls],
+        categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
         },
-        tags: ["классические:1"],
       },
       {
         name: "Запеченный ролл Асама",
@@ -1175,7 +1151,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 145368,
         image_url: "/images/asama.png",
         price: 400,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1184,7 +1160,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 264,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл с курицей",
@@ -1192,7 +1167,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 145369,
         image_url: "/images/z-chiken.jpg",
         price: 370,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1201,7 +1176,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 254,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл острый лосось",
@@ -1209,7 +1183,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 145370,
         image_url: "/images/z-o-salmon.jpg",
         price: 390,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1218,7 +1192,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 274,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл Безликий",
@@ -1226,7 +1199,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 145371,
         image_url: "/images/faceless.jpg",
         price: 360,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 5,
@@ -1235,7 +1208,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 259,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл Румяный",
@@ -1243,7 +1215,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150114,
         image_url: "/images/rosy.jpg",
         price: 360,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 5,
@@ -1252,7 +1224,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 170,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл со снежный крабом",
@@ -1260,7 +1231,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150108,
         image_url: "/images/zapechennyy-roll-so-snezhnym-krabom.jpg",
         price: 370,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1269,7 +1240,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 299,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл с мидиями и сливочным сыром",
@@ -1277,7 +1247,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150109,
         image_url: "/images/zapechennyy-roll-s-midiyami-i-slivochnym-syrom.jpg",
         price: 390,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1286,7 +1256,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 247,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл с угрем",
@@ -1294,7 +1263,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150110,
         image_url: "/images/zapechennyy-roll-s-ugrem.jpg",
         price: 420,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1303,7 +1272,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 274,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл со снежным крабом и креветками",
@@ -1312,7 +1280,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         image_url:
           "/images/zapechennyy-roll-so-snezhnym-krabom-i-krevetkami.jpg",
         price: 390,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1321,7 +1289,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 329,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запечёный ролл с креветкой",
@@ -1329,7 +1296,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 145374,
         image_url: "/images/z-shrimp.jpg",
         price: 380,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1338,7 +1305,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 274,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл с лососем",
@@ -1346,7 +1312,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285810,
         image_url: "/images/zapechennyj-roll-losos.jpg",
         price: 390,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1355,7 +1321,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 274,
         },
-        tags: ["запеченные:2"],
       },
       {
         name: "Запеченный ролл со снежным крабом в нори",
@@ -1363,7 +1328,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285834,
         image_url: "/images/papech.jpg",
         price: 350,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1372,7 +1337,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1381,7 +1345,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285836,
         image_url: "/images/papech.jpg",
         price: 368,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1390,7 +1354,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1399,7 +1362,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 287929,
         image_url: "/images/papech.jpg",
         price: 378,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1408,7 +1371,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1417,7 +1379,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 287931,
         image_url: "/images/papech.jpg",
         price: 360,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1426,7 +1388,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1435,7 +1396,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 287933,
         image_url: "/images/papech.jpg",
         price: 340,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1444,7 +1405,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1453,7 +1413,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 287935,
         image_url: "/images/papech.jpg",
         price: 368,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1462,7 +1422,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1471,7 +1430,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 287937,
         image_url: "/images/papech.jpg",
         price: 380,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1480,7 +1439,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1489,7 +1447,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 287939,
         image_url: "/images/papech.jpg",
         price: 350,
-        categories: [rolls],
+        categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1498,7 +1456,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 270,
         },
-        tags: ["запеченные:2"],
         modifiers: [yakiSauce],
       },
       {
@@ -1507,7 +1464,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285804,
         image_url: "/images/tempur.jpg",
         price: 450,
-        categories: [rolls],
+        categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1516,7 +1473,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 280,
         },
-        tags: ["в темпуре:3"],
       },
       {
         name: "Темпурный ролл с лососем",
@@ -1524,7 +1480,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285805,
         image_url: "/images/tempur.jpg",
         price: 450,
-        categories: [rolls],
+        categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1533,7 +1489,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 280,
         },
-        tags: ["в темпуре:3"],
       },
       {
         name: "Темпурный ролл с креветкой",
@@ -1541,7 +1496,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285806,
         image_url: "/images/tempur.jpg",
         price: 450,
-        categories: [rolls],
+        categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1550,7 +1505,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 280,
         },
-        tags: ["в темпуре:3"],
       },
       {
         name: "Темпурный ролл с угрем",
@@ -1558,7 +1512,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285807,
         image_url: "/images/tempur.jpg",
         price: 450,
-        categories: [rolls],
+        categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1567,7 +1521,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 280,
         },
-        tags: ["в темпуре:3"],
       },
       {
         name: "Темпурный ролл с курицей",
@@ -1575,7 +1528,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 285809,
         image_url: "/images/tempur.jpg",
         price: 450,
-        categories: [rolls],
+        categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 8,
@@ -1584,7 +1537,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductWeightTypeEnum.GRAMS,
           value: 280,
         },
-        tags: ["в темпуре:3"],
       },
       {
         name: "Дополнительный набор для суши",
@@ -1592,8 +1544,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150010,
         image_url: "/images/dop-nabor.jpg",
         price: 50,
-        categories: [rolls],
-        tags: ["#Дополнительно:4"],
+        categories: [addition],
       },
       {
         name: "Дополнительный спайси соус",
@@ -1601,8 +1552,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 140108,
         image_url: "/images/spacy-souce.png",
         price: 50,
-        categories: [rolls],
-        tags: ["#Дополнительно:4"],
+        categories: [addition],
       },
       // SNACKS
       {
@@ -1616,7 +1566,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 5,
         },
-        tags: [],
       },
       {
         name: "Мидии гигант (не острые)",
@@ -1629,7 +1578,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 5,
         },
-        tags: [],
       },
       {
         name: "Мидии Гигант в сырном соусе",
@@ -1642,7 +1590,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 5,
         },
-        tags: [],
       },
       {
         name: "Креветки в темпуре",
@@ -1655,7 +1602,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
           type: ProductVolumeTypeEnum.QUANTITY,
           value: 5,
         },
-        tags: [],
       },
       // DRINKS
       {
@@ -1669,7 +1615,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
         },
         price: 160,
         categories: [drink],
-        tags: [],
       },
       {
         name: "Кола",
@@ -1682,7 +1627,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
         },
         price: 130,
         categories: [drink],
-        tags: [],
       },
       {
         name: "Сок яблочный",
@@ -1695,7 +1639,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
         },
         price: 170,
         categories: [drink],
-        tags: [],
       },
       {
         name: "Сок апельсиновый",
@@ -1708,7 +1651,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
         },
         price: 170,
         categories: [drink],
-        tags: [],
       },
       {
         name: "Сок вишневый",
@@ -1721,7 +1663,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
         },
         price: 180,
         categories: [drink],
-        tags: [],
       },
       {
         name: "Сок мультифрукт",
@@ -1734,7 +1675,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
         },
         price: 170,
         categories: [drink],
-        tags: [],
       },
     ]);
   }
