@@ -58,9 +58,9 @@ export class initialSeed1720348356653 implements MigrationInterface {
 
     const [pizzasByFixedPrice] = await discounts.createManyFrom([
       {
-        name: "3 за 1550",
+        name: "3 за 1750",
         type: DiscountTypeEnum.FIXED_PRICE,
-        value: 1550,
+        value: 1750,
       },
     ]);
 
@@ -69,24 +69,13 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Доставка пиццы от Кэпа",
         article_number: 9999999,
         type: DeliveryTypeEnum.IN_CASH,
-        value: 30,
+        value: 100,
         condition: {
           criteria: DeliveryCriteriaEnum.COUNT,
           op: DeliveryOperatorEnum.GREATER,
           value: 0,
         },
       },
-      // {
-      //   name: "Бесплатная доставка пиццы от Кэпа",
-      //   article_number: 9999998,
-      //   type: DeliveryTypeEnum.IN_CASH,
-      //   value: 0,
-      //   condition: {
-      //     criteria: DeliveryCriteriaEnum.PRICE,
-      //     op: DeliveryOperatorEnum.GREATER,
-      //     value: 700,
-      //   },
-      // },
     ]);
 
     await payments.createManyFrom([
@@ -106,17 +95,11 @@ export class initialSeed1720348356653 implements MigrationInterface {
 
     await promotions.createManyFrom([
       {
-        name: "Три любые пиццы на традиционном тесте за 1550 рублей",
+        name: "Три любые пиццы на традиционном тесте за 1750 рублей",
         image_url: "/images/promo1.svg",
         display: true,
         display_position: 1,
       },
-      /*   {
-        name: "Бесплатная доставка при заказе от 700 рублей",
-        image_url: "/images/promo2.svg",
-        display: true,
-        display_position: 2,
-      }, */
     ]);
 
     const [dough, sauce, kit, addPizzaItems] =
@@ -316,8 +299,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Маргарита",
         desc: "Томатный соус, сыр моцарелла, базилик",
         article_number: 134943,
-        image_url: "/images/margarita.png",
-        price: 540,
+        image_url: "/images/margarita.jpg",
+        price: 580,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -334,7 +317,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Томатный соус, сыр моцарелла, салями пепперони",
         article_number: 134947,
         image_url: "/images/pepperoni.png",
-        price: 590,
+        price: 640,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -351,7 +334,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Cоус карбонара, сыр моцарелла, бекон",
         article_number: 134948,
         image_url: "/images/karbonara.png",
-        price: 590,
+        price: 640,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -367,8 +350,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Жульен",
         desc: "Cливочный соус, куриное филе, свежие шампиньоны, сыр моцарелла, сыр чеддер, зеленый лук",
         article_number: 134949,
-        image_url: "/images/zhulen.png",
-        price: 640,
+        image_url: "/images/zhulen.jpg",
+        price: 680,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -384,8 +367,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца 4 сезона",
         desc: "Томатный соус, сыр моцарелла, салями пепперони, ветчина, куриное филе, сыр чеддер, сыр горгонзола",
         article_number: 134950,
-        image_url: "/images/4-sezona.png",
-        price: 580,
+        image_url: "/images/4-sezona.jpg",
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -401,8 +384,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Прошутто-фунги",
         desc: "Томатный соус, сыр моцарелла, ветчина, свежие шампиньоны, свежие томаты",
         article_number: 134951,
-        image_url: "/images/proshutto-fungi.png",
-        price: 610,
+        image_url: "/images/proshutto-fungi.jpg",
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -419,7 +402,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сыр моцарелла, томатный соус, свежие шампиньоны, корнишоны, болгарский перец, свежие томаты, красный лук",
         article_number: 134952,
         image_url: "/images/vegetarianskaya.png",
-        price: 590,
+        price: 620,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -436,7 +419,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный соус, сыр моцарелла, сыр чеддер, сыр горгонзола, сыр пармезан",
         article_number: 134954,
         image_url: "/images/4 cheeses.png",
-        price: 610,
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -452,8 +435,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Поло",
         desc: "Томатный соус, сливочный соус, сыр моцарелла, болгарский перец, корнишоны, красный лук, куриное филе",
         article_number: 134955,
-        image_url: "/images/polo.png",
-        price: 630,
+        image_url: "/images/polo.jpg",
+        price: 670,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -470,7 +453,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Томатный соус, сыр моцарелла, свежие томаты, сыр пармезан, чеснок",
         article_number: 134957,
         image_url: "/images/neapolitan.png",
-        price: 570,
+        price: 620,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -486,8 +469,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Мясная",
         desc: "Томатный соус, сыр моцарелла, свинина, куриное филе, ветчина, паприка, красный лук",
         article_number: 134959,
-        image_url: "/images/myasnaya.png",
-        price: 630,
+        image_url: "/images/myasnaya.jpg",
+        price: 680,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -503,8 +486,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Барбекю",
         desc: "Соус барбекю, сыр чеддер, сыр моцарелла, бекон, свинина, красный лук",
         article_number: 134960,
-        image_url: "/images/barbekyu.png",
-        price: 640,
+        image_url: "/images/barbekyu.jpg",
+        price: 680,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -520,8 +503,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Острая",
         desc: "Томатный соус, сыр моцарелла, салями пепперони, халапеньо, колбаски охотничьи, красный лук",
         article_number: 134961,
-        image_url: "/images/ostraya.png",
-        price: 600,
+        image_url: "/images/ostraya.jpg",
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -538,7 +521,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Розовый соус, сыр моцарелла, креветки, мидии, лосось, снежный краб",
         article_number: 134962,
         image_url: "/images/marine.jpg",
-        price: 620,
+        price: 680,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -551,7 +534,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Розовый соус, сыр моцарелла, куриное филе, колбаски охотничьи, белый соус",
         article_number: 134964,
         image_url: "/images/hunting.jpg",
-        price: 610,
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -563,8 +546,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Пивная",
         desc: "Томатный соус, сыр моцарелла, салями пепперони, ветчина, колбаски охотничьи, халапеньо",
         article_number: 134965,
-        image_url: "/images/pivnaya.png",
-        price: 600,
+        image_url: "/images/pivnaya.jpg",
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -580,8 +563,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца от Кэпа",
         desc: "Розовый соус, сыр моцарелла, куриное филе, свинина, бекон, свежие томаты, свежие шампиньоны",
         article_number: 134966,
-        image_url: "/images/ot-kepa.png",
-        price: 650,
+        image_url: "/images/ot-kepa.jpg",
+        price: 690,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -597,8 +580,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Ди-феста",
         desc: "Томатный соус, сыр моцарелла, свежие шампиньоны, свинина, красный лук, соус белый",
         article_number: 150196,
-        image_url: "/images/di-festa.png",
-        price: 630,
+        image_url: "/images/di-festa.jpg",
+        price: 670,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -615,7 +598,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Розовый соус, сыр моцарелла, ветчина, ананас",
         article_number: 150198,
         image_url: "/images/hawaiian-with-ham.jpg",
-        price: 590,
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -632,7 +615,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Розовый соус, сыр моцарелла, курица, ананас",
         article_number: 150200,
         image_url: "/images/hawaiian-with-chicken.jpg",
-        price: 590,
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -649,7 +632,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Томатный соус, соус белый, сыр моцарелла, сосиски",
         article_number: 150202,
         image_url: "/images/detskaya.png",
-        price: 540,
+        price: 580,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -665,8 +648,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца 4 сезона бьянко",
         desc: "Сливочный соус, сыр моцарелла, пепперони, ветчина, куриное филе, чеддер, сыр горгонзола",
         article_number: 150218,
-        image_url: "/images/4-seasons-bianco.png",
-        price: 580,
+        image_url: "/images/4-seasons-bianco.jpg",
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -683,7 +666,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный соус, сыр моцарелла, пепперони",
         article_number: 150220,
         image_url: "/images/pepperoni-bianco.jpg",
-        price: 590,
+        price: 640,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -700,7 +683,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный соус, сыр моцарелла, ветчина, свинина, куриное филе, паприка, красный лук",
         article_number: 150222,
         image_url: "/images/meat-bianco.jpg",
-        price: 630,
+        price: 680,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -717,7 +700,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный соус, сыр моцарелла, ветчина, свежие шампиньоны, свежие томаты",
         article_number: 150224,
         image_url: "/images/prosciutto-fungi-bianco.jpg",
-        price: 610,
+        price: 650,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -733,8 +716,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Сборная",
         desc: "Сливочный соус, сыр моцарелла, сыр пармезан, сыр чеддер, бекон, охотничьи колбаски, халапеньо",
         article_number: 279335,
-        image_url: "/",
-        price: 640,
+        image_url: "/images/sbornay.jpg",
+        price: 680,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -750,8 +733,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Пушкинская",
         desc: "Сливочный соус, сыр моцарелла, красный лук, охотничьи колбаски, бекон, корнишоны",
         article_number: 279337,
-        image_url: "/",
-        price: 590,
+        image_url: "/images/pushkinskay.jpg",
+        price: 640,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -767,8 +750,8 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Пармеджано",
         desc: "Сливочный соус, сыр моцарелла, пепперони, пармезан, колбаски охотничьи, халапеньо, ветчина",
         article_number: 285812,
-        image_url: "/",
-        price: 640,
+        image_url: "/images/parmedjano.jpg",
+        price: 680,
         categories: [pizza],
         volume: {
           type: ProductVolumeTypeEnum.DIAMETER,
@@ -796,7 +779,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, сливочный сыр, огурец, икра тобико",
         article_number: 150111,
         image_url: "/images/creamy.jpg",
-        price: 440,
+        price: 510,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -811,7 +794,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Ролл мини угорь",
         article_number: 145372,
         image_url: "/images/m-acne.jpg",
-        price: 310,
+        price: 370,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -826,7 +809,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Ролл острый мини лосось",
         article_number: 145373,
         image_url: "/images/o-m-salmon.jpg",
-        price: 310,
+        price: 370,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -841,7 +824,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Ролл мини с Лососем",
         article_number: 150101,
         image_url: "/images/r-salmon.jpg",
-        price: 310,
+        price: 370,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -856,7 +839,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Ролл с огурцом",
         article_number: 150102,
         image_url: "/images/cucumber.jpg",
-        price: 190,
+        price: 260,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -871,7 +854,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Ролл острый мини угорь",
         article_number: 150106,
         image_url: "/images/o-m-acne.jpg",
-        price: 310,
+        price: 370,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -886,7 +869,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Мини ролл с креветкой",
         article_number: 184143,
         image_url: "/images/mini-roll-s-krevetkoy.jpg",
-        price: 310,
+        price: 370,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -902,7 +885,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Cливочный сыр, кунжут, курица, спайси соус",
         article_number: 150107,
         image_url: "/images/spicy-chicken.jpg",
-        price: 410,
+        price: 480,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -918,7 +901,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, огурец, икра тобико, авокадо, яки соус",
         article_number: 150112,
         image_url: "/images/california-salmon.png",
-        price: 450,
+        price: 510,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -934,7 +917,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Снежный краб, огурец, икра тобико, авокадо, яки соус",
         article_number: 150113,
         image_url: "/images/california-crab.png",
-        price: 440,
+        price: 500,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -950,7 +933,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, сливочный сыр, огурец",
         article_number: 150103,
         image_url: "/images/philadelphia.jpg",
-        price: 500,
+        price: 550,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -966,7 +949,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Угорь, сливочный сыр, огурец, кунжут",
         article_number: 150104,
         image_url: "/images/philadelphia-and-eel.jpg",
-        price: 480,
+        price: 560,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -982,7 +965,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, сливочный сыр, ананас",
         article_number: 279334,
         image_url: "/",
-        price: 480,
+        price: 540,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -998,7 +981,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, бекон, огурец, кунжут",
         article_number: 150105,
         image_url: "/images/alaska.png",
-        price: 390,
+        price: 450,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1014,7 +997,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, сливочный сыр, тигровая креветка, огурец",
         article_number: 184144,
         image_url: "/images/roll-kamchatka.jpg",
-        price: 520,
+        price: 570,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1030,7 +1013,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Угорь, сливочный сыр, дайкон",
         article_number: 285829,
         image_url: "/",
-        price: 480,
+        price: 560,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1046,7 +1029,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Угорь, сливочный сыр, огурец, икра масаго",
         article_number: 285830,
         image_url: "/",
-        price: 415,
+        price: 475,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1062,7 +1045,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Снежный краб, сливочный сыр, огурец, икра масаго, спайси соус",
         article_number: 285831,
         image_url: "/",
-        price: 385,
+        price: 460,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1078,7 +1061,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Креветка, сливочный сыр, огурец, икра масаго, спайси соус",
         article_number: 285832,
         image_url: "/",
-        price: 385,
+        price: 475,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1094,7 +1077,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, сливочный сыр, огурец, икра масаго",
         article_number: 285833,
         image_url: "/",
-        price: 395,
+        price: 475,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1110,7 +1093,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, снежный краб, спайси соус, огурец",
         article_number: 184145,
         image_url: "/images/roll-sahalin.jpg",
-        price: 510,
+        price: 550,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1126,7 +1109,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Тесто харумаки, банан, киви, шоколадная паста, ананас, фруктовый топпинг",
         article_number: 184146,
         image_url: "/images/sladkiy-roll-shokoladnofruktovyy.jpg",
-        price: 410,
+        price: 450,
         display: false,
         categories: [classicRolls],
         volume: {
@@ -1139,7 +1122,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Тесто харумаки, банан, киви, сыр Креметте, ананас, фруктовый топпинг",
         article_number: 184147,
         image_url: "/images/sladkiy-roll-vanilnofruktovyy.jpg",
-        price: 370,
+        price: 410,
         categories: [classicRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1151,7 +1134,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, тамаго, креветка, окунь, яки соус, кунжут, соус унаги",
         article_number: 145368,
         image_url: "/images/asama.png",
-        price: 400,
+        price: 430,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1167,7 +1150,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, курица, огурец, сыр пармезан, соус унаги",
         article_number: 145369,
         image_url: "/images/z-chiken.jpg",
-        price: 370,
+        price: 390,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1183,7 +1166,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, огурец, тобико, лосось, спайси соус",
         article_number: 145370,
         image_url: "/images/z-o-salmon.jpg",
-        price: 390,
+        price: 440,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1199,7 +1182,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Краб, тамаго, сыр чеддер, кунжут",
         article_number: 145371,
         image_url: "/images/faceless.jpg",
-        price: 360,
+        price: 410,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1215,7 +1198,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, креветка, яки соус, кунжут, унаги соус, тамаго",
         article_number: 150114,
         image_url: "/images/rosy.jpg",
-        price: 360,
+        price: 410,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1231,7 +1214,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Снежный краб, сливочный сыр, соус шрирачи, яки соус",
         article_number: 150108,
         image_url: "/images/zapechennyy-roll-so-snezhnym-krabom.jpg",
-        price: 370,
+        price: 400,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1247,7 +1230,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Мидии, огурец, тамаго, спайси соус, сыр сливочный",
         article_number: 150109,
         image_url: "/images/zapechennyy-roll-s-midiyami-i-slivochnym-syrom.jpg",
-        price: 390,
+        price: 430,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1263,7 +1246,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Угорь, авокадо, сливочный сыр, яки соус, тамаго",
         article_number: 150110,
         image_url: "/images/zapechennyy-roll-s-ugrem.jpg",
-        price: 420,
+        price: 440,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1280,7 +1263,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         article_number: 150115,
         image_url:
           "/images/zapechennyy-roll-so-snezhnym-krabom-i-krevetkami.jpg",
-        price: 390,
+        price: 440,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1296,7 +1279,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, креветка, яки соус, кунжут, унаги соус, тамаго, икра тобико",
         article_number: 145374,
         image_url: "/images/z-shrimp.jpg",
-        price: 380,
+        price: 420,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1312,7 +1295,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, огурец, икра масаго, лосось, яки соус",
         article_number: 285810,
         image_url: "/images/zapechennyj-roll-losos.jpg",
-        price: 390,
+        price: 440,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1328,7 +1311,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Снежный краб, сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 285834,
         image_url: "/images/papech.jpg",
-        price: 350,
+        price: 378,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1345,7 +1328,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Креветка, сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 285836,
         image_url: "/images/papech.jpg",
-        price: 368,
+        price: 398,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1362,7 +1345,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Лосось, сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 287929,
         image_url: "/images/papech.jpg",
-        price: 378,
+        price: 398,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1379,7 +1362,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Мидии, сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 287931,
         image_url: "/images/papech.jpg",
-        price: 360,
+        price: 388,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1396,7 +1379,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Окунь, сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 287933,
         image_url: "/images/papech.jpg",
-        price: 340,
+        price: 378,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1413,7 +1396,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Снежный краб, креветка сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 287935,
         image_url: "/images/papech.jpg",
-        price: 368,
+        price: 398,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1430,7 +1413,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Угорь, сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 287937,
         image_url: "/images/papech.jpg",
-        price: 380,
+        price: 400,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1447,7 +1430,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Бекон, сливочный сыр, огурец, омлет, унаги, кунжут",
         article_number: 287939,
         image_url: "/images/papech.jpg",
-        price: 350,
+        price: 390,
         categories: [bakedRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1464,7 +1447,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, снежный краб, огурцы, спайси соус, панировочные сухари, соус унаги, кунжут",
         article_number: 285804,
         image_url: "/images/tempur.jpg",
-        price: 450,
+        price: 510,
         categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1480,7 +1463,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, лосось, огурцы, панировочные сухари, соус унаги, кунжут",
         article_number: 285805,
         image_url: "/images/tempur.jpg",
-        price: 450,
+        price: 510,
         categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1496,7 +1479,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, тигровая креветка, огурцы, панировочные сухари, соус унаги, кунжут",
         article_number: 285806,
         image_url: "/images/tempur.jpg",
-        price: 450,
+        price: 510,
         categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1512,7 +1495,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, угорь, болгарский перец, панировочные сухари, соус унаги, кунжут",
         article_number: 285807,
         image_url: "/images/tempur.jpg",
-        price: 450,
+        price: 510,
         categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1528,7 +1511,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сливочный сыр, курица, сырный соус, огурцы, панировочные сухари, соус унаги, кунжут",
         article_number: 285809,
         image_url: "/images/tempur.jpg",
-        price: 450,
+        price: 510,
         categories: [tempuraRolls],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1544,7 +1527,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "",
         article_number: 150010,
         image_url: "/images/dop-nabor.jpg",
-        price: 50,
+        price: 80,
         categories: [addition],
       },
       {
@@ -1552,7 +1535,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "",
         article_number: 140108,
         image_url: "/images/spacy-souce.png",
-        price: 50,
+        price: 80,
         categories: [addition],
       },
       // SNACKS
@@ -1561,7 +1544,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Cпайси соус, кунжут, унаги соус",
         article_number: 150232,
         image_url: "/images/midii-gigant-ostrye.jpg",
-        price: 450,
+        price: 480,
         categories: [snacks],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1573,7 +1556,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Яки соус, кунжут, унаги соус",
         article_number: 155865,
         image_url: "/images/midii-gigant-ne-ostrye.jpg",
-        price: 450,
+        price: 480,
         categories: [snacks],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1585,7 +1568,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Сырный соус, кунжут, унаги соус",
         article_number: 285811,
         image_url: "/images/midii-v-syrnom-souse.jpg",
-        price: 470,
+        price: 490,
         categories: [snacks],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1597,7 +1580,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         desc: "Тигровые креветки, панировочные сухари, соус Унаги, кунжут. Комплектуются спайси соусом в отдельном контейнере.",
         article_number: 287945,
         image_url: "/images/tigrovye-krevetki-v-tempure.jpg",
-        price: 420,
+        price: 450,
         categories: [snacks],
         volume: {
           type: ProductVolumeTypeEnum.QUANTITY,
@@ -1608,18 +1591,6 @@ export class initialSeed1720348356653 implements MigrationInterface {
       {
         name: "Кола",
         desc: "",
-        article_number: 145367,
-        image_url: "/images/coca-cola.png",
-        weight: {
-          type: ProductWeightTypeEnum.LITERS,
-          value: 0.9,
-        },
-        price: 160,
-        categories: [drink],
-      },
-      {
-        name: "Кола",
-        desc: "",
         article_number: 135679,
         image_url: "/images/cola-0.33.png",
         weight: {
@@ -1627,6 +1598,18 @@ export class initialSeed1720348356653 implements MigrationInterface {
           value: 0.33,
         },
         price: 130,
+        categories: [drink],
+      },
+      {
+        name: "Кола",
+        desc: "",
+        article_number: 145367,
+        image_url: "/images/coca-cola.png",
+        weight: {
+          type: ProductWeightTypeEnum.LITERS,
+          value: 0.9,
+        },
+        price: 160,
         categories: [drink],
       },
       {

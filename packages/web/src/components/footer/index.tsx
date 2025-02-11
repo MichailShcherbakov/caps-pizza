@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
             >
               <Logo />
               <Typography className={classes.copyright}>
-                © Copyright 2022 — Пицца от КЭПа
+                © Copyright 2025 — Пицца от КЭПа
               </Typography>
             </Stack>
           </Grid>
@@ -137,7 +137,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
                   </Stack>
                 </Stack>
                 <Typography className={classes.hiddenCopyright}>
-                  © Copyright 2022 — Пицца от КЭПа
+                  © Copyright 2025 — Пицца от КЭПа
                 </Typography>
               </Stack>
             </Grid>
