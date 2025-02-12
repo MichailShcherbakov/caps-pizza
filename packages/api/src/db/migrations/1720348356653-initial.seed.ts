@@ -316,7 +316,7 @@ export class initialSeed1720348356653 implements MigrationInterface {
         name: "Пицца Пепперони",
         desc: "Томатный соус, сыр моцарелла, салями пепперони",
         article_number: 134947,
-        image_url: "/images/pepperoni.png",
+        image_url: "/images/pepperoni.jpg",
         price: 640,
         categories: [pizza],
         volume: {
