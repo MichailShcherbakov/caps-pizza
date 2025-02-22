@@ -560,6 +560,23 @@ export class initialSeed1720348356653 implements MigrationInterface {
         modifiers: [traditionalDough, withoutAdds],
       },
       {
+        name: "Пицца Пивная бьянко",
+        desc: "Сливочный соус , сыр моцарелла, салями пепперони, ветчина, колбаски охотничьи, халапеньо",
+        article_number: 134967,
+        image_url: "/images/pivnaya-bianco.jpg",
+        price: 685,
+        categories: [pizza],
+        volume: {
+          type: ProductVolumeTypeEnum.DIAMETER,
+          value: 30,
+        },
+        weight: {
+          type: ProductWeightTypeEnum.GRAMS,
+          value: 635,
+        },
+        modifiers: [traditionalDough, withoutAdds],
+      },
+      {
         name: "Пицца от Кэпа",
         desc: "Розовый соус, сыр моцарелла, куриное филе, свинина, бекон, свежие томаты, свежие шампиньоны",
         article_number: 134966,
